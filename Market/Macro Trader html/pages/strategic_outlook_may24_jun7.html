@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week-Ahead Briefing · Jun 1 – Jun 5, 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #F5F6F7;
+    --bg2: #FFFFFF;
+    --bg3: #F0F1F3;
+    --border: #E5E5E5;
+    --text: #1E1E1E;
+    --muted: #5B5B5B;
+    --muted2: #8A8A8A;
+    --accent: #0077CC;
+    --green: #00936C;
+    --red: #E63000;
+    --yellow: #D8A000;
+    --purple: #7B5EA7;
+    --teal: #007A90;
+    --orange: #f97316;
+    --navy: #0d1d3a;
+    --navy2: #1a2540;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; }
+  a { color: var(--accent); text-decoration: none; }
+
+  /* ── HEADER ── */
+  .header { background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%); color: #fff; border-bottom: 1px solid var(--border); padding: 32px 40px 24px; }
+  .header-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px; max-width: 1400px; margin: 0 auto; }
+  .header-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,138,107,0.16); border: 1px solid rgba(255,138,107,0.35); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: #FF8A6B; margin-bottom: 12px; text-transform: uppercase; letter-spacing:.5px; font-weight: 600; }
+  .header-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #FF8A6B; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+  h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.4px; color: #fff; }
+  h1 span { color: #E63000; }
+  .header-sub { color: #B0BACB; font-size: 13.5px; margin-top: 6px; max-width: 760px; }
+  .header-meta { text-align: right; color: #B0BACB; font-size: 12px; }
+  .header-meta strong { color: #fff; font-size: 13px; display:block; }
+  .help-btn { display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); color:#fff; padding:5px 12px; border-radius:18px; font-size:11px; cursor:pointer; margin-top:8px; }
+  .help-btn:hover { background:rgba(255,255,255,.18); }
+
+  /* ── KPI STRIP ── */
+  .kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1px; background: var(--border); border-top: 1px solid var(--border); }
+  .kpi { background: var(--bg2); padding: 18px 22px; }
+  .kpi-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin-bottom: 6px; }
+  .kpi-value { font-size: 24px; font-weight: 700; line-height: 1; }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.accent { color: var(--accent); }
+  .kpi-value.yellow { color: var(--yellow); }
+  .kpi-value.purple { color: var(--purple); }
+  .kpi-value.red { color: var(--red); }
+  .kpi-sub { font-size: 11.5px; color: var(--muted); margin-top: 5px; }
+
+  /* ── TABS ── */
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); padding: 0 40px; background: var(--bg2); overflow-x: auto; }
+  .tab { padding: 14px 18px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .2s; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+  /* ── MAIN ── */
+  .main { padding: 28px 40px; max-width: 1400px; margin: 0 auto; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .section-heading { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .section-sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+
+  /* ── CARDS / GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 22px; }
+  .card-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 14px; }
+  .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .card p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+  .card p strong { color: var(--text); }
+  .insight-box { background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 13px 16px; margin-top: 14px; font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+  .insight-box strong { color: var(--text); }
+  .insight-box.green { border-left-color: var(--green); }
+  .insight-box.red { border-left-color: var(--red); }
+  .insight-box.yellow { border-left-color: var(--yellow); }
+  .insight-box.purple { border-left-color: var(--purple); }
+  .insight-box.orange { border-left-color: var(--orange); }
+
+  /* ── TAKEAWAY (EXEC SUMMARY) ── */
+  .takeaway { background: linear-gradient(135deg, #fff 0%, #FAFCFF 100%); border: 1px solid var(--border); border-left: 4px solid var(--red); border-radius: 10px; padding: 22px 26px; margin-bottom: 24px; }
+  .takeaway h2 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+  .takeaway p { color: var(--muted); font-size: 14px; line-height: 1.65; }
+  .takeaway p + p { margin-top: 10px; }
+  .takeaway strong { color: var(--text); }
+
+  /* ── SUMMARY BULLETS ── */
+  .bullet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+  .bullet { display: flex; align-items: flex-start; gap: 12px; padding: 13px 15px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; }
+  .bullet-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .bullet p { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+  .bullet strong { color: var(--text); }
+
+  /* ── RANK LIST (WHAT MATTERS) ── */
+  .rank-card { display:flex; gap:16px; background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:18px 20px; margin-bottom:14px; }
+  .rank-num { flex-shrink:0; width:38px; height:38px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800; color:#fff; background:var(--accent); }
+  .rank-card.r1 .rank-num { background:var(--red); }
+  .rank-card.r2 .rank-num { background:var(--purple); }
+  .rank-card.r3 .rank-num { background:var(--yellow); }
+  .rank-card.r4 .rank-num { background:var(--orange); }
+  .rank-card.r5 .rank-num { background:var(--teal); }
+  .rank-body h3 { font-size:15px; font-weight:700; margin-bottom:4px; }
+  .rank-body .rank-meta { font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted2); margin-bottom:8px; }
+  .rank-body p { font-size:12.5px; color:var(--muted); line-height:1.6; }
+  .rank-body p + p { margin-top:7px; }
+  .rank-body strong { color:var(--text); }
+
+  /* ── EARNINGS CALENDAR ── */
+  .filter-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; align-items:center; }
+  .filter-btn { padding:6px 14px; border-radius:20px; border:1px solid var(--border); background:var(--bg2); color:var(--muted); font-size:12px; cursor:pointer; transition:all .2s; white-space:nowrap; }
+  .filter-btn:hover { border-color:var(--accent); color:var(--accent); background:rgba(0,119,204,.06); }
+  .filter-btn.active { border-color:var(--accent); color:var(--accent); background:rgba(0,119,204,.1); font-weight:600; }
+  .filter-label { font-size:11px; color:var(--muted2); text-transform:uppercase; letter-spacing:.5px; margin-right:4px; }
+
+  .ec-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:12px; transition:border-color .2s, box-shadow .2s; }
+  .ec-card:hover { border-color:rgba(0,119,204,.35); box-shadow: 0 1px 4px rgba(0,0,0,.04); }
+  .ec-card.cat-semi { border-left:4px solid var(--purple); }
+  .ec-card.cat-software { border-left:4px solid var(--accent); }
+  .ec-card.cat-cyber { border-left:4px solid var(--teal); }
+  .ec-card.cat-retail { border-left:4px solid var(--orange); }
+  .ec-card.cat-value { border-left:4px solid var(--green); }
+  .ec-card.cat-macro { border-left:4px solid var(--yellow); }
+
+  .ec-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; cursor:pointer; gap:12px; user-select:none; }
+  .ec-header:hover { background:rgba(0,119,204,.025); }
+  .ec-header-left { display:flex; align-items:center; gap:14px; flex-wrap:wrap; flex:1; min-width:0; }
+  .ec-date-pill { min-width:78px; text-align:center; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:6px 8px; }
+  .ec-date-d { font-size:16px; font-weight:800; line-height:1; color:var(--text); }
+  .ec-date-m { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
+  .ec-ticker-wrap { min-width:100px; }
+  .ec-ticker { font-size:18px; font-weight:800; color:var(--accent); line-height:1; }
+  .ec-name { font-size:11.5px; color:var(--muted); margin-top:2px; max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ec-badges { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .ec-badge { font-size:10px; font-weight:600; padding:3px 9px; border-radius:14px; text-transform:uppercase; letter-spacing:.4px; }
+  .ec-b-semi { background:rgba(123,94,167,.12); color:var(--purple); border:1px solid rgba(123,94,167,.3); }
+  .ec-b-software { background:rgba(0,119,204,.1); color:var(--accent); border:1px solid rgba(0,119,204,.3); }
+  .ec-b-cyber { background:rgba(0,122,144,.12); color:var(--teal); border:1px solid rgba(0,122,144,.3); }
+  .ec-b-retail { background:rgba(249,115,22,.12); color:var(--orange); border:1px solid rgba(249,115,22,.3); }
+  .ec-b-value { background:rgba(0,147,108,.12); color:var(--green); border:1px solid rgba(0,147,108,.3); }
+  .ec-b-macro { background:rgba(216,160,0,.12); color:var(--yellow); border:1px solid rgba(216,160,0,.3); }
+  .ec-b-high { background:rgba(230,48,0,.1); color:var(--red); border:1px solid rgba(230,48,0,.3); }
+  .ec-b-med { background:rgba(216,160,0,.1); color:var(--yellow); border:1px solid rgba(216,160,0,.3); }
+  .ec-time { font-size:11px; color:var(--muted); }
+
+  .ec-header-right { display:flex; align-items:center; gap:14px; flex-shrink:0; }
+  .ec-mini-stat { text-align:right; }
+  .ec-mini-label { font-size:9px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); }
+  .ec-mini-value { font-size:13px; font-weight:700; line-height:1.3; }
+  .ec-chevron { font-size:11px; color:var(--muted); transition:transform .25s ease; width:18px; text-align:center; flex-shrink:0; }
+  .ec-chevron.open { transform:rotate(90deg); color:var(--accent); }
+  .ec-body { display:none; border-top:1px solid var(--border); padding:18px 20px; background: #FCFCFD; }
+  .ec-body.open { display:block; animation:fadeIn .18s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+  .ec-metrics-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px; margin-bottom:14px; }
+  .ec-metric { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:9px 11px; }
+  .ec-metric-l { font-size:9px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); margin-bottom:3px; }
+  .ec-metric-v { font-size:13px; font-weight:700; }
+  .ec-kpi-box { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:8px; padding:11px 13px; font-size:12.5px; color:var(--muted); line-height:1.6; margin-bottom:12px; }
+  .ec-kpi-box strong { color:var(--text); }
+  .ec-section-label { font-size:10px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:8px; margin-top:6px; }
+  .ec-scenario-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
+  .scenario-box { padding:11px 13px; border-radius:8px; font-size:12px; line-height:1.55; }
+  .scenario-bull { background:rgba(0,147,108,.06); border:1px solid rgba(0,147,108,.25); }
+  .scenario-bear { background:rgba(230,48,0,.05); border:1px solid rgba(230,48,0,.25); }
+  .scenario-title { font-weight:700; margin-bottom:4px; font-size:10px; text-transform:uppercase; letter-spacing:.5px; }
+  .scenario-bull .scenario-title { color:var(--green); }
+  .scenario-bear .scenario-title { color:var(--red); }
+  .scenario-box p { color:var(--muted); font-size:12px; }
+
+  /* ── BARBELL VIZ ── */
+  .barbell-wrap { display:grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items:stretch; margin-bottom: 24px; }
+  .barbell-side { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:20px; }
+  .barbell-side.long { border-top:3px solid var(--green); }
+  .barbell-side.short { border-top:3px solid var(--red); }
+  .barbell-side h3 { font-size:14px; font-weight:700; margin-bottom:8px; }
+  .barbell-side h3 .pill { font-size:10px; padding:2px 8px; border-radius:10px; margin-left:8px; vertical-align:middle; font-weight:600; }
+  .barbell-side.long h3 .pill { background:rgba(0,147,108,.12); color:var(--green); }
+  .barbell-side.short h3 .pill { background:rgba(230,48,0,.1); color:var(--red); }
+  .barbell-mid { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; }
+  .barbell-bar { width:18px; height:120px; background:linear-gradient(180deg, var(--green) 0%, var(--bg3) 50%, var(--red) 100%); border-radius:9px; }
+  .barbell-mid-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; writing-mode: vertical-rl; }
+  .barbell-list { list-style:none; padding:0; margin:10px 0 0; display:flex; flex-direction:column; gap:8px; }
+  .barbell-list li { font-size:12.5px; color:var(--muted); padding:8px 12px; background:var(--bg3); border-radius:6px; line-height:1.5; border-left:2px solid transparent; }
+  .barbell-side.long .barbell-list li { border-left-color: var(--green); }
+  .barbell-side.short .barbell-list li { border-left-color: var(--red); }
+  .barbell-list strong { color:var(--text); }
+
+  /* ── TIMELINE ── */
+  .timeline { position:relative; margin:14px 0 4px; padding-left:22px; }
+  .timeline::before { content:''; position:absolute; left:6px; top:4px; bottom:4px; width:2px; background:var(--border); }
+  .tl-item { position:relative; margin-bottom:14px; }
+  .tl-item::before { content:''; position:absolute; left:-19px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--red); border:2px solid var(--bg2); }
+  .tl-date { font-size:11px; font-weight:700; color:var(--red); text-transform:uppercase; letter-spacing:.4px; }
+  .tl-text { font-size:12.5px; color:var(--muted); line-height:1.55; }
+  .tl-text strong { color:var(--text); }
+
+  /* ── MACRO MATRIX ── */
+  .macro-table { width:100%; border-collapse:collapse; background:var(--bg2); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .macro-table th { padding:12px 14px; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); background:var(--bg3); border-bottom:1px solid var(--border); }
+  .macro-table td { padding:13px 14px; border-bottom:1px solid var(--border); font-size:13px; }
+  .macro-table tr:last-child td { border-bottom:none; }
+  .impact-pill { display:inline-block; padding:2px 9px; border-radius:12px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; }
+  .impact-high { background:rgba(230,48,0,.1); color:var(--red); border:1px solid rgba(230,48,0,.3); }
+  .impact-med { background:rgba(216,160,0,.1); color:var(--yellow); border:1px solid rgba(216,160,0,.3); }
+  .impact-low { background:rgba(0,119,204,.08); color:var(--accent); border:1px solid rgba(0,119,204,.25); }
+
+  /* ── DIVERGENCE CHART ── */
+  .chart-wrap { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:18px; margin-bottom:18px; }
+  .chart-wrap h4 { font-size:13px; font-weight:700; margin-bottom:4px; }
+  .chart-wrap .chart-sub { font-size:11.5px; color:var(--muted); margin-bottom:14px; }
+  .chart-canvas-wrap { position:relative; height:280px; }
+
+  /* ── HEADLINE NUMBERS ROW ── */
+  .num-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin: 12px 0 20px; }
+  .num-cell { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+  .num-cell .num-l { font-size:10.5px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-bottom:5px; }
+  .num-cell .num-v { font-size:20px; font-weight:800; line-height:1.1; }
+  .num-cell .num-v.up { color:var(--green); }
+  .num-cell .num-v.down { color:var(--red); }
+  .num-cell .num-s { font-size:11px; color:var(--muted); margin-top:4px; }
+
+  /* ── MODAL ── */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(13,29,58,.55); z-index:1000; justify-content:center; align-items:center; padding:20px; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:#fff; border-radius:12px; max-width:680px; width:100%; max-height:85vh; overflow:auto; padding:28px 32px; }
+  .modal h2 { font-size:18px; margin-bottom:12px; }
+  .modal h3 { font-size:14px; font-weight:700; margin-top:18px; margin-bottom:6px; color: var(--accent); }
+  .modal p, .modal li { font-size:13px; color:var(--muted); line-height:1.7; }
+  .modal ul { padding-left:22px; }
+  .modal .close-x { float:right; cursor:pointer; font-size:18px; color:var(--muted); border:none; background:none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .header, .main { padding: 22px; }
+    .tabs { padding: 0 22px; }
+    .grid-2, .grid-3, .bullet-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 20px; }
+    .barbell-wrap { grid-template-columns: 1fr; }
+    .barbell-mid { flex-direction:row; }
+    .barbell-bar { width:100%; height:18px; background:linear-gradient(90deg, var(--green) 0%, var(--bg3) 50%, var(--red) 100%); }
+    .barbell-mid-label { writing-mode:horizontal-tb; }
+    .ec-header { flex-wrap:wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="header-badge">Week-Ahead Briefing · Stagflation Watch</div>
+      <h1>US Market Week Ahead: <span>Jun 1 – Jun 5, 2026</span></h1>
+      <div class="header-sub">The first week of June lands on a stagflationary fault line: the 2026 Iran War and the closed Strait of Hormuz have driven Brent above $120 and pump prices to $4.55, while a barrage of labor data culminates in Friday's May payrolls — the first pre-FOMC window under new Fed Chair Kevin Warsh. A bifurcated earnings slate (AI-infra capex vs. a fuel-squeezed consumer) runs underneath it all.</div>
+      <button class="help-btn" onclick="openManual()">📖 How to use this dashboard</button>
+    </div>
+    <div class="header-meta">
+      <strong>Week ahead: Jun 1 – Jun 5 · Jobs Week</strong>
+      Updated Sun May 31, 2026 · 14 catalysts tracked<br>
+      Key: ISM Mfg (Jun 1) · JOLTS (Jun 2) · ADP + Beige Book (Jun 3) · Broadcom (Jun 3) · NFP (Jun 5)
+    </div>
+  </div>
+</div>
+
+<!-- ── KPI STRIP ── -->
+<div class="kpi-strip">
+  <div class="kpi">
+    <div class="kpi-label">Brent Crude</div>
+    <div class="kpi-value red">$120+</div>
+    <div class="kpi-sub">Hormuz closed — IEA's largest-ever oil supply disruption</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">US Gasoline (avg)</div>
+    <div class="kpi-value red">$4.55</div>
+    <div class="kpi-sub">+53% since late Feb (≈ +$1.50 since the war began)</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">10Y Treasury Yield</div>
+    <div class="kpi-value red">4.46%</div>
+    <div class="kpi-sub">Cycle high; global bond sell-off as cuts are abandoned</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Core PCE (y/y)</div>
+    <div class="kpi-value yellow">3.3%</div>
+    <div class="kpi-sub">Disinflation stalled; Yellen warns it gets harder</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Fed Chair</div>
+    <div class="kpi-value purple">K. Warsh</div>
+    <div class="kpi-sub">Sworn in May 22; first pre-FOMC communications window</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">US Recession Odds</div>
+    <div class="kpi-value yellow">30%</div>
+    <div class="kpi-sub">Goldman, next 12 months on the energy shock</div>
+  </div>
+</div>
+
+<!-- ── TABS ── -->
+<div class="tabs">
+  <div class="tab active" data-tab="overview">Executive Overview</div>
+  <div class="tab" data-tab="matters">What Matters Most</div>
+  <div class="tab" data-tab="macro">Macro &amp; The Fed</div>
+  <div class="tab" data-tab="energy">Energy &amp; Geopolitics</div>
+  <div class="tab" data-tab="calendar">Weekly Calendar</div>
+  <div class="tab" data-tab="semis">AI Infrastructure</div>
+  <div class="tab" data-tab="software">Software &amp; Cyber</div>
+  <div class="tab" data-tab="retail">Strained Consumer</div>
+  <div class="tab" data-tab="barbell">Barbell Strategy</div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- ─────────── EXEC OVERVIEW ─────────── -->
+  <div class="section active" id="overview">
+    <div class="takeaway">
+      <h2>The Defining Week: Jun 1 – Jun 5, 2026</h2>
+      <p>A profoundly complex confluence: top-tier labor data, a brand-new Fed leadership, and a bifurcated earnings slate — all under the most severe global energy crisis since the 1970s. The Iran War and the functional closure of the <strong>Strait of Hormuz</strong> (≈25% of seaborne oil, 20% of LNG) have imported stagflation into the US economy: <strong>Brent $120+</strong>, <strong>gasoline $4.55</strong>, <strong>core PCE stuck at 3.3%</strong>, and the 10Y at a cycle-high <strong>4.46%</strong>.</p>
+      <p><strong>Friday's May payrolls are the decider.</strong> Consensus is a cooling <strong>85K–105K</strong> (from +115K) with unemployment at 4.2–4.3%. With inflation re-accelerating on the oil shock, the labor market is the <em>only</em> variable that could justify easing — so the market is paradoxically positioned to <strong>reward weak data</strong>. A "Goldilocks" sub-100K print supports risk; an overheating print cements a restrictive path.</p>
+      <p>Underneath: AI-infrastructure capex remains blistering and seemingly price-inelastic (<strong>Broadcom, HPE, Credo</strong>), while the fuel-squeezed consumer cracks (<strong>Dollar General, Ulta, Lululemon</strong>). Presiding over it all, Chairman <strong>Kevin Warsh</strong> opens his first pre-FOMC communications window before the June 6 blackout.</p>
+    </div>
+
+    <div class="bullet-grid">
+      <div class="bullet">
+        <div class="bullet-icon" style="color:var(--red);">⚠</div>
+        <p><strong>Stagflation is the regime.</strong> Surging energy costs + sticky 3.3% core PCE + a cooling labor market is the textbook squeeze. Goldman puts 12-month US recession odds at 30%.</p>
+      </div>
+      <div class="bullet">
+        <div class="bullet-icon" style="color:var(--accent);">📉</div>
+        <p><strong>Friday NFP is the fulcrum.</strong> Markets are positioned to reward weakness: a sub-100K print validates cooling and stabilizes bonds; an overheating print is violently rejected by risk assets.</p>
+      </div>
+      <div class="bullet">
+        <div class="bullet-icon" style="color:var(--purple);">⚡</div>
+        <p><strong>AI capex looks price-inelastic.</strong> Broadcom's Q2 AI revenue is guided to ~$10.7B (≈+140% y/y); the print is the systemic proxy for the second derivative of the AI build-out.</p>
+      </div>
+      <div class="bullet">
+        <div class="bullet-icon" style="color:var(--orange);">🛒</div>
+        <p><strong>The consumer is the regressive-tax casualty.</strong> $4.55 gas acts as an unavoidable tax on households. Dollar General (low-income), Ulta (trade-down), Lululemon (premium) read all three cohorts.</p>
+      </div>
+      <div class="bullet">
+        <div class="bullet-icon" style="color:var(--green);">🕊️</div>
+        <p><strong>One bullish tail: peace headlines.</strong> Rumored US–Iran talks (Jun 5) could unwind the war premium instantly — crude could gap down 10–15%, sparking a relief rally in discretionary, transports, and long bonds.</p>
+      </div>
+      <div class="bullet">
+        <div class="bullet-icon" style="color:var(--yellow);">🏛️</div>
+        <p><strong>A new, untested Fed.</strong> Warsh's regime is a black box. Speeches from Kashkari, Hammack and Barr before the Jun 6 blackout are the only read on whether independence holds against White House pressure.</p>
+      </div>
+    </div>
+
+    <h3 class="section-heading" style="margin-top:32px;">The Five Catalysts That Decide the Week</h3>
+    <div class="section-sub">Ranked by potential for asymmetric cross-asset disruption — see the <strong>What Matters Most</strong> tab for the full mechanism on each.</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title" style="color:var(--red);">#1 · Dominant Macro Event</div>
+        <h3>Jun 5 · May Nonfarm Payrolls</h3>
+        <p>Consensus <strong>85K–105K</strong> (vs +115K); UR <strong>4.2–4.3%</strong>; AHE <strong>+0.3% m/m</strong>. The definitive arbiter of the Fed's dual mandate. &gt;120K with hot wages = duration shock; &lt;70K with UR 4.4% = growth scare that reopens the cut door.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--purple);">#2 · Systemic AI Print</div>
+        <h3>Jun 3 · Broadcom (AMC)</h3>
+        <p>Consensus <strong>$22.05B rev · $2.39–2.40 EPS</strong>; AI revenue eyed at <strong>~$10.7B (≈+140% y/y)</strong>. Options imply a ~7.5% move (~$150B cap swing). A beat-and-raise lifts the whole semi complex; any supply or VMware-softness note re-rates AI hardware down.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--yellow);">#3 · Geopolitical Wildcard</div>
+        <h3>Jun 5 · Rumored US–Iran Talks</h3>
+        <p>The $4.55 pump / $120+ Brent anchor could unwind <em>instantly</em> on credible diplomacy. A ceasefire or partial Hormuz reopening could gap crude down 10–15% — bullish discretionary, airlines, transports; bearish energy (XLE).</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--orange);">#4 · Low-Income Reality Check</div>
+        <h3>Jun 2 · Dollar General (BMO)</h3>
+        <p>Consumer spending ≈70% of GDP. DG is the cleanest diagnostic of the lower-middle class under a $1.50 gas spike. Options imply ~9%. A guide-down confirms the "bifurcated economy" and pressures retail (XRT) + Q2 GDP.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--teal);">#5 · The Warsh Fed's Tone</div>
+        <h3>Jun 1–3 · Fed Speakers</h3>
+        <p>Kashkari (Mon), Hammack (Tue), Barr (Wed) before the Jun 6 blackout. If they minimize the oil-inflation threat to flag labor softness, markets may read political capitulation — bullish equities short-term, bearish USD and the long end.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--accent);">Honorable Mention</div>
+        <h3>Jun 2–3 · PANW + CRWD · T-Bill Supply</h3>
+        <p>Cyber resilience (PANW Tue, CRWD Wed) tests whether security spend stays non-discretionary. Mon–Thu T-bill auctions (13/26/6/17/4-week) are a real-time proxy for sovereign demand and dollar liquidity.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── WHAT MATTERS MOST ─────────── -->
+  <div class="section" id="matters">
+    <h3 class="section-heading">What Matters Most · Ranked by Cross-Asset Impact</h3>
+    <div class="section-sub">The five catalysts with the highest potential for asymmetric disruption, with the mechanism of a surprise and the most sensitive asset classes.</div>
+
+    <div class="rank-card r1">
+      <div class="rank-num">1</div>
+      <div class="rank-body">
+        <h3>Friday's May Nonfarm Payrolls &amp; the Stagflation Threat</h3>
+        <div class="rank-meta">Jun 5 · 8:30 AM ET · Asset classes: rates, USD, gold, long-duration tech, small caps</div>
+        <p><strong>Why it matters:</strong> With inflation structurally re-accelerating on the oil shock, the labor market is the only variable that could force easing. The market is positioned for a delicate soft-landing deceleration (≈85–105K, UR 4.2–4.3%).</p>
+        <p><strong>Mechanism:</strong> A hot print (&gt;120K with wages &gt;0.4% m/m) reprices Fed-funds futures, drives 2Y and 10Y yields violently higher, pressures long-duration tech, indebted small caps and gold, and rallies the dollar. A contraction (&lt;70K, UR 4.4%) plunges short yields and triggers a defensive rotation into utilities, healthcare and staples while cyclicals/industrials are dumped — paradoxically reopening the door for Warsh to cut.</p>
+      </div>
+    </div>
+
+    <div class="rank-card r2">
+      <div class="rank-num">2</div>
+      <div class="rank-body">
+        <h3>Broadcom (AVGO) &amp; the Systemic AI CapEx Narrative</h3>
+        <div class="rank-meta">Jun 3 · After the close · Asset classes: SOX/semis, Nasdaq 100, AI supply chain</div>
+        <p><strong>Why it matters:</strong> Broadcom is the systemic proxy for the second derivative of the AI boom — the shift from generalized GPUs to custom ASICs and the networking that strings clusters together. With ~$150B of implied cap movement, it can pull the entire Nasdaq 100.</p>
+        <p><strong>Mechanism:</strong> A material beat plus a raise to the FY27 $100B AI target validates a multi-year hyperscaler capex cycle and lifts peers (Marvell, Credo, Nvidia). Any supply-constraint or softening enterprise-software (VMware) commentary triggers a violent multiple compression across the AI-hardware sector (SOXX).</p>
+      </div>
+    </div>
+
+    <div class="rank-card r3">
+      <div class="rank-num">3</div>
+      <div class="rank-body">
+        <h3>Geopolitical Headlines: Rumored US–Iran Peace Talks (Jun 5)</h3>
+        <div class="rank-meta">Jun 5 (unconfirmed) · Asset classes: crude, energy equities (XLE), discretionary, airlines, long bonds</div>
+        <p><strong>Why it matters:</strong> $4.55 gasoline and $120+ Brent are the heaviest anchors on the global economy. The physical repair of supply chains is slow, but the psychological unwind of the war premium can be near-instant.</p>
+        <p><strong>Mechanism:</strong> A credible ceasefire or verifiable partial reopening of the strait could gap crude down 10–15% in minutes — a massive macro tailwind. Consumer discretionary (DG, LULU), airlines and transport logistics would see a violent short-covering rally; energy equities (XLE), the sole reliable conflict hedge, would face aggressive profit-taking.</p>
+      </div>
+    </div>
+
+    <div class="rank-card r4">
+      <div class="rank-num">4</div>
+      <div class="rank-body">
+        <h3>The Low-Income Consumer Reality Check via Dollar General (DG)</h3>
+        <div class="rank-meta">Jun 2 · Before the open · Asset classes: retail ETFs (XRT), Q2 GDP estimates, discount sub-sector</div>
+        <p><strong>Why it matters:</strong> Consumer spending is ≈70% of GDP. DG is a real-time diagnostic of the lower-middle class, hit by the dual force of sticky core inflation and historically high fuel costs.</p>
+        <p><strong>Mechanism:</strong> A guide-down citing demand destruction from budgets reallocated to gasoline confirms the bifurcated-economy thesis, triggers a retail (XRT) sell-off and prompts downward Q2 GDP revisions. An operational beat sparks a short-covering rally across discount retail and eases consumer-led recession fears.</p>
+      </div>
+    </div>
+
+    <div class="rank-card r5">
+      <div class="rank-num">5</div>
+      <div class="rank-body">
+        <h3>The Institutional Tone of the Kevin Warsh Fed</h3>
+        <div class="rank-meta">Jun 1–3 · Fed speakers + Wed Beige Book · Asset classes: USD, long-end Treasuries, equity indices</div>
+        <p><strong>Why it matters:</strong> The market is in the dark on the new regime's philosophy. The transition from Powell, executed under White House pressure, injects institutional uncertainty.</p>
+        <p><strong>Mechanism:</strong> Speeches from Kashkari, Hammack and Barr are the only vectors before the Jun 6 blackout. If they aggressively minimize the oil-inflation threat to highlight labor weakness, markets may read political capitulation — initially bullish for indices, but likely a USD collapse and a spike in long-end yields as vigilantes demand a premium for unanchored inflation expectations.</p>
+      </div>
+    </div>
+
+    <div class="insight-box red"><strong>Bottom line:</strong> The week forces markets to reconcile an explosive AI-infrastructure super-cycle against a domestic consumer crushed by a geopolitically driven energy shock — with Warsh presiding over his first pre-FOMC window. Friday's payrolls hold the gravitational power to either shatter or solidify 2026 rate-cut expectations.</div>
+  </div>
+
+  <!-- ─────────── MACRO & FED ─────────── -->
+  <div class="section" id="macro">
+    <h3 class="section-heading">The Macroeconomic Foundation &amp; the Warsh Fed</h3>
+    <div class="section-sub">A reality check on labor, manufacturing's ability to absorb surging input costs, and consumer demand — into the final pre-FOMC communications window before the Jun 6 blackout (June 16–17 meeting is Warsh's first).</div>
+
+    <div class="num-row">
+      <div class="num-cell"><div class="num-l">ISM Mfg PMI (May cons.)</div><div class="num-v">53.0–53.1</div><div class="num-s">Prior 52.7 — matched highest since Aug 2022</div></div>
+      <div class="num-cell"><div class="num-l">Chicago PMI (May 29)</div><div class="num-v up">62.7</div><div class="num-s">Crushed 50.3 consensus — leads national ISM</div></div>
+      <div class="num-cell"><div class="num-l">ISM Prices Paid (Apr)</div><div class="num-v down">70.7</div><div class="num-s">Elevated — the sub-index to watch for stagflation</div></div>
+      <div class="num-cell"><div class="num-l">ISM Services (May cons.)</div><div class="num-v">53.5</div><div class="num-s">Prior 53.6; employment idx 48.0 (from 45.2)</div></div>
+      <div class="num-cell"><div class="num-l">Nonfarm Payrolls (May cons.)</div><div class="num-v down">85K–105K</div><div class="num-s">Decelerating from +115K in April</div></div>
+      <div class="num-cell"><div class="num-l">Core PCE (y/y)</div><div class="num-v down">3.3%</div><div class="num-s">Disinflation stalled — and now threatened</div></div>
+    </div>
+
+    <h3 class="section-heading" style="margin-top:24px;">US Economic Calendar · Jun 1 – Jun 5</h3>
+    <table class="macro-table">
+      <thead><tr><th style="width:120px;">Date</th><th>Release</th><th style="width:150px;">Consensus / Prior</th><th style="width:90px;">Impact</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Mon Jun 1</strong></td>
+          <td>ISM Manufacturing PMI (May) · ISM Mfg Employment · Construction Spending (10:00 AM)</td>
+          <td>PMI 53.0–53.1 / 52.7 · Constr +0.3% / +0.6%</td>
+          <td><span class="impact-pill impact-med">MED</span></td>
+        </tr>
+        <tr>
+          <td><strong>Tue Jun 2</strong></td>
+          <td>JOLTS Job Openings (April) (10:00 AM)</td>
+          <td>6.795M / 6.866M</td>
+          <td><span class="impact-pill impact-med">MED</span></td>
+        </tr>
+        <tr>
+          <td><strong>Wed Jun 3</strong></td>
+          <td>ADP Employment (8:15) · ISM Services PMI (10:00) · <strong>Fed Beige Book</strong> (2:00 PM)</td>
+          <td>ADP 120K / 109K · Services 53.5 / 53.6</td>
+          <td><span class="impact-pill impact-med">MED</span></td>
+        </tr>
+        <tr>
+          <td><strong>Thu Jun 4</strong></td>
+          <td>Challenger Job Cuts (7:30) · Initial Jobless Claims (8:30) · Nonfarm Productivity (Q1 final)</td>
+          <td>Claims 212K / 215K</td>
+          <td><span class="impact-pill impact-med">MED</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fri Jun 5</strong></td>
+          <td><strong>Nonfarm Payrolls · Unemployment · Avg Hourly Earnings (May)</strong> (8:30) · Consumer Credit (3:00 PM)</td>
+          <td>NFP 85–105K / 115K · UR 4.2–4.3% / 4.3% · AHE +0.3% / +0.2%</td>
+          <td><span class="impact-pill impact-high">HIGH</span></td>
+        </tr>
+        <tr>
+          <td><strong>Sat Jun 6</strong></td>
+          <td>FOMC communications <strong>blackout begins</strong> (midnight ET) ahead of Jun 16–17 meeting</td>
+          <td>—</td>
+          <td><span class="impact-pill impact-low">NOTE</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="section-heading" style="margin-top:26px;">Friday NFP · Scenario Matrix</h3>
+    <div class="section-sub">April printed <strong>+115K</strong> (UR 4.3%, AHE +0.2% m/m). With core PCE stuck at 3.3% and an active energy shock, the Fed needs irrefutable cooling before it can credibly signal easing — so weak data is, paradoxically, the risk-friendly outcome.</div>
+    <table class="macro-table">
+      <thead><tr><th style="width:160px;">Scenario</th><th style="width:150px;">NFP / Wages</th><th>Market Reaction</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Overheating</strong></td><td>&gt;120K · AHE &gt;0.4%</td><td>2Y/10Y spike, USD rallies, gold falls; long-duration tech, small caps (Russell 2000) pressured — 2026 cuts priced out.</td></tr>
+        <tr><td><strong>Goldilocks</strong></td><td>85–105K · UR 4.2–4.3%</td><td>Cooling validated; bonds stabilize, equity valuations supported — the base case markets are positioned for.</td></tr>
+        <tr><td><strong>Contraction</strong></td><td>&lt;70K · UR 4.4%</td><td>Short yields plunge, defensive rotation into utilities/healthcare/staples; cyclicals &amp; industrials dumped on growth-scare — but reopens the cut door.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid-2" style="margin-top:18px;">
+      <div class="card">
+        <div class="card-title">Manufacturing — Expansion, but Inflationary</div>
+        <p>ISM Mfg held at <strong>52.7 in April</strong>; the May <strong>Chicago PMI surged to 62.7</strong> (vs 50.3 consensus), one of the sharpest reversals on record and a reliable lead for the national ISM — so upside-surprise risk for Monday is real.</p>
+        <div class="insight-box yellow"><strong>The catch:</strong> the <strong>Prices Paid index sat at 70.7</strong>. If prices spike further while New Orders stagnate, it confirms a stagflationary margin squeeze — defensive rotation out of industrials into inflation hedges.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Services, ADP &amp; the Beige Book (Wed)</div>
+        <p><strong>ISM Services</strong> (~80% of output) eased to 53.6 in April; cons 53.5. Its <strong>Employment index (48.0, up from 45.2)</strong> is a contractionary precursor to Friday. <strong>ADP</strong> (8:15) previews NFP; the <strong>Beige Book</strong> (2:00 PM) is the qualitative gut-check across all 12 districts.</p>
+        <div class="insight-box"><strong>Watch:</strong> how regional businesses are navigating the dual pressure of high borrowing costs and soaring energy input prices — and whether services employment is cracking.</div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:20px;">
+      <div class="card" style="border-top:3px solid var(--purple);">
+        <div class="card-title" style="color:var(--purple);">The Fed Leadership Transition</div>
+        <h3>Chairman Kevin Warsh · Sworn In May 22, 2026</h3>
+        <p>Warsh is the <strong>17th Fed Chair</strong>, succeeding Jerome Powell after intense executive pressure (nominated Mar 4). He inherits a balance sheet still &gt;<strong>$6T</strong>, deep FOMC divisions on the terminal rate, and an oil shock that has imported stagflation. Janet Yellen has warned that containing inflation will be exponentially harder, with January's disinflation at risk of being unwound.</p>
+        <div class="insight-box purple"><strong>The June 16–17 meeting</strong> — Warsh's first as Chair, with an updated Summary of Economic Projections — is the destination this week's data and speeches all point toward.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Final Pre-Blackout Speeches</div>
+        <p>Before the <strong>blackout at midnight Sat Jun 6</strong>, three appearances are the only read on the new regime's consensus: <strong>Kashkari</strong> (Minneapolis) late Mon, <strong>Hammack</strong> (Cleveland) Tue AM, and Vice Chair for Supervision <strong>Barr</strong> Wed.</p>
+        <div class="insight-box red"><strong>Trade implication:</strong> rhetoric that minimizes the oil-inflation threat in favor of labor softness reads as a tilt toward cuts — initially bullish equities, but bearish the USD and the long end if it's seen as a loss of independence.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── ENERGY & GEOPOLITICS ─────────── -->
+  <div class="section" id="energy">
+    <h3 class="section-heading">Energy &amp; Geopolitics · The Dominant Tail Risk</h3>
+    <div class="section-sub">The 2026 Iran War and the dual blockade of the Strait of Hormuz are the undisputed primary driver of global tail-risk — and the source of this week's single biggest bullish wildcard.</div>
+
+    <div class="num-row">
+      <div class="num-cell"><div class="num-l">Brent Crude</div><div class="num-v down">$120+</div><div class="num-s">Extreme volatility since the strait closed</div></div>
+      <div class="num-cell"><div class="num-l">Hormuz Share of Trade</div><div class="num-v down">25% oil</div><div class="num-s">≈20% of global LNG also routes through it</div></div>
+      <div class="num-cell"><div class="num-l">Europe TTF Gas</div><div class="num-v down">€60+/MWh</div><div class="num-s">Nearly doubled; deindustrialization fears</div></div>
+      <div class="num-cell"><div class="num-l">US Recession Odds</div><div class="num-v down">30%</div><div class="num-s">Goldman, next 12 months</div></div>
+    </div>
+
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="card" style="border-top:3px solid var(--red);">
+        <div class="card-title" style="color:var(--red);">The Crisis Timeline</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-date">Feb 28, 2026</div><div class="tl-text">Coordinated <strong>US–Israeli airstrikes</strong> on Iranian facilities commence the war.</div></div>
+          <div class="tl-item"><div class="tl-date">Mar 4, 2026</div><div class="tl-text"><strong>Strait of Hormuz</strong> functionally closed and militarized — IEA calls it the largest supply disruption in the history of the oil market.</div></div>
+          <div class="tl-item"><div class="tl-date">Now</div><div class="tl-text">Brent $120+, US pump price <strong>$4.55</strong> (+53% since late Feb). 10Y at a cycle-high 4.46% as central banks abandon planned cuts.</div></div>
+          <div class="tl-item"><div class="tl-date">Fri Jun 5 (rumored)</div><div class="tl-text">A new round of <strong>US–Iran negotiations</strong> may take place — the week's biggest bullish wildcard.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Cascading Global Impacts</div>
+        <p><strong>GCC:</strong> systemic collapse of the export model — food shortages forcing airlifts of staples; Iranian strikes on desalination plants in Kuwait and Qatar; regional aviation paralyzed.</p>
+        <p style="margin-top:8px;"><strong>Europe:</strong> a second energy crisis — Dutch TTF gas near €60+/MWh; steel/chemical surcharges raising permanent deindustrialization fears.</p>
+        <p style="margin-top:8px;"><strong>Emerging markets:</strong> physical failures — the Philippines suffered grid collapse and rotational brownouts.</p>
+        <div class="insight-box red"><strong>For the US:</strong> stagflation imported. Brent $120+, gasoline $4.55 (≈+$1.50 since the war), and a global bond sell-off taking the 10Y to 4.46%.</div>
+      </div>
+    </div>
+
+    <div class="card" style="border-top:3px solid var(--green); margin-top:20px;">
+      <div class="card-title" style="color:var(--green);">The Bullish Tail · Rumored Diplomacy (Jun 5)</div>
+      <h3>The War Premium Can Unwind Instantly</h3>
+      <p>Near-term crude futures cling to the risk premium generated by the Hormuz blockade. A credible ceasefire or a partial, verifiable reopening of the strait could <strong>gap crude down 10–15% in minutes</strong>.</p>
+      <div class="ec-scenario-grid" style="margin-top:12px;">
+        <div class="scenario-box scenario-bull"><div class="scenario-title">If Talks Progress</div><p>Violent short-covering rally in consumer discretionary (DG, LULU, Starbucks), airlines and transport logistics; long-duration Treasuries rally. Energy equities (XLE) face profit-taking.</p></div>
+        <div class="scenario-box scenario-bear"><div class="scenario-title">If Talks Collapse</div><p>Solidifies the market's fear that $100+ crude is a structural reality for the decade — energy hedge reasserts, breakevens climb, the consumer squeeze deepens.</p></div>
+      </div>
+    </div>
+
+    <h3 class="section-heading" style="margin-top:26px;">US Treasury Auction Calendar</h3>
+    <div class="section-sub">Heavy bill supply at the short end can drain dollar liquidity. Bid-to-cover and direct/indirect participation are a real-time proxy for global demand for US paper — a "flight to safety" bid vs. hesitation to lock yields with inflation expectations unmoored.</div>
+    <table class="macro-table">
+      <thead><tr><th style="width:160px;">Date</th><th>Auction</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Mon Jun 1</strong></td><td>13-Week &amp; 26-Week Treasury Bills</td></tr>
+        <tr><td><strong>Tue Jun 2</strong></td><td>6-Week Treasury Bill</td></tr>
+        <tr><td><strong>Wed Jun 3</strong></td><td>17-Week Treasury Bill</td></tr>
+        <tr><td><strong>Thu Jun 4</strong></td><td>4-Week Treasury Bill</td></tr>
+      </tbody>
+    </table>
+    <div class="insight-box yellow" style="margin-top:14px;"><strong>Watch:</strong> poor auction metrics could steepen the curve and tighten financial conditions further — compounding the equity-valuation pressure from a 4.46% 10Y.</div>
+  </div>
+
+  <!-- ─────────── WEEKLY CALENDAR ─────────── -->
+  <div class="section" id="calendar">
+    <h3 class="section-heading">Weekly Catalyst Calendar · Jun 1 – Jun 5</h3>
+    <div class="section-sub">Chronological. Filter by type. Click any row to expand the thesis and bull/bear scenarios. EPS/revenue = Street consensus from this week's briefing.</div>
+
+    <div class="filter-bar">
+      <span class="filter-label">Filter:</span>
+      <button class="filter-btn active" data-filter="all">All (14)</button>
+      <button class="filter-btn" data-filter="semi">AI Hardware</button>
+      <button class="filter-btn" data-filter="cyber">Cybersecurity</button>
+      <button class="filter-btn" data-filter="retail">Consumer / Retail</button>
+      <button class="filter-btn" data-filter="macro">Macro &amp; Geopolitics</button>
+    </div>
+
+    <div id="ec-list"></div>
+  </div>
+
+  <!-- ─────────── AI INFRASTRUCTURE (SEMIS) ─────────── -->
+  <div class="section" id="semis">
+    <h3 class="section-heading">AI Infrastructure · Semiconductors &amp; Hardware</h3>
+    <div class="section-sub">The primary engine of market returns, testing the second derivative of the AI boom — the move from GPU hoarding to massive, custom-built, networked inferencing clusters. Three nodes report: HPE &amp; Credo (Jun 1), Broadcom (Jun 3).</div>
+
+    <div class="grid-2">
+      <div class="card" style="border-top:3px solid var(--purple);">
+        <div class="card-title" style="color:var(--purple);">Jun 3 AMC · Broadcom (AVGO)</div>
+        <h3>The Most Consequential Print of the Week</h3>
+        <div class="ec-metrics-row">
+          <div class="ec-metric"><div class="ec-metric-l">Rev Consensus</div><div class="ec-metric-v">$22.05B</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">EPS Consensus</div><div class="ec-metric-v">$2.39–2.40</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">AI Rev (Q2 est)</div><div class="ec-metric-v" style="color:var(--green);">$10.7B</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">Implied Move</div><div class="ec-metric-v">~7.5%</div></div>
+        </div>
+        <p>The market's focus is fixed on the <strong>AI semiconductor &amp; networking business</strong>. Q1 AI revenue grew <strong>+106% y/y to $8.4B</strong>; sell-side sees Q2 accelerating to <strong>$10.7B (≈+140% y/y)</strong>. The moat is deep hyperscaler partnerships (Google, Meta) for custom <strong>ASICs</strong> plus networking that prevents cluster bottlenecks. Options imply a ~7.5% move — a ~<strong>$150B</strong> cap swing.</p>
+        <div class="ec-section-label">What to watch</div>
+        <p style="font-size:12px;">Whether the <strong>$100B FY27 AI revenue target</strong> is now too conservative · custom-ASIC commitment cadence · VMware/enterprise-software trend · capex &amp; FCF detail.</p>
+        <div class="ec-scenario-grid" style="margin-top:14px;">
+          <div class="scenario-box scenario-bull"><div class="scenario-title">Bull</div><p>Beat + raised AI target → halo lifts Marvell, Credo, Nvidia; SOX rallies; multi-year hyperscaler capex cycle validated as still early.</p></div>
+          <div class="scenario-box scenario-bear"><div class="scenario-title">Bear</div><p>Supply-constraint or soft VMware commentary → punitive, immediate SOXX contraction as AI-hardware premiums compress.</p></div>
+        </div>
+      </div>
+
+      <div class="card" style="border-top:3px solid var(--purple);">
+        <div class="card-title" style="color:var(--purple);">Jun 1 AMC · Hewlett Packard Enterprise (HPE)</div>
+        <h3>Barometer for Physical AI-Server Deployment</h3>
+        <div class="ec-metrics-row">
+          <div class="ec-metric"><div class="ec-metric-l">Rev Consensus</div><div class="ec-metric-v">$9.76–10.0B</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">EPS Consensus</div><div class="ec-metric-v">$0.53–0.54</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">AI Systems Backlog</div><div class="ec-metric-v" style="color:var(--green);">$5.0B</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">Stock YTD</div><div class="ec-metric-v" style="color:var(--green);">~+80%</div></div>
+        </div>
+        <p>Riding sympathy from Dell's explosive AI-server results (one recent session +12%). A record <strong>$5.0B AI Systems backlog</strong> signals immense demand, and <strong>Networking is now the profit engine</strong> — revenue +152% last quarter (Juniper integration), &gt;50% of total operating profit.</p>
+        <div class="ec-section-label">What to watch</div>
+        <p style="font-size:12px;">Supply-chain bottlenecks converting backlog to revenue · evidence of "budget crowding-out" (legacy IT deferred to fund AI) · Juniper synergy.</p>
+        <div class="ec-scenario-grid" style="margin-top:14px;">
+          <div class="scenario-box scenario-bull"><div class="scenario-title">Bull</div><p>Backlog converting + networking strength → "legacy hardware can profitably pivot" thesis validated; rotation into beaten-down hardware.</p></div>
+          <div class="scenario-box scenario-bear"><div class="scenario-title">Bear</div><p>Bottlenecks delay recognition / crowding-out hits enterprise IT → the ~80% YTD gain unwinds aggressively.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-top:3px solid var(--purple); margin-top:20px;">
+      <div class="card-title" style="color:var(--purple);">Jun 1 · Credo Technology (CRDO) · The Data-Center "Plumbing"</div>
+      <h3>$430–432M Rev · $0.77–1.03 EPS · EPS +194–285% y/y</h3>
+      <p>Credo makes the hyper-specialized connectivity — <strong>Active Electrical Cables (AEC)</strong> and <strong>SerDes</strong> chips — essential for signal integrity and high-bandwidth transmission between GPUs in hyperscale clusters. With the stock at new highs, sentiment is at maximum strength.</p>
+      <div class="insight-box purple" style="margin-top:8px;"><strong>Watch:</strong> customer-concentration risk (just landed a fifth major hyperscaler) and margin stability — management has guided <strong>64–66% non-GAAP gross margins</strong>. The trio (AVGO + HPE + CRDO) is the cleanest read this week on the durability of the AI build-out.</div>
+    </div>
+
+    <div class="chart-wrap" style="margin-top:24px;">
+      <h4>AI Hardware vs. Legacy SaaS · Stylized Performance Divergence</h4>
+      <div class="chart-sub">Illustrative TTM action by sub-segment. AI infra in green; legacy seat-based SaaS in red; cybersecurity decoupled in blue.</div>
+      <div class="chart-canvas-wrap"><canvas id="divergenceChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ─────────── SOFTWARE / CYBER ─────────── -->
+  <div class="section" id="software">
+    <h3 class="section-heading">Enterprise Software &amp; Cybersecurity</h3>
+    <div class="section-sub">Both firms are battling for the enterprise security stack via "platformization." Cyber spend tends to stay non-discretionary even as broader software budgets get cut — PANW (Jun 2) and CRWD (Jun 3) are the tests.</div>
+
+    <div class="grid-2">
+      <div class="card" style="border-top:3px solid var(--teal);">
+        <div class="card-title" style="color:var(--teal);">Jun 2 · Palo Alto Networks (PANW)</div>
+        <h3>Platform Consolidation Play</h3>
+        <div class="ec-metrics-row">
+          <div class="ec-metric"><div class="ec-metric-l">Rev Consensus</div><div class="ec-metric-v">$2.94B</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">EPS Consensus</div><div class="ec-metric-v">$0.72</div></div>
+        </div>
+        <p>"Platformization" aims to consolidate fragmented security budgets under one ecosystem. The call will detail the strategic integration metrics of the recent <strong>CyberArk acquisition</strong>.</p>
+        <div class="ec-section-label">What to watch</div>
+        <p style="font-size:12px;">CyberArk integration progress · platform attach rates · whether revenue/ARR impress, not just the EPS headline.</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--teal);">
+        <div class="card-title" style="color:var(--teal);">Jun 3 · CrowdStrike (CRWD)</div>
+        <h3>Best-of-Breed, Crossing $5B ARR</h3>
+        <div class="ec-metrics-row">
+          <div class="ec-metric"><div class="ec-metric-l">Rev Consensus</div><div class="ec-metric-v">$1.36B</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">EPS Consensus</div><div class="ec-metric-v">$1.07</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">Ending ARR</div><div class="ec-metric-v" style="color:var(--green);">$5B+</div></div>
+        </div>
+        <p>Significant operational momentum: just crossed <strong>$5B in ending ARR</strong>, with expanded public-sector capabilities and the AI security module <strong>Project QuiltWorks</strong>. Sentiment suggests a full recovery from last year's operational outage.</p>
+        <div class="ec-section-label">Watch (yellow flag)</div>
+        <p style="font-size:12px;">CEO George Kurtz executed pre-arranged (10b5-1) insider sales of <strong>~$1.48M</strong> just days ahead of the print — structurally normal, but invites scrutiny near highs.</p>
+      </div>
+    </div>
+
+    <div class="insight-box yellow" style="margin-top:18px;"><strong>The "platform vs. best-of-breed" debate, epitomized.</strong> Strong results from both = enterprise CIOs are ring-fencing cybersecurity spend even while slashing broader discretionary software budgets — the bullish setup for the whole cyber sub-sector, and a key tell on whether AI-era security demand is truly non-discretionary.</div>
+  </div>
+
+  <!-- ─────────── STRAINED CONSUMER (RETAIL) ─────────── -->
+  <div class="section" id="retail">
+    <h3 class="section-heading">The Strained US Consumer</h3>
+    <div class="section-sub">The geopolitical shock has lifted gasoline +53% since late February to <strong>$4.55</strong> — a regressive tax on household balance sheets across every income bracket. Three prints read three cohorts.</div>
+
+    <div class="grid-2">
+      <div class="card" style="border-top:3px solid var(--orange);">
+        <div class="card-title" style="color:var(--orange);">Jun 2 BMO · Dollar General (DG)</div>
+        <h3>The Low-Income Breaking Point</h3>
+        <div class="ec-metrics-row">
+          <div class="ec-metric"><div class="ec-metric-l">Rev Consensus</div><div class="ec-metric-v">~$10.7B</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">EPS Consensus</div><div class="ec-metric-v">$1.74–1.93</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">Implied Move</div><div class="ec-metric-v">~9%</div></div>
+        </div>
+        <p>The ultimate diagnostic of the low-income consumer. The stock dropped &gt;30% before a volatile sympathy bid off Dollar Tree's beat. Investors will analyze how the <strong>$1.50 gas spike</strong> is altering traffic and basket sizes. Leadership transition: <strong>JJ Fleeman succeeds Todd Vasos as CEO on Jan 1, 2027</strong>.</p>
+        <div class="ec-scenario-grid" style="margin-top:10px;">
+          <div class="scenario-box scenario-bull"><div class="scenario-title">Bull</div><p>Beat + stabilizing margins (AI promos, food expansion) → short-covering rally across discount retail; eases recession fears.</p></div>
+          <div class="scenario-box scenario-bear"><div class="scenario-title">Bear</div><p>Guide-down on gas-driven demand destruction → confirms bifurcated economy; XRT sell-off, Q2 GDP cut.</p></div>
+        </div>
+      </div>
+
+      <div class="card" style="border-top:3px solid var(--orange);">
+        <div class="card-title" style="color:var(--orange);">Jun 2 · Ulta Beauty (ULTA) &amp; Jun 4 · Lululemon (LULU)</div>
+        <h3>The Middle &amp; Upper-Middle Cohorts</h3>
+        <div class="ec-metrics-row">
+          <div class="ec-metric"><div class="ec-metric-l">ULTA Rev / EPS</div><div class="ec-metric-v">$3.08B / $6.92</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">LULU Rev / EPS</div><div class="ec-metric-v">$2.40–2.43B / $1.67</div></div>
+          <div class="ec-metric"><div class="ec-metric-l">LULU vs 52wk</div><div class="ec-metric-v" style="color:var(--red);">−60%+</div></div>
+        </div>
+        <p><strong>Ulta</strong> tests the middle cohort — watched for "trading-down" from prestige to mass beauty; recently hit a rare Barclays "strong sell" on margin-erosion fears. <strong>Lululemon</strong> tests premium discretionary — stock down 60%+ over the past year, having warned of materially softening North American demand.</p>
+        <div class="ec-section-label">What to watch</div>
+        <p style="font-size:12px;">ULTA: evidence of trade-down behavior, margin trajectory. LULU: full-price selling, inventory markdowns, North America demand, guidance-cut risk.</p>
+      </div>
+    </div>
+
+    <div class="insight-box orange" style="margin-top:18px;"><strong>The bifurcation in one line:</strong> with consumer spending ≈70% of GDP, DG (bottom), ULTA (middle) and LULU (top) collectively measure how deep the $4.55-gasoline squeeze runs — and whether the demand destruction is broadening up the income ladder.</div>
+  </div>
+
+  <!-- ─────────── BARBELL ─────────── -->
+  <div class="section" id="barbell">
+    <h3 class="section-heading">The Barbell Strategy</h3>
+    <div class="section-sub">The posture this week's crosscurrents imply: concentrate exposure at two opposite, uncorrelated ends — the AI build-out and the energy/defensive complex — and starve the vulnerable middle. (Framework for a macro-aware, index-level investor — not single-name advice.)</div>
+
+    <div class="barbell-wrap">
+      <div class="barbell-side long">
+        <h3>Lean Into <span class="pill">Resilient Ends</span></h3>
+        <ul class="barbell-list">
+          <li><strong>AI Infrastructure:</strong> custom silicon, networking, AI servers — the price-inelastic capex super-cycle (semis / hardware complex).</li>
+          <li><strong>Energy / Oil Hedge:</strong> energy equities (XLE) remain the sole reliable hedge while the Hormuz premium persists.</li>
+          <li><strong>Best-of-Breed Cyber:</strong> non-discretionary spend as AI expands the attack surface.</li>
+          <li><strong>Defensives / Inflation Hedges:</strong> staples, utilities, healthcare — the growth-scare rotation if NFP contracts.</li>
+        </ul>
+      </div>
+      <div class="barbell-mid">
+        <div class="barbell-bar"></div>
+        <div class="barbell-mid-label">Starve the Middle</div>
+      </div>
+      <div class="barbell-side short">
+        <h3>Underweight · The Squeezed Middle <span class="pill">Vulnerable</span></h3>
+        <ul class="barbell-list">
+          <li><strong>Rate-Sensitive Speculative Growth:</strong> long-duration, no-cash-flow names vs a 4.46% 10Y.</li>
+          <li><strong>Mid-Tier Discretionary Consumer:</strong> squeezed by $4.55 gas, no pricing-power moat.</li>
+          <li><strong>Legacy Seat-Based SaaS:</strong> agentic-AI displacement risk; multiple compression is structural.</li>
+          <li><strong>Energy-Import-Dependent Cyclicals:</strong> margin compression from surging input costs.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:8px;">
+      <div class="card">
+        <div class="card-title">Why The Barbell Works Now</div>
+        <p>The two ends are driven by <strong>different, uncorrelated catalysts</strong>: the AI capex super-cycle on one side, the energy/stagflation/rate shock on the other. The vulnerable middle is exposed to <em>both</em> a squeezed consumer and a 4.46% risk-free yield.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">The Key Hedge Caveat</div>
+        <p style="font-size:14px; color:var(--text); font-weight:500;">"The energy-hedge leg is itself a bet on the war premium — credible US–Iran diplomacy (rumored Jun 5) would flip it fast. Size the oil exposure for a 10–15% gap, both ways."</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── MODAL: USER MANUAL ── -->
+<div class="modal-overlay" id="manual-modal" onclick="if(event.target===this) closeManual()">
+  <div class="modal">
+    <button class="close-x" onclick="closeManual()">✕</button>
+    <h2>📖 How to Use This Dashboard</h2>
+    <p>A <strong>forward-looking weekly briefing</strong> for the trading week of June 1–5, 2026, framing the week's catalysts through a stagflationary lens: the energy shock, a new Fed, and a bifurcated economy (AI-infra capex vs. a fuel-squeezed consumer).</p>
+    <h3>The Tabs</h3>
+    <ul>
+      <li><strong>Executive Overview</strong> — the thesis and the five catalysts that decide the week.</li>
+      <li><strong>What Matters Most</strong> — the ranked catalysts with the mechanism of each surprise.</li>
+      <li><strong>Macro &amp; The Fed</strong> — the data calendar, the NFP scenario matrix, and the Warsh transition.</li>
+      <li><strong>Energy &amp; Geopolitics</strong> — the Iran War, Hormuz, the oil shock, and the Treasury auctions.</li>
+      <li><strong>Weekly Calendar</strong> — chronological, filterable; click any row for bull/bear detail.</li>
+      <li><strong>AI Infrastructure, Software &amp; Cyber, Strained Consumer</strong> — the sector reads.</li>
+      <li><strong>Barbell Strategy</strong> — the synthesised, index-level posture.</li>
+    </ul>
+    <h3>Reading the Scenario Boxes</h3>
+    <p>Green = bull / risk-on path, red = bear / risk-off path. These are <em>conditional</em> outcomes, not predictions.</p>
+    <h3>Data Sourcing</h3>
+    <p>Economic consensus, earnings estimates and geopolitical figures are from this week's US Market Week-Ahead briefing. Always confirm against a live feed before acting.</p>
+  </div>
+</div>
+
+<script>
+  // ── TAB SWITCHING ──
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      const target = t.dataset.tab;
+      document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById(target).classList.add('active');
+      if (target === 'semis') buildDivergenceChart();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  function openManual(){ document.getElementById('manual-modal').classList.add('open'); }
+  function closeManual(){ document.getElementById('manual-modal').classList.remove('open'); }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeManual(); });
+
+  // ── WEEKLY CATALYST DATA ──
+  const ecData = [
+    {
+      date: 'Jun 1', day: 'Mon', ticker: 'ISM', name: 'ISM Manufacturing PMI (May) · Construction Spending',
+      cat: 'macro', catLabel: 'Macro', when: '10:00 AM', impact: 'med',
+      rev: '53.0–53.1', eps: 'Prior 52.7', move: 'Cyclicals',
+      thesis: 'Kicks off jobs week. Chicago PMI already surged to 62.7 (vs 50.3), signalling upside-surprise risk. The Prices Paid sub-index (70.7 prior) is the cleanest stagflation read.',
+      bull: 'Strong PMI with prices easing → orderly expansion, USD- and industrials-positive.',
+      bear: 'Prices Paid spikes while New Orders stagnate → stagflationary margin squeeze; rotate out of industrials.'
+    },
+    {
+      date: 'Jun 1', day: 'Mon', ticker: 'HPE', name: 'Hewlett Packard Enterprise · Q2',
+      cat: 'semi', catLabel: 'AI Hardware', when: 'AMC', impact: 'med',
+      rev: '$9.76–10.0B', eps: '$0.53–0.54', move: '—',
+      thesis: 'Barometer for physical AI-server deployment. Record $5.0B AI Systems backlog; networking +152% last qtr (>50% of operating profit) after Juniper.',
+      bull: 'Backlog converting + networking strength → "legacy hardware can profitably pivot" validated.',
+      bear: 'Supply bottlenecks / budget crowding-out hits enterprise IT → ~80% YTD gain unwinds.'
+    },
+    {
+      date: 'Jun 1', day: 'Mon', ticker: 'CRDO', name: 'Credo Technology · Q4',
+      cat: 'semi', catLabel: 'AI Hardware', when: 'AMC', impact: 'med',
+      rev: '$430–432M', eps: '$0.77–1.03', move: '—',
+      thesis: 'Data-center "plumbing" — AEC cables + SerDes for GPU-to-GPU bandwidth. EPS seen +194–285% y/y; just landed a fifth hyperscaler.',
+      bull: 'Beat + margin hold (64–66% GM guide) → AI-connectivity demand reaffirmed.',
+      bear: 'Customer concentration or margin slip → high expectations unwind at new highs.'
+    },
+    {
+      date: 'Jun 2', day: 'Tue', ticker: 'JOLTS', name: 'JOLTS Job Openings (April)',
+      cat: 'macro', catLabel: 'Macro', when: '10:00 AM', impact: 'med',
+      rev: '6.795M', eps: 'Prior 6.866M', move: 'Rates',
+      thesis: 'Labor-demand gauge into NFP. A continued slide in openings without mass layoffs is the central pillar of the soft-landing thesis.',
+      bull: 'Orderly cooling in vacancies → less-inflationary normalization; supports bonds.',
+      bear: 'Openings re-accelerate → labor still too tight; cut hopes fade further.'
+    },
+    {
+      date: 'Jun 2', day: 'Tue', ticker: 'DG', name: 'Dollar General · Q1',
+      cat: 'retail', catLabel: 'Consumer / Retail', when: 'BMO', impact: 'high',
+      rev: '~$10.7B', eps: '$1.74–1.93', move: '~9%',
+      thesis: 'The cleanest diagnostic of the low-income consumer under a $1.50 gas spike. CEO transition: JJ Fleeman succeeds Todd Vasos Jan 1, 2027.',
+      bull: 'Beat + stabilizing margins → short-covering across discount retail; recession fears ease.',
+      bear: 'Guide-down on gas-driven demand destruction → bifurcated-economy confirmed; XRT sells off, Q2 GDP cut.'
+    },
+    {
+      date: 'Jun 2', day: 'Tue', ticker: 'ULTA', name: 'Ulta Beauty · Q1',
+      cat: 'retail', catLabel: 'Consumer / Retail', when: 'AMC', impact: 'med',
+      rev: '$3.08B', eps: '$6.92', move: '—',
+      thesis: 'Tests the middle cohort for "trading-down" from prestige to mass beauty. Recently hit a rare Barclays "strong sell" on margin-erosion fears.',
+      bull: 'Resilient comps + held margins → middle consumer holding; downgrade looks early.',
+      bear: 'Trade-down evidence + margin erosion → discretionary stress broadening up the ladder.'
+    },
+    {
+      date: 'Jun 2', day: 'Tue', ticker: 'PANW', name: 'Palo Alto Networks · FQ3',
+      cat: 'cyber', catLabel: 'Cybersecurity', when: 'AMC', impact: 'med',
+      rev: '$2.94B', eps: '$0.72', move: '—',
+      thesis: 'Platformization to consolidate fragmented security budgets. Call will detail CyberArk acquisition-integration metrics.',
+      bull: 'Revenue/ARR impress + CyberArk traction → platform consolidation thesis intact.',
+      bear: 'Light guide despite EPS → "platform" premium questioned; sector caution.'
+    },
+    {
+      date: 'Jun 3', day: 'Wed', ticker: 'ADP', name: 'ADP (May) · ISM Services · Fed Beige Book',
+      cat: 'macro', catLabel: 'Macro', when: '8:15 AM–2:00 PM', impact: 'med',
+      rev: 'ADP 120K', eps: 'Svc 53.5', move: 'Pre-NFP',
+      thesis: 'Heavy pre-NFP read. ISM Services (~80% of output) and its employment index (48.0) precede Friday; Beige Book (2:00 PM) is the qualitative gut-check on energy costs.',
+      bull: 'Services holds >50 + benign ADP → soft-landing read into NFP.',
+      bear: 'Services employment contracts → labor crack confirmed ahead of payrolls.'
+    },
+    {
+      date: 'Jun 3', day: 'Wed', ticker: 'AVGO', name: 'Broadcom · Q2',
+      cat: 'semi', catLabel: 'AI Hardware', when: 'AMC', impact: 'high',
+      rev: '$22.05B', eps: '$2.39–2.40', move: '~7.5%',
+      thesis: 'THE systemic AI print. AI revenue eyed at ~$10.7B (≈+140% y/y). ~$150B implied cap swing; can pull the entire Nasdaq 100.',
+      bull: 'AI beat + raised $100B FY27 target → SOX rallies, whole AI supply chain re-rates up.',
+      bear: 'Supply constraint or soft VMware note → punitive SOXX contraction; AI-capex doubt.'
+    },
+    {
+      date: 'Jun 3', day: 'Wed', ticker: 'CRWD', name: 'CrowdStrike · Q1',
+      cat: 'cyber', catLabel: 'Cybersecurity', when: 'AMC', impact: 'high',
+      rev: '$1.36B', eps: '$1.07', move: '—',
+      thesis: 'Reports the same night as Broadcom. Just crossed $5B ending ARR; Project QuiltWorks momentum. Double-beat with AVGO could power tech Thursday.',
+      bull: 'ARR reaccelerates + guide raised → best-of-breed cyber reaffirmed as non-discretionary.',
+      bear: 'ARR light or Kurtz insider-sale ($1.48M) optics weigh → sector caution.'
+    },
+    {
+      date: 'Jun 4', day: 'Thu', ticker: 'CLAIMS', name: 'Initial Jobless Claims · Challenger Cuts · Productivity',
+      cat: 'macro', catLabel: 'Macro', when: '7:30–8:30 AM', impact: 'med',
+      rev: '212K', eps: 'Prior 215K', move: 'Pre-NFP',
+      thesis: 'Final labor read before Friday. Subdued claims indicate firms remain reluctant to fire even as hiring slows; unit labor costs feed the inflation debate.',
+      bull: 'Claims stay low → no labor crack; soft-landing intact.',
+      bear: 'Claims/Challenger jump → late-cycle layoff signal ahead of NFP.'
+    },
+    {
+      date: 'Jun 4', day: 'Thu', ticker: 'LULU', name: 'Lululemon · Q1',
+      cat: 'retail', catLabel: 'Consumer / Retail', when: 'AMC', impact: 'high',
+      rev: '$2.40–2.43B', eps: '$1.67', move: '—',
+      thesis: 'Cleanest premium-discretionary proxy. Stock −60%+ over the past year; warned of materially softening North American demand.',
+      bull: 'NA stabilizes + full-price selling holds → premium consumer more resilient than feared.',
+      bear: 'Another guide cut → economists walk down discretionary GDP estimates.'
+    },
+    {
+      date: 'Jun 5', day: 'Fri', ticker: 'NFP', name: 'May Nonfarm Payrolls · Unemployment · AHE',
+      cat: 'macro', catLabel: 'Macro', when: '8:30 AM', impact: 'high',
+      rev: '85–105K', eps: 'UR 4.2–4.3%', move: 'Index-wide',
+      thesis: 'The definitive arbiter of the Fed dual mandate. With inflation re-accelerating, markets are positioned to reward weak data. AHE +0.3% m/m is the swing variable.',
+      bull: 'Goldilocks 85–105K + tame wages → cooling validated, bonds stabilize, risk supported.',
+      bear: '>120K with hot wages = duration shock; or <70K (UR 4.4%) = growth scare. Both tails hurt risk.'
+    },
+    {
+      date: 'Jun 5', day: 'Fri', ticker: 'IRAN', name: 'Rumored US–Iran Negotiations',
+      cat: 'macro', catLabel: 'Geopolitics', when: 'Unconfirmed', impact: 'high',
+      rev: 'Brent $120+', eps: 'Gas $4.55', move: '±10–15% oil',
+      thesis: 'The week\'s biggest bullish wildcard. Credible diplomacy could unwind the Hormuz war premium near-instantly.',
+      bull: 'Ceasefire / partial strait reopening → crude gaps down 10–15%; discretionary, airlines, transports and long bonds rally.',
+      bear: 'Talks collapse → $100+ crude seen as structural; energy hedge reasserts, consumer squeeze deepens.'
+    }
+  ];
+
+  // ── RENDER WEEKLY CALENDAR ──
+  function getImpactBadge(impact) {
+    if (impact === 'high') return '<span class="ec-badge ec-b-high">High Impact</span>';
+    if (impact === 'med') return '<span class="ec-badge ec-b-med">Med Impact</span>';
+    return '';
+  }
+  function catBadgeClass(cat) { return 'ec-b-' + cat; }
+
+  function renderEC(filter='all') {
+    const list = document.getElementById('ec-list');
+    list.innerHTML = '';
+    const items = filter === 'all' ? ecData : ecData.filter(d => d.cat === filter);
+    if (items.length === 0) {
+      list.innerHTML = '<div class="card" style="text-align:center;color:var(--muted);">No catalysts match this filter.</div>';
+      return;
+    }
+    items.forEach((d, i) => {
+      const card = document.createElement('div');
+      card.className = 'ec-card cat-' + d.cat;
+      const header = `
+        <div class="ec-header" data-idx="${i}">
+          <div class="ec-header-left">
+            <div class="ec-date-pill">
+              <div class="ec-date-d">${d.date.split(' ')[1]}</div>
+              <div class="ec-date-m">${d.day}</div>
+            </div>
+            <div class="ec-ticker-wrap">
+              <div class="ec-ticker">${d.ticker}</div>
+              <div class="ec-name">${d.name}</div>
+            </div>
+            <div class="ec-badges">
+              <span class="ec-badge ${catBadgeClass(d.cat)}">${d.catLabel}</span>
+              ${getImpactBadge(d.impact)}
+              <span class="ec-time">${d.when}</span>
+            </div>
+          </div>
+          <div class="ec-header-right">
+            <div class="ec-mini-stat">
+              <div class="ec-mini-label">Rev / Cons.</div>
+              <div class="ec-mini-value">${d.rev}</div>
+            </div>
+            <div class="ec-mini-stat">
+              <div class="ec-mini-label">EPS / Lvl</div>
+              <div class="ec-mini-value">${d.eps}</div>
+            </div>
+            <div class="ec-chevron">▶</div>
+          </div>
+        </div>`;
+      let body = `<div class="ec-body" id="ec-body-${i}">`;
+      body += `<div class="ec-metrics-row">`;
+      if (d.rev !== '—') body += `<div class="ec-metric"><div class="ec-metric-l">Revenue / Consensus</div><div class="ec-metric-v">${d.rev}</div></div>`;
+      if (d.eps !== '—') body += `<div class="ec-metric"><div class="ec-metric-l">EPS / Level</div><div class="ec-metric-v">${d.eps}</div></div>`;
+      body += `<div class="ec-metric"><div class="ec-metric-l">Sensitivity</div><div class="ec-metric-v">${d.move}</div></div>`;
+      body += `</div>`;
+      body += `<div class="ec-kpi-box">${d.thesis}</div>`;
+      body += `<div class="ec-scenario-grid">
+                 <div class="scenario-box scenario-bull"><div class="scenario-title">Bull / Risk-On</div><p>${d.bull}</p></div>
+                 <div class="scenario-box scenario-bear"><div class="scenario-title">Bear / Risk-Off</div><p>${d.bear}</p></div>
+               </div>`;
+      body += `</div>`;
+      card.innerHTML = header + body;
+      list.appendChild(card);
+    });
+    document.querySelectorAll('.ec-header').forEach(h => {
+      h.addEventListener('click', () => {
+        const idx = h.dataset.idx;
+        const body = document.getElementById('ec-body-' + idx);
+        const chevron = h.querySelector('.ec-chevron');
+        body.classList.toggle('open');
+        chevron.classList.toggle('open');
+      });
+    });
+  }
+
+  // ── FILTER BUTTONS ──
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderEC(btn.dataset.filter);
+    });
+  });
+
+  // ── DIVERGENCE CHART (AI Infrastructure tab) ──
+  let divergenceChartBuilt = false;
+  function buildDivergenceChart() {
+    const ctx = document.getElementById('divergenceChart');
+    if (!ctx || divergenceChartBuilt || typeof Chart === 'undefined') return;
+    divergenceChartBuilt = true;
+    const months = ['Jun \'25','Jul','Aug','Sep','Oct','Nov','Dec','Jan \'26','Feb','Mar','Apr','May'];
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: months,
+        datasets: [
+          { label: 'AI Hardware / Infra', data: [100,108,115,112,125,138,145,150,142,158,172,180],
+            borderColor: '#00936C', backgroundColor: 'rgba(0,147,108,0.08)', borderWidth: 2.5, tension: 0.35, fill: true, pointRadius: 0, pointHoverRadius: 5 },
+          { label: 'Legacy Seat-Based SaaS', data: [100,96,92,88,84,78,72,70,64,58,54,48],
+            borderColor: '#E63000', backgroundColor: 'rgba(230,48,0,0.06)', borderWidth: 2.5, tension: 0.35, fill: true, pointRadius: 0, pointHoverRadius: 5 },
+          { label: 'Cybersecurity (decoupled)', data: [100,103,107,110,113,116,120,119,122,127,130,134],
+            borderColor: '#0077CC', backgroundColor: 'rgba(0,119,204,0.05)', borderWidth: 2.5, tension: 0.35, fill: false, pointRadius: 0, pointHoverRadius: 5, borderDash: [5,4] }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, usePointStyle: true, padding: 16 } }, tooltip: { mode: 'index', intersect: false } },
+        interaction: { mode: 'nearest', axis: 'x', intersect: false },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+          y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { font: { size: 11 } }, title: { display: true, text: 'Indexed to 100 (Jun \'25)', font: { size: 10 } } }
+        }
+      }
+    });
+  }
+
+  // ── INITIAL RENDER ──
+  renderEC('all');
+  if (document.getElementById('semis').classList.contains('active')) buildDivergenceChart();
+</script>
+</body>
+</html>

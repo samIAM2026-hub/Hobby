@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Value Line Summary &amp; Index Explorer · June 5, 2026</title>
+<style>
+  :root{
+    --bg:#F5F6F7; --bg2:#FFFFFF; --bg3:#F0F1F3; --border:#E5E5E5; --border2:#C8C8C8;
+    --text:#1E1E1E; --text2:#5B5B5B; --text3:#8A8A8A;
+    --accent:#002B5B; --accent2:#0077CC;
+    --red:#C8102E; --green:#00936C; --amber:#D8A000; --purple:#7B5EA7; --teal:#007A90;
+    --q1:#E8F5EC; --q1b:#1B7340;
+    --q2:#F1F7EA; --q2b:#5E8A2C;
+    --q3:#FFF7E0; --q3b:#A07C00;
+    --q4:#FCEBE6; --q4b:#A52414;
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.55;min-height:100vh}
+
+  /* HEADER */
+  .header{background:var(--accent);color:#fff;padding:32px 40px 28px;border-bottom:4px solid var(--red)}
+  .header-inner{max-width:1280px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:18px}
+  .badge{display:inline-block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.28);border-radius:3px;padding:3px 10px;font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+  .header h1{font-size:24px;font-weight:700;letter-spacing:-.4px}
+  .header p{color:#cdd6e0;font-size:13px;margin-top:6px;max-width:680px}
+  .header-meta{font-size:12px;color:#cdd6e0;text-align:right}
+  .header-meta strong{color:#fff;font-weight:600}
+
+  /* LAYOUT */
+  main{max-width:1280px;margin:0 auto;padding:24px 40px 60px}
+  section{margin-bottom:32px}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--accent)}
+  .section-head h2{font-size:17px;font-weight:700;color:var(--accent);letter-spacing:-.2px}
+  .section-head .sub{font-size:12px;color:var(--text3)}
+  .commentary{background:var(--bg2);border-left:3px solid var(--red);padding:12px 16px;font-size:13px;color:var(--text2);margin-bottom:16px;border-radius:0 4px 4px 0}
+  .commentary strong{color:var(--text)}
+
+  /* SCANNABLE READ BLOCK */
+  .read{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:0 4px 4px 0;padding:14px 18px 16px;margin-bottom:18px}
+  .read-tldr{display:flex;gap:10px;align-items:flex-start;padding-bottom:12px;margin-bottom:12px;border-bottom:1px dashed var(--border)}
+  .read-tldr .tldr-tag{flex:none;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px;letter-spacing:.5px;text-transform:uppercase;margin-top:1px}
+  .read-tldr .tldr-text{font-size:14px;font-weight:600;color:var(--text);line-height:1.4}
+  .read-points{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 18px}
+  .read-points.cols-3{grid-template-columns:repeat(3,1fr)}
+  .read-point{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--text2);line-height:1.45}
+  .read-point .num{flex:none;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .read-point .pt-body strong{color:var(--text);font-weight:600;display:block;font-size:12.5px;margin-bottom:1px}
+  .ind-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+  .ind-chip{font-size:11px;padding:2px 7px;border-radius:11px;background:var(--bg3);color:var(--text2);font-weight:500;display:inline-flex;align-items:center;gap:4px}
+  .ind-chip .num-tag{font-weight:700;font-size:10px;opacity:0.7}
+  .ind-chip.q1{background:var(--q1);color:var(--q1b)}
+  .ind-chip.q4{background:var(--q4);color:var(--q4b)}
+  .ind-chip.up::before{content:'▲';color:var(--green);font-size:9px;font-weight:700}
+  .ind-chip.down::before{content:'▼';color:var(--red);font-size:9px;font-weight:700}
+  @media(max-width:900px){.read-points,.read-points.cols-3{grid-template-columns:1fr}}
+
+  /* TILES */
+  .tile-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .tile{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 16px;position:relative;min-height:140px}
+  .tile-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+  .tile-value{font-size:30px;font-weight:700;color:var(--text);margin:6px 0 4px;letter-spacing:-.6px}
+  .tile-sub{font-size:12px;color:var(--text2);line-height:1.4}
+  .tile-note{font-size:11px;color:var(--text3);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);line-height:1.4}
+  .tile-note strong{color:var(--text)}
+  .tile.expensive{border-top:3px solid var(--red)}
+  .tile.neutral{border-top:3px solid var(--amber)}
+  .tile.cheap{border-top:3px solid var(--green)}
+
+  /* LIVE OVERLAY */
+  .live-bar{background:#0a0a0a;color:#e8e8e8;border-radius:6px;padding:14px 18px;display:flex;gap:24px;flex-wrap:wrap;align-items:center;font-size:13px}
+  .live-bar .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-right:6px;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .live-bar .live-label{color:#9ca3af;text-transform:uppercase;font-size:10px;letter-spacing:.5px;margin-right:6px}
+  .live-bar .live-val{font-weight:700;font-variant-numeric:tabular-nums}
+  .live-bar .live-spread{color:#fca5a5;margin-left:6px;font-size:11px}
+
+  /* INDUSTRY TABLE */
+  .controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+  .controls input[type=text]{padding:7px 10px;border:1px solid var(--border2);border-radius:4px;font-size:13px;font-family:var(--font);min-width:200px}
+  .controls select{padding:7px 10px;border:1px solid var(--border2);border-radius:4px;font-size:13px;background:var(--bg2);font-family:var(--font)}
+  .controls .count{font-size:12px;color:var(--text3);margin-left:auto}
+  table.industry{width:100%;border-collapse:collapse;background:var(--bg2);border:1px solid var(--border);font-size:12.5px;font-variant-numeric:tabular-nums}
+  table.industry th{background:var(--bg3);text-align:left;padding:9px 10px;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);cursor:pointer;user-select:none;font-size:11px;letter-spacing:.3px;text-transform:uppercase}
+  table.industry th:hover{background:#E6E8EB}
+  table.industry th.sort-asc::after{content:' ▲';color:var(--accent)}
+  table.industry th.sort-desc::after{content:' ▼';color:var(--accent)}
+  table.industry td{padding:7px 10px;border-bottom:1px solid var(--border)}
+  table.industry tr:hover td{background:#F8F9FA}
+  .rank-pill{display:inline-block;min-width:32px;text-align:center;padding:2px 7px;border-radius:11px;font-weight:700;font-size:11px}
+  .q1 .rank-pill{background:var(--q1);color:var(--q1b)}
+  .q2 .rank-pill{background:var(--q2);color:var(--q2b)}
+  .q3 .rank-pill{background:var(--q3);color:var(--q3b)}
+  .q4 .rank-pill{background:var(--q4);color:var(--q4b)}
+  .chg{font-size:11px;font-weight:700}
+  .chg.up{color:var(--green)}
+  .chg.down{color:var(--red)}
+  .chg.flat{color:var(--text3)}
+  .category-tag{display:inline-block;padding:1px 7px;border-radius:3px;font-size:10px;background:var(--bg3);color:var(--text2);text-transform:uppercase;letter-spacing:.3px;font-weight:600}
+  .category-tag.cyc{background:#FFE9D8;color:#A04500}
+  .category-tag.def{background:#E6F0FF;color:#1A4F8E}
+  .category-tag.fin{background:#F0E6FF;color:#5B2E91}
+  .category-tag.tech{background:#E0F7FA;color:#00606B}
+  .category-tag.res{background:#FCE9E9;color:#962020}
+  .category-tag.con{background:#FFF7DA;color:#7A5B00}
+
+  /* ROTATION MATRIX + HEAT MAP */
+  .sub-h{font-size:13px;font-weight:700;color:var(--accent);margin:22px 0 6px;letter-spacing:-.1px}
+  .sub-p{font-size:11.5px;color:var(--text3);margin-bottom:10px;line-height:1.5}
+  .rot-matrix{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+  .rot-row{display:grid;grid-template-columns:135px 95px 1.4fr 70px 1.8fr;gap:14px;align-items:center;padding:13px 16px;border-bottom:1px solid var(--border);font-size:12.5px}
+  .rot-row:last-child{border-bottom:none}
+  .rot-row:hover{background:#FAFAFA}
+  .rot-row .category-tag{align-self:flex-start;font-size:11px;padding:3px 8px}
+  .rot-cat-name{display:flex;flex-direction:column;gap:4px}
+  .rot-cat-name .cnt{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:.4px;text-transform:uppercase}
+  .rot-median{font-variant-numeric:tabular-nums;font-size:20px;font-weight:700;color:var(--text);line-height:1}
+  .rot-median small{display:block;font-size:9.5px;color:var(--text3);font-weight:600;letter-spacing:.4px;text-transform:uppercase;margin-top:3px}
+  .rot-bar{display:flex;height:22px;border-radius:4px;overflow:hidden;background:#F0F1F3;border:1px solid var(--border)}
+  .rot-bar-seg{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;min-width:0;transition:flex .3s,filter .12s;cursor:pointer;position:relative}
+  .rot-bar-seg:hover{filter:brightness(1.12)}
+  .rot-bar-seg:hover::before{content:'';position:absolute;inset:0;border:2px solid rgba(0,0,0,.35);border-radius:0;pointer-events:none}
+  .rot-bar-seg.q1{background:var(--q1b)}
+  .rot-bar-seg.q2{background:#7BAA3E}
+  .rot-bar-seg.q3{background:var(--q3b)}
+  .rot-bar-seg.q4{background:var(--q4b)}
+
+  /* Matrix tooltip (popup on bar-segment hover) */
+  .matrix-tooltip{position:fixed;background:#1E1E1E;color:#fff;padding:12px 14px 13px;border-radius:6px;font-size:11.5px;line-height:1.5;width:380px;max-height:460px;overflow-y:auto;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .12s;letter-spacing:0;font-family:var(--font)}
+  .matrix-tooltip.show{opacity:1}
+  .matrix-tooltip .mt-head{font-weight:700;font-size:12.5px;color:#fff;display:flex;align-items:center;gap:7px;margin-bottom:8px;flex-wrap:wrap}
+  .matrix-tooltip .mt-cat-tag{font-size:10px;padding:3px 8px;border-radius:3px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+  .matrix-tooltip .mt-cat-tag.cyc{background:#A04500;color:#fff}
+  .matrix-tooltip .mt-cat-tag.def{background:#1A4F8E;color:#fff}
+  .matrix-tooltip .mt-cat-tag.fin{background:#5B2E91;color:#fff}
+  .matrix-tooltip .mt-cat-tag.tech{background:#00606B;color:#fff}
+  .matrix-tooltip .mt-cat-tag.res{background:#962020;color:#fff}
+  .matrix-tooltip .mt-cat-tag.con{background:#7A5B00;color:#fff}
+  .matrix-tooltip .mt-q-pill{font-size:10px;padding:3px 8px;border-radius:3px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#fff}
+  .matrix-tooltip .mt-q-pill.q1{background:var(--q1b)}
+  .matrix-tooltip .mt-q-pill.q2{background:#7BAA3E}
+  .matrix-tooltip .mt-q-pill.q3{background:var(--q3b)}
+  .matrix-tooltip .mt-q-pill.q4{background:var(--q4b)}
+  .matrix-tooltip .mt-count{font-size:10.5px;color:#9ca3af;font-weight:500;letter-spacing:.2px}
+  .matrix-tooltip .mt-why{font-size:11px;color:#dcdcdc;line-height:1.5;padding:8px 10px;background:rgba(255,255,255,.06);border-left:2px solid rgba(255,255,255,.3);border-radius:0 4px 4px 0;margin-bottom:10px}
+  .matrix-tooltip .mt-list-label{font-size:9.5px;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:5px}
+  .matrix-tooltip .mt-list{display:flex;flex-direction:column;gap:0}
+  .matrix-tooltip .mt-item{padding:7px 0;border-top:1px dashed rgba(255,255,255,.13)}
+  .matrix-tooltip .mt-item:first-child{border-top:none;padding-top:2px}
+  .matrix-tooltip .mt-item-head{font-size:11.5px;font-weight:600;color:#fff;display:flex;align-items:baseline;gap:7px;margin-bottom:3px;line-height:1.3}
+  .matrix-tooltip .mt-rank{background:rgba(255,255,255,.18);padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700}
+  .matrix-tooltip .mt-mover{font-size:9px;font-weight:700;padding:0 5px;border-radius:2px;letter-spacing:.3px}
+  .matrix-tooltip .mt-mover.up{background:rgba(0,147,108,.25);color:#7DEFC1}
+  .matrix-tooltip .mt-mover.down{background:rgba(200,16,46,.25);color:#FFA7B0}
+  .matrix-tooltip .mt-item-tickers{font-size:10.5px;color:#e0e0e0;line-height:1.5;word-spacing:.3em;margin-bottom:3px}
+  .matrix-tooltip .mt-item-tickers code{background:rgba(255,255,255,.1);padding:1px 5px;border-radius:3px;font-family:'SF Mono','Menlo',monospace;font-size:10px;font-weight:700;color:#fff}
+  .matrix-tooltip .mt-item-why{font-size:10.5px;color:#a5b1bd;line-height:1.5;font-style:italic}
+  .matrix-tooltip::after{content:'';position:absolute;bottom:-6px;left:var(--arrow-x,50%);transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid #1E1E1E}
+  .matrix-tooltip.below::after{top:-6px;bottom:auto;border-top:none;border-bottom:6px solid #1E1E1E}
+  .rot-chg{font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;text-align:right}
+  .rot-chg.up{color:var(--green)}
+  .rot-chg.down{color:var(--red)}
+  .rot-chg.flat{color:var(--text3)}
+  .rot-read{font-size:11.5px;color:var(--text2);line-height:1.45}
+  .rot-read strong{color:var(--text);font-weight:600}
+  @media(max-width:900px){
+    .rot-row{grid-template-columns:1fr 1fr;gap:10px}
+    .rot-bar{grid-column:1/-1}
+    .rot-read{grid-column:1/-1}
+  }
+
+  /* Dispersion chart (rank dispersion per category on shared 1-93 axis) */
+  .disp-chart{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 18px 8px}
+  .disp-axis{display:grid;grid-template-columns:210px 23fr 23fr 23fr 24fr;gap:2px;margin-bottom:10px;font-size:10.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+  .disp-axis .ax-spacer{}
+  .disp-axis .ax-band{text-align:center;padding:5px 0;border-radius:3px}
+  .disp-axis .ax-band.q1{background:var(--q1);color:var(--q1b)}
+  .disp-axis .ax-band.q2{background:var(--q2);color:var(--q2b)}
+  .disp-axis .ax-band.q3{background:var(--q3);color:var(--q3b)}
+  .disp-axis .ax-band.q4{background:var(--q4);color:var(--q4b)}
+  .disp-track{display:grid;grid-template-columns:210px 1fr;gap:0;align-items:center;padding:10px 0;border-bottom:1px dotted var(--border)}
+  .disp-track:last-child{border-bottom:none}
+  .disp-meta{display:flex;flex-direction:column;gap:3px;padding-right:16px}
+  .disp-meta .category-tag{align-self:flex-start;font-size:11px;padding:3px 8px;margin-bottom:2px}
+  .disp-meta .stats-line{font-size:10.5px;color:var(--text3);line-height:1.5;letter-spacing:.1px}
+  .disp-meta .stats-line b{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
+  .disp-meta .chg{font-weight:700;font-variant-numeric:tabular-nums;font-size:11px}
+  .disp-meta .chg.up{color:var(--green)}
+  .disp-meta .chg.down{color:var(--red)}
+  .disp-meta .chg.flat{color:var(--text3)}
+  .disp-rail{position:relative;height:38px;border-radius:4px;border:1px solid var(--border);background:linear-gradient(to right,var(--q1) 0%,var(--q1) 24.73%,var(--q2) 24.73%,var(--q2) 49.46%,var(--q3) 49.46%,var(--q3) 74.19%,var(--q4) 74.19%,var(--q4) 100%);overflow:visible}
+  .disp-rail::before{content:'';position:absolute;top:0;bottom:0;left:24.73%;width:1px;background:rgba(0,0,0,.08)}
+  .disp-rail::after{content:'';position:absolute;top:0;bottom:0;left:49.46%;width:1px;background:rgba(0,0,0,.08)}
+  .disp-rail .qb3{position:absolute;top:0;bottom:0;left:74.19%;width:1px;background:rgba(0,0,0,.08)}
+  .disp-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:13px;height:13px;border-radius:50%;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.18);cursor:pointer;z-index:1;transition:transform .12s,box-shadow .12s}
+  .disp-dot:hover{transform:translate(-50%,-50%) scale(1.7);z-index:6;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+  .disp-dot.cyc{background:#B85C00}
+  .disp-dot.def{background:#1A4F8E}
+  .disp-dot.fin{background:#5B2E91}
+  .disp-dot.tech{background:#00606B}
+  .disp-dot.res{background:#962020}
+  .disp-dot.con{background:#7A5B00}
+  .disp-dot.up{box-shadow:0 0 0 2.5px var(--green),0 1px 3px rgba(0,0,0,.18)}
+  .disp-dot.down{box-shadow:0 0 0 2.5px var(--red),0 1px 3px rgba(0,0,0,.18)}
+  /* Rich tooltip (JS-positioned, multiline) */
+  .disp-tooltip{position:fixed;background:#1E1E1E;color:#fff;padding:11px 13px 12px;border-radius:6px;font-size:11.5px;line-height:1.5;width:300px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .12s;letter-spacing:0;font-family:var(--font)}
+  .disp-tooltip.show{opacity:1}
+  .disp-tooltip .tt-head{font-weight:700;font-size:12.5px;margin-bottom:8px;color:#fff;display:flex;align-items:center;gap:6px;flex-wrap:wrap;line-height:1.3}
+  .disp-tooltip .tt-rank{background:rgba(255,255,255,.18);padding:2px 7px;border-radius:3px;font-size:10.5px;font-weight:700;letter-spacing:.2px}
+  .disp-tooltip .tt-cat-tag{background:rgba(255,255,255,.1);padding:1px 6px;border-radius:3px;font-size:9.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+  .disp-tooltip .tt-mover{font-size:10px;font-weight:700;padding:1px 7px;border-radius:3px;letter-spacing:.3px}
+  .disp-tooltip .tt-mover.up{background:rgba(0,147,108,.25);color:#7DEFC1}
+  .disp-tooltip .tt-mover.down{background:rgba(200,16,46,.25);color:#FFA7B0}
+  .disp-tooltip .tt-label{font-size:9.5px;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin:8px 0 3px}
+  .disp-tooltip .tt-tickers{font-size:11px;color:#e8e8e8;line-height:1.5;word-spacing:.4em}
+  .disp-tooltip .tt-tickers code{background:rgba(255,255,255,.1);padding:1px 5px;border-radius:3px;font-family:'SF Mono','Menlo',monospace;font-size:10.5px;font-weight:700;color:#fff}
+  .disp-tooltip .tt-why{font-size:11px;color:#dcdcdc;line-height:1.5}
+  .disp-tooltip::after{content:'';position:absolute;bottom:-6px;left:var(--arrow-x,50%);transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid #1E1E1E}
+  .disp-tooltip.below::after{top:-6px;bottom:auto;border-top:none;border-bottom:6px solid #1E1E1E}
+  .disp-legend{display:flex;flex-wrap:wrap;gap:10px 18px;font-size:11px;color:var(--text2);margin-top:12px;padding:10px 14px;background:var(--bg3);border-radius:4px;align-items:center}
+  .disp-legend .lg{display:flex;align-items:center;gap:6px}
+  .disp-legend .sw{width:11px;height:11px;border-radius:50%;border:1.5px solid #fff;box-shadow:0 1px 2px rgba(0,0,0,.18)}
+  .disp-legend .sw.cyc{background:#B85C00}
+  .disp-legend .sw.def{background:#1A4F8E}
+  .disp-legend .sw.fin{background:#5B2E91}
+  .disp-legend .sw.tech{background:#00606B}
+  .disp-legend .sw.res{background:#962020}
+  .disp-legend .sw.con{background:#7A5B00}
+  .disp-legend .ring-up{width:11px;height:11px;border-radius:50%;background:#888;box-shadow:0 0 0 2px var(--green)}
+  .disp-legend .ring-down{width:11px;height:11px;border-radius:50%;background:#888;box-shadow:0 0 0 2px var(--red)}
+  @media(max-width:900px){
+    .disp-axis{grid-template-columns:23fr 23fr 23fr 24fr}
+    .disp-axis .ax-spacer{display:none}
+    .disp-track{grid-template-columns:1fr;gap:8px}
+    .disp-meta{padding-right:0;flex-direction:row;flex-wrap:wrap;gap:6px 12px;align-items:center}
+  }
+
+  /* TOP/BOTTOM SPLIT */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .panel{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 16px}
+  .panel h3{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+  .panel .row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dotted #eee;font-size:12.5px}
+  .panel .row:last-child{border-bottom:none}
+  .panel .row .nm{color:var(--text)}
+  .panel .row .vl{color:var(--text2);font-variant-numeric:tabular-nums}
+  .changes{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 16px 16px;margin-top:14px}
+  .changes h3{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px}
+  .mv-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .mv-summary{font-size:11.5px;color:var(--text2);line-height:1.5}
+  .mv-summary b{color:var(--text);font-variant-numeric:tabular-nums}
+  .mv-summary .up{color:var(--green);font-weight:700}
+  .mv-summary .down{color:var(--red);font-weight:700}
+  .mv-toggle{display:flex;border:1px solid var(--border2);border-radius:4px;overflow:hidden;flex:none}
+  .mv-toggle button{border:none;background:var(--bg2);color:var(--text2);font-family:var(--font);font-weight:600;font-size:11px;padding:6px 11px;cursor:pointer;transition:background .12s,color .12s}
+  .mv-toggle button+button{border-left:1px solid var(--border2)}
+  .mv-toggle button.active{background:var(--accent);color:#fff}
+  .mv-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px 22px}
+  .mv-col h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;display:flex;align-items:center;gap:7px;padding-bottom:7px;border-bottom:2px solid var(--border)}
+  .mv-col.climb h4{color:var(--green);border-bottom-color:rgba(0,147,108,.3)}
+  .mv-col.decl h4{color:var(--red);border-bottom-color:rgba(200,16,46,.3)}
+  .mv-col h4 .cnt{margin-left:auto;font-size:10px;color:var(--text3);font-weight:600;letter-spacing:.2px}
+  .mv-row{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:6px 0;border-bottom:1px dotted #eee}
+  .mv-row:last-child{border-bottom:none}
+  .mv-delta{font-variant-numeric:tabular-nums;font-weight:800;font-size:13px;text-align:center;border-radius:4px;padding:2px 0}
+  .mv-row.climb .mv-delta{color:var(--green);background:var(--q1)}
+  .mv-row.decl .mv-delta{color:var(--red);background:var(--q4)}
+  .mv-main{min-width:0}
+  .mv-name{font-size:12.5px;color:var(--text);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mv-meta{display:flex;align-items:center;gap:6px;margin-top:3px}
+  .mv-track{position:relative;height:4px;background:var(--bg3);border-radius:2px;margin-top:6px;overflow:hidden}
+  .mv-fill{position:absolute;top:0;bottom:0;left:0;border-radius:2px;transition:width .25s}
+  .mv-row.climb .mv-fill{background:var(--green)}
+  .mv-row.decl .mv-fill{background:var(--red)}
+  .mv-ranks{font-size:11px;color:var(--text3);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+  .mv-ranks b{color:var(--text);font-weight:700}
+  .mv-empty{font-size:12px;color:var(--text3);padding:10px 2px;font-style:italic}
+  .mv-row{cursor:pointer;position:relative;border-radius:4px;transition:background .12s}
+  .mv-row:hover{background:#F8F9FA}
+  .mv-row:hover .mv-name{text-decoration:underline dotted;text-underline-offset:2px}
+  .mv-pop{position:fixed;background:#1E1E1E;color:#fff;padding:12px 14px 13px;border-radius:6px;font-size:11.5px;line-height:1.5;width:300px;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.38);opacity:0;pointer-events:none;transition:opacity .12s;font-family:var(--font)}
+  .mv-pop.show{opacity:1}
+  .mv-pop .mp-head{font-weight:700;font-size:12.5px;margin-bottom:9px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;line-height:1.3}
+  .mv-pop .mp-rank{background:rgba(255,255,255,.18);padding:2px 7px;border-radius:3px;font-size:10.5px;font-weight:700}
+  .mv-pop .mp-move{font-size:10px;font-weight:700;padding:1px 7px;border-radius:3px;letter-spacing:.3px}
+  .mv-pop .mp-move.up{background:rgba(0,147,108,.28);color:#7DEFC1}
+  .mv-pop .mp-move.down{background:rgba(200,16,46,.28);color:#FFA7B0}
+  .mv-pop .mp-label{font-size:9.5px;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin:0 0 6px}
+  .mv-pop .mp-co{display:flex;align-items:baseline;gap:8px;padding:4px 0;border-top:1px dashed rgba(255,255,255,.13)}
+  .mv-pop .mp-co:first-of-type{border-top:none}
+  .mv-pop .mp-rk{flex:none;width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .mv-pop .mp-tk{font-family:'SF Mono','Menlo',monospace;font-size:11px;font-weight:700;color:#fff;background:rgba(255,255,255,.1);padding:1px 6px;border-radius:3px}
+  .mv-pop::after{content:'';position:absolute;bottom:-6px;left:var(--arrow-x,50%);transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid #1E1E1E}
+  .mv-pop.below::after{top:-6px;bottom:auto;border-top:none;border-bottom:6px solid #1E1E1E}
+  @media(max-width:900px){.mv-cols{grid-template-columns:1fr;gap:18px}}
+
+  /* SCREENS */
+  .tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:14px;flex-wrap:wrap}
+  .tab{padding:9px 16px;font-size:12.5px;cursor:pointer;border-bottom:2px solid transparent;color:var(--text2);font-weight:600;letter-spacing:.2px}
+  .tab.active{color:var(--accent);border-bottom-color:var(--red);background:var(--bg2)}
+  .tab:hover:not(.active){background:var(--bg3)}
+  .screen-pane{display:none}
+  .screen-pane.active{display:block}
+  table.screen{width:100%;border-collapse:collapse;background:var(--bg2);border:1px solid var(--border);font-size:12.5px;font-variant-numeric:tabular-nums}
+  table.screen th{background:var(--bg3);text-align:left;padding:8px 10px;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;user-select:none;white-space:nowrap}
+  table.screen th.num{text-align:right}
+  table.screen th:hover{background:#E6E8EB}
+  table.screen td{padding:6px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+  table.screen td.num{text-align:right;font-variant-numeric:tabular-nums}
+  table.screen td.num .null-dash{display:inline-block;min-width:1em;text-align:right}
+  table.screen tr:hover td{background:#F8F9FA}
+  .screen-note{font-size:12px;color:var(--text3);margin-bottom:10px;padding:8px 12px;background:var(--bg2);border-left:3px solid var(--accent2);border-radius:0 3px 3px 0}
+
+  /* FOOTER */
+  footer{max-width:1280px;margin:0 auto;padding:24px 40px;color:var(--text3);font-size:11px;text-align:center;border-top:1px solid var(--border)}
+  footer .disclaimer{margin-top:6px;line-height:1.5}
+
+  @media (max-width:900px){
+    .tile-grid{grid-template-columns:repeat(2,1fr)}
+    .split{grid-template-columns:1fr}
+    main{padding:18px 16px 40px}
+    .header{padding:24px 16px 20px}
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div>
+      <span class="badge">Value Line Investment Survey · Summary &amp; Index</span>
+      <h1>Value Line Explorer · June 5, 2026</h1>
+      <p>Macro-trader view of the Value Line universe (~1,700 stocks). Industry-rank rotation, market valuation medians vs. live S&amp;P 500, and screen-level breadth. Prices as of <strong>May 25, 2026</strong>.</p>
+    </div>
+    <div class="header-meta">
+      Vol. LXXXI, No. 44<br>
+      Built <strong>May 31, 2026</strong><br>
+      Static snapshot · not auto-refreshing
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- LIVE OVERLAY -->
+  <section>
+    <div class="live-bar">
+      <div><span class="live-dot"></span><span class="live-label">Live · ~May 29</span></div>
+      <div><span class="live-label">SPX Fwd P/E</span><span class="live-val">22.5×</span><span class="live-spread">vs VL median 17.7× &nbsp;(SPX +27%)</span></div>
+      <div><span class="live-label">SPX Div Yield</span><span class="live-val">1.07%</span><span class="live-spread">vs VL median 2.0% &nbsp;(SPX is ~½)</span></div>
+      <div><span class="live-label">10-Yr UST</span><span class="live-val">4.57%</span><span class="live-spread">vs VL eq median 2.0% &nbsp;(+257 bps)</span></div>
+    </div>
+  </section>
+
+  <!-- MARKET VALUATION TILES -->
+  <section>
+    <div class="section-head">
+      <h2>Market Valuation · Universe Medians</h2>
+      <div class="sub">Four headline series · current vs. 26-wks-ago vs. market low/high</div>
+    </div>
+    <div class="read">
+      <div class="read-tldr">
+        <span class="tldr-tag">TL;DR</span>
+        <span class="tldr-text">Broad universe is parked at the market-high goalpost — not in bull-cycle midfield. Income belongs to bonds, not stocks.</span>
+      </div>
+      <div class="read-points">
+        <div class="read-point"><span class="num">1</span><span class="pt-body"><strong>Valuations pinned at the high</strong>P/E 17.7× now sits exactly on the 5/26/26 market-high mark (17.7×). Yield 2.0% matches its high; 18-mo target 19% is ~1 ppt above the 18% high-mark.</span></div>
+        <div class="read-point"><span class="num">2</span><span class="pt-body"><strong>SPX is 27% richer than the median</strong>Cap-weighted SPX trades 22.5× vs. universe 17.7×. The gap is mega-cap concentration premium — not breadth strength.</span></div>
+        <div class="read-point"><span class="num">3</span><span class="pt-body"><strong>Bonds dominate income, by ~2:1</strong>10-yr UST 4.57% vs. equity median 2.0% — a 257-bp spread in favor of treasuries. SPX yield (1.07%) is below half the broad equity median.</span></div>
+        <div class="read-point"><span class="num">4</span><span class="pt-body"><strong>Forward-return outlook at cycle-low</strong>VL's own 18-mo target floor is 18% (set 5/26/26); current 19% is +1 ppt. Analysts are reaching for upside, not finding it.</span></div>
+      </div>
+    </div>
+    <div class="tile-grid">
+      <div class="tile expensive">
+        <div class="tile-label">Median Est. P/E</div>
+        <div class="tile-value">17.7×</div>
+        <div class="tile-sub">26-wks ago: 18.0× &nbsp;·&nbsp; Mkt low (3-23-20): 11.0× &nbsp;·&nbsp; Mkt high (5-26-26): 17.7×</div>
+        <div class="tile-note"><strong>Sits at market-high level.</strong> Universe median is 61% above the COVID-low and now sits exactly on the 5/26/26 market-high mark. Headroom is gone.</div>
+      </div>
+      <div class="tile expensive">
+        <div class="tile-label">Median Est. Yield</div>
+        <div class="tile-value">2.0%</div>
+        <div class="tile-sub">26-wks ago: 2.2% &nbsp;·&nbsp; Mkt low: 3.7% &nbsp;·&nbsp; Mkt high: 2.0%</div>
+        <div class="tile-note"><strong>Yield compression.</strong> Median equity yield matches the all-time-high reading. With 10-yr UST at 4.57%, the equity-to-bond yield spread is deeply negative for the broad market.</div>
+      </div>
+      <div class="tile neutral">
+        <div class="tile-label">3-5 Yr Median Price Appreciation</div>
+        <div class="tile-value">45%</div>
+        <div class="tile-sub">26-wks ago: 45% &nbsp;·&nbsp; Mkt low: 145% &nbsp;·&nbsp; Mkt high: 45%</div>
+        <div class="tile-note"><strong>Implies ~9.7%/yr capital return.</strong> Modest by historical standards (low was 20%/yr at COVID trough), and flat vs. 6 months ago at 45% — analysts holding estimates, no multiple expansion.</div>
+      </div>
+      <div class="tile expensive">
+        <div class="tile-label">18-Mo Median Appreciation to Target</div>
+        <div class="tile-value">19%</div>
+        <div class="tile-sub">26-wks ago: 21% &nbsp;·&nbsp; Mkt low: 72% &nbsp;·&nbsp; Mkt high: 18%</div>
+        <div class="tile-note"><strong>Near cycle floor.</strong> Just 1 ppt above the lowest-ever reading. Annualizes to ~12%/yr — decent in absolute terms, but VL's analysts are reaching deep to find target-range upside vs. the 72%/18-mo printed at the COVID trough.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRY ROTATION -->
+  <section>
+    <div class="section-head">
+      <h2>Sector Rotation · All 93 Industries by Timeliness Rank</h2>
+      <div class="sub">Rank 1 = highest-expected 12-mo relative performance</div>
+    </div>
+    <div class="read">
+      <div class="read-tldr">
+        <span class="tldr-tag">TL;DR</span>
+        <span class="tldr-text">Textbook risk-on rotation: cyclicals + energy + cap-goods lead, defensives + duration-yield trail. Watch the week’s big rank-movers for early regime-shift cues.</span>
+      </div>
+      <div class="read-points cols-3">
+        <div class="read-point"><span class="num">1</span><span class="pt-body"><strong>Top 10 — Cyclicals own the field</strong>
+          <div class="ind-chips">
+            <span class="ind-chip q1"><span class="num-tag">1</span>Metal Fab</span>
+            <span class="ind-chip q1"><span class="num-tag">2</span>Heavy Truck</span>
+            <span class="ind-chip q1"><span class="num-tag">3</span>Semi Equip</span>
+            <span class="ind-chip q1"><span class="num-tag">4</span>Info Services</span>
+            <span class="ind-chip q1"><span class="num-tag">5</span>Shoe</span>
+            <span class="ind-chip q1"><span class="num-tag">6</span>Pet Integrated</span>
+            <span class="ind-chip q1"><span class="num-tag">7</span>Semis</span>
+            <span class="ind-chip q1"><span class="num-tag">8</span>Electronics</span>
+            <span class="ind-chip q1 up"><span class="num-tag">9</span>Environmental</span>
+            <span class="ind-chip q1 up"><span class="num-tag">10</span>Industrial Svcs</span>
+          </div>
+        </span></div>
+        <div class="read-point"><span class="num">2</span><span class="pt-body"><strong>Bottom 12 — Defensives + duration drag</strong>
+          <div class="ind-chips">
+            <span class="ind-chip q4"><span class="num-tag">82</span>Elec Util Central</span>
+            <span class="ind-chip q4"><span class="num-tag">83</span>Power</span>
+            <span class="ind-chip q4"><span class="num-tag">84</span>Nat Gas Utility</span>
+            <span class="ind-chip q4"><span class="num-tag">85</span>Autos</span>
+            <span class="ind-chip q4"><span class="num-tag">86</span>Biotech</span>
+            <span class="ind-chip q4"><span class="num-tag">87</span>Furniture</span>
+            <span class="ind-chip q4"><span class="num-tag">88</span>Water Utility</span>
+            <span class="ind-chip q4"><span class="num-tag">89</span>Elec Utility East</span>
+            <span class="ind-chip q4"><span class="num-tag">90</span>REITs</span>
+            <span class="ind-chip q4"><span class="num-tag">91</span>Paper</span>
+            <span class="ind-chip q4"><span class="num-tag">92</span>Public/Priv Equity</span>
+            <span class="ind-chip q4"><span class="num-tag">93</span>Entertainment Tech</span>
+          </div>
+        </span></div>
+        <div class="read-point"><span class="num">3</span><span class="pt-body"><strong>This week's movers — watchlist</strong>
+          <div class="ind-chips">
+            <span class="ind-chip up"><span class="num-tag">5</span>Shoe</span>
+            <span class="ind-chip up"><span class="num-tag">24</span>Wireless Net</span>
+            <span class="ind-chip up"><span class="num-tag">32</span>Chem Div</span>
+            <span class="ind-chip up"><span class="num-tag">40</span>Precious Met</span>
+            <span class="ind-chip up"><span class="num-tag">44</span>Inv Banking</span>
+            <span class="ind-chip down"><span class="num-tag">50</span>Asset Mgmt</span>
+            <span class="ind-chip down"><span class="num-tag">53</span>Apparel</span>
+          </div>
+        </span></div>
+      </div>
+    </div>
+    <h3 class="sub-h">Category Rotation Matrix</h3>
+    <p class="sub-p">Six macro categories sorted by <em>median</em> Timeliness rank — leaders first. The colored bar shows how each category's industries distribute across the four quartiles (deep-green = Q1 leaders → red-brown = Q4 laggards). Δ is net rank movement this week. <b>Hover any colored segment</b> to pop a panel listing every industry in that (category × quartile) bucket — representative tickers, the bucket-level rotation rationale, and a one-line "why this rank" per industry.</p>
+    <div class="rot-matrix" id="rotMatrix"></div>
+    <div id="matrixTooltip" class="matrix-tooltip" role="tooltip" aria-hidden="true"></div>
+
+    <h3 class="sub-h">Rotation Dispersion · Each Category on the 1–93 Axis</h3>
+    <p class="sub-p">One horizontal track per macro category; each dot is an industry plotted at its exact Timeliness rank. The track background shades Q1 (green) → Q4 (red). Read it for three things: <b>clustering</b> (tight dot pack = concentrated regime view), <b>spread</b> (wide range = within-category bifurcation), and <b>outliers</b> (single dot far from the cluster = idiosyncratic story). Dots with a green ring moved up this week; red ring moved down. <b>Hover any dot</b> for a panel with representative company tickers and the regime-grounded reason that industry sits at that rank.</p>
+    <div class="disp-chart">
+      <div class="disp-axis">
+        <div class="ax-spacer"></div>
+        <div class="ax-band q1">Q1 · 1–23</div>
+        <div class="ax-band q2">Q2 · 24–46</div>
+        <div class="ax-band q3">Q3 · 47–69</div>
+        <div class="ax-band q4">Q4 · 70–93</div>
+      </div>
+      <div id="dispTracks"></div>
+    </div>
+    <div class="disp-legend">
+      <div class="lg"><span class="sw cyc"></span>Cyclical</div>
+      <div class="lg"><span class="sw tech"></span>Technology</div>
+      <div class="lg"><span class="sw res"></span>Resources</div>
+      <div class="lg"><span class="sw fin"></span>Financials</div>
+      <div class="lg"><span class="sw con"></span>Consumer</div>
+      <div class="lg"><span class="sw def"></span>Defensive</div>
+      <div class="lg" style="margin-left:auto"><span class="ring-up"></span>&nbsp;moved up this week &nbsp;·&nbsp; <span class="ring-down"></span>&nbsp;moved down</div>
+    </div>
+    <div id="dispTooltip" class="disp-tooltip" role="tooltip" aria-hidden="true"></div>
+  </section>
+
+  <!-- TOP/BOTTOM SPLIT -->
+  <section>
+    <div class="section-head">
+      <h2>Leaders · Laggards · Movers</h2>
+      <div class="sub">Top 12 / Bottom 12 industries and noteworthy rank shifts</div>
+    </div>
+    <div class="split">
+      <div class="panel">
+        <h3>★ Top 12 Industries (Most Timely)</h3>
+        <div id="top12"></div>
+      </div>
+      <div class="panel">
+        <h3>▽ Bottom 12 Industries (Least Timely)</h3>
+        <div id="bot12"></div>
+      </div>
+    </div>
+    <div class="changes">
+      <h3>Industries Moving Rank This Week</h3>
+      <div class="mv-head">
+        <div class="mv-summary" id="mvSummary"></div>
+        <div class="mv-toggle" id="mvToggle">
+          <button data-thr="2" class="active">Significant · |Δ|≥2</button>
+          <button data-thr="1">All moves</button>
+        </div>
+      </div>
+      <div class="mv-cols">
+        <div class="mv-col climb">
+          <h4>▲ Climbers <span class="cnt" id="climbCnt"></span></h4>
+          <div id="mvClimb"></div>
+        </div>
+        <div class="mv-col decl">
+          <h4>▼ Decliners <span class="cnt" id="declCnt"></span></h4>
+          <div id="mvDecl"></div>
+        </div>
+      </div>
+      <div id="mvPop" class="mv-pop" role="tooltip" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- SCREENS EXPLORER -->
+  <section>
+    <div class="section-head">
+      <h2>Screens Explorer</h2>
+      <div class="sub">Stock-level lists from VL's published screens · sortable</div>
+    </div>
+    <div class="screen-note">
+      <strong>Macro note.</strong> Industry ranks, universe medians, rotation and movers above reflect the <strong>June 5, 2026</strong> issue (Vol. LXXXI No. 44, prices May 25). The stock-level screen tabs below still carry the prior issue's (May 29) constituents — refresh pending. Screens are breadth illustration, not action lists: gauge how many cyclicals show up on "highest growth," whether utilities dominate "highest yield," what's in "worst 13-week." Single-stock decisions are out of scope for an index-only portfolio.
+    </div>
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="yield">High Yield (Non-Util)</div>
+      <div class="tab" data-tab="growth">Highest Growth</div>
+      <div class="tab" data-tab="bargain">Bargain Basement</div>
+      <div class="tab" data-tab="appr35">3-5yr Appreciation</div>
+      <div class="tab" data-tab="best13">Best 13-Wk</div>
+      <div class="tab" data-tab="worst13">Worst 13-Wk</div>
+      <div class="tab" data-tab="lowpe">Lowest P/E</div>
+      <div class="tab" data-tab="highpe">Highest P/E</div>
+      <div class="tab" data-tab="discbk">Widest Discount-to-Book</div>
+      <div class="tab" data-tab="untimely">Untimely (Rank 5)</div>
+    </div>
+    <div id="screens"></div>
+  </section>
+
+</main>
+
+<footer>
+  Source: Value Line Investment Survey, Summary &amp; Index, Vol. LXXXI No. 44, June 5, 2026. Prices as of May 25, 2026. Industry ranks reflect Value Line's proprietary Timeliness model.<br>
+  <div class="disclaimer">Live S&amp;P 500 cross-reference carried from late-May 2026 readings (FactSet/Multpl/Trading Economics). For macro orientation only — not investment advice. Single-stock data shown for breadth context per macro-trader framing.</div>
+</footer>
+
+<script>
+/* ===== DATA ===== */
+
+// All 93 industries with VL rank, page, and a category bucket for filtering
+const industries = [
+  {r:1,n:"Metal Fabricating",c:"cyc",p:733,chg:6},
+  {r:2,n:"Heavy Truck & Equip",c:"cyc",p:140,chg:0},
+  {r:3,n:"Semiconductor Equip",c:"tech",p:1383,chg:-2},
+  {r:4,n:"Information Services",c:"tech",p:423,chg:0},
+  {r:5,n:"Shoe",c:"con",p:2155,chg:0},
+  {r:6,n:"Petroleum (Integrated)",c:"res",p:501,chg:-3},
+  {r:7,n:"Semiconductor",c:"tech",p:1346,chg:-1},
+  {r:8,n:"Electronics",c:"tech",p:1320,chg:0},
+  {r:9,n:"Environmental",c:"cyc",p:408,chg:8},
+  {r:10,n:"Industrial Services",c:"cyc",p:377,chg:-1},
+  {r:11,n:"Petroleum (Producing)",c:"res",p:2383,chg:7},
+  {r:12,n:"Publishing",c:"con",p:2368,chg:0},
+  {r:13,n:"Retail/Wholesale Food",c:"con",p:1939,chg:6},
+  {r:14,n:"Engineering & Construction",c:"cyc",p:1001,chg:-3},
+  {r:15,n:"Electrical Equipment",c:"cyc",p:1301,chg:-5},
+  {r:16,n:"Steel",c:"res",p:740,chg:-2},
+  {r:17,n:"Oilfield Svcs/Equipment",c:"res",p:2398,chg:-2},
+  {r:18,n:"Retail (Hardlines)",c:"con",p:2163,chg:-2},
+  {r:19,n:"Medical Services",c:"def",p:789,chg:-6},
+  {r:20,n:"Diversified Co.",c:"cyc",p:1748,chg:2},
+  {r:21,n:"Maritime",c:"cyc",p:334,chg:0},
+  {r:22,n:"Trucking",c:"cyc",p:316,chg:1},
+  {r:23,n:"Retail Store",c:"con",p:2136,chg:-3},
+  {r:24,n:"Insurance (Prop/Cas.)",c:"fin",p:751,chg:6},
+  {r:25,n:"Railroad",c:"cyc",p:343,chg:10},
+  {r:26,n:"Retail (Softlines)",c:"con",p:2182,chg:0},
+  {r:27,n:"Educational Services",c:"def",p:1981,chg:2},
+  {r:28,n:"IT Services",c:"tech",p:2595,chg:-3},
+  {r:29,n:"Building Materials",c:"cyc",p:1101,chg:5},
+  {r:30,n:"Precious Metals",c:"res",p:1565,chg:10},
+  {r:31,n:"Human Resources",c:"def",p:1629,chg:0},
+  {r:32,n:"Telecom Equipment",c:"tech",p:945,chg:10},
+  {r:33,n:"Chemical (Diversified)",c:"cyc",p:2415,chg:-1},
+  {r:34,n:"Reinsurance",c:"fin",p:2002,chg:14},
+  {r:35,n:"Wireless Networking",c:"tech",p:568,chg:-11},
+  {r:36,n:"Machinery",c:"cyc",p:1701,chg:-8},
+  {r:37,n:"Telecom Services",c:"def",p:915,chg:2},
+  {r:38,n:"Financial Services (Div.)",c:"fin",p:2501,chg:-2},
+  {r:39,n:"Pipeline MLPs",c:"res",p:590,chg:-12},
+  {r:40,n:"Chemical (Specialty)",c:"cyc",p:542,chg:-3},
+  {r:41,n:"Computer Software",c:"tech",p:2548,chg:-3},
+  {r:42,n:"Bank (Regional)",c:"fin",p:774,chg:-1},
+  {r:43,n:"Beverage",c:"con",p:1956,chg:17},
+  {r:44,n:"Asset Management",c:"fin",p:2205,chg:6},
+  {r:45,n:"Investment Banking",c:"fin",p:1793,chg:-1},
+  {r:46,n:"Chemical (Basic)",c:"cyc",p:1594,chg:-1},
+  {r:47,n:"Computers/Peripherals",c:"tech",p:1404,chg:-1},
+  {r:48,n:"Metals & Mining (Div.)",c:"res",p:1578,chg:-15},
+  {r:49,n:"Cable TV",c:"con",p:994,chg:0},
+  {r:50,n:"Auto Parts",c:"cyc",p:961,chg:1},
+  {r:51,n:"Hotel/Gaming",c:"con",p:2344,chg:14},
+  {r:52,n:"Air Transport",c:"cyc",p:301,chg:6},
+  {r:53,n:"Bank",c:"fin",p:600,chg:-10},
+  {r:54,n:"Precision Instrument",c:"tech",p:113,chg:-7},
+  {r:55,n:"Oil/Gas Distribution",c:"res",p:576,chg:-1},
+  {r:56,n:"Homebuilding",c:"cyc",p:1131,chg:10},
+  {r:57,n:"Drug",c:"def",p:1604,chg:4},
+  {r:58,n:"Restaurant",c:"con",p:353,chg:-6},
+  {r:59,n:"Aerospace/Defense",c:"cyc",p:701,chg:-3},
+  {r:60,n:"Thrift",c:"fin",p:1501,chg:-1},
+  {r:61,n:"Apparel",c:"con",p:2101,chg:-8},
+  {r:62,n:"Retail Automotive",c:"con",p:2116,chg:-7},
+  {r:63,n:"Packaging & Container",c:"cyc",p:1173,chg:-1},
+  {r:64,n:"Cyber Security",c:"tech",p:2011,chg:0},
+  {r:65,n:"Digital Infrastructure",c:"tech",p:1804,chg:-8},
+  {r:66,n:"Food Processing",c:"con",p:1901,chg:1},
+  {r:67,n:"Internet",c:"tech",p:2610,chg:-4},
+  {r:68,n:"Recreation",c:"con",p:2301,chg:3},
+  {r:69,n:"Natural Gas (Div.)",c:"res",p:522,chg:1},
+  {r:70,n:"Entertainment",c:"con",p:2329,chg:2},
+  {r:71,n:"Brokers & Exchanges",c:"fin",p:1778,chg:-3},
+  {r:72,n:"Insurance (Life)",c:"fin",p:1554,chg:1},
+  {r:73,n:"Med Supp Non-Invasive",c:"def",p:191,chg:-4},
+  {r:74,n:"Retail Building Supply",c:"con",p:1143,chg:2},
+  {r:75,n:"Household/Personal",c:"con",p:1188,chg:0},
+  {r:76,n:"Advertising",c:"con",p:2375,chg:1},
+  {r:77,n:"Electric Utility (West)",c:"def",p:2192,chg:1},
+  {r:78,n:"E-Commerce",c:"con",p:2631,chg:-4},
+  {r:79,n:"Med Supp Invasive",c:"def",p:157,chg:0},
+  {r:80,n:"Tobacco",c:"def",p:1974,chg:0},
+  {r:81,n:"Healthcare Information",c:"tech",p:1420,chg:3},
+  {r:82,n:"Electric Util. (Central)",c:"def",p:901,chg:-1},
+  {r:83,n:"Power",c:"def",p:1216,chg:-1},
+  {r:84,n:"Natural Gas Utility",c:"def",p:532,chg:1},
+  {r:85,n:"Automotive",c:"cyc",p:101,chg:2},
+  {r:86,n:"Biotechnology",c:"def",p:816,chg:2},
+  {r:87,n:"Furniture/Home Furnishings",c:"con",p:1154,chg:-4},
+  {r:88,n:"Water Utility",c:"def",p:1771,chg:-2},
+  {r:89,n:"Electric Utility (East)",c:"def",p:128,chg:0},
+  {r:90,n:"R.E.I.T.",c:"def",p:1510,chg:1},
+  {r:91,n:"Paper/Forest Products",c:"res",p:1165,chg:1},
+  {r:92,n:"Public/Private Equity",c:"fin",p:2423,chg:-2},
+  {r:93,n:"Entertainment Tech",c:"tech",p:1993,chg:0}
+];
+
+const catLabel = {cyc:"Cyclical",def:"Defensive",fin:"Financials",tech:"Technology",res:"Resources",con:"Consumer"};
+
+/* Screen data — each entry: [name, ticker, price, P/E, yield%, industry] */
+const screens = {
+  yield: {
+    title: "Highest Dividend-Yielding Non-Utility Stocks",
+    desc: "VL screen p38. Yields high enough to compete with the 4.57% 10-yr — but many ranked Safety 4-5 or have cut/freeze risk. Macro signal: tobacco, telco, REIT, energy MLPs still leading the income table.",
+    cols: ["Name","Ticker","Price","Yield %","P/E","Industry"],
+    rows: [
+      ["B&G Foods","BGS",4.09,18.6,6.8,"Food Processing"],
+      ["Aberdeen Asia-Pac Fd","FAX",14.55,13.6,null,"Investment Co."],
+      ["Flowers Foods","FLO",7.33,13.5,8.6,"Food Processing"],
+      ["Annaly Capital Mgmt","NLY",21.55,13.0,7.2,"REIT"],
+      ["Liberty All-Star","USA",5.71,12.1,null,"Investment Co."],
+      ["Western Union","WU",8.46,11.1,4.7,"Financial Svcs"],
+      ["Frontline plc","FRO",37.74,10.9,9.0,"Maritime"],
+      ["Perrigo Co plc","PRGO",10.68,10.9,4.9,"Drug"],
+      ["Petroleo Brasileiro","PBR",20.70,10.3,4.9,"Petroleum (Int.)"],
+      ["Conagra Brands","CAG",13.79,10.2,7.8,"Food Processing"],
+      ["TELUS Corp","T.TO",16.79,9.9,17.7,"Telecom Services"],
+      ["Kimbell Royalty","KRP",15.47,9.6,20.6,"Pet. (Producing)"],
+      ["Stellantis NV","STLA",7.41,9.6,null,"Automotive"],
+      ["Blue Owl Capital","OWL",9.49,9.5,31.6,"Public/Priv Equity"],
+      ["Upbound Group","UPBD",17.23,9.1,3.9,"Retail Store"],
+      ["Whirlpool Corp","WHR",39.47,9.1,6.1,"Household/Personal"],
+      ["AllianceBernstein","AB",38.41,9.0,11.0,"Asset Management"],
+      ["Park Hotels","PK",11.09,9.0,27.7,"REIT"],
+      ["Robert Half","RHI",26.18,9.0,17.5,"Human Resources"],
+      ["Black Stone Minerals","BSM",14.06,8.5,9.7,"Pet. (Producing)"],
+      ["Western Midstream","WES",47.17,8.1,14.1,"Pipeline MLPs"],
+      ["WPP plc ADR","WPP",18.52,8.1,null,"Advertising"],
+      ["Ethan Allen","ETD",19.30,8.1,10.1,"Furn/Home Furn."],
+      ["MPLX LP","MPLX",55.44,7.8,12.3,"Pipeline MLPs"],
+      ["Hess Midstream","HESM",40.60,7.8,15.6,"Pipeline MLPs"],
+      ["JBS NV","JBS",12.86,7.8,7.0,"Food Processing"],
+      ["Navient","NAVI",8.35,7.7,10.4,"Financial Svcs"],
+      ["Newell Brands","NWL",3.65,7.7,null,"Household/Personal"]
+    ]
+  },
+  growth: {
+    title: "Highest Growth Stocks (10yr past + 3-5yr est'd ≥10%)",
+    desc: "Cleaner growth filter — sales, cash flow, EPS, dividends, book value all averaging double-digit growth. Notable: Apple, Microsoft, NVIDIA, Meta, Mastercard, Visa, ASML all qualify; concentration in tech, payments, healthcare, capital-goods.",
+    cols: ["Name","Ticker","Price","Past 10yr","Est 3-5yr","Rank","Industry"],
+    rows: [
+      ["NVIDIA","NVDA",222.32,"43%","30%",2,"Semiconductor"],
+      ["Meta Platforms","META",611.21,"33%","17%",3,"Internet"],
+      ["Amazon.com","AMZN",264.86,"36%","15%",2,"E-Commerce"],
+      ["Alphabet","GOOG",393.11,"21%","16%",2,"Internet"],
+      ["ASML Holding","ASML",1472.39,"17%","15%",2,"Semi Equip"],
+      ["Adobe","ADBE",255.64,"23%","15%",1,"Computer Software"],
+      ["Apple","AAPL",297.84,"13%","10%",2,"Computers/Periph"],
+      ["Microsoft","MSFT",423.54,"14%","12%",2,"Computer Software"],
+      ["Visa","V",332.64,"16%","11%",2,"Fin Svcs Div."],
+      ["Lilly (Eli)","LLY",988.09,"11%","23%",2,"Drug"],
+      ["AbbVie","ABBV",209.41,"11%","10%",4,"Drug"],
+      ["McKesson","MCK",775.97,"12%","12%",2,"Med Supp Non-Inv"],
+      ["Broadcom","AVGO",420.71,"25%","24%",2,"Semiconductor"],
+      ["Booking Holdings","BKNG",155.07,"15%","13%",3,"Internet"],
+      ["Costco Wholesale","COST",1076.47,"15%","14%",3,"Retail Store"],
+      ["Cintas","CTAS",174.51,"15%","12%",2,"Industrial Svcs"],
+      ["Domino's Pizza","DPZ",308.00,"18%","12%",3,"Restaurant"],
+      ["Expedia Group","EXPE",214.99,"11%","18%",2,"Internet"],
+      ["Fortinet","FTNT",126.50,"35%","12%",1,"Cyber Security"],
+      ["KLA Corp","KLAC",1756.45,"17%","15%",1,"Semi Equip"],
+      ["Lam Research","LRCX",277.96,"23%","17%",1,"Semi Equip"],
+      ["Mastercard","MA",505.79,"16%","13%",2,"Fin Svcs Div."],
+      ["Monolithic Power","MPWR",1486.33,"27%","15%",3,"Semiconductor"],
+      ["Netflix","NFLX",89.65,"26%","16%",3,"Entertainment"],
+      ["T-Mobile US","TMUS",190.65,"13%","14%",1,"Telecom Services"]
+    ]
+  },
+  bargain: {
+    title: "Bargain Basement (Low P/E + Low Price/Working-Capital)",
+    desc: "Stocks in the bottom quartile on both P/E and price-to-net-working-capital — classic value screen. Heavy on homebuilders, retail laggards, small caps. Mostly Timeliness 3-5 (i.e., not pictured-perfect entries).",
+    cols: ["Name","Ticker","Price","P/E","Yield %","Industry"],
+    rows: [
+      ["LGI Homes","LGIH",41.24,9.2,null,"Homebuilding"],
+      ["Meritage Homes","MTH",61.21,6.7,2.8,"Homebuilding"],
+      ["Taylor Morrison Home","TMHC",55.94,8.0,null,"Homebuilding"],
+      ["Coursera","COUR",5.73,12.7,null,"Educational Svcs"],
+      ["Toll Brothers","TOL",126.97,10.0,0.8,"Homebuilding"],
+      ["Universal Corp","UVV",54.46,9.9,6.1,"Tobacco"],
+      ["PulteGroup","PHM",111.78,11.0,0.9,"Homebuilding"],
+      ["UFP Industries","UFPI",81.14,11.6,1.7,"Building Materials"],
+      ["Gibraltar Inds","ROCK",35.55,9.4,null,"Steel"],
+      ["Vital Farms","VITL",8.28,7.2,null,"Food Processing"],
+      ["BioMarin Pharm","BMRN",49.67,12.4,null,"Biotechnology"],
+      ["Doximity","DOCS",19.58,12.8,null,"Healthcare Info"],
+      ["EPAM Systems","EPAM",100.44,8.1,null,"IT Services"],
+      ["USANA Health","USNA",18.04,9.0,null,"Food Processing"],
+      ["Lennar Corp","LEN",83.82,12.3,2.4,"Homebuilding"],
+      ["Pinterest","PINS",19.93,12.1,null,"Internet"],
+      ["Stride Inc","LRN",89.82,10.6,null,"Educational Svcs"],
+      ["Yelp","YELP",21.79,10.1,null,"Internet"],
+      ["T. Rowe Price","TROW",102.38,10.0,5.1,"Asset Management"],
+      ["Incyte","INCY",95.19,12.1,null,"Biotechnology"]
+    ]
+  },
+  appr35: {
+    title: "Stocks with Highest 3-5 Yr Price Appreciation Potential",
+    desc: "VL's most upside-rich names — high risk by definition (most are speculative, several un-profitable). Useful for breadth: when this list is dominated by cyclicals, late-cycle; by tech/biotech, mid-cycle; by consumer staples, defensive.",
+    cols: ["Name","Ticker","Price","3-5yr Pot.","Rank","Industry"],
+    rows: [
+      ["Coty","COTY",2.01,"470%","–","Household/Personal"],
+      ["Forward Air","FWRD",8.50,"460%",5,"Trucking"],
+      ["Certara","CERT",4.56,"330%",5,"Healthcare Info"],
+      ["Optimum Comms","OPTU",0.72,"315%","–","Cable TV"],
+      ["Everforth","EFOR",19.10,"295%",4,"IT Services"],
+      ["RH","RH",120.72,"265%",4,"Furn/Home Furn."],
+      ["Teladoc Health","TDOC",6.35,"260%",3,"Healthcare Info"],
+      ["BellRing Brands","BRBR",9.26,"250%",4,"Food Processing"],
+      ["Insulet","PODD",152.49,"245%",3,"Med Supp Invasive"],
+      ["Alphatec Holdings","ATEC",8.09,"240%",4,"Med Supp Invasive"],
+      ["TripAdvisor","TRIP",9.53,"240%",3,"Internet"],
+      ["Vital Farms","VITL",8.28,"230%",5,"Food Processing"],
+      ["Whirlpool","WHR",39.47,"230%",5,"Household/Personal"],
+      ["Tandem Diabetes","TNDM",13.53,"215%",4,"Med Supp Invasive"],
+      ["Figma","FIG",24.36,"210%","–","Computer Software"],
+      ["Fortune Brands","FBIN",33.71,"210%",4,"Building Materials"],
+      ["Charter Communic","CHTR",141.21,"205%",1,"Cable TV"],
+      ["Rocket Companies","RKT",13.04,"205%",5,"Financial Svcs"],
+      ["Wayfair","W",59.26,"205%",4,"E-Commerce"],
+      ["Arhaus","ARHS",5.87,"200%",4,"Furn/Home Furn."]
+    ]
+  },
+  best13: {
+    title: "Best Performing Stocks Last 13 Weeks",
+    desc: "Late-week rotation winners. Heavy presence of semis + AI infrastructure (MaxLinear, Intel, Marvell, Sandisk, Nebius, AMD, Dell, Flex, ASML-supplier names). Breadth confirms the cyclical/tech-cap-ex regime read.",
+    cols: ["Name","Ticker","Price","13-Wk %","Rank","Industry"],
+    rows: [
+      ["MaxLinear","MXL",87.46,"+347.8%",4,"Semiconductor"],
+      ["Intel","INTC",108.17,"+131.2%",4,"Semiconductor"],
+      ["Marvell Tech","MRVL",168.93,"+114.9%",1,"Semiconductor"],
+      ["Sandisk","SNDK",1333.01,"+103.9%","–","Computers/Periph"],
+      ["Nebius Group","NBIS",199.86,"+103.9%","–","Digital Infra"],
+      ["AMD","AMD",420.99,"+103.1%",1,"Semiconductor"],
+      ["Dell Technologies","DELL",238.03,"+102.6%",1,"Computers/Periph"],
+      ["Flex Ltd","FLEX",129.73,"+101.9%","–","Electronics"],
+      ["STAAR Surgical","STAA",32.31,"+100.7%",4,"Med Supp Invasive"],
+      ["Vishay Intertech","VSH",36.95,"+95.7%",1,"Electronics"],
+      ["Nokia ADR","NOK",13.74,"+95.4%",3,"Telecom Equip"],
+      ["Rocket Lab","RKLB",131.16,"+94.5%",4,"Aerospace/Defense"],
+      ["Tower Semi","TSEM",248.07,"+92.7%",1,"Semiconductor"],
+      ["Viavi Solutions","VIAV",49.75,"+89.2%",3,"Electronics"],
+      ["Iridium Comm","IRDM",43.40,"+87.3%",1,"Telecom Services"],
+      ["Circle Internet","CRCL",111.39,"+85.5%","–","Financial Svcs"],
+      ["Bloom Energy","BE",258.71,"+85.1%",2,"Power"],
+      ["BlackBerry","BB",6.38,"+84.4%",3,"Cyber Security"],
+      ["Organon","OGN",13.42,"+81.6%","–","Drug"],
+      ["STMicro","STM",60.96,"+81.4%",2,"Semiconductor"]
+    ]
+  },
+  worst13: {
+    title: "Worst Performing Stocks Last 13 Weeks",
+    desc: "Bottom 20 by 13-wk return. Mostly hit by structural problems (Vital Farms guidance, Forward Air, Optimum/Cable One cable decline, Whirlpool consumer durables, Goodyear tariffs, AAP/Whirlpool/Hertz consumer). Not a coherent macro signal yet — idiosyncratic.",
+    cols: ["Name","Ticker","Price","13-Wk %","Rank","Industry"],
+    rows: [
+      ["Vital Farms","VITL",8.28,"-70.9%",5,"Food Processing"],
+      ["Forward Air","FWRD",8.50,"-68.3%",5,"Trucking"],
+      ["Optimum Comms","OPTU",0.72,"-57.2%","–","Cable TV"],
+      ["Cable One","CABO",48.78,"-57.1%",5,"Cable TV"],
+      ["Whirlpool","WHR",39.47,"-55.5%",5,"Household/Personal"],
+      ["QuidelOrtho","QDEL",10.84,"-54.0%",5,"Med Supp Non-Inv"],
+      ["Everforth","EFOR",19.10,"-53.9%",4,"IT Services"],
+      ["BellRing Brands","BRBR",9.26,"-48.2%",4,"Food Processing"],
+      ["Jack in the Box","JACK",10.78,"-48.0%","–","Restaurant"],
+      ["TransMedics","TMDX",68.34,"-47.4%",4,"Med Supp Non-Inv"],
+      ["Option Care Health","OPCH",19.69,"-44.4%",2,"Medical Services"],
+      ["Lucid Group","LCID",5.73,"-44.3%",5,"Automotive"],
+      ["O-I Glass","OI",8.35,"-43.5%",3,"Packaging"],
+      ["Azenta","AZTA",16.24,"-43.3%",4,"Med Supp Non-Inv"],
+      ["Tractor Supply","TSCO",31.72,"-42.4%",4,"Retail Bldg Supply"],
+      ["Wingstop","WING",129.00,"-41.8%",4,"Restaurant"],
+      ["Amer. Eagle","AEO",14.86,"-41.7%",3,"Retail (Softlines)"],
+      ["RH","RH",120.72,"-41.1%",4,"Furn/Home Furn."],
+      ["Kohl's","KSS",11.72,"-41.0%",3,"Retail Store"],
+      ["Charter Communic","CHTR",141.21,"-40.9%",1,"Cable TV"]
+    ]
+  },
+  lowpe: {
+    title: "Lowest P/E Stocks",
+    desc: "Sub-3× to ~7× P/Es. Mostly distressed (Sabre, Bausch Health, DXC) or transitional (Cable One, Kyndryl). Genuine cheap-and-not-broken candidates rare; PBR, Energizer, Stellantis stand out as macro-deep-value names.",
+    cols: ["Name","Ticker","Price","P/E","Yield %","Industry"],
+    rows: [
+      ["Sabre","SABR",1.59,0.5,null,"Computer Software"],
+      ["Bausch Health","BHC",5.34,1.4,null,"Drug"],
+      ["Cable One","CABO",48.78,1.9,null,"Cable TV"],
+      ["DXC Technology","DXC",9.27,2.5,null,"IT Services"],
+      ["Jack in the Box","JACK",10.78,3.0,null,"Restaurant"],
+      ["Charter Communic","CHTR",141.21,3.2,null,"Cable TV"],
+      ["Kyndryl Hldgs","KD",11.71,3.8,null,"IT Services"],
+      ["Organon","OGN",13.42,3.8,null,"Drug"],
+      ["Everforth","EFOR",19.10,3.9,null,"IT Services"],
+      ["Lincoln Nat'l","LNC",34.69,3.9,5.3,"Insurance (Life)"],
+      ["Upbound Group","UPBD",17.23,3.9,9.1,"Retail Store"],
+      ["QuidelOrtho","QDEL",10.84,4.3,null,"Med Supp Non-Inv"],
+      ["Rapid7","RPD",6.73,4.3,null,"Cyber Security"],
+      ["Western Union","WU",8.46,4.7,11.1,"Financial Svcs"],
+      ["Energizer Holdings","ENR",16.54,4.8,7.3,"Household/Personal"],
+      ["Perrigo","PRGO",10.68,4.9,10.9,"Drug"],
+      ["Petroleo Brasileiro","PBR",20.70,4.9,10.3,"Petroleum (Int.)"],
+      ["Corebridge Financial","CRBG",27.56,5.1,3.6,"Insurance (Life)"],
+      ["Amphastar Pharma","AMPH",17.20,5.2,null,"Drug"],
+      ["Par Pacific","PARR",58.79,5.5,null,"Petroleum (Int.)"]
+    ]
+  },
+  highpe: {
+    title: "Highest P/E Stocks",
+    desc: "Above ~50× P/E. Many are growth/AI names earning their multiples (Cameco, Datadog, Cloudflare), some are deep-cyclical bottoms (semis with depressed EPS like Coherent, Tower, IPG), and a few REITs with thin FFO. Useful gauge of where speculative premium clusters.",
+    cols: ["Name","Ticker","Price","P/E","Yield %","Industry"],
+    rows: [
+      ["Datadog","DDOG",208.82,97.1,null,"Digital Infra"],
+      ["Live Nation","LYV",167.49,96.8,null,"Entertainment"],
+      ["Macerich","MAC",21.87,null,3.1,"REIT"],
+      ["Ciena","CIEN",524.53,94.7,null,"Telecom Equip"],
+      ["AAP World Holdings","AGNT",4.73,94.6,4.2,"Industrial Svcs"],
+      ["Vicor","VICR",249.02,94.0,null,"Electrical Equip"],
+      ["Sun Communities","SUI",121.51,93.5,3.7,"REIT"],
+      ["Casella Waste","CWST",88.10,92.7,null,"Environmental"],
+      ["Tower Semi","TSEM",248.07,92.6,null,"Semiconductor"],
+      ["Astera Labs","ALAB",215.58,91.7,null,"Semiconductor"],
+      ["MakeMyTrip","MMYT",44.93,89.9,null,"Internet"],
+      ["SFL Corp","SFL",12.51,89.4,6.4,"Maritime"],
+      ["Cohu","COHU",44.20,88.4,null,"Semi Equip"],
+      ["Warner Bros Disc","WBD",27.10,87.4,null,"Entertainment"],
+      ["Intel","INTC",108.17,86.5,null,"Semiconductor"],
+      ["Clearfield","CLFD",43.25,84.8,null,"Telecom Equip"],
+      ["Lumentum","LITE",884.98,84.0,null,"Precision Instr"],
+      ["Legence","LGN",83.31,83.3,null,"Engineering & Const"],
+      ["Silicon Labs","SLAB",216.60,83.3,null,"Semiconductor"],
+      ["Harley-Davidson","HOG",24.35,81.2,3.1,"Recreation"]
+    ]
+  },
+  discbk: {
+    title: "Widest Discount from Book Value",
+    desc: "Trading at 27-60% of stated book. Mostly distressed financials (Navient), foreign autos (Nissan, Stellantis, Honda), broken consumer (Kohl's, Whirlpool, Newell). True asset-value plays, but each carries idiosyncratic restructuring/duration risk.",
+    cols: ["Name","Ticker","Price","% of Book","P/E","Industry"],
+    rows: [
+      ["Nissan Motor","NSANY",4.56,"27%",null,"Automotive"],
+      ["Kohl's","KSS",11.72,"32%",9.4,"Retail Store"],
+      ["Navient","NAVI",8.35,"33%",10.4,"Financial Svcs"],
+      ["Stellantis NV","STLA",7.41,"34%",null,"Automotive"],
+      ["QuidelOrtho","QDEL",10.84,"36%",4.3,"Med Supp Non-Inv"],
+      ["Genworth Fin'l","GNW",9.28,"38%",23.2,"Insurance (Life)"],
+      ["Everforth","EFOR",19.10,"39%",3.9,"IT Services"],
+      ["Columbus McKinnon","CMCO",13.94,"40%",5.3,"Machinery"],
+      ["Honda Motor","HMC",25.21,"42%",25.5,"Automotive"],
+      ["LGI Homes","LGIH",41.24,"42%",9.2,"Homebuilding"],
+      ["Azenta","AZTA",16.24,"44%",20.0,"Med Supp Non-Inv"],
+      ["DXC Technology","DXC",9.27,"45%",2.5,"IT Services"],
+      ["Goodyear Tire","GT",5.61,"47%",9.4,"Auto Parts"],
+      ["Coty","COTY",2.01,"48%",5.6,"Household/Personal"],
+      ["Edgewell Personal","EPC",16.14,"49%",8.6,"Household/Personal"],
+      ["MGP Ingredients","MGPI",18.27,"51%",9.9,"Beverage"],
+      ["Mosaic Co","MOS",21.41,"54%",9.3,"Chemical (Basic)"],
+      ["Perrigo","PRGO",10.68,"55%",4.9,"Drug"],
+      ["Molson Coors","TAP",41.68,"55%",8.5,"Beverage"],
+      ["Vodafone","VOD",15.00,"56%",8.7,"Telecom Services"]
+    ]
+  },
+  untimely: {
+    title: "Untimely Stocks (VL Timeliness Rank 5)",
+    desc: "Bottom of VL's timeliness model — expected to underperform next 12 months. Concentration in REITs (utilities-of-the-stockmarket), biotech (early-stage cash burn), and speculative tech (quantum, autonomy). Useful as a 'what to avoid in a passive index' signal.",
+    cols: ["Name","Ticker","Price","Safety","P/E","Industry"],
+    rows: [
+      ["AST SpaceMobile","ASTS",86.83,4,null,"Telecom Services"],
+      ["Adaptive Biotech","ADPT",12.71,5,null,"Med Supp Non-Inv"],
+      ["AeroVironment","AVAV",161.52,3,38.5,"Aerospace/Defense"],
+      ["Alexandria Real Estate","ARE",46.68,3,31.1,"REIT"],
+      ["Annaly Capital","NLY",21.55,3,7.2,"REIT"],
+      ["AtriCure","ATRC",28.48,4,null,"Med Supp Invasive"],
+      ["Aurora Innovation","AUR",7.42,4,null,"Auto Parts"],
+      ["Axon Enterprise","AXON",399.37,3,51.5,"Aerospace/Defense"],
+      ["Axsome Therapeutics","AXSM",227.40,4,null,"Drug"],
+      ["BXP Inc","BXP",59.92,3,29.2,"REIT"],
+      ["BlackRock","BLK",1085.88,1,20.1,"Asset Management"],
+      ["BioNTech","BNTX",88.85,4,null,"Biotechnology"],
+      ["Bio-Rad Labs","BIO",281.82,3,27.5,"Med Supp Non-Inv"],
+      ["Berkshire Hathaway B","BRKB",488.38,1,21.1,"Insurance (P/C)"],
+      ["Capital One","COF",187.17,3,8.9,"Financial Svcs"],
+      ["Carlyle Group","CG",46.60,3,11.7,"Public/Priv Equity"],
+      ["Coinbase Global","COIN",189.44,4,30.6,"Brokers & Exch"],
+      ["Cleveland-Cliffs","CLF",10.66,4,null,"Steel"],
+      ["CoStar Group","CSGP",33.20,3,28.9,"Internet"],
+      ["Cogent Comms","CCOI",17.22,5,null,"Telecom Services"],
+      ["Digital Realty","DLR",188.50,2,72.5,"REIT"],
+      ["D-Wave Quantum","QBTS",19.06,5,null,"Computers/Periph"],
+      ["Equinix","EQIX",1062.62,3,65.0,"REIT"],
+      ["Extra Space Storage","EXR",139.27,3,29.3,"REIT"],
+      ["Guardant Health","GH",95.66,5,null,"Medical Services"],
+      ["Insmed","INSM",107.15,4,null,"Biotechnology"],
+      ["IonQ","IONQ",49.31,5,null,"Computers/Periph"],
+      ["iRhythm","IRTC",110.94,4,null,"Med Supp Non-Inv"],
+      ["JetBlue","JBLU",4.58,4,null,"Air Transport"],
+      ["Joby Aviation","JOBY",10.35,4,null,"Air Transport"],
+      ["Kornit Digital","KRNT",14.59,4,58.4,"Machinery"],
+      ["Lincoln Nat'l","LNC",34.69,3,3.9,"Insurance (Life)"],
+      ["Lucid","LCID",5.73,5,null,"Automotive"],
+      ["Moderna","MRNA",48.11,5,null,"Biotechnology"],
+      ["MP Materials","MP",56.67,4,81.0,"Metals & Mining"],
+      ["National Fuel Gas","NFG",82.94,1,10.5,"Natural Gas (Div)"],
+      ["NRG Energy","NRG",125.50,3,16.7,"Power"],
+      ["Realty Income","O",61.71,2,37.4,"REIT"],
+      ["Rivian Automotive","RIVN",13.35,5,null,"Automotive"],
+      ["Sun Communities","SUI",121.51,1,93.5,"REIT"],
+      ["Vornado Realty","VNO",31.65,3,null,"REIT"],
+      ["W.P. Carey","WPC",73.90,2,30.2,"REIT"],
+      ["Welltower","WELL",212.61,3,67.5,"REIT"],
+      ["Westlake Corp","WLK",91.46,1,null,"Chemical (Spec.)"]
+    ]
+  }
+};
+
+/* ===== QUARTILE HELPER (used by panels below) ===== */
+const quartileOf = r => r<=23?1:r<=46?2:r<=69?3:4;
+
+/* ===== BUCKET RATIONALES (cat × quartile) — used by the matrix-bar hover tooltip ===== */
+const quartileRationale = {
+  cyc: {
+    1: 'Cap-goods, transports, metals own the leadership block — pure cap-ex / industrial-rebound regime read.',
+    2: 'Mid-pack cyclicals (machinery, chemicals, railroad) — late-cycle waiting room; healthy but not leadership.',
+    3: 'Aerospace, air transport, packaging, auto parts, homebuilding — cyclicals tied to housing/financing, waiting for an inflection.',
+    4: 'Automotive, Furniture and Paper sit in Q4 — rate-sensitive / housing-tied cyclicals; financing costs and EV-transition capex drag the tail down.'
+  },
+  def: {
+    1: 'Medical Services (UNH-anchor) leads the defensives — earnings momentum + managed-care pricing override the regime drag.',
+    2: 'Educational services, HR/staffing, telecom — defensive pockets with pricing power; not pure bond-proxies.',
+    3: 'Drug + med-supp non-invasive — biosimilar headwinds + GLP-1 spillover keep them mid-pack.',
+    4: 'The defensive wall — utilities, REITs, biotech, tobacco. All duration-sensitive, all losing to 4.57% UST. Defensive bid is absent.'
+  },
+  fin: {
+    1: 'No financials in Q1 — the absence itself is the signal. No regime tailwind for the category overall.',
+    2: 'Hard-market insurers + banks + investment banking — mid-pack, not regime leaders. Capital strong, NIM stable.',
+    3: 'Reinsurance + brokers/exchanges + thrifts — middle pack with idiosyncratic stories (CRE, deposit competition).',
+    4: 'Life insurance + private/public equity — spread- and AUM-sensitive, losing the duration battle.'
+  },
+  tech: {
+    1: 'All semis + semi-equip + electronics + info services — the AI-compute super-cycle leadership cluster.',
+    2: 'Wireless networking, IT services, software, telecom equip, computers — mid-cycle tech with healthy growth but no AI moonshot.',
+    3: 'Precision instruments, digital infra, internet, cyber — fully-priced or facing competitive/duration pressure.',
+    4: 'Healthcare information + entertainment tech — AI-disruption risk + ad-cycle exposure pull the tail down.'
+  },
+  res: {
+    1: 'Integrated oil + steel + oilfield services + producing oil — the reflation / commodity bid cluster.',
+    2: 'Pipeline MLPs + metals & mining + precious metals — mid-pack resources with mixed cycle exposure.',
+    3: 'Oil/gas distribution — stable cash flows, less explosive than upstream.',
+    4: 'Natural gas (diversified) + paper — structurally weak demand + housing-cycle tied.'
+  },
+  con: {
+    1: 'Shoe, retail hardlines, retail/wholesale food, retail store, publishing — share-gain + value-shift winners. Discretionary leadership.',
+    2: 'Retail softlines (off-price) — the lone Q2 consumer. Off-price share gains continue.',
+    3: 'Cable, restaurants, apparel, retail auto, beverage, hotel/gaming, food processing — mid-pack consumer with mixed signals.',
+    4: 'The Q4 consumer wall — recreation, entertainment, e-com, household, retail bldg, advertising, furniture. Discretionary big-ticket + housing-tied laggards.'
+  }
+};
+
+/* ===== CATEGORY ROTATION MATRIX ===== */
+function renderRotMatrix(){
+  const cats = ['cyc','def','fin','tech','res','con'];
+  const catFullName = {cyc:'Cyclical',def:'Defensive',fin:'Financials',tech:'Technology',res:'Resources',con:'Consumer'};
+  const catRead = {
+    cyc: "<strong>9 of 21 in Q1</strong>, 1 in Q4. Cap-goods, transports and materials own the leadership block — Metal Fab #1, Heavy Truck #2, Steel #16. Industrial-rebound / reflation regime intact. Net Δ +25 this week.",
+    def: "<strong>1 of 16 in Q1</strong>, 11 in Q4. Utilities, REITs, biotech and tobacco anchor the cellar — duration drag persists; the defensive bid is absent with the 10-yr near 4.5%. Net Δ -1 this week.",
+    fin: "<strong>0 of 11 in Q1</strong>, 3 in Q4. Banks and insurers pace the middle. Reinsurance jumped into the top third (▲14) while Bank slipped (▼10) — a curve/duration story, not leadership. Net Δ +7 this week.",
+    tech: "<strong>4 of 15 in Q1</strong>, 2 in Q4. Bifurcated: semis, semi-equip and electronics lead the AI-compute cluster; Healthcare Info and Entertainment Tech sit at the bottom. Net Δ -27 this week.",
+    res: "<strong>4 of 10 in Q1</strong>, 1 in Q4. Integrated oil, oilfield and producing oil cluster up top — reflation/commodity bid; Precious Metals jumped ▲10. Paper anchors the tail. Net Δ -16 this week.",
+    con: "<strong>5 of 20 in Q1</strong>, 6 in Q4. K-shaped: Shoe and the food/value retailers lead while furniture, advertising and e-commerce lag. Hotel/Gaming jumped ▲14. Net Δ +12 this week."
+  };
+
+  const computed = cats.map(c => {
+    const ind = industries.filter(x => x.c === c);
+    const n = ind.length;
+    const ranks = ind.map(x => x.r).sort((a,b)=>a-b);
+    const median = ranks[Math.floor((n-1)/2)];
+    const inQ = [1,2,3,4].map(q => ind.filter(x => quartileOf(x.r) === q).length);
+    const chgSum = ind.reduce((s,x) => s + (x.chg||0), 0);
+    return {c, n, median, inQ, chgSum};
+  }).sort((a,b) => a.median - b.median);  // leaders first
+
+  const html = computed.map(({c,n,median,inQ,chgSum}) => {
+    const chgClass = chgSum > 0 ? 'up' : chgSum < 0 ? 'down' : 'flat';
+    const chgStr = chgSum > 0 ? `▲ +${chgSum}` : chgSum < 0 ? `▼ ${chgSum}` : '·';
+    const segHtml = inQ.map((cnt,i) => {
+      const q = i+1;
+      if(cnt === 0) return '';
+      return `<div class="rot-bar-seg q${q}" style="flex:${cnt}" data-cat="${c}" data-q="${q}">${cnt}</div>`;
+    }).join('');
+    return `
+      <div class="rot-row">
+        <div class="rot-cat-name">
+          <span class="category-tag ${c}">${catFullName[c]}</span>
+          <span class="cnt">${n} INDUSTRIES</span>
+        </div>
+        <div class="rot-median">#${median}<small>Median Rank</small></div>
+        <div class="rot-bar">${segHtml}</div>
+        <div class="rot-chg ${chgClass}">${chgStr}</div>
+        <div class="rot-read">${catRead[c]}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('rotMatrix').innerHTML = html;
+
+  // ----- Bar-segment hover tooltip -----
+  const mtEl = document.getElementById('matrixTooltip');
+  const catNameMap = {cyc:'Cyclical',def:'Defensive',fin:'Financials',tech:'Technology',res:'Resources',con:'Consumer'};
+
+  function showBarTip(seg){
+    const cat = seg.dataset.cat;
+    const q = parseInt(seg.dataset.q, 10);
+    const ind = industries
+      .filter(x => x.c === cat && quartileOf(x.r) === q)
+      .sort((a,b) => a.r - b.r);
+    if(!ind.length) return;
+    const totalInCat = industries.filter(x => x.c === cat).length;
+    const why = ((quartileRationale[cat] || {})[q]) || '';
+
+    const items = ind.map(x => {
+      const d = industryDetail[x.n] || {h:"—", w:""};
+      const tickers = d.h.split(/,\s*/).slice(0,5).map(t => `<code>${t}</code>`).join(' ');
+      const mover = x.chg > 0 ? `<span class="mt-mover up">▲ +${x.chg}</span>`
+                  : x.chg < 0 ? `<span class="mt-mover down">▼ ${x.chg}</span>` : '';
+      return `
+        <div class="mt-item">
+          <div class="mt-item-head"><span class="mt-rank">#${x.r}</span><span>${x.n}</span>${mover}</div>
+          <div class="mt-item-tickers">${tickers}</div>
+          <div class="mt-item-why">${d.w || ''}</div>
+        </div>`;
+    }).join('');
+
+    mtEl.innerHTML = `
+      <div class="mt-head">
+        <span class="mt-cat-tag ${cat}">${catNameMap[cat]}</span>
+        <span class="mt-q-pill q${q}">Q${q}</span>
+        <span class="mt-count">${ind.length} of ${totalInCat} industries in this bucket</span>
+      </div>
+      <div class="mt-why">${why}</div>
+      <div class="mt-list-label">Industries in this bucket</div>
+      <div class="mt-list">${items}</div>`;
+
+    // Reset, measure, position
+    mtEl.classList.remove('below');
+    mtEl.classList.add('show');
+    mtEl.style.left = '0px';
+    mtEl.style.top = '0px';
+    mtEl.scrollTop = 0;
+    const r = seg.getBoundingClientRect();
+    const t = mtEl.getBoundingClientRect();
+    const pad = 10;
+    let left = r.left + r.width/2 - t.width/2;
+    let top  = r.top - t.height - 14;
+    let arrowX = '50%';
+    if(top < pad){
+      top = r.bottom + 14;
+      mtEl.classList.add('below');
+    }
+    if(left < pad){
+      arrowX = (r.left + r.width/2 - pad) + 'px';
+      left = pad;
+    } else if(left + t.width > window.innerWidth - pad){
+      arrowX = (r.left + r.width/2 - (window.innerWidth - t.width - pad)) + 'px';
+      left = window.innerWidth - t.width - pad;
+    }
+    mtEl.style.setProperty('--arrow-x', arrowX);
+    mtEl.style.left = left + 'px';
+    mtEl.style.top  = top  + 'px';
+    mtEl.setAttribute('aria-hidden','false');
+  }
+  function hideBarTip(){
+    mtEl.classList.remove('show','below');
+    mtEl.setAttribute('aria-hidden','true');
+  }
+  document.querySelectorAll('#rotMatrix .rot-bar-seg').forEach(seg => {
+    seg.addEventListener('mouseenter', () => showBarTip(seg));
+    seg.addEventListener('mouseleave', hideBarTip);
+  });
+  window.addEventListener('scroll', hideBarTip, {passive:true});
+}
+
+/* ===== INDUSTRY DETAIL (representative holdings + rank rationale) ===== */
+const industryDetail = {
+  "Metal Fabricating": {h:"MLI, ROLL, MWA, BRC", w:"Reshoring + grid-build cap-ex beneficiary. Niche industrial pricing."},
+  "Heavy Truck & Equip": {h:"CAT, DE, PCAR, CMI, OSK", w:"Infra spend + freight replacement cycle + onshoring. Order backlogs solid."},
+  "Semiconductor Equip": {h:"ASML, AMAT, LRCX, KLAC, TER", w:"Multi-year fab build-out backlog from AI/foundry capex; long-cycle equipment orders locked into 2026–28."},
+  "Information Services": {h:"MCO, SPGI, MSCI, FICO, VRSK", w:"Data/index/ratings monopolies with pricing power. AI-resilient subscription revenue."},
+  "Shoe": {h:"NKE, DECK, ON, SKX", w:"Inventory cleared, China stabilizing. Discretionary leader on relative breadth."},
+  "Petroleum (Integrated)": {h:"XOM, CVX, BP, SHEL, COP", w:"Strong cash-return cycle, capital discipline, sustained crude-price floor + energy-security premium."},
+  "Semiconductor": {h:"NVDA, AVGO, AMD, MU, QCOM", w:"AI compute super-cycle; hyperscaler capex flowing directly through the chip layer."},
+  "Electronics": {h:"APH, GLW, TEL, FLEX, JBL", w:"EV + datacenter content gains; back-end of the AI-hardware story."},
+  "Environmental": {h:"WM, RSG, WCN, CWST", w:"Recession-resistant utility-like cash flows + 5–7%/yr price escalators."},
+  "Industrial Services": {h:"CTAS, ROL, UNF, ARMK", w:"Recurring B2B services with pricing power. Service-economy beneficiary."},
+  "Petroleum (Producing)": {h:"EOG, OXY, FANG, DVN", w:"High FCF yields at strip pricing; capital discipline keeping supply tight."},
+  "Publishing": {h:"NYT, NWSA, GCI", w:"Digital-subscription model + AI-licensing optionality. Lean opex."},
+  "Retail/Wholesale Food": {h:"KR, COST, WMT-food, SYY, USFD", w:"Grocery share-gain over restaurants. Defensive consumer category."},
+  "Engineering & Construction": {h:"ACM, FLR, J, PWR, MTZ", w:"IRA-funded infra backlog + datacenter civil-build pipeline."},
+  "Electrical Equipment": {h:"ETN, EMR, ROK, HUBB, GNRC", w:"Grid modernization + datacenter electrification thesis — capex-cycle leader."},
+  "Steel": {h:"NUE, STLD, X, RS, CMC", w:"Infra + auto build + tariff-protected pricing. Mid-cycle restocking."},
+  "Oilfield Svcs/Equipment": {h:"SLB, HAL, BKR, NOV, FTI", w:"Offshore + LNG capex re-cycle; international upstream spend strong."},
+  "Retail (Hardlines)": {h:"LOW, BBY, TSCO, ULTA", w:"Homeowner spend resilient + trade-down beneficiary."},
+  "Medical Services": {h:"UNH, ELV, HCA, CVS, MOH", w:"Managed-care / hospital pricing + utilization normalizing — the lone defensive in Q1."},
+  "Diversified Co.": {h:"MMM, GE, ITT, HON", w:"Multi-cycle exposure; capital-allocation re-rating thesis."},
+  "Maritime": {h:"FRO, ZIM, KEX, MATX", w:"Tanker rates strong on Red Sea disruption + product-tanker tightness."},
+  "Trucking": {h:"ODFL, KNX, JBHT, XPO, WERN", w:"Freight cycle finding a floor; pricing power firming into 2026."},
+  "Retail Store": {h:"COST, WMT, TGT, BJ, DG", w:"Value consumer + mass-merch execution; broad share gains."},
+  "Insurance (Prop/Cas.)": {h:"CB, TRV, ALL, PGR, AIG", w:"Hard market continues; pricing increases still running ahead of loss-cost trend."},
+  "Railroad": {h:"UNP, CSX, NSC, CP, CNI", w:"Volume + pricing improving; operating-leverage thesis playing out."},
+  "Retail (Softlines)": {h:"ROST, TJX, BURL", w:"Off-price share gains; brand-discounting playbook intact."},
+  "Educational Services": {h:"BFAM, LRN, STRA, GHC", w:"Workforce-training demand + AI-literacy spend."},
+  "IT Services": {h:"ACN, IBM, CTSH, INFY, EPAM", w:"AI-integration services + cost-takeout deals; recovering after weak 2024."},
+  "Building Materials": {h:"MLM, VMC, EXP, USG, CRH", w:"Infra spend + datacenter civil works. Aggregates supercycle thesis intact."},
+  "Precious Metals": {h:"NEM, GOLD, AEM, FNV, AU", w:"Gold bid on debasement narrative + central-bank buying."},
+  "Human Resources": {h:"ADP, PAYX, RHI, MAN, KFY", w:"Tight labor market + payroll/HR automation tailwinds."},
+  "Telecom Equipment": {h:"ERIC, NOK, MSI, JNPR", w:"5G mid-cycle + datacenter switching demand. Slow-growth tail."},
+  "Chemical (Diversified)": {h:"DD, DOW, LYB, EMN, CE", w:"Margin trough behind; volumes inflecting + restructuring benefits."},
+  "Reinsurance": {h:"RNR, RGA, EG, ACGL", w:"Hard-market discipline + investment-income tailwind."},
+  "Wireless Networking": {h:"CSCO, JNPR, ANET, CIEN", w:"AI/datacenter networking refresh + 5G capex tail."},
+  "Machinery": {h:"CAT, DE, AGCO, OSK, ITT", w:"Construction / agri / mining equipment replacement cycle persisting."},
+  "Telecom Services": {h:"T, VZ, TMUS, T.TO, LUMN", w:"High dividends + capex normalizing — but rate-sensitive yield basket."},
+  "Financial Services (Div.)": {h:"V, MA, AXP, PYPL", w:"Card volumes resilient; deleveraged consumer + cross-border travel strong."},
+  "Pipeline MLPs": {h:"ET, MPLX, WMB, EPD, KMI", w:"LNG + NatGas infra demand + Fed-no-cut-friendly distribution yields."},
+  "Chemical (Specialty)": {h:"SHW, ECL, ALB, CE", w:"Pricing power + niche end-markets (paint, water treatment, lithium)."},
+  "Computer Software": {h:"MSFT, ORCL, ADBE, CRM, INTU", w:"AI productivity layer + enterprise IT spend resilience."},
+  "Bank (Regional)": {h:"USB, PNC, MTB, FITB, RF, KEY", w:"NIM stable + CRE worries fading; modest re-rating underway."},
+  "Beverage": {h:"KO, PEP, MNST, CCEP, STZ", w:"Staples defensive but volume-weak; GLP-1 overhang lingering."},
+  "Asset Management": {h:"BLK, BX, KKR, APO, AMG", w:"AUM rate-sensitive + fee-revenue cycle peaking."},
+  "Investment Banking": {h:"GS, MS, RJF, LAZ, MC", w:"M&A pipeline thawing + capital markets reopening."},
+  "Chemical (Basic)": {h:"DOW, LYB, OLN, MOS, CF", w:"Tied to global industrial demand; oversupply lingering in commodities."},
+  "Computers/Peripherals": {h:"AAPL, DELL, HPQ, NTAP", w:"iPhone cycle ok; AI-PC narrative still early. Hardware refresh tepid."},
+  "Metals & Mining (Div.)": {h:"FCX, NEM, AA, RIO, BHP", w:"Copper bull thesis + grid-electrification demand pull."},
+  "Cable TV": {h:"CMCSA, CHTR, CABO", w:"Broadband-share losses to fixed-wireless + fiber overbuild. Defensive only on FCF."},
+  "Auto Parts": {h:"APTV, BWA, LEA, MGA, AXL", w:"EV mix shift + auto cycle bottoming. Volume-recovery beneficiary."},
+  "Hotel/Gaming": {h:"MAR, HLT, H, LVS, WYNN", w:"Travel strong but luxury softening; consumer K-shape pressuring mid-tier."},
+  "Air Transport": {h:"DAL, UAL, LUV, AAL, ALK", w:"Travel demand resilient + capacity discipline. Fuel cost neutral."},
+  "Bank": {h:"JPM, BAC, C, WFC", w:"Capital strong + trading volumes; Fed-no-cuts neutral for NIM."},
+  "Precision Instrument": {h:"KEYS, TDY, A, MKSI, COHR", w:"Capital-equipment cycle for AI/silicon test + photonics."},
+  "Oil/Gas Distribution": {h:"ENB, TRP, OKE, KMI, TGE", w:"Stable cash flows + LNG/midstream growth optionality."},
+  "Homebuilding": {h:"DHI, LEN, PHM, TOL, NVR", w:"Mortgage-rate hostage + affordability ceiling — at 4.57% UST, demand strained."},
+  "Drug": {h:"LLY, JNJ, MRK, ABBV, PFE, BMY", w:"Obesity drugs lifting LLY/NVO axis; biosimilar headwinds pull average down."},
+  "Restaurant": {h:"MCD, SBUX, CMG, YUM, DPZ", w:"Bifurcated: QSR holding, casual-dining struggling on traffic."},
+  "Aerospace/Defense": {h:"BA, LMT, RTX, NOC, GD, LHX", w:"Defense budgets up + commercial cycle recovery; supply chain easing."},
+  "Thrift": {h:"NWBI, ISBC, CFFN, FNB", w:"Small thrifts; deposit-competition pressure on NIM."},
+  "Apparel": {h:"LULU, RL, PVH, TPR", w:"Inventory normalized but demand uneven."},
+  "Retail Automotive": {h:"AZO, ORLY, KMX, GPC, ABG", w:"Aftermarket strong + used-vehicle stabilization. Less rate-sensitive."},
+  "Packaging & Container": {h:"BALL, AMCR, IP, PKG, WRK", w:"Volume recovery + cost actions playing out."},
+  "Cyber Security": {h:"CRWD, PANW, ZS, FTNT, NET", w:"Cyber-spend resilient but valuation re-rating compressing growth multiples."},
+  "Digital Infrastructure": {h:"EQIX, DLR, AMT, CCI", w:"Datacenter REITs + towers — AI demand strong but rate-sensitive."},
+  "Food Processing": {h:"GIS, K, CAG, HSY, CPB", w:"Volume-weak staples; private-label share losses + GLP-1 overhang."},
+  "Internet": {h:"GOOG, META, NFLX, BKNG, TRIP", w:"Ad cycle peaked; AI-monetization vs. competition concerns weighing on multiples."},
+  "Recreation": {h:"POOL, HOG, BC, MBUU", w:"Big-ticket discretionary (boats, pools, motorcycles); consumer-recession proxy weak."},
+  "Natural Gas (Div.)": {h:"CNP, NJR, SR, NFG, OGS", w:"Local-distribution NatGas utilities; rate-case dependent + duration drag."},
+  "Entertainment": {h:"DIS, WBD, PARA, FOXA", w:"Streaming losses narrowing but cord-cutting accelerating — secular pressure."},
+  "Brokers & Exchanges": {h:"SCHW, ICE, CME, NDAQ, MKTX", w:"Volumes resilient but cash-sweep margin pressure on the broker side."},
+  "Insurance (Life)": {h:"MET, PRU, LNC, AFL, PFG", w:"Spread-business sensitive to AT&E and DAC swings + rate-curve shape."},
+  "Med Supp Non-Invasive": {h:"MDT, BSX, ABT, BDX", w:"GLP-1 device-utilization risk + procedure normalization tailwind fading."},
+  "Retail Building Supply": {h:"HD, LOW, TSCO", w:"Tied to mortgage-rate + home-improvement cycle. Big-ticket reno weakness."},
+  "Household/Personal": {h:"PG, CL, KMB, EL, CLX, CHD", w:"Volume-weak consumer staples; pricing-led-growth model fading."},
+  "Advertising": {h:"IPG, OMC, WPP, PUBGY", w:"Ad-spend cyclical + digital-share losses to GOOG/META platforms."},
+  "Electric Utility (West)": {h:"PCG, SRE, EIX, PNW", w:"Rate-case dependent + wildfire liabilities; duration drag from 10-yr."},
+  "E-Commerce": {h:"AMZN, MELI, EBAY, ETSY, W", w:"E-com share gains stalling vs. brick-and-mortar; growth premium compressed."},
+  "Med Supp Invasive": {h:"ISRG, SYK, ZBH, EW", w:"Procedure normalization + ortho strong; capital-equipment rate sensitivity."},
+  "Tobacco": {h:"MO, PM, BTI", w:"Volumes shrinking but pricing offsets. Pure yield play — losing to 4.57% UST."},
+  "Healthcare Information": {h:"IQV, VEEV, EVH, DOCS", w:"AI-disruption narrative + payer-cost-containment pressure on revenue growth."},
+  "Electric Util. (Central)": {h:"AEP, ETR, AES, EVRG", w:"Bond-proxy duration; AI-datacenter load growth thesis still early."},
+  "Power": {h:"NRG, CEG, VST, BE", w:"IPP / merchant power; AI-datacenter demand thesis emerging but execution-dependent."},
+  "Natural Gas Utility": {h:"ATO, NJR, SR, NWN, SWX", w:"Pure-utility duration drag; rate-case sensitive — no thesis-trade upside."},
+  "Automotive": {h:"GM, F, STLA, RIVN, TSLA", w:"EV transition capex + ICE volume pressure + rate-sensitive financing — lone Q4 cyclical."},
+  "Biotechnology": {h:"BIIB, REGN, VRTX, GILD, BMRN", w:"Innovation funding tight + IRA drug-price overhang; small-cap biotech destroyed."},
+  "Furniture/Home Furnishings": {h:"MHK, LZB, ETD, RH, WHR", w:"Discretionary housing-tied; mortgage-rate hostage — turnover-driven category."},
+  "Water Utility": {h:"AWK, WTRG, AWR, CWT, SJW", w:"Bond-proxy utility; AI-datacenter water demand thesis far out."},
+  "Electric Utility (East)": {h:"SO, D, DUK, EXC, ED", w:"Bond-proxy; pure duration headwind from 4.57% UST. Defensive bid absent."},
+  "R.E.I.T.": {h:"O, EQR, AVB, BXP, ARE, VNO", w:"Pure rate-sensitivity + office overhang. Longest-duration laggard of the universe."},
+  "Paper/Forest Products": {h:"IP, PKG, WRK, WY, LPX", w:"Volume-weak demand + housing-cycle tied; structurally shrinking end-markets."},
+  "Public/Private Equity": {h:"BX, KKR, APO, CG, ARES", w:"AUM realizations slow; rate-sensitive fee earner + DCM cycle muted."},
+  "Entertainment Tech": {h:"ROKU, SPOT, LYV, FUBO", w:"Discretionary consumer-tech with ad-cycle exposure; cord-cutting beneficiary but mixed monetization."}
+};
+
+/* ===== DISPERSION CHART ===== */
+function renderDispersion(){
+  const cats = ['cyc','def','fin','tech','res','con'];
+  const catFullName = {cyc:'Cyclical',def:'Defensive',fin:'Financials',tech:'Technology',res:'Resources',con:'Consumer'};
+
+  const computed = cats.map(c => {
+    const ind = industries.filter(x => x.c === c);
+    const n = ind.length;
+    const ranks = ind.map(x => x.r).sort((a,b)=>a-b);
+    const median = ranks[Math.floor((n-1)/2)];
+    const minR = ranks[0], maxR = ranks[n-1];
+    const q1cnt = ind.filter(x => quartileOf(x.r) === 1).length;
+    const q4cnt = ind.filter(x => quartileOf(x.r) === 4).length;
+    const chgSum = ind.reduce((s,x) => s + (x.chg||0), 0);
+    return {c, n, median, minR, maxR, q1cnt, q4cnt, chgSum, ind};
+  }).sort((a,b) => a.median - b.median);  // leaders top
+
+  const html = computed.map(({c,n,median,minR,maxR,q1cnt,q4cnt,chgSum,ind}) => {
+    const chgClass = chgSum > 0 ? 'up' : chgSum < 0 ? 'down' : 'flat';
+    const chgStr = chgSum > 0 ? `▲ +${chgSum}` : chgSum < 0 ? `▼ ${chgSum}` : '·';
+    const dots = ind.map(x => {
+      const pct = ((x.r - 1) / 92 * 100).toFixed(2);
+      const mvClass = x.chg > 0 ? ' up' : x.chg < 0 ? ' down' : '';
+      return `<div class="disp-dot ${x.c}${mvClass}" style="left:${pct}%" data-rank="${x.r}"></div>`;
+    }).join('');
+    return `
+      <div class="disp-track">
+        <div class="disp-meta">
+          <span class="category-tag ${c}">${catFullName[c]}</span>
+          <div class="stats-line"><b>${n}</b> industries · median <b>#${median}</b></div>
+          <div class="stats-line">range <b>#${minR}</b>—<b>#${maxR}</b> · <b>${q1cnt}</b> Q1 · <b>${q4cnt}</b> Q4 · Δ <span class="chg ${chgClass}">${chgStr}</span></div>
+        </div>
+        <div class="disp-rail"><div class="qb3"></div>${dots}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('dispTracks').innerHTML = html;
+
+  // Wire up rich-tooltip hover on every dot
+  const tipEl = document.getElementById('dispTooltip');
+  const catName = {cyc:'Cyclical',def:'Defensive',fin:'Financials',tech:'Technology',res:'Resources',con:'Consumer'};
+
+  function showTip(dot){
+    const r = parseInt(dot.dataset.rank, 10);
+    const x = industries.find(i => i.r === r);
+    if(!x) return;
+    const d = industryDetail[x.n] || {h:"—", w:"No detail mapped for this industry."};
+    const moverHtml = x.chg > 0 ? `<span class="tt-mover up">▲ up ${x.chg}</span>`
+                    : x.chg < 0 ? `<span class="tt-mover down">▼ down ${Math.abs(x.chg)}</span>` : '';
+    const tickersHtml = d.h.split(/,\s*/).map(t => `<code>${t}</code>`).join(' ');
+    tipEl.innerHTML = `
+      <div class="tt-head">
+        <span class="tt-rank">#${r}</span>
+        <span>${x.n}</span>
+        <span class="tt-cat-tag">${catName[x.c]}</span>
+        ${moverHtml}
+      </div>
+      <div class="tt-label">Representative Holdings</div>
+      <div class="tt-tickers">${tickersHtml}</div>
+      <div class="tt-label">Why ranked here</div>
+      <div class="tt-why">${d.w}</div>`;
+    // Position
+    tipEl.classList.remove('below');
+    tipEl.classList.add('show');
+    tipEl.style.left = '0px';
+    tipEl.style.top = '0px';
+    const dotRect = dot.getBoundingClientRect();
+    const tipRect = tipEl.getBoundingClientRect();
+    const pad = 10;
+    let left = dotRect.left + dotRect.width/2 - tipRect.width/2;
+    let top  = dotRect.top - tipRect.height - 14;
+    let arrowX = '50%';
+    // Flip below if no room above
+    if(top < pad){
+      top = dotRect.bottom + 14;
+      tipEl.classList.add('below');
+    }
+    // Clamp horizontally
+    if(left < pad){
+      arrowX = (dotRect.left + dotRect.width/2 - pad) + 'px';
+      left = pad;
+    } else if(left + tipRect.width > window.innerWidth - pad){
+      arrowX = (dotRect.left + dotRect.width/2 - (window.innerWidth - tipRect.width - pad)) + 'px';
+      left = window.innerWidth - tipRect.width - pad;
+    }
+    tipEl.style.setProperty('--arrow-x', arrowX);
+    tipEl.style.left = left + 'px';
+    tipEl.style.top  = top  + 'px';
+    tipEl.setAttribute('aria-hidden','false');
+  }
+  function hideTip(){
+    tipEl.classList.remove('show','below');
+    tipEl.setAttribute('aria-hidden','true');
+  }
+  document.querySelectorAll('#dispTracks .disp-dot').forEach(dot => {
+    dot.addEventListener('mouseenter', () => showTip(dot));
+    dot.addEventListener('mouseleave', hideTip);
+    dot.addEventListener('focus',    () => showTip(dot));
+    dot.addEventListener('blur',     hideTip);
+  });
+  window.addEventListener('scroll', hideTip, {passive:true});
+}
+
+renderRotMatrix();
+renderDispersion();
+
+/* ===== TOP/BOTTOM PANELS ===== */
+function renderTopBot(){
+  const top = industries.slice(0,12);
+  const bot = industries.slice(-12).reverse();
+  const tr = r=>`<div class="row"><span class="nm"><span class="rank-pill" style="background:var(--q${quartileOf(r.r)});color:var(--q${quartileOf(r.r)}b);margin-right:6px">${r.r}</span>${r.n}</span><span class="vl"><span class="category-tag ${r.c}">${catLabel[r.c]}</span></span></div>`;
+  document.getElementById('top12').innerHTML = top.map(tr).join('');
+  document.getElementById('bot12').innerHTML = bot.map(tr).join('');
+}
+renderTopBot();
+
+/* ===== RANK CHANGES ===== */
+function renderChanges(){
+  // chg = prevRank − nowRank.  chg>0 → rank number fell → industry CLIMBED.
+  const climbers  = industries.filter(x=>x.chg>0).sort((a,b)=>b.chg-a.chg||a.r-b.r);
+  const decliners = industries.filter(x=>x.chg<0).sort((a,b)=>a.chg-b.chg||a.r-b.r);
+  const flat = industries.filter(x=>!x.chg).length;
+  const maxMag = Math.max(1, ...industries.map(x=>Math.abs(x.chg||0)));
+  let thr = 2;
+
+  const rowHtml = (x,dir)=>{
+    const mag  = Math.abs(x.chg);
+    const prev = x.r + x.chg;                       // last week's rank
+    const w    = Math.max(6,(mag/maxMag*100)).toFixed(0);
+    const sign = dir==='climb' ? '+'+mag : '−'+mag;
+    return `<div class="mv-row ${dir}" data-rank="${x.r}" tabindex="0">
+        <div class="mv-delta">${sign}</div>
+        <div class="mv-main">
+          <div class="mv-name" title="${x.n}">${x.n}</div>
+          <div class="mv-meta"><span class="category-tag ${x.c}">${catLabel[x.c]}</span><span style="color:var(--text3);font-size:10px">VL p.${x.p}</span></div>
+          <div class="mv-track"><div class="mv-fill" style="width:${w}%"></div></div>
+        </div>
+        <div class="mv-ranks">#${prev}&nbsp;&rarr;&nbsp;<b>#${x.r}</b></div>
+      </div>`;
+  };
+
+  // ----- popup: three dominant companies in the hovered industry -----
+  const popEl = document.getElementById('mvPop');
+  function showPop(row){
+    const r = parseInt(row.dataset.rank,10);
+    const x = industries.find(i=>i.r===r);
+    if(!x) return;
+    const d = industryDetail[x.n] || {h:'—'};
+    const cos = d.h.split(/,\s*/).filter(Boolean).slice(0,3);
+    const prev = x.r + x.chg;
+    const move = x.chg>0 ? `<span class="mp-move up">▲ +${x.chg}</span>`
+               : x.chg<0 ? `<span class="mp-move down">▼ ${x.chg}</span>` : '';
+    const coHtml = cos.map((t,i)=>`<div class="mp-co"><span class="mp-rk">${i+1}</span><span class="mp-tk">${t}</span></div>`).join('')
+                   || '<div class="mp-co">—</div>';
+    popEl.innerHTML =
+      `<div class="mp-head"><span class="mp-rank">#${x.r}</span><span>${x.n}</span>${move}</div>`+
+      `<div class="mp-label">Three dominant companies · #${prev}&rarr;#${x.r}</div>`+
+      coHtml;
+    popEl.classList.remove('below'); popEl.classList.add('show');
+    popEl.style.left='0px'; popEl.style.top='0px';
+    const rr=row.getBoundingClientRect(), tr=popEl.getBoundingClientRect(), pad=10;
+    let left=rr.left+rr.width/2-tr.width/2, top=rr.top-tr.height-12, ax='50%';
+    if(top<pad){ top=rr.bottom+12; popEl.classList.add('below'); }
+    if(left<pad){ ax=(rr.left+rr.width/2-pad)+'px'; left=pad; }
+    else if(left+tr.width>window.innerWidth-pad){ ax=(rr.left+rr.width/2-(window.innerWidth-tr.width-pad))+'px'; left=window.innerWidth-tr.width-pad; }
+    popEl.style.setProperty('--arrow-x',ax);
+    popEl.style.left=left+'px'; popEl.style.top=top+'px';
+    popEl.setAttribute('aria-hidden','false');
+  }
+  function hidePop(){ popEl.classList.remove('show','below'); popEl.setAttribute('aria-hidden','true'); }
+
+  function wirePop(){
+    document.querySelectorAll('#mvClimb .mv-row, #mvDecl .mv-row').forEach(row=>{
+      row.addEventListener('mouseenter',()=>showPop(row));
+      row.addEventListener('mouseleave',hidePop);
+      row.addEventListener('focus',()=>showPop(row));
+      row.addEventListener('blur',hidePop);
+    });
+  }
+  window.addEventListener('scroll',hidePop,{passive:true});
+
+  function paint(){
+    const c = climbers.filter(x=>x.chg>=thr);
+    const d = decliners.filter(x=>-x.chg>=thr);
+    document.getElementById('mvClimb').innerHTML = c.length
+      ? c.map(x=>rowHtml(x,'climb')).join('')
+      : '<div class="mv-empty">No climbers at this threshold.</div>';
+    document.getElementById('mvDecl').innerHTML = d.length
+      ? d.map(x=>rowHtml(x,'decl')).join('')
+      : '<div class="mv-empty">No decliners at this threshold.</div>';
+    document.getElementById('climbCnt').textContent = c.length + ' shown';
+    document.getElementById('declCnt').textContent  = d.length + ' shown';
+    const up = climbers[0], dn = decliners[0];
+    document.getElementById('mvSummary').innerHTML =
+      `<span class="up">&#9650; ${climbers.length}</span> climbed &middot; ` +
+      `<span class="down">&#9660; ${decliners.length}</span> fell &middot; ` +
+      `<b>${flat}</b> unchanged vs. last week.` +
+      (up ? ` &nbsp;Biggest gain <b>${up.n}</b> (+${up.chg})` : '') +
+      (dn ? ` &middot; biggest drop <b>${dn.n}</b> (${dn.chg})` : '') +
+      ` &middot; <span style="color:var(--text3)">hover a row for its 3 dominant companies</span>`;
+    hidePop(); wirePop();
+  }
+  paint();
+
+  document.querySelectorAll('#mvToggle button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('#mvToggle button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      thr = parseInt(b.dataset.thr,10);
+      paint();
+    });
+  });
+}
+renderChanges();
+
+/* ===== SCREENS ===== */
+const tabs = document.querySelectorAll('.tab');
+const screensEl = document.getElementById('screens');
+
+function fmt(v){
+  if(v===null||v===undefined) return '<span style="color:var(--text3)">—</span>';
+  if(typeof v==='number') return v.toLocaleString(undefined,{maximumFractionDigits:2});
+  return v;
+}
+
+function renderScreen(key){
+  const s = screens[key];
+  if(!s){ screensEl.innerHTML=''; return; }
+  const cols = s.cols;
+
+  // Detect numeric vs text columns: numeric if ≥50% of non-empty values are number-type
+  // OR strings matching ##, ##.##, ##%, +##.#%, etc.
+  const numericPattern = /^[-+]?\d+(\.\d+)?%?$/;
+  const isEmpty = v => v === null || v === undefined || v === '' || v === '–' || v === '—';
+  const isNumericLike = v => {
+    if(typeof v === 'number') return true;
+    if(typeof v === 'string') return numericPattern.test(v.trim());
+    return false;
+  };
+  const colTypes = cols.map((_, i) => {
+    const vals = s.rows.map(r => r[i]).filter(v => !isEmpty(v));
+    if(!vals.length) return 'text';
+    const numCount = vals.filter(isNumericLike).length;
+    return (numCount / vals.length) >= 0.5 ? 'num' : 'text';
+  });
+
+  // Wrap "—" / null in a small span so it sits at the right edge in numeric columns
+  const fmtAligned = (v, type) => {
+    if(isEmpty(v)) return type === 'num'
+      ? '<span class="null-dash" style="color:var(--text3)">—</span>'
+      : '<span style="color:var(--text3)">—</span>';
+    return fmt(v);
+  };
+
+  const html = `
+    <div class="screen-note"><strong>${s.title}.</strong> ${s.desc}</div>
+    <table class="screen" id="screenTable">
+      <thead><tr>${cols.map((c,i)=>`<th data-i="${i}" class="${colTypes[i]}">${c}</th>`).join('')}</tr></thead>
+      <tbody>${s.rows.map(r=>`<tr>${r.map((v,i)=>{
+        return `<td class="${colTypes[i]}">${fmtAligned(v, colTypes[i])}</td>`;
+      }).join('')}</tr>`).join('')}</tbody>
+    </table>`;
+  screensEl.innerHTML = html;
+
+  // simple click-sort
+  const table = document.getElementById('screenTable');
+  let sDir = 1, sCol = -1;
+  table.querySelectorAll('th').forEach(th=>{
+    th.addEventListener('click',()=>{
+      const idx = parseInt(th.dataset.i);
+      if(sCol===idx) sDir=-sDir; else { sCol=idx; sDir=1; }
+      const tb = table.querySelector('tbody');
+      const rows = Array.from(tb.querySelectorAll('tr'));
+      rows.sort((a,b)=>{
+        const av = a.children[idx].textContent.trim();
+        const bv = b.children[idx].textContent.trim();
+        const an = parseFloat(av.replace(/[^\d.\-+]/g,''));
+        const bn = parseFloat(bv.replace(/[^\d.\-+]/g,''));
+        if(!isNaN(an)&&!isNaN(bn)) return sDir*(an-bn);
+        return sDir*av.localeCompare(bv);
+      });
+      rows.forEach(r=>tb.appendChild(r));
+    });
+  });
+}
+
+tabs.forEach(t=>{
+  t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    renderScreen(t.dataset.tab);
+  });
+});
+renderScreen('yield');
+</script>
+</body>
+</html>

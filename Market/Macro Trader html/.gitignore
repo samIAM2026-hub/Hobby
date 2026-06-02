@@ -1,0 +1,16 @@
+.DS_Store
+*.bak
+*.tmp
+*.temp
+
+# Local archives and temporary checkouts
+_archive/backups/
+_archive/temp-checkouts/
+
+# Editor and OS noise
+.vscode/
+.idea/
+Thumbs.db
+
+# Local dependency installs
+node_modules/

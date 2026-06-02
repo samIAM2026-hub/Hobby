@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DCA Investment Framework · Daily Review System</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #F5F6F7;
+  --bg2: #FFFFFF;
+  --bg3: #FAFAFA;
+  --bg4: #F0F1F3;
+  --border: #E5E5E5;
+  --border2: #C8C8C8;
+  --text: #1E1E1E;
+  --text2: #5B5B5B;
+  --text3: #8A8A8A;
+  --navy: #1B3A5C;
+  --red: #C72E0B;
+  --green: #00936C;
+  --amber: #D8A000;
+  --blue: #0077CC;
+  --purple: #7B5EA7;
+  --teal: #007A90;
+  --bg-green: #F4FBF8;
+  --bg-red: #FFF8F6;
+  --bg-amber: #FFFBE6;
+  --bg-blue: #EEF4FF;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 3px;
+}
+body::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: var(--red);
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+}
+
+/* HEADER */
+.header {
+  background: var(--navy);
+  color: #fff;
+  padding: 26px 40px 22px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+.header-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 11px;
+  margin-bottom: 10px;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.header-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: .35; }
+}
+.header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -.4px;
+}
+.header p {
+  color: rgba(255,255,255,0.78);
+  font-size: 13px;
+  margin-top: 6px;
+  max-width: 620px;
+}
+.header-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+.header-meta .date {
+  font-size: 12px;
+  color: rgba(255,255,255,0.72);
+}
+.btn-manual {
+  background: #fff;
+  color: var(--navy);
+  border: none;
+  border-radius: 4px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: .3px;
+  transition: background .15s;
+}
+.btn-manual:hover { background: rgba(255,255,255,0.88); }
+
+/* NAV TABS */
+.nav {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 0 var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.nav-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.nav-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text2);
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .15s;
+}
+.nav-btn:hover { color: var(--text); }
+.nav-btn.active {
+  color: var(--red);
+  border-bottom-color: var(--red);
+  font-weight: 600;
+}
+.nav-btn .num {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--text3);
+  margin-right: 6px;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+.nav-btn.active .num { color: var(--red); }
+
+/* MAIN */
+.main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 36px 40px 80px;
+}
+.tabpane { display: none; }
+.tabpane.active { display: block; animation: fadeIn .25s ease; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  color: var(--text3);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.section-sub {
+  font-size: 14px;
+  color: var(--text2);
+  margin-bottom: 24px;
+  max-width: 820px;
+}
+
+/* CARD GRID */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.card .lead {
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 12px;
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 14px;
+}
+
+/* OVERVIEW callout */
+.callout {
+  background: var(--bg-blue);
+  border-left: 4px solid var(--blue);
+  border-radius: 3px;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+.callout.green { background: var(--bg-green); border-left-color: var(--green); }
+.callout.amber { background: var(--bg-amber); border-left-color: var(--amber); }
+.callout.red { background: var(--bg-red); border-left-color: var(--red); }
+.callout h4 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--text2);
+  margin-bottom: 6px;
+}
+.callout p { font-size: 13px; color: var(--text); }
+
+/* REGIME CARDS — expandable */
+.regime {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: border-color .15s;
+}
+.regime:hover { border-color: var(--border2); }
+.regime-head {
+  padding: 14px 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  user-select: none;
+}
+.regime-head .dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.regime[data-tone="bull"] .dot { background: var(--green); }
+.regime[data-tone="caution"] .dot { background: var(--amber); }
+.regime[data-tone="bear"] .dot { background: var(--red); }
+.regime[data-tone="neutral"] .dot { background: var(--blue); }
+.regime-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.regime-tone {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 12px;
+}
+.regime[data-tone="bull"] .regime-tone { background: #E6F7F2; color: #007850; }
+.regime[data-tone="caution"] .regime-tone { background: #FFF8E6; color: #885500; }
+.regime[data-tone="bear"] .regime-tone { background: #FFF0ED; color: #BF2A00; }
+.regime[data-tone="neutral"] .regime-tone { background: #EEF4FF; color: #3558A8; }
+.regime-toggle {
+  color: var(--text3);
+  font-size: 18px;
+  transition: transform .2s;
+}
+.regime.open .regime-toggle { transform: rotate(180deg); }
+.regime-body {
+  display: none;
+  padding: 0 18px 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.regime.open .regime-body { display: block; }
+.regime-body .row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.regime-body .row:last-child { border-bottom: none; }
+.regime-body .row .lbl {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--text3);
+  font-weight: 600;
+  padding-top: 2px;
+}
+.regime-body .row .val {
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* DATA TABLE */
+.data-cat {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.data-cat-head {
+  background: var(--bg-blue);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.data-cat-head .cat-icon {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: rgba(0,119,204,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.data-cat-head h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.data-cat-head .count {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text3);
+  font-weight: 500;
+}
+.data-list { padding: 8px 0; }
+.data-item {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr;
+  gap: 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  align-items: start;
+}
+.data-item:last-child { border-bottom: none; }
+.data-item:hover { background: var(--bg3); }
+.data-item .name { font-weight: 600; color: var(--text); }
+.data-item .name small { display: block; font-size: 11px; font-weight: 400; color: var(--text3); margin-top: 2px; }
+.data-item .why { color: var(--text2); }
+.data-item .signal { color: var(--text2); font-style: italic; }
+
+/* CHECKLIST */
+.check-list { display: flex; flex-direction: column; gap: 8px; }
+.check-item {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color .15s;
+}
+.check-item.checked { border-color: var(--green); background: var(--bg-green); }
+.check-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+.check-box {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border2);
+  border-radius: 3px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: #fff;
+}
+.check-item.checked .check-box {
+  background: var(--green);
+  border-color: var(--green);
+}
+.check-item.checked .check-box::after { content: '✓'; }
+.check-title { flex: 1; font-size: 14px; font-weight: 600; color: var(--text); }
+.check-expand { color: var(--text3); font-size: 12px; }
+.check-item.checked .check-title { text-decoration: line-through; opacity: .7; }
+.check-body {
+  display: none;
+  padding: 0 16px 14px 46px;
+  font-size: 13px;
+  color: var(--text2);
+  border-top: 1px dashed var(--border);
+  padding-top: 10px;
+}
+.check-item.open .check-body { display: block; }
+.check-body .field {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.check-body .field .lbl {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--text3);
+  font-weight: 600;
+  padding-top: 1px;
+}
+.check-body .field .val { color: var(--text); }
+
+/* ACTION CARDS — DCA rules */
+.action-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--blue);
+  border-radius: 4px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+.action-card.green { border-left-color: var(--green); }
+.action-card.amber { border-left-color: var(--amber); }
+.action-card.red { border-left-color: var(--red); }
+.action-card.purple { border-left-color: var(--purple); }
+.action-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.action-card .summary { font-size: 13px; color: var(--text2); margin-bottom: 10px; }
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+.action-block {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 10px 12px;
+}
+.action-block .lbl {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--text3);
+  margin-bottom: 4px;
+}
+.action-block .val { font-size: 12.5px; color: var(--text); line-height: 1.55; }
+
+/* RISK CARDS */
+.risk-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px 18px;
+}
+.risk-card h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.risk-card h3 .ico {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  background: var(--bg-red);
+  color: var(--red);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+}
+.risk-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.risk-card ul li {
+  position: relative;
+  padding: 4px 0 4px 16px;
+  font-size: 13px;
+  color: var(--text);
+}
+.risk-card ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  color: var(--red);
+  font-size: 11px;
+}
+
+/* WEEKLY / DAILY OUTPUT TEMPLATE — fillable */
+.template-block {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 18px;
+  margin-bottom: 12px;
+}
+.template-block h3 {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--text3);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.template-block h3 .step {
+  width: 22px; height: 22px;
+  background: var(--navy);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 11px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+}
+.template-block textarea, .template-block input[type="text"] {
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--bg3);
+  color: var(--text);
+  resize: vertical;
+}
+.template-block textarea:focus, .template-block input[type="text"]:focus {
+  outline: none;
+  border-color: var(--red);
+  background: #fff;
+}
+.template-block textarea { min-height: 56px; }
+.template-block .hint {
+  font-size: 12px;
+  color: var(--text3);
+  margin-bottom: 6px;
+  font-style: italic;
+}
+.template-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+  font-family: inherit;
+}
+.btn:hover { border-color: var(--border2); background: var(--bg3); }
+.btn.primary { background: var(--navy); color: #fff; border-color: var(--navy); }
+.btn.primary:hover { background: #2d4f73; }
+.btn.danger { background: #fff; color: var(--red); border-color: rgba(199,46,11,0.4); }
+.btn.danger:hover { background: var(--bg-red); }
+
+.choice-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.choice {
+  padding: 6px 12px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg3);
+  color: var(--text);
+  cursor: pointer;
+  transition: all .15s;
+  font-family: inherit;
+  font-weight: 500;
+}
+.choice:hover { border-color: var(--border2); }
+.choice.active.bull { background: var(--bg-green); border-color: var(--green); color: var(--green); }
+.choice.active.caution { background: var(--bg-amber); border-color: var(--amber); color: #885500; }
+.choice.active.bear { background: var(--bg-red); border-color: var(--red); color: var(--red); }
+.choice.active.neutral { background: var(--bg-blue); border-color: var(--blue); color: var(--blue); }
+
+/* SCORING WIDGET */
+.score-widget {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px 24px;
+  margin-bottom: 18px;
+}
+.score-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.score-total {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.score-total .val {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.score-total .val.pos { color: var(--green); }
+.score-total .val.neg { color: var(--red); }
+.score-total .lbl {
+  font-size: 12px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+.score-bucket {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+.score-bucket.b-strong { background: #E6F7F2; color: #006648; }
+.score-bucket.b-construct { background: var(--bg-green); color: var(--green); }
+.score-bucket.b-neutral { background: var(--bg-blue); color: var(--blue); }
+.score-bucket.b-caution { background: var(--bg-amber); color: #885500; }
+.score-bucket.b-risk { background: var(--bg-red); color: var(--red); }
+.score-action {
+  font-size: 13px;
+  color: var(--text);
+  padding: 12px 14px;
+  background: var(--bg3);
+  border-radius: 4px;
+  border-left: 3px solid var(--navy);
+  margin-bottom: 16px;
+}
+.factor-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 60px;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.factor-row:last-child { border-bottom: none; }
+.factor-row .fname {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.factor-row .fname small {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text3);
+  margin-top: 1px;
+}
+.factor-row input[type="range"] {
+  width: 100%;
+  accent-color: var(--red);
+}
+.factor-row .fval {
+  font-size: 16px;
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.factor-row .fval.pos { color: var(--green); }
+.factor-row .fval.neg { color: var(--red); }
+.factor-row .fval.zero { color: var(--text3); }
+.score-scale {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 8px;
+}
+.scale-band {
+  padding: 10px 12px;
+  border-radius: 4px;
+  border-left: 4px solid;
+  background: var(--bg3);
+}
+.scale-band .range {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .3px;
+}
+.scale-band .label {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: 2px;
+}
+.scale-band.s-strong { border-left-color: #006648; }
+.scale-band.s-const { border-left-color: var(--green); }
+.scale-band.s-neut { border-left-color: var(--blue); }
+.scale-band.s-caut { border-left-color: var(--amber); }
+.scale-band.s-risk { border-left-color: var(--red); }
+
+/* MODAL */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,25,35,0.55);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 6px;
+  max-width: 760px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+.modal-head {
+  padding: 18px 24px;
+  background: var(--navy);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 6px 6px 0 0;
+}
+.modal-head h2 { font-size: 17px; font-weight: 700; }
+.modal-close {
+  background: rgba(255,255,255,0.18);
+  border: none;
+  color: #fff;
+  width: 28px; height: 28px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.modal-close:hover { background: rgba(255,255,255,0.3); }
+.modal-body { padding: 22px 26px; font-size: 13.5px; color: var(--text); }
+.modal-body h3 {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--red);
+  margin: 16px 0 8px;
+}
+.modal-body h3:first-child { margin-top: 0; }
+.modal-body p { margin-bottom: 8px; line-height: 1.65; color: var(--text2); }
+.modal-body ul { padding-left: 20px; margin-bottom: 8px; color: var(--text2); }
+.modal-body ul li { margin-bottom: 3px; line-height: 1.55; }
+.modal-body strong { color: var(--text); }
+
+/* PRINT */
+@media print {
+  .nav, .header-meta, .btn-manual, .template-actions, .modal-overlay { display: none !important; }
+  .tabpane { display: block !important; page-break-after: always; }
+  .tabpane:last-child { page-break-after: auto; }
+  body { background: #fff; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 720px) {
+  .header, .nav-inner, .main { padding-left: 20px; padding-right: 20px; }
+  .data-item { grid-template-columns: 1fr; gap: 4px; }
+  .data-item .why, .data-item .signal { font-size: 12px; }
+  .factor-row { grid-template-columns: 1fr 50px; }
+  .factor-row .fname { grid-column: 1 / -1; }
+  .factor-row input[type="range"] { grid-column: 1; }
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  color: var(--text3);
+  font-size: 11px;
+  padding: 30px 20px 50px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <div class="header-badge">Investment Framework</div>
+      <h1>DCA Investment Framework &amp; Daily Review System</h1>
+      <p>A complete, repeatable system to monitor U.S. equity markets, classify market regime, and adjust dollar-cost averaging — built for the long-term investor who wants to separate signal from noise.</p>
+    </div>
+    <div class="header-meta">
+      <button class="btn-manual" onclick="openManual()">User Manual</button>
+      <span class="date" id="today-date"></span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<nav class="nav">
+  <div class="nav-inner" id="nav-tabs">
+    <button class="nav-btn active" data-tab="t1"><span class="num">1</span>Objective</button>
+    <button class="nav-btn" data-tab="t2"><span class="num">2</span>Regimes</button>
+    <button class="nav-btn" data-tab="t3"><span class="num">3</span>Data Monitor</button>
+    <button class="nav-btn" data-tab="t4"><span class="num">4</span>AM Checklist</button>
+    <button class="nav-btn" data-tab="t5"><span class="num">5</span>PM Checklist</button>
+    <button class="nav-btn" data-tab="t6"><span class="num">6</span>Weekly Review</button>
+    <button class="nav-btn" data-tab="t7"><span class="num">7</span>DCA Rules</button>
+    <button class="nav-btn" data-tab="t8"><span class="num">8</span>Risk Mgmt</button>
+    <button class="nav-btn" data-tab="t9"><span class="num">9</span>Daily Output</button>
+    <button class="nav-btn" data-tab="t10"><span class="num">10</span>Scoring</button>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+<!-- ═══════════ 1. INVESTMENT OBJECTIVE ═══════════ -->
+<div class="tabpane active" id="t1">
+  <div class="section-label">Section 01 · Foundation</div>
+  <h2 class="section-title">Investment Objective</h2>
+  <p class="section-sub">Why this framework exists and how it should be used by a long-term DCA investor who also wants real understanding of macro conditions, market risk, and sector rotation.</p>
+
+  <div class="card">
+    <h3>Purpose</h3>
+    <p style="font-size: 13.5px; color: var(--text); line-height: 1.7;">
+      The framework is a <strong>decision system</strong>, not a forecasting tool. Its purpose is to convert daily noise — futures moves, headlines, individual data points — into a small set of actionable signals that tell the investor (a) what regime the market is in, (b) whether risk is rising or falling, and (c) what to do with the next DCA tranche. It is built to be used every trading day, in under 15 minutes once routine, and to keep behavior consistent across emotional market environments.
+    </p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>For the long-term DCA investor</h3>
+      <p style="font-size: 13px; color: var(--text2); line-height: 1.6;">
+        The base case is to <strong>keep buying</strong>. Time in market beats market timing over multi-decade horizons. This framework does not exist to make tactical "in/out" calls — it exists to size the next contribution, decide whether to split it, and protect against the two failure modes that destroy DCA outcomes: <em>panic selling in drawdowns</em> and <em>over-deploying cash at the top of a melt-up</em>.
+      </p>
+    </div>
+    <div class="card">
+      <h3>For the macro-aware investor</h3>
+      <p style="font-size: 13px; color: var(--text2); line-height: 1.6;">
+        Macro doesn't tell you what stock to buy. It tells you which environment you're in — and therefore what kind of mistakes are most expensive. In a liquidity-driven rally, the mistake is sitting in cash. In a late-cycle melt-up, the mistake is leveraging up. In a recessionary risk-off, the mistake is panic selling at the bottom. The framework's job is to keep these mistakes out of the playbook.
+      </p>
+    </div>
+    <div class="card">
+      <h3>Six things the framework should produce</h3>
+      <ol style="font-size: 13px; color: var(--text); padding-left: 18px; line-height: 1.75;">
+        <li>A structured daily collection of market data.</li>
+        <li>A read on the <strong>current market regime</strong>.</li>
+        <li>A short list of <strong>what matters today</strong>.</li>
+        <li>A filter that separates noise from signal.</li>
+        <li>A read on whether <strong>risk is rising or falling</strong>.</li>
+        <li>A concrete <strong>DCA action</strong> for the day or week.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <h4>Default action</h4>
+    <p>When nothing significant has changed, the correct answer is almost always <strong>"continue normal DCA."</strong> Deviation from base case requires evidence, not vibes. The framework's bias is toward inaction unless multiple indicators agree.</p>
+  </div>
+
+  <div class="callout amber">
+    <h4>What this framework will not do</h4>
+    <p>It will not predict tops or bottoms. It will not tell you which individual stocks to buy. It will not eliminate drawdowns. It is a <em>process</em>, not a crystal ball — and a good process consistently applied beats an excellent forecast occasionally applied.</p>
+  </div>
+</div>
+
+<!-- ═══════════ 2. MARKET REGIME FRAMEWORK ═══════════ -->
+<div class="tabpane" id="t2">
+  <div class="section-label">Section 02 · Classification</div>
+  <h2 class="section-title">Market Regime Framework</h2>
+  <p class="section-sub">Every trading day, classify the market into exactly one of nine regimes. The classification drives everything downstream — the data you weight, the headlines you ignore, and the DCA action you take. Click any regime to expand its signals, behavior pattern, risks, and DCA response.</p>
+
+  <div id="regime-list">
+    <!-- regimes injected via JS below -->
+  </div>
+
+  <div class="callout">
+    <h4>How to choose between regimes</h4>
+    <p>Most days, two regimes feel plausible. Pick the one that explains the <strong>most</strong> evidence (price, breadth, credit, vol, rates). If you can't decide between two adjacent regimes, default to the more <em>cautious</em> one — the cost of overestimating risk in a DCA framework is small (you keep some cash), the cost of underestimating it is large (you over-deploy near a top).</p>
+  </div>
+</div>
+
+<!-- ═══════════ 3. KEY DATA TO MONITOR ═══════════ -->
+<div class="tabpane" id="t3">
+  <div class="section-label">Section 03 · Inputs</div>
+  <h2 class="section-title">Key Data to Monitor</h2>
+  <p class="section-sub">Seven categories of inputs. Not every indicator updates daily — but every one of these should be on your watch list, with a known source and a known threshold for "this matters." The "Why" column tells you the question each indicator answers; the "Signal" column tells you what to interpret.</p>
+
+  <div id="data-monitor">
+    <!-- data categories injected via JS -->
+  </div>
+
+  <div class="callout amber">
+    <h4>Discipline rule</h4>
+    <p>Watch the indicator, not the headline <em>about</em> the indicator. A bond auction with weak demand matters more than a pundit warning that "bonds might sell off." Levels and trends in the data are the truth — narratives change daily.</p>
+  </div>
+</div>
+
+<!-- ═══════════ 4. DAILY MORNING CHECKLIST ═══════════ -->
+<div class="tabpane" id="t4">
+  <div class="section-label">Section 04 · Pre-Market Routine</div>
+  <h2 class="section-title">Daily Morning Checklist</h2>
+  <p class="section-sub">Run before the U.S. cash open. Goal: form a single sentence describing today's risk environment, and decide whether any DCA adjustment is warranted. Each item shows <em>what to check, why it matters, how to interpret it,</em> and <em>whether it affects DCA</em>. Click an item to expand; tap the checkbox to mark complete.</p>
+
+  <div style="display: flex; gap: 8px; margin-bottom: 14px; align-items: center;">
+    <button class="btn" onclick="checklistReset('am-checklist')">Reset checklist</button>
+    <button class="btn" onclick="checklistAll('am-checklist', true)">Expand all</button>
+    <button class="btn" onclick="checklistAll('am-checklist', false)">Collapse all</button>
+    <span style="font-size: 12px; color: var(--text3); margin-left: auto;" id="am-progress">0 of 15 complete</span>
+  </div>
+
+  <div class="check-list" id="am-checklist">
+    <!-- items injected via JS -->
+  </div>
+</div>
+
+<!-- ═══════════ 5. DAILY EVENING CHECKLIST ═══════════ -->
+<div class="tabpane" id="t5">
+  <div class="section-label">Section 05 · Post-Market Routine</div>
+  <h2 class="section-title">Daily Evening Checklist</h2>
+  <p class="section-sub">Run after the U.S. cash close. Goal: did the day <em>confirm</em> or <em>contradict</em> the morning view? Did anything change the regime? Each item shows <em>what happened, why it mattered, regime impact,</em> and <em>DCA impact</em>.</p>
+
+  <div style="display: flex; gap: 8px; margin-bottom: 14px; align-items: center;">
+    <button class="btn" onclick="checklistReset('pm-checklist')">Reset checklist</button>
+    <button class="btn" onclick="checklistAll('pm-checklist', true)">Expand all</button>
+    <button class="btn" onclick="checklistAll('pm-checklist', false)">Collapse all</button>
+    <span style="font-size: 12px; color: var(--text3); margin-left: auto;" id="pm-progress">0 of 16 complete</span>
+  </div>
+
+  <div class="check-list" id="pm-checklist">
+    <!-- items injected via JS -->
+  </div>
+</div>
+
+<!-- ═══════════ 6. WEEKLY REVIEW ═══════════ -->
+<div class="tabpane" id="t6">
+  <div class="section-label">Section 06 · Weekly Synthesis</div>
+  <h2 class="section-title">Weekly Review Framework</h2>
+  <p class="section-sub">Run every Friday evening or Saturday morning. Synthesize the week into one regime call, one trend direction per pillar, and a list of risks/opportunities to watch. Fill in the template below; the "Save snapshot" button stores it in your browser so you can compare week-over-week.</p>
+
+  <div id="weekly-template">
+    <!-- weekly template fields injected -->
+  </div>
+
+  <div class="template-actions">
+    <button class="btn primary" onclick="saveSnapshot('weekly')">Save weekly snapshot</button>
+    <button class="btn" onclick="loadSnapshot('weekly')">Load last snapshot</button>
+    <button class="btn danger" onclick="clearTemplate('weekly')">Clear all</button>
+  </div>
+</div>
+
+<!-- ═══════════ 7. DCA DECISION RULES ═══════════ -->
+<div class="tabpane" id="t7">
+  <div class="section-label">Section 07 · Decision Engine</div>
+  <h2 class="section-title">DCA Decision Rules</h2>
+  <p class="section-sub">Eight possible actions. Each card lists the market conditions that support the action, the confirming indicators, the risks of taking it, and how long to hold the stance before re-evaluating. Discipline: at most <strong>one</strong> deviation from base case at a time.</p>
+
+  <div id="dca-rules">
+    <!-- action cards injected -->
+  </div>
+</div>
+
+<!-- ═══════════ 8. RISK MANAGEMENT ═══════════ -->
+<div class="tabpane" id="t8">
+  <div class="section-label">Section 08 · Behavior Guardrails</div>
+  <h2 class="section-title">Risk Management Rules</h2>
+  <p class="section-sub">The framework's most important section. Most DCA failures are behavioral, not analytical. These six rules exist to keep emotion from overriding process during the moments when emotion most wants to.</p>
+
+  <div class="card-grid" id="risk-rules">
+    <!-- risk cards injected -->
+  </div>
+
+  <div class="callout red">
+    <h4>The two unforgivable mistakes</h4>
+    <p><strong>1.</strong> Selling at the bottom of a correction because the headlines feel worst there. <strong>2.</strong> Deploying all reserves at the top of a melt-up because FOMO peaks there. The entire framework is designed to keep you from either one — every rule above is in service of that.</p>
+  </div>
+</div>
+
+<!-- ═══════════ 9. DAILY OUTPUT TEMPLATE ═══════════ -->
+<div class="tabpane" id="t9">
+  <div class="section-label">Section 09 · Synthesis</div>
+  <h2 class="section-title">Final Daily Output Template</h2>
+  <p class="section-sub">The end-of-day deliverable. Compresses the entire day's work into a one-screen summary and a single recommended action. Fill it in, save the snapshot, and review at week-end to track your decision quality over time.</p>
+
+  <div id="daily-output">
+    <!-- daily output template injected -->
+  </div>
+
+  <div class="template-actions">
+    <button class="btn primary" onclick="saveSnapshot('daily')">Save today's report</button>
+    <button class="btn" onclick="loadSnapshot('daily')">Load last report</button>
+    <button class="btn" onclick="exportDaily()">Copy as text</button>
+    <button class="btn danger" onclick="clearTemplate('daily')">Clear all</button>
+  </div>
+</div>
+
+<!-- ═══════════ 10. SCORING SYSTEM ═══════════ -->
+<div class="tabpane" id="t10">
+  <div class="section-label">Section 10 · Quantified Read</div>
+  <h2 class="section-title">Market Environment Score</h2>
+  <p class="section-sub">A single number from −10 to +10 that summarizes the market environment for DCA decisions. Score each of 10 factors from −1 to +1 (or partial), and the widget computes the total, the regime bucket, and the recommended DCA action. Use it daily as a discipline check against your gut.</p>
+
+  <div class="score-widget">
+    <div class="score-header">
+      <div class="score-total">
+        <div class="val" id="score-val">0</div>
+        <div class="lbl">of ±10</div>
+      </div>
+      <div class="score-bucket b-neutral" id="score-bucket">Neutral / Uncertain</div>
+    </div>
+
+    <div class="score-action" id="score-action">
+      Continue normal DCA. No factor is sufficiently extreme to deviate from base case.
+    </div>
+
+    <div id="factor-rows">
+      <!-- 10 sliders injected -->
+    </div>
+
+    <div class="template-actions">
+      <button class="btn primary" onclick="saveSnapshot('score')">Save today's score</button>
+      <button class="btn" onclick="loadSnapshot('score')">Load last score</button>
+      <button class="btn danger" onclick="resetScore()">Reset to zero</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>How to interpret the score</h3>
+    <div class="score-scale">
+      <div class="scale-band s-strong">
+        <div class="range" style="color: #006648;">+7 to +10</div>
+        <div class="label">Strong risk-on environment — increase DCA aggressively, deploy cash reserves</div>
+      </div>
+      <div class="scale-band s-const">
+        <div class="range" style="color: var(--green);">+3 to +6</div>
+        <div class="label">Constructive — modestly increase DCA, stay fully invested</div>
+      </div>
+      <div class="scale-band s-neut">
+        <div class="range" style="color: var(--blue);">−2 to +2</div>
+        <div class="label">Neutral / uncertain — continue normal DCA, do nothing fancy</div>
+      </div>
+      <div class="scale-band s-caut">
+        <div class="range" style="color: #885500;">−3 to −6</div>
+        <div class="label">Cautious — split DCA into weekly tranches, hold modest cash buffer</div>
+      </div>
+      <div class="scale-band s-risk">
+        <div class="range" style="color: var(--red);">−7 to −10</div>
+        <div class="label">High risk — temporarily reduce DCA pace, accumulate cash for opportunistic re-entry</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <h4>Important: the score is a discipline tool, not a trading signal</h4>
+    <p>Don't change DCA based on a single day's score. <strong>Require two consecutive days</strong> in the same bucket before adjusting. The score's job is to flag inconsistency between gut and evidence — when your instinct says "buy aggressively" but the score is −5, the score wins.</p>
+  </div>
+</div>
+
+</div>
+<!-- /MAIN -->
+
+<!-- USER MANUAL MODAL -->
+<div class="modal-overlay" id="manual-overlay" onclick="if(event.target===this) closeManual();">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>How to use this framework</h2>
+      <button class="modal-close" onclick="closeManual()">×</button>
+    </div>
+    <div class="modal-body">
+      <h3>Daily flow (15 minutes once routine)</h3>
+      <ul>
+        <li><strong>Morning (5 min):</strong> Run the AM Checklist (Tab 4). Note overnight tone, futures, key macro events. Form a one-sentence risk view.</li>
+        <li><strong>Midday (optional):</strong> Quick glance at AM view — is it still holding?</li>
+        <li><strong>Evening (8 min):</strong> Run the PM Checklist (Tab 5). Fill the Daily Output (Tab 9). Update the Scoring widget (Tab 10).</li>
+        <li><strong>Done.</strong> If the score crosses a threshold for two consecutive days, adjust DCA per the rules in Tab 7.</li>
+      </ul>
+
+      <h3>Weekly flow (Saturday, 20 min)</h3>
+      <ul>
+        <li>Open the Weekly Review (Tab 6). Synthesize the five daily outputs into pillar-level trend calls.</li>
+        <li>Re-read the Regime Framework (Tab 2). Is the regime call still correct? Has anything shifted?</li>
+        <li>Save the snapshot. Schedule the week's DCA tranches based on the action chosen in the Decision Engine (Tab 7).</li>
+      </ul>
+
+      <h3>Tab guide</h3>
+      <ul>
+        <li><strong>Tab 1 — Objective:</strong> Read once. Re-read in moments of doubt.</li>
+        <li><strong>Tab 2 — Regimes:</strong> Reference daily. Pick exactly one.</li>
+        <li><strong>Tab 3 — Data:</strong> Your indicator universe. Build muscle memory for the "why" and "signal" columns.</li>
+        <li><strong>Tabs 4 &amp; 5 — Checklists:</strong> Daily checkable lists. Progress saves in your browser.</li>
+        <li><strong>Tab 6 — Weekly:</strong> Fillable template. Save snapshots and compare week-over-week.</li>
+        <li><strong>Tab 7 — DCA Rules:</strong> Eight actions. At most one deviation from base case at a time.</li>
+        <li><strong>Tab 8 — Risk:</strong> The behavior guardrails. Re-read before any non-routine action.</li>
+        <li><strong>Tab 9 — Daily Output:</strong> End-of-day synthesis. Copy as text and archive in a notes app.</li>
+        <li><strong>Tab 10 — Scoring:</strong> The discipline check. Two consecutive days in a bucket = action.</li>
+      </ul>
+
+      <h3>Three principles</h3>
+      <ul>
+        <li><strong>Process over prediction.</strong> The score is a thermometer, not a forecast.</li>
+        <li><strong>Require multi-signal confirmation.</strong> One indicator never changes DCA. Two or three across categories might.</li>
+        <li><strong>Default to base case.</strong> When in doubt, continue normal DCA. Deviation costs are usually higher than complacency costs for a long-horizon investor.</li>
+      </ul>
+
+      <h3>Data: snapshots persist in your browser only</h3>
+      <p>Checklist progress, weekly snapshots, daily outputs, and score history are saved in your browser's local storage. They do not leave your computer. To archive long-term, use the <em>Copy as text</em> button and paste into a notes app or spreadsheet.</p>
+
+      <h3>Important caveat</h3>
+      <p>This framework is a personal decision-support tool. It is not investment advice. Markets routinely defy any framework — the value here is consistency of process, not accuracy of prediction. Combine with broad diversification, a long horizon, and tolerance for drawdowns.</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  DCA Investment Framework · For personal use · This is a decision-support tool, not investment advice<br>
+  All inputs and snapshots stored locally in your browser only · No data leaves this page
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   DATA — All content lives here. Easy to edit in one place.
+════════════════════════════════════════════════════════════════ */
+
+const REGIMES = [
+  {
+    name: 'Risk-on uptrend',
+    tone: 'bull',
+    signals: 'SPX above rising 50- and 200-day MAs; new highs across major indices; positive market breadth (>60% above 50-day); credit spreads tight (HYG/LQD rising); VIX < 17; falling MOVE index; semiconductors and Mag-7 leading.',
+    behavior: 'Buyers in control. Pullbacks bought quickly. FOMO building. Retail inflows accelerating. Volatility compressed.',
+    risks: 'Valuation extension. Positioning extremes. Complacency in VIX/MOVE. A single hot CPI or hawkish Fed pivot can unwind quickly. Watch for narrowing breadth (only mega-caps leading).',
+    dca: 'Continue normal DCA. Do NOT increase aggressively just because everything looks great — the best-feeling moments are usually the worst time to over-deploy. Maintain discipline.'
+  },
+  {
+    name: 'Choppy consolidation',
+    tone: 'neutral',
+    signals: 'SPX rangebound for weeks; daily moves <0.5%; 50-day MA flat; sector leadership rotating without clear direction; VIX 14–18; bond yields rangebound; mixed macro data.',
+    behavior: 'Neither bulls nor bears in control. Range-traders dominate. News matters less; positioning matters more. Patient capital waits for breakout.',
+    risks: 'Direction of breakout unknown. Long consolidations often resolve in the direction of the prior trend, but not always. Avoid forcing a directional view.',
+    dca: 'Continue normal DCA. This is the textbook environment for systematic buying — neither overpaying nor missing the train. Resist the urge to time the breakout.'
+  },
+  {
+    name: 'Pullback within uptrend',
+    tone: 'caution',
+    signals: 'SPX -3% to -7% from highs; price still above rising 200-day MA; breadth weaker but not broken; VIX rises to 18–24 then stabilizes; credit spreads widen mildly but remain contained; bond yields stable or falling.',
+    behavior: 'Healthy reset. Sentiment cools from euphoric to neutral. Sector leadership often rotates (e.g., growth → value or vice versa). Buy-the-dip flows building.',
+    risks: 'Distinguishing this from the start of a correction. The tell: credit spreads — if HYG breaks down hard, it\'s no longer a pullback. Also watch breadth — if <40% of stocks above 50-day, deterioration is real.',
+    dca: 'Increase DCA modestly. A 5% pullback in an uptrend is one of the highest-quality buying opportunities in long-term investing. Consider splitting monthly DCA into 2–3 tranches as the pullback unfolds.'
+  },
+  {
+    name: 'Correction',
+    tone: 'caution',
+    signals: 'SPX -10% to -19% from highs; 200-day MA flattening or breached; breadth deteriorating (<35% above 50-day); VIX 25–35 sustained; credit spreads widening notably; HYG breaking key support.',
+    behavior: 'Genuine fear emerges. Headlines turn dire. Mag-7 individual names down 15–25%. Margin calls in speculative pockets. Forced selling phases.',
+    risks: 'Differentiating correction (-10 to -19%) from bear market start. Watch labor data, earnings revisions, and credit. A correction with no recession heals in months; one with recession takes years.',
+    dca: 'Increase DCA aggressively if cash reserves allow, BUT only via tranches over 4–8 weeks — never all at once. Corrections retest lows roughly 70% of the time. Average in.'
+  },
+  {
+    name: 'Bear-market breakdown',
+    tone: 'bear',
+    signals: 'SPX -20%+ from highs; 200-day MA breached and falling; sustained negative breadth; VIX 35+ for multiple weeks; credit spreads blowing out; defensive sectors (utilities, staples) leading; bond yields often falling (flight to quality).',
+    behavior: 'Bear narrative dominant. "This time is different" thinking widespread. Generalist selling. Capitulation phases. Retail outflows. Mag-7 down 30–50%.',
+    risks: 'Bear markets typically end 6–18 months after starting and bottom near recession troughs. False rallies of +10–15% are common. Premature aggressive deployment burns cash. But under-deploying in late bear is also costly.',
+    dca: 'Continue DCA — never stop. But split into smaller, more frequent tranches (weekly). Keep modest cash reserve for the final flush. Do NOT increase aggressively until breadth and credit confirm a turn.'
+  },
+  {
+    name: 'Oversold rebound',
+    tone: 'neutral',
+    signals: 'Sharp 5–15% rally from oversold levels (VIX >30, RSI <30 on weekly SPX); short covering visible; high-beta and small-caps leading; breadth thrust (>80% of stocks up in a session); but uptrend not yet confirmed structurally.',
+    behavior: 'Skeptical participants underweight, chasing. Bulls declare bottom prematurely. Bears point to lower highs. Volatile two-way action.',
+    risks: 'Oversold rebounds in bear markets routinely retrace 50–100% before resuming downtrend. Don\'t confuse rebound velocity with regime change. Need 50-day MA to flatten/rise and credit to heal before calling it.',
+    dca: 'Continue normal DCA. Do not chase. The biggest risk here is sentiment whiplash — buying euphorically at the +12% rebound then panicking at the -8% retest. Stay systematic.'
+  },
+  {
+    name: 'Late-cycle melt-up',
+    tone: 'caution',
+    signals: 'Parabolic price action; SPX 15–20%+ above 200-day MA; speculative names leading (low-quality, high-short-interest, narrative stocks); VIX low but starting to drift up; positioning extreme; valuations stretched; retail euphoria evident; IPO/SPAC frenzy.',
+    behavior: 'FOMO peaks. New all-time highs daily. Bears capitulate. "Generational opportunity" narratives. Margin debt at records. Skeptics ridiculed.',
+    risks: 'Highest expected-loss environment in the cycle. Melt-ups tend to end abruptly with -15 to -30% retraces in weeks. Hardest regime for a DCA investor — every fiber says "deploy more cash."',
+    dca: 'Continue normal DCA — do NOT increase. Resist FOMO. Quietly hold cash reserves. If feasible, slightly reduce DCA pace and accumulate dry powder for the inevitable reset. Do not sell — but do not chase.'
+  },
+  {
+    name: 'Recessionary risk-off',
+    tone: 'bear',
+    signals: 'Yield curve was inverted and now steepening sharply (steepener after inversion is the classic recession signal); unemployment rising (Sahm rule triggered); ISM manufacturing <45 sustained; ISM services <50; credit spreads in stress range (HY OAS >550–600 bps); earnings revisions sharply negative; bonds rallying hard (flight to quality).',
+    behavior: 'Defensive rotation: staples, utilities, healthcare lead; cyclicals and small-caps lag. Negative earnings surprises increase. Layoff announcements broaden. Consumer sentiment plummets.',
+    risks: 'Recessions are typically 10–18 months of falling EPS and 25–45% peak-to-trough drawdowns in SPX. Most painful regime for DCA emotionally — but mathematically the best for long-term accumulation if you keep buying.',
+    dca: 'Split DCA into weekly tranches. Do not increase aggressively until the second derivative turns — i.e., when bad news stops causing new lows. That signal often precedes economic recovery by 6–9 months.'
+  },
+  {
+    name: 'Liquidity-driven rally',
+    tone: 'bull',
+    signals: 'Fed balance sheet expanding OR Treasury General Account drawing down OR reverse repo draining; financial conditions easing fast (Goldman/Bloomberg FCI); USD weakening; real yields falling; tech and high-duration assets leading; credit spreads compressing aggressively.',
+    behavior: 'Markets rise even on mixed economic data. "Liquidity beats fundamentals." Risk assets across the board rally — crypto, junk bonds, growth stocks. Macro skeptics underperform.',
+    risks: 'Liquidity rallies can reverse fast when the liquidity tap closes (Fed pivot, Treasury issuance surge, RRP refilling). Watch the Fed balance sheet weekly and TGA daily.',
+    dca: 'Continue normal DCA, lean modestly aggressive while the liquidity backdrop is improving. But pre-commit to reducing pace the moment liquidity indicators reverse — don\'t wait for price confirmation.'
+  }
+];
+
+const DATA_CATS = [
+  {
+    name: 'Equity Markets',
+    icon: '📊',
+    items: [
+      {n: 'S&P 500', why: 'The market. Primary benchmark for risk-on/risk-off.', sig: 'Above rising 50/200-day MA = uptrend. Below = caution.'},
+      {n: 'Nasdaq 100', why: 'Growth/tech regime indicator.', sig: 'Outperforming SPX = liquidity & growth bid. Underperforming = defensive rotation.'},
+      {n: 'Dow Jones Industrial Average', why: 'Mega-cap industrials lens.', sig: 'DJI relative strength vs SPX hints at cyclical health.'},
+      {n: 'Russell 2000', why: 'Small-caps. Cyclical & rate-sensitive.', sig: 'Outperforming = risk-on, easier financial conditions. Underperforming = risk-off.'},
+      {n: 'S&P 500 Equal Weight', why: 'Breadth check on cap-weighted SPX.', sig: 'Equal-weight lagging cap-weighted = narrow leadership = caution flag.'},
+      {n: 'Market breadth', why: '% of stocks above 50/200-day MAs; A/D line; new highs vs new lows.', sig: 'Breadth >60% above 50-day = healthy. <35% = deterioration. Diverging from price = warning.'},
+      {n: 'Sector performance', why: 'Which sectors lead/lag tells you the regime.', sig: 'XLK/XLY/XLF leading = risk-on. XLU/XLP/XLV leading = defensive.'}
+    ]
+  },
+  {
+    name: 'Rates & Bonds',
+    icon: '📈',
+    items: [
+      {n: '2-year Treasury yield', why: 'Reflects Fed policy expectations.', sig: 'Rising = hawkish repricing. Falling = dovish repricing or growth worries.'},
+      {n: '10-year Treasury yield', why: 'Long-term rate; reflects growth + inflation + term premium.', sig: 'Above 4.5% pressures equities; above 5% historically problematic. Rapid rises = stress.'},
+      {n: 'Yield curve (10Y minus 2Y, or 10Y minus 3M)', why: 'Recession signal.', sig: 'Inverted = recession setup. Bull-steepening (long end rising) = growth optimism. Bear-steepening (short end falling, long stable) = recession imminent.'},
+      {n: 'Real yields (10-year TIPS)', why: 'Rates adjusted for inflation expectations.', sig: 'Rising real yields = headwind for growth/tech/gold. Falling = tailwind.'},
+      {n: 'Treasury market direction (TLT)', why: 'Long bonds. Risk-off proxy.', sig: 'TLT rallying with equities falling = flight to quality. TLT and equities both falling = correlated stress.'}
+    ]
+  },
+  {
+    name: 'USD & Commodities',
+    icon: '💵',
+    items: [
+      {n: 'DXY (Dollar Index)', why: 'Global liquidity proxy. Strong dollar tightens conditions.', sig: 'DXY rising = tightening, headwind for risk assets and EM. Falling = liquidity tailwind.'},
+      {n: 'USD/JPY', why: 'Reflects rate differentials & carry trade. Stress signal.', sig: 'Rapid USD/JPY moves (especially up) historically precede volatility events.'},
+      {n: 'Oil (WTI)', why: 'Growth and geopolitical signal; feeds inflation.', sig: 'Rising = demand strong + inflation pressure. Falling sharply on geopolitics = supply shock; on demand = recession signal.'},
+      {n: 'Gold', why: 'Real-yield, USD, and fear gauge.', sig: 'Rising with falling real yields = standard. Rising with rising real yields = stress/de-dollarization signal.'},
+      {n: 'Copper', why: 'Cyclical/China demand barometer ("Dr. Copper").', sig: 'Rising = global growth healthy. Falling = cyclical slowdown.'}
+    ]
+  },
+  {
+    name: 'Credit & Risk Appetite',
+    icon: '⚠️',
+    items: [
+      {n: 'HYG (high-yield bond ETF)', why: 'Junk-bond risk appetite.', sig: 'Rising = risk-on. Breaking down hard = credit stress, often precedes equity selloffs.'},
+      {n: 'LQD (investment-grade bond ETF)', why: 'IG credit, rate-sensitive but credit-sensitive.', sig: 'Falling on rising spreads = credit stress (not just rate move).'},
+      {n: 'HYG/LQD ratio', why: 'Risk appetite indicator: junk vs. quality credit.', sig: 'Rising = risk-on. Falling = quality bid, defensive rotation.'},
+      {n: 'Credit spreads (HY OAS, IG OAS)', why: 'Most reliable recession/stress signal.', sig: 'HY OAS <400 bps = benign. 450–550 = caution. >600 = stress. Direction matters more than level.'},
+      {n: 'Regional banks (KRE)', why: 'Idiosyncratic stress indicator (commercial RE, deposit flight).', sig: 'KRE breakdown without broad market context = sector-specific stress to watch.'},
+      {n: 'VIX', why: 'Equity volatility expectations.', sig: '<15 = complacent. 15–20 = normal. 20–30 = elevated. 30+ = stress. Persistent spikes matter; one-day pops fade.'},
+      {n: 'MOVE index', why: 'Bond market volatility — often leads equity vol.', sig: 'Rising MOVE = bond stress, often precedes equity stress. Watch divergence with VIX.'}
+    ]
+  },
+  {
+    name: 'Macro Data',
+    icon: '🏛️',
+    items: [
+      {n: 'CPI (headline & core)', why: 'Most market-moving inflation print.', sig: 'Below consensus = dovish reaction (bullish). Above = hawkish reaction. Watch core services trend.'},
+      {n: 'PPI', why: 'Producer-side inflation; CPI lead.', sig: 'Persistent PPI moves often telegraph CPI direction. Watch core PPI.'},
+      {n: 'PCE inflation', why: 'Fed\'s preferred inflation gauge.', sig: 'Core PCE direction is what Fed actually targets. >3% = hawkish bias. <2.5% = dovish bias.'},
+      {n: 'Nonfarm payrolls', why: 'Headline labor signal.', sig: '<100k = labor cooling. >250k = labor hot. Revisions matter as much as headline.'},
+      {n: 'Unemployment rate', why: 'Sahm rule indicator (3mo avg vs. 12mo low).', sig: 'Sahm trigger (+0.5pp from low) historically = recession underway.'},
+      {n: 'Jobless claims', why: 'Real-time labor signal — high-frequency.', sig: '<240k = healthy. >300k sustained = labor weakening.'},
+      {n: 'ISM Manufacturing', why: 'Manufacturing PMI; cyclical indicator.', sig: '>50 = expansion. <45 sustained = recession signal historically.'},
+      {n: 'ISM Services', why: 'Services PMI; dominates the modern economy.', sig: '>52 = expansion. <50 = trouble; services holds up longer than manufacturing.'},
+      {n: 'Retail sales', why: 'Consumer-spending pulse.', sig: 'Declining MoM trend in real terms = consumer weakening.'},
+      {n: 'Consumer confidence (Conf Board, U Mich)', why: 'Forward sentiment.', sig: 'Sharp drops precede consumption weakness. Watch expectations sub-index.'},
+      {n: 'GDP', why: 'Backward-looking but defines recession.', sig: 'Two consecutive negative quarters = technical recession (NBER definition broader).'},
+      {n: 'Fed speeches', why: 'Forward guidance, terminal rate signal.', sig: 'Watch Powell, Vice-Chair, and influential voters. Tone shift > exact words.'},
+      {n: 'FOMC meetings', why: 'Policy decision + dot plot + presser.', sig: 'Dot plot shift, balance sheet language, and Powell\'s tone in Q&A. SEP revisions matter.'}
+    ]
+  },
+  {
+    name: 'Earnings & Fundamentals',
+    icon: '💼',
+    items: [
+      {n: 'S&P 500 EPS growth (forward 12m)', why: 'Drives long-term returns.', sig: 'Positive revisions = bullish underpin. Negative revisions = caution flag.'},
+      {n: 'Revenue growth', why: 'Sales = underlying demand.', sig: 'EPS up on margins alone is fragile. Revenue and EPS both up = high quality.'},
+      {n: 'Forward guidance', why: 'Management view on next 1–2 quarters.', sig: 'Broad-based guidance cuts = leading indicator of macro slowdown.'},
+      {n: 'Analyst estimate revisions', why: 'Direction matters more than absolute level.', sig: 'Earnings Revision Ratio (up/down) >1 = improving. <1 = deteriorating.'},
+      {n: 'Magnificent 7 earnings (AAPL, MSFT, GOOGL, AMZN, META, NVDA, TSLA)', why: 'Concentration risk: ~30% of SPX market cap.', sig: 'A single Mag-7 miss can move SPX 1–2%. AI capex narrative is the key driver right now.'},
+      {n: 'Semiconductor earnings (NVDA, AVGO, AMD, TSM, ASML, others)', why: 'Cyclical bellwether + AI cycle proxy.', sig: 'SOX index trend = best single barometer of risk appetite for high-multiple growth.'},
+      {n: 'Sector earnings trends', why: 'Where the strength/weakness is concentrated.', sig: 'Watch financials (credit signal), discretionary (consumer signal), industrials (capex signal).'}
+    ]
+  },
+  {
+    name: 'Liquidity & Policy',
+    icon: '🚰',
+    items: [
+      {n: 'Fed balance sheet', why: 'QT pace; net liquidity.', sig: 'Expanding (or QT slowing) = liquidity tailwind. Accelerating QT = headwind.'},
+      {n: 'Treasury General Account (TGA)', why: 'Cash sitting at Fed; drawdown = liquidity injection.', sig: 'TGA falling = liquidity flowing to markets. TGA rising = liquidity draining.'},
+      {n: 'Reverse repo (ON RRP)', why: 'Where excess cash sits. Drains = liquidity into system.', sig: 'RRP falling = liquidity moving back to banks and markets. Watch trend over weeks.'},
+      {n: 'Bank reserves', why: 'Bank-system liquidity proxy.', sig: 'Below ~3T = stress region (2019 repo crisis context). Direction matters.'},
+      {n: 'Financial conditions (Goldman FCI, Bloomberg FCI, Chicago Fed NFCI)', why: 'Composite of rates, spreads, USD, equity vol.', sig: 'Easing FCI = tailwind for risk. Tightening FCI = headwind. Fed pays attention to this — so should you.'},
+      {n: 'Fiscal policy', why: 'Deficit, spending, tax policy.', sig: 'Large deficits = bond supply pressure + stimulative for growth/earnings. Fiscal consolidation = drag.'},
+      {n: 'Treasury issuance', why: 'Net supply hitting the market.', sig: 'Heavy long-end issuance = pressure on long yields. Bill-heavy = absorbed by money markets, less risk.'}
+    ]
+  }
+];
+
+const AM_CHECKLIST = [
+  {t:'Overnight global market tone',w:'Quick scan: did Asia and Europe trade risk-on or risk-off overnight? Any major macro headlines from Asia (China, Japan), Europe (ECB, geopolitics), or the Middle East?',h:'A risk-off overnight (equities lower across Asia and Europe, USD bid, gold up) means U.S. opens with a negative tilt unless rejected. A risk-on overnight tends to extend.',d:'Rarely changes DCA alone. But informs the tone of everything below.'},
+  {t:'Asia & Europe market performance',w:'Hang Seng, Nikkei, Shanghai, KOSPI overnight; DAX, CAC, FTSE, Stoxx 600 morning sessions. Magnitude and breadth.',h:'Coordinated 1%+ moves across regions matter. Isolated single-market moves often fade.',d:'No direct DCA impact unless cumulative move is large enough to shift regime.'},
+  {t:'U.S. equity futures (ES, NQ, RTY)',w:'Pre-market direction and magnitude. Compare ES vs NQ vs RTY for sector tilt.',h:'NQ outperforming ES = growth/tech bid. RTY outperforming = risk-on/cyclical bid. RTY lagging while ES holds up = narrowing leadership warning.',d:'Modest futures moves: no DCA change. >1.5% pre-market move: pause and check the catalyst before acting.'},
+  {t:'Treasury yields (2Y, 10Y, curve)',w:'Overnight moves in 2Y and 10Y; curve direction; any auction results overnight.',h:'10Y up >5 bps with no clear catalyst = warning sign. Bull-steepening = growth optimism. Bear-steepening = recession-signal pattern.',d:'Sustained yield trend changes matter for sector tilt, not for DCA pacing.'},
+  {t:'U.S. Dollar (DXY)',w:'Overnight DXY direction. Any FX-related news (BoJ, ECB, intervention talk)?',h:'DXY rising sharply = global liquidity tightening = headwind for risk. DXY falling = liquidity tailwind.',d:'Multi-week DXY trends feed into the scoring system; one-day moves do not change DCA.'},
+  {t:'Oil, gold, copper',w:'Pre-market price direction; any supply news (OPEC, geopolitics) for oil; central bank flow for gold; China data for copper.',h:'Oil + gold + USD all up = stress trade (geopolitics or stagflation). Copper up = growth optimism. Watch for divergences.',d:'Macro context only. No direct DCA action.'},
+  {t:'Major macro events today',w:'CPI, PPI, PCE, NFP, claims, ISM, retail sales, Fed minutes, etc. Time of release and consensus.',h:'A scheduled tier-1 event (CPI, NFP, FOMC) means today is event-driven. Avoid large discretionary moves before the print.',d:'On tier-1 event days, never alter DCA pre-print. Wait for the reaction.'},
+  {t:'Fed speakers today',w:'Who is speaking, when, and what audience? Voting members carry more weight.',h:'Powell, Vice-Chair, NY Fed President = always matters. Regional governors = usually noise. Tone shifts > exact wording.',d:'Fed-speech days are noise unless a clear policy shift signal emerges. Default to no DCA change.'},
+  {t:'Important earnings today',w:'Mag-7 reports? Major bellwethers (semis, banks, retailers)? Pre-market or after-close?',h:'Mag-7 earnings can move SPX 1–2%. Semi guidance is the highest-signal forward indicator. Watch for sector reaction beyond the reporter.',d:'Don\'t front-run earnings with extra DCA. Wait for the reaction, then re-evaluate.'},
+  {t:'Sector leadership in premarket',w:'Which sector ETFs (XLK, XLY, XLF, XLE, XLV, XLU, XLP) are leading/lagging pre-market?',h:'Tech & cyclicals leading = risk-on. Defensives leading = risk-off. Energy moving on geopolitics, not growth — separate signal.',d:'Sector tilt informs which DCA buckets get emphasis, not whether to deploy.'},
+  {t:'Magnificent 7 pre-market moves',w:'Individual price moves for AAPL, MSFT, GOOGL, AMZN, META, NVDA, TSLA. Any company-specific news?',h:'Mag-7 weakness in premarket = SPX likely opens soft. Mag-7 strength leads SPX 70%+ of the time. NVDA still the AI-cycle tell.',d:'Single-name moves don\'t change framework DCA — but coordinated Mag-7 selling signals broader caution.'},
+  {t:'Semiconductor pre-market moves',w:'NVDA, AVGO, AMD, TSM, ASML, MU. SOX index futures if available.',h:'Semis are the cleanest read on speculative risk appetite and AI capex narrative. Coordinated weakness = important.',d:'Persistent semi weakness over weeks shifts the regime read; daily moves do not change DCA.'},
+  {t:'Key headlines',w:'Geopolitics (Middle East, Taiwan, Ukraine), policy (tariffs, sanctions), corporate (M&A, guidance pre-announces), and rate-related news.',h:'Most headlines are noise. The ones that matter: policy shifts, geopolitical escalation, credit events. Filter ruthlessly.',d:'Headlines never trigger DCA changes on their own. Only the price reaction does.'},
+  {t:'Risk-on or risk-off signal — one sentence',w:'Synthesize everything above into one sentence: "Risk-on with rotation into cyclicals" or "Risk-off on hot CPI overshoot."',h:'Force yourself to commit to a label. If you can\'t, the day is neutral/uncertain.',d:'This is the foundation for the entire trading day\'s DCA judgment.'},
+  {t:'Key support/resistance for SPX & Nasdaq',w:'Identify the levels that matter intraday: prior day high/low, 5-day VWAP, 50-day MA, round numbers, recent gap fills.',h:'Tested-and-held = support confirms. Tested-and-broken = direction confirms. Avoid placing weight on untested levels.',d:'Helpful for tactical timing of intra-day DCA splits, not for monthly pacing.'}
+];
+
+const PM_CHECKLIST = [
+  {t:'S&P 500 daily performance',w:'Close, change, %, range, volume. Was the close near the highs or lows of the day?',y:'Closing strength matters more than open. A reversal day (open up, close near lows) is a regime signal. A trend day with closing strength confirms the underlying.',r:'Single-day moves rarely change regime. Sustained trends and reversal patterns do.',d:'Day\'s move alone never changes DCA. Look for confirmation across multiple days/indicators.'},
+  {t:'Nasdaq 100 daily performance',w:'Close, %, vs SPX. Did growth lead or lag?',y:'NDX leading SPX = liquidity & growth bid. NDX lagging on otherwise good day = rotation away from growth = caution.',r:'NDX outperformance/underperformance trends matter; single days do not.',d:'Multi-week NDX leadership = constructive for DCA tilt toward growth/tech.'},
+  {t:'Russell 2000 daily performance',w:'Close, % vs SPX. Small-cap participation = breadth.',y:'RUT outperforming = healthy risk-on with broad participation. RUT lagging chronically = narrow market = caution.',r:'Sustained RUT weakness with SPX at highs = late-cycle warning.',d:'RUT relative-strength feeds into scoring breadth factor.'},
+  {t:'Sector performance',w:'Which 3 sectors led, which 3 lagged. Coherent or random?',y:'XLK/XLY/XLF leading = risk-on. XLU/XLP/XLV leading = defensive rotation. XLE leading alone = geopolitics, not growth.',r:'A defensive rotation day inside an uptrend = noise. Several defensive rotation days in a row = regime tilt.',d:'Sector tilt informs DCA bucket emphasis, not deployment pace.'},
+  {t:'Market breadth',w:'A/D line, % stocks above 50/200-day, new highs vs new lows.',y:'Strong day with weak breadth (only mega-caps up) = warning. Weak day with strong breadth (broad-based modest selling) = healthier than headline.',r:'Breadth divergences from price are the most reliable early-warning signal in equities.',d:'Persistent breadth deterioration = scoring system signals caution.'},
+  {t:'Magnificent 7 performance',w:'Each Mag-7 name\'s daily change. Coordinated direction or dispersion?',y:'Coordinated Mag-7 selling = institutional rotation away from concentrated bets. Dispersion = company-specific news.',r:'A few -3% days across Mag-7 simultaneously = position-de-risking signal.',d:'Mag-7 weakness over weeks contributes to regime downgrade.'},
+  {t:'Semiconductor performance',w:'SOX index close, % change, NVDA specifically. Any guidance / order flow news?',y:'SOX leadership = risk-on confirmed. SOX breakdown = leadership transition or speculative reset.',r:'Semis often lead the broader market by 2–4 weeks at turning points.',d:'Sustained semi weakness = caution flag in scoring.'},
+  {t:'Bond yield movement',w:'2Y, 10Y, curve at close. Did yields rise/fall on the day? Catalyst?',y:'Yields up on growth optimism (with equities up) = healthy. Yields up with equities down = stress combo. Yields down with equities down = recession fear.',r:'A sharp yield move that equities ignored often means equities will catch up.',d:'Sustained yield trends matter for sector tilt. Daily moves rarely matter for DCA pace.'},
+  {t:'U.S. dollar movement',w:'DXY close, daily move, any FX news. USD/JPY watch.',y:'DXY rising with risk-off = classic flight to USD. DXY falling with risk-on = liquidity easing.',r:'Sharp USD moves often precede volatility events (USD/JPY 2024 unwind).',d:'Multi-week DXY trend feeds liquidity scoring.'},
+  {t:'Commodity movement',w:'Oil (WTI), gold, copper closes. Any catalyst?',y:'Oil up on demand (with copper up) = growth-confirming. Oil up on supply (without copper) = stagflation risk. Gold up = real yields falling or fear.',r:'Watch divergences — copper down while oil up = supply shock not demand strength.',d:'No direct DCA impact unless extreme moves shift macro narrative.'},
+  {t:'Credit market signal',w:'HYG, LQD daily moves. HYG/LQD ratio. Any specific credit news?',y:'HYG up with equities up = confirming risk-on. HYG down while equities up = warning (equities last to know).',r:'Credit usually leads equities at major turns. Daily moves are noise; week-trend is signal.',d:'Sustained credit weakening = scoring system downgrades.'},
+  {t:'VIX & volatility signal',w:'VIX close, change. Term structure (VIX vs VIX3M) if available. MOVE index for bond vol.',y:'VIX falling = complacency or genuine calm. VIX rising into close = traders buying protection. Sharp VIX divergence from SPX direction = important.',r:'VIX <13 = complacency risk. VIX >25 sustained = elevated environment. MOVE rising while VIX flat = bond stress leading equity.',d:'Multi-day VIX regime shifts inform DCA pacing.'},
+  {t:'Macro news impact',w:'How did markets digest today\'s macro print or Fed speech?',y:'Hot CPI but stocks up = market was already priced for worse, dovish reaction follows. Mixed data with sharp selloff = positioning unwind.',r:'Surprise reactions (opposite of expected) often signal positioning, not fundamentals.',d:'Macro reactions inform regime, rarely change DCA on the day.'},
+  {t:'Earnings reaction',w:'How did key reporters trade post-earnings? Did the sector follow?',y:'Mag-7 beat & sold off = expectations too high; concerning. Modest miss but stock up = positioning was too bearish; constructive.',r:'Reaction matters more than the print. Pay attention to how the broader sector trades around individual reports.',d:'Sustained negative earnings reactions across sectors = regime downgrade.'},
+  {t:'Technical market structure',w:'Did SPX/NDX hold key support? Break resistance? Confirm or fail the morning view?',y:'Held support on weak day = bulls in control. Broke resistance with volume = bulls in control. Failed at resistance = sellers in control.',r:'False breakouts and breakdowns are common — wait for confirmation (one day above/below, ideally with closing strength).',d:'Multi-week structural changes (e.g., SPX losing 200-day MA) = regime trigger.'},
+  {t:'Did the day confirm or contradict the morning view?',w:'Compare AM Checklist conclusion to PM close. Was the risk-on/risk-off call correct? If not, why?',y:'Self-feedback. Tracking AM-vs-PM accuracy over weeks calibrates intuition.',r:'Don\'t over-update on a single contradictory day. But three in a row = adjust the framework lens.',d:'Builds judgment for tomorrow\'s decisions; no direct DCA change today.'}
+];
+
+const DCA_RULES = [
+  {name:'Continue normal DCA', tone:'green', summary:'The default. Use this whenever no clear regime shift has occurred. Most weeks.',
+    conditions:'Stable or improving regime; no fresh stress signal across credit, breadth, or vol; macro events resolved within expectations.',
+    indicators:'Score between -2 and +2. Regime is "Risk-on uptrend," "Choppy consolidation," or "Pullback within uptrend." Credit spreads stable.',
+    risks:'Slight under-exposure if a powerful trend develops. Slight over-exposure if a stealth deterioration is underway. Both small.',
+    duration:'Default state — no time limit. Re-check weekly via the scoring widget.'
+  },
+  {name:'Increase DCA modestly', tone:'green', summary:'For constructive environments and healthy pullbacks. Bias toward more deployment without aggressive timing.',
+    conditions:'Pullback of 3–7% within an uptrend; macro data improving; credit benign; sentiment cooled from euphoric to neutral.',
+    indicators:'Score +3 to +6. Breadth still healthy (>50% above 50-day). HY OAS < 450 bps. VIX 17–22.',
+    risks:'If the "pullback" turns into a correction, your modest increase becomes mistimed. Mitigation: tranche the extra amount over 2–3 weeks.',
+    duration:'2–4 weeks. Re-evaluate as the pullback resolves up or down.'
+  },
+  {name:'Increase DCA aggressively', tone:'green', summary:'Reserved for high-conviction value windows: confirmed corrections with stabilizing tape, or oversold extremes with credit holding up.',
+    conditions:'SPX down 10%+ from highs; breadth oversold and starting to recover; credit not in full stress (HY OAS <600 bps); positioning has cleared.',
+    indicators:'Score deeply negative (-5 to -8) for 2+ weeks, then improving. Breadth thrust signal (>80% of stocks up in a session). VIX falling from extreme.',
+    risks:'Calling the bottom prematurely. Corrections retest lows ~70% of the time. Even when right, deploying all cash means missing the next opportunity.',
+    duration:'Deploy aggressively over 4–8 weeks, NOT in one shot. Then revert to normal DCA.'
+  },
+  {name:'Split monthly DCA into weekly tranches', tone:'amber', summary:'Increase frequency, keep total amount the same. Reduces single-decision risk in choppy or transitional environments.',
+    conditions:'Elevated volatility (VIX 20–28) without a clear regime call; macro event clusters (multiple CPI, NFP, FOMC in same month); transitional regimes.',
+    indicators:'Score between -5 and +3 but oscillating. Regime read shifts more than once per week. VIX above 20 sustained.',
+    risks:'More transactions, slightly more frictions. Otherwise low-risk — this is a "do less harm" mode, not a tactical bet.',
+    duration:'Until volatility normalizes or regime resolves. Typically 2–6 weeks.'
+  },
+  {name:'Reduce DCA temporarily', tone:'red', summary:'Slow the pace of deployment without stopping. Hold the difference as cash for later opportunity.',
+    conditions:'Late-cycle melt-up with stretched valuations; multiple stress signals starting to fire; macro deteriorating but not yet recession; recession risk-off underway with no signs of turn.',
+    indicators:'Score -5 to -8. Credit spreads widening through key thresholds (HY OAS through 500 then 600 bps). Multiple regime warnings (Sahm rule trigger, ISM <45, breadth collapse).',
+    risks:'You will systematically miss some upside. This is the price of risk management. Acceptable for a long-horizon investor only if cash gets re-deployed at lower prices.',
+    duration:'Until at least one of: regime stabilizes, score returns to neutral, or a -15%+ drawdown opens a value opportunity. Max 6 months without re-evaluation.'
+  },
+  {name:'Hold extra cash temporarily', tone:'amber', summary:'Same idea as "reduce DCA" but specifically about building a tactical cash reserve for future opportunities.',
+    conditions:'High-confidence late-cycle conditions; or unusual positioning extremes (sentiment surveys at multi-year highs); or pending known catalyst (election, major policy shift) that markets are mispricing.',
+    indicators:'Score around -3 to -6. Sentiment indicators (AAII bull-bear spread, equity put/call) at multi-year extremes. Positioning at extreme net long.',
+    risks:'Opportunity cost. Cash drag in a melt-up. Mitigation: cap the reserve at 10–15% of normal monthly DCA.',
+    duration:'Pre-defined trigger to deploy: e.g., "deploy 50% if SPX -8% from current, deploy remainder if -15%." Document the trigger.'
+  },
+  {name:'Rebalance portfolio', tone:'purple', summary:'Distinct from DCA pacing — this is about portfolio shape. Triggered by drift or regime change.',
+    conditions:'Allocation drift (single position or sector exceeds target weight by 25%+); regime shift that changes appropriate sector exposure; year-end tax considerations.',
+    indicators:'Position-level drift; regime persistence shift (e.g., recessionary risk-off persisting > 2 months); change in long-term thesis.',
+    risks:'Tax drag (taxable accounts). Behavioral risk of trading too often. Set rebalance bands and stick to them — don\'t rebalance on whim.',
+    duration:'Periodic — quarterly or threshold-triggered. Not a daily-decision process.'
+  },
+  {name:'Avoid emotional buying or selling', tone:'red', summary:'Always on. The meta-rule above all others.',
+    conditions:'When you feel certain. When you feel scared. When the headlines feel obvious. When the chart "looks like" a top or bottom. When your gut wants action.',
+    indicators:'Internal: any strong emotional pull. External: VIX spikes, viral headlines, social-media consensus.',
+    risks:'Inaction has a cost too — but it\'s usually smaller than the cost of emotional action. The framework exists to make emotion unnecessary.',
+    duration:'Permanent.'
+  }
+];
+
+const RISK_RULES = [
+  {name:'Avoid panic selling',ico:'🛑', items:[
+    'Pre-commit in writing that you will never sell during a -10%+ drawdown without 48 hours of cooldown.',
+    'During corrections, narrow your inputs to credit + breadth + VIX. Ignore headlines for one full trading day.',
+    'Re-read your investment objective (Tab 1) before any non-routine action.',
+    'Drawdowns of 10–20% happen on average every 18–24 months historically. They are normal, not extraordinary.'
+  ]},
+  {name:'Avoid over-buying in unstable markets',ico:'🌊', items:[
+    'When VIX is >25 sustained, cap any "increase DCA aggressively" deployment at 25% of normal monthly amount per week.',
+    'Never deploy a full cash reserve in a single tranche, regardless of how cheap the market looks.',
+    'When the score is at extreme negative, require the score to improve for 5 consecutive trading days before deploying reserves.',
+    'Bear markets and corrections retest lows roughly 70% of the time. Average in over 4–8 weeks minimum.'
+  ]},
+  {name:'Distinguish pullback from serious correction',ico:'🔎', items:[
+    'A pullback: SPX -3% to -7%, price above 200-day MA, breadth weakening but not broken, credit spreads stable, no recession signal.',
+    'A correction: SPX -10%+, breadth broken (<35% above 50-day), credit spreads widening sharply, VIX >25 sustained, possible recession signals.',
+    'A bear: -20%+, 200-day MA broken and falling, sustained credit stress, defensive rotation, often coincides with recession.',
+    'The single best tell: credit. If HY OAS holds below 500 bps, it\'s probably a pullback. Through 500 → 600 = correction. Through 700+ = bear/recession territory.'
+  ]},
+  {name:'Use cash reserves with discipline',ico:'💰', items:[
+    'Define cash reserve size in advance (e.g., 10% of annual contributions held back).',
+    'Define deploy triggers in advance: e.g., "50% at SPX -10%, remainder at SPX -20% or breadth thrust."',
+    'Never let cash reserve exceed 20% — opportunity cost dominates above that level for a long-horizon investor.',
+    'Cash reserve is not a portfolio allocation. It\'s a tactical buffer with pre-defined deployment rules.'
+  ]},
+  {name:'Avoid headline overreaction',ico:'📰', items:[
+    'Default reaction to a scary headline: do nothing for 24 hours. Most market-moving headlines are priced within hours.',
+    'Filter test: does the headline change credit spreads, breadth, or earnings revisions? If no, it\'s noise.',
+    'Track your headline-reaction batting average. If 80% of your "act-on-headline" decisions are reversed within a week, the headline-system is broken.',
+    'Geopolitical headlines move markets violently short-term but usually heal within 4–8 weeks unless they trigger an oil supply shock or financial-system stress.'
+  ]},
+  {name:'Manage risk around event clusters',ico:'📅', items:[
+    'FOMC, CPI, NFP days: do NOT deploy fresh DCA in the four trading hours before the print. Wait for reaction.',
+    'Earnings season (especially Mag-7 weeks): split DCA into smaller tranches; expect 1–2% daily SPX moves.',
+    'Geopolitical shocks: assess whether the shock is "contained financial" (usually heals) or "energy supply / systemic" (real risk). Adjust accordingly.',
+    'Election years: positioning shifts before, regime usually unchanged after. Most pre-election volatility doesn\'t persist.'
+  ]}
+];
+
+const WEEKLY_FIELDS = [
+  {id:'w-regime', step:1, label:'Weekly market regime', hint:'Pick exactly one — the regime that explains the most of this week\'s evidence.',
+    type:'choices', options:['Risk-on uptrend','Choppy consolidation','Pullback within uptrend','Correction','Bear-market breakdown','Oversold rebound','Late-cycle melt-up','Recessionary risk-off','Liquidity-driven rally']},
+  {id:'w-spx', step:2, label:'SPX trend', hint:'Direction and quality of the move.',
+    type:'choices', options:['Strong uptrend','Choppy uptrend','Sideways','Choppy downtrend','Strong downtrend']},
+  {id:'w-ndx', step:3, label:'Nasdaq trend', hint:'Relative to SPX — is growth leading or lagging?',
+    type:'choices', options:['Leading SPX strongly','Leading mildly','In line','Lagging mildly','Lagging strongly']},
+  {id:'w-sector', step:4, label:'Sector rotation', hint:'Cyclical or defensive bid? Tech / financials / cyclicals leading, or utilities / staples / healthcare?',
+    type:'textarea'},
+  {id:'w-credit', step:5, label:'Credit conditions', hint:'HYG, HY OAS direction. Stress signal? Stable? Easing?',
+    type:'choices', options:['Easing aggressively','Easing','Stable','Tightening','Tightening sharply']},
+  {id:'w-rates', step:6, label:'Rate conditions', hint:'10Y direction; curve shape; real yields.',
+    type:'choices', options:['Falling — supportive','Falling — recession-signal','Stable','Rising — gradual','Rising — disorderly']},
+  {id:'w-inflation', step:7, label:'Inflation trend', hint:'CPI / PCE / inflation expectations direction.',
+    type:'choices', options:['Disinflating','Stable','Re-accelerating']},
+  {id:'w-growth', step:8, label:'Growth trend', hint:'NFP, ISM, retail sales, claims — net direction.',
+    type:'choices', options:['Improving','Stable','Slowing','Contracting']},
+  {id:'w-earn', step:9, label:'Earnings trend', hint:'Revisions direction, guidance tone, Mag-7 specifically.',
+    type:'choices', options:['Revisions up — bullish','Stable','Revisions down — caution','Revisions down — alarming']},
+  {id:'w-liq', step:10, label:'Liquidity trend', hint:'Fed balance sheet, TGA, RRP, FCI.',
+    type:'choices', options:['Easing — strong','Easing — modest','Neutral','Tightening — modest','Tightening — strong']},
+  {id:'w-sent', step:11, label:'Sentiment & positioning', hint:'AAII, CNN Fear/Greed, equity positioning, put/call.',
+    type:'choices', options:['Despair / contrarian buy','Bearish','Neutral','Bullish','Euphoric / contrarian sell']},
+  {id:'w-risks', step:12, label:'Major risks for next week', hint:'Scheduled events (CPI, FOMC, Mag-7 earnings), positioning vulnerabilities, geopolitical flashpoints.',
+    type:'textarea'},
+  {id:'w-opps', step:13, label:'Major opportunities for next week', hint:'Setups: pullback support tests, breadth thrusts, oversold readings, sector rotations, oversold individual names within thesis.',
+    type:'textarea'},
+  {id:'w-action', step:14, label:'DCA action for next week', hint:'Which of the 8 decision rules applies?',
+    type:'choices', options:['Continue normal DCA','Increase DCA modestly','Increase DCA aggressively','Split into weekly tranches','Reduce DCA temporarily','Hold extra cash','Rebalance portfolio','No change — review next Friday']}
+];
+
+const DAILY_FIELDS = [
+  {id:'d-summary', step:1, label:'Market summary', hint:'2–3 sentences. What happened today?', type:'textarea'},
+  {id:'d-regime', step:2, label:'Market regime', hint:'Pick exactly one regime.',
+    type:'choices', options:['Risk-on uptrend','Choppy consolidation','Pullback within uptrend','Correction','Bear-market breakdown','Oversold rebound','Late-cycle melt-up','Recessionary risk-off','Liquidity-driven rally']},
+  {id:'d-risk', step:3, label:'Risk level', hint:'Where does risk stand right now?',
+    type:'choices', options:['Low','Moderate','Elevated','High']},
+  {id:'d-drivers', step:4, label:'Key drivers (3–5)', hint:'The most important inputs of the day — bond yields, Fed-speech, earnings, geopolitics, breadth, etc.',
+    type:'textarea'},
+  {id:'d-bull', step:5, label:'Bullish evidence', hint:'Strongest positive signals — list as bullets in plain text.', type:'textarea'},
+  {id:'d-bear', step:6, label:'Bearish evidence', hint:'Strongest negative signals — list as bullets in plain text.', type:'textarea'},
+  {id:'d-comment', step:7, label:'DCA strategy comment', hint:'One paragraph: what does today\'s environment mean for the next DCA decision?', type:'textarea'},
+  {id:'d-action', step:8, label:'Recommended DCA action', hint:'Pick one.',
+    type:'choices', options:['Continue normal DCA','Increase DCA modestly','Increase DCA aggressively','Reduce DCA temporarily','Split monthly DCA into weekly tranches','Hold extra cash temporarily','Rebalance portfolio']},
+  {id:'d-watch', step:9, label:'Watchlist for tomorrow', hint:'Key events, levels, earnings, or indicators to monitor tomorrow.', type:'textarea'}
+];
+
+const SCORE_FACTORS = [
+  {key:'trend', name:'Trend', desc:'SPX position vs 50/200-day MAs and direction'},
+  {key:'breadth', name:'Breadth', desc:'% stocks above 50-day MA, A/D line, equal-weight vs cap-weight'},
+  {key:'rates', name:'Rates', desc:'10Y level/direction, curve shape, real yields'},
+  {key:'credit', name:'Credit', desc:'HY OAS level/direction, HYG/LQD ratio'},
+  {key:'vol', name:'Volatility', desc:'VIX level, MOVE index, term structure'},
+  {key:'earn', name:'Earnings', desc:'Forward EPS revisions, Mag-7 trends, guidance'},
+  {key:'liq', name:'Liquidity', desc:'Fed balance sheet, TGA, RRP, FCI direction'},
+  {key:'macro', name:'Macro data', desc:'NFP, ISM, CPI, claims — net direction vs expectations'},
+  {key:'sent', name:'Sentiment', desc:'AAII, F&G, put/call, positioning extremes (contrarian)'},
+  {key:'val', name:'Valuation', desc:'Forward P/E vs history, ERP, dividend yield vs bonds (contrarian)'}
+];
+
+/* ════════════════════════════════════════════════════════════════
+   RENDERING — populate sections from data above
+════════════════════════════════════════════════════════════════ */
+
+function renderRegimes() {
+  const host = document.getElementById('regime-list');
+  host.innerHTML = REGIMES.map((r, i) => `
+    <div class="regime" data-tone="${r.tone}" data-idx="${i}">
+      <div class="regime-head" onclick="toggleRegime(${i})">
+        <div class="dot"></div>
+        <div class="regime-title">${r.name}</div>
+        <div class="regime-tone">${r.tone === 'bull' ? 'Bullish' : r.tone === 'caution' ? 'Caution' : r.tone === 'bear' ? 'Bearish' : 'Neutral'}</div>
+        <div class="regime-toggle">▾</div>
+      </div>
+      <div class="regime-body">
+        <div class="row"><div class="lbl">Key signals</div><div class="val">${r.signals}</div></div>
+        <div class="row"><div class="lbl">Investor behavior</div><div class="val">${r.behavior}</div></div>
+        <div class="row"><div class="lbl">Risks to watch</div><div class="val">${r.risks}</div></div>
+        <div class="row"><div class="lbl">DCA response</div><div class="val"><strong>${r.dca}</strong></div></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleRegime(i) {
+  const el = document.querySelector('.regime[data-idx="' + i + '"]');
+  if (el) el.classList.toggle('open');
+}
+
+function renderData() {
+  const host = document.getElementById('data-monitor');
+  host.innerHTML = DATA_CATS.map(cat => `
+    <div class="data-cat">
+      <div class="data-cat-head">
+        <div class="cat-icon">${cat.icon}</div>
+        <h3>${cat.name}</h3>
+        <span class="count">${cat.items.length} indicators</span>
+      </div>
+      <div class="data-list">
+        ${cat.items.map(it => `
+          <div class="data-item">
+            <div class="name">${it.n}</div>
+            <div class="why"><strong style="color: var(--text); font-size: 11px; text-transform: uppercase; letter-spacing: .4px;">Why →</strong> ${it.why}</div>
+            <div class="signal"><strong style="color: var(--text); font-style: normal; font-size: 11px; text-transform: uppercase; letter-spacing: .4px;">Signal →</strong> ${it.sig}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderChecklist(items, hostId, type) {
+  const host = document.getElementById(hostId);
+  host.innerHTML = items.map((it, i) => `
+    <div class="check-item" data-idx="${i}" data-type="${type}">
+      <div class="check-head" onclick="toggleCheckExpand('${hostId}', ${i})">
+        <div class="check-box" onclick="event.stopPropagation(); toggleCheckBox('${hostId}', ${i})"></div>
+        <div class="check-title">${it.t}</div>
+        <div class="check-expand">▾</div>
+      </div>
+      <div class="check-body">
+        <div class="field"><div class="lbl">What</div><div class="val">${it.w}</div></div>
+        <div class="field"><div class="lbl">${type === 'am' ? 'How to interpret' : 'Why it mattered'}</div><div class="val">${it.h || it.y}</div></div>
+        ${type === 'am' ? `<div class="field"><div class="lbl">DCA impact</div><div class="val">${it.d}</div></div>` : `
+          <div class="field"><div class="lbl">Regime impact</div><div class="val">${it.r}</div></div>
+          <div class="field"><div class="lbl">DCA impact</div><div class="val">${it.d}</div></div>
+        `}
+      </div>
+    </div>
+  `).join('');
+  loadChecklistState(hostId);
+  updateProgress(hostId);
+}
+
+function toggleCheckExpand(hostId, i) {
+  const el = document.querySelector(`#${hostId} .check-item[data-idx="${i}"]`);
+  if (el) el.classList.toggle('open');
+}
+
+function toggleCheckBox(hostId, i) {
+  const el = document.querySelector(`#${hostId} .check-item[data-idx="${i}"]`);
+  if (el) {
+    el.classList.toggle('checked');
+    saveChecklistState(hostId);
+    updateProgress(hostId);
+  }
+}
+
+function saveChecklistState(hostId) {
+  const checked = [];
+  document.querySelectorAll(`#${hostId} .check-item`).forEach((el, i) => {
+    if (el.classList.contains('checked')) checked.push(i);
+  });
+  try { localStorage.setItem('check-' + hostId, JSON.stringify(checked)); } catch(e) {}
+}
+
+function loadChecklistState(hostId) {
+  try {
+    const saved = localStorage.getItem('check-' + hostId);
+    if (!saved) return;
+    const checked = JSON.parse(saved);
+    checked.forEach(i => {
+      const el = document.querySelector(`#${hostId} .check-item[data-idx="${i}"]`);
+      if (el) el.classList.add('checked');
+    });
+  } catch(e) {}
+}
+
+function updateProgress(hostId) {
+  const items = document.querySelectorAll(`#${hostId} .check-item`);
+  const done = document.querySelectorAll(`#${hostId} .check-item.checked`).length;
+  const progressId = hostId === 'am-checklist' ? 'am-progress' : 'pm-progress';
+  const el = document.getElementById(progressId);
+  if (el) el.textContent = `${done} of ${items.length} complete`;
+}
+
+function checklistReset(hostId) {
+  document.querySelectorAll(`#${hostId} .check-item`).forEach(el => el.classList.remove('checked'));
+  saveChecklistState(hostId);
+  updateProgress(hostId);
+}
+
+function checklistAll(hostId, open) {
+  document.querySelectorAll(`#${hostId} .check-item`).forEach(el => {
+    if (open) el.classList.add('open'); else el.classList.remove('open');
+  });
+}
+
+function renderDCARules() {
+  const host = document.getElementById('dca-rules');
+  host.innerHTML = DCA_RULES.map(r => `
+    <div class="action-card ${r.tone}">
+      <h3>${r.name}</h3>
+      <div class="summary">${r.summary}</div>
+      <div class="action-grid">
+        <div class="action-block"><div class="lbl">Market conditions</div><div class="val">${r.conditions}</div></div>
+        <div class="action-block"><div class="lbl">Confirming indicators</div><div class="val">${r.indicators}</div></div>
+        <div class="action-block"><div class="lbl">Risks</div><div class="val">${r.risks}</div></div>
+        <div class="action-block"><div class="lbl">How long to hold</div><div class="val">${r.duration}</div></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderRiskRules() {
+  const host = document.getElementById('risk-rules');
+  host.innerHTML = RISK_RULES.map(r => `
+    <div class="risk-card">
+      <h3><span class="ico">${r.ico}</span>${r.name}</h3>
+      <ul>
+        ${r.items.map(it => `<li>${it}</li>`).join('')}
+      </ul>
+    </div>
+  `).join('');
+}
+
+function renderTemplate(fields, hostId) {
+  const host = document.getElementById(hostId);
+  host.innerHTML = fields.map(f => {
+    let input = '';
+    if (f.type === 'choices') {
+      input = `<div class="choice-row">${f.options.map((opt, i) => {
+        const tone = guessTone(opt);
+        return `<button class="choice" data-field="${f.id}" data-value="${opt}" onclick="pickChoice('${f.id}', this, '${tone}')">${opt}</button>`;
+      }).join('')}</div>`;
+    } else {
+      input = `<textarea id="${f.id}" placeholder="(your notes)"></textarea>`;
+    }
+    return `
+      <div class="template-block">
+        <h3><span class="step">${f.step}</span>${f.label}</h3>
+        <div class="hint">${f.hint}</div>
+        ${input}
+      </div>
+    `;
+  }).join('');
+}
+
+function guessTone(opt) {
+  const lc = opt.toLowerCase();
+  if (/risk-on|leading|easing|aggressive|improving|disinflat|despair|bullish — disinflat/i.test(opt)) return 'bull';
+  if (/^stable|^neutral|in line|choppy|sideways|no change/i.test(opt)) return 'neutral';
+  if (/correction|lagging|tightening|reduce|cautious|slowing|contracting|recession|bear/i.test(opt)) return 'bear';
+  if (/melt-up|euphoric|hold extra|caution|elevated|moderate|stretched/i.test(opt)) return 'caution';
+  // default by keyword
+  if (lc.includes('uptrend') || lc.includes('liquidity-driven')) return 'bull';
+  if (lc.includes('breakdown') || lc.includes('risk-off')) return 'bear';
+  return 'neutral';
+}
+
+function pickChoice(fieldId, btn, tone) {
+  // clear siblings
+  document.querySelectorAll(`.choice[data-field="${fieldId}"]`).forEach(b => b.classList.remove('active','bull','bear','caution','neutral'));
+  btn.classList.add('active', tone);
+}
+
+function saveSnapshot(type) {
+  try {
+    const data = {};
+    if (type === 'weekly') {
+      WEEKLY_FIELDS.forEach(f => {
+        if (f.type === 'textarea') {
+          const el = document.getElementById(f.id);
+          if (el) data[f.id] = el.value;
+        } else {
+          const active = document.querySelector(`.choice.active[data-field="${f.id}"]`);
+          if (active) data[f.id] = active.getAttribute('data-value');
+        }
+      });
+      data._ts = new Date().toISOString();
+      localStorage.setItem('weekly-snapshot', JSON.stringify(data));
+      alert('Weekly snapshot saved (' + new Date().toLocaleString() + ')');
+    } else if (type === 'daily') {
+      DAILY_FIELDS.forEach(f => {
+        if (f.type === 'textarea') {
+          const el = document.getElementById(f.id);
+          if (el) data[f.id] = el.value;
+        } else {
+          const active = document.querySelector(`.choice.active[data-field="${f.id}"]`);
+          if (active) data[f.id] = active.getAttribute('data-value');
+        }
+      });
+      data._ts = new Date().toISOString();
+      localStorage.setItem('daily-snapshot', JSON.stringify(data));
+      alert('Daily report saved (' + new Date().toLocaleString() + ')');
+    } else if (type === 'score') {
+      SCORE_FACTORS.forEach(f => {
+        const s = document.getElementById('slider-' + f.key);
+        if (s) data[f.key] = s.value;
+      });
+      data._ts = new Date().toISOString();
+      localStorage.setItem('score-snapshot', JSON.stringify(data));
+      alert('Score saved (' + new Date().toLocaleString() + ')');
+    }
+  } catch(e) { alert('Could not save: ' + e.message); }
+}
+
+function loadSnapshot(type) {
+  try {
+    let key, fields;
+    if (type === 'weekly') { key = 'weekly-snapshot'; fields = WEEKLY_FIELDS; }
+    else if (type === 'daily') { key = 'daily-snapshot'; fields = DAILY_FIELDS; }
+    else if (type === 'score') { key = 'score-snapshot'; }
+    const saved = localStorage.getItem(key);
+    if (!saved) { alert('No snapshot found.'); return; }
+    const data = JSON.parse(saved);
+    if (type === 'score') {
+      SCORE_FACTORS.forEach(f => {
+        if (data[f.key] !== undefined) {
+          const s = document.getElementById('slider-' + f.key);
+          if (s) { s.value = data[f.key]; }
+        }
+      });
+      updateScore();
+    } else {
+      fields.forEach(f => {
+        if (f.type === 'textarea') {
+          const el = document.getElementById(f.id);
+          if (el && data[f.id]) el.value = data[f.id];
+        } else {
+          if (data[f.id]) {
+            const btn = document.querySelector(`.choice[data-field="${f.id}"][data-value="${data[f.id].replace(/"/g, '\\"')}"]`);
+            if (btn) pickChoice(f.id, btn, guessTone(data[f.id]));
+          }
+        }
+      });
+    }
+    alert('Loaded snapshot from ' + new Date(data._ts).toLocaleString());
+  } catch(e) { alert('Could not load: ' + e.message); }
+}
+
+function clearTemplate(type) {
+  if (!confirm('Clear all fields? Saved snapshot is not affected.')) return;
+  const fields = type === 'weekly' ? WEEKLY_FIELDS : DAILY_FIELDS;
+  fields.forEach(f => {
+    if (f.type === 'textarea') {
+      const el = document.getElementById(f.id);
+      if (el) el.value = '';
+    } else {
+      document.querySelectorAll(`.choice[data-field="${f.id}"]`).forEach(b => b.classList.remove('active','bull','bear','caution','neutral'));
+    }
+  });
+}
+
+function exportDaily() {
+  let out = 'DAILY MARKET REPORT — ' + new Date().toLocaleDateString() + '\n';
+  out += '='.repeat(50) + '\n\n';
+  DAILY_FIELDS.forEach(f => {
+    out += f.label.toUpperCase() + '\n';
+    if (f.type === 'textarea') {
+      const el = document.getElementById(f.id);
+      out += (el && el.value ? el.value : '(empty)') + '\n\n';
+    } else {
+      const active = document.querySelector(`.choice.active[data-field="${f.id}"]`);
+      out += (active ? active.getAttribute('data-value') : '(not selected)') + '\n\n';
+    }
+  });
+  navigator.clipboard.writeText(out).then(() => {
+    alert('Daily report copied to clipboard.');
+  }, () => {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = out;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('Daily report copied to clipboard.');
+  });
+}
+
+/* ── SCORING WIDGET ── */
+function renderScore() {
+  const host = document.getElementById('factor-rows');
+  host.innerHTML = SCORE_FACTORS.map(f => `
+    <div class="factor-row">
+      <div class="fname">${f.name}<small>${f.desc}</small></div>
+      <input type="range" id="slider-${f.key}" min="-10" max="10" step="1" value="0" oninput="updateScore()">
+      <div class="fval zero" id="val-${f.key}">0</div>
+    </div>
+  `).join('');
+  updateScore();
+}
+
+function updateScore() {
+  let total = 0;
+  SCORE_FACTORS.forEach(f => {
+    const s = document.getElementById('slider-' + f.key);
+    const v = document.getElementById('val-' + f.key);
+    if (!s || !v) return;
+    const val = parseInt(s.value, 10);
+    v.textContent = val > 0 ? '+' + val : '' + val;
+    v.classList.remove('pos','neg','zero');
+    v.classList.add(val > 0 ? 'pos' : val < 0 ? 'neg' : 'zero');
+    total += val;
+  });
+  // total is sum of 10 factors each -10..+10 → range -100..+100. Normalize to -10..+10:
+  total = Math.round(total / 10);
+  if (total > 10) total = 10;
+  if (total < -10) total = -10;
+
+  const valEl = document.getElementById('score-val');
+  const bucketEl = document.getElementById('score-bucket');
+  const actionEl = document.getElementById('score-action');
+
+  valEl.textContent = total > 0 ? '+' + total : '' + total;
+  valEl.classList.remove('pos','neg');
+  if (total > 0) valEl.classList.add('pos');
+  else if (total < 0) valEl.classList.add('neg');
+
+  let bucketClass = 'b-neutral', bucketText = 'Neutral / Uncertain', action = '';
+  if (total >= 7) {
+    bucketClass = 'b-strong'; bucketText = 'Strong Risk-On';
+    action = '<strong>Increase DCA aggressively.</strong> Multiple pillars are firing positively. This is a green light for full deployment of any cash reserves over 4–8 weeks. Do NOT chase a single day\'s strength — average in.';
+  } else if (total >= 3) {
+    bucketClass = 'b-construct'; bucketText = 'Constructive';
+    action = '<strong>Increase DCA modestly.</strong> Environment supports being fully invested. Consider modest extra deployment via 2–3 tranches over the next few weeks.';
+  } else if (total >= -2) {
+    bucketClass = 'b-neutral'; bucketText = 'Neutral / Uncertain';
+    action = '<strong>Continue normal DCA.</strong> No factor is sufficiently extreme to deviate from base case. This is the most common state and the one most rewarded by systematic buying.';
+  } else if (total >= -6) {
+    bucketClass = 'b-caution'; bucketText = 'Cautious';
+    action = '<strong>Split DCA into weekly tranches.</strong> Multiple pillars are negative. Reduce single-decision risk by deploying more frequently in smaller increments. Hold a modest cash buffer.';
+  } else {
+    bucketClass = 'b-risk'; bucketText = 'High Risk';
+    action = '<strong>Reduce DCA temporarily.</strong> Most pillars are firing red. Slow deployment pace, accumulate dry powder. Do not stop entirely — markets bottom when bad news stops causing new lows. Watch for two consecutive days of improving score before increasing pace.';
+  }
+  bucketEl.className = 'score-bucket ' + bucketClass;
+  bucketEl.textContent = bucketText;
+  actionEl.innerHTML = action;
+}
+
+function resetScore() {
+  SCORE_FACTORS.forEach(f => {
+    const s = document.getElementById('slider-' + f.key);
+    if (s) s.value = 0;
+  });
+  updateScore();
+}
+
+/* ── TAB NAVIGATION ── */
+function setupTabs() {
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.getAttribute('data-tab');
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tabpane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const pane = document.getElementById(tab);
+      if (pane) pane.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+}
+
+/* ── MODAL ── */
+function openManual() { document.getElementById('manual-overlay').classList.add('open'); }
+function closeManual() { document.getElementById('manual-overlay').classList.remove('open'); }
+
+/* ── DATE ── */
+function showDate() {
+  const d = new Date();
+  const opts = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+  const el = document.getElementById('today-date');
+  if (el) el.textContent = d.toLocaleDateString('en-US', opts);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  showDate();
+  setupTabs();
+  renderRegimes();
+  renderData();
+  renderChecklist(AM_CHECKLIST, 'am-checklist', 'am');
+  renderChecklist(PM_CHECKLIST, 'pm-checklist', 'pm');
+  renderDCARules();
+  renderRiskRules();
+  renderTemplate(WEEKLY_FIELDS, 'weekly-template');
+  renderTemplate(DAILY_FIELDS, 'daily-output');
+  renderScore();
+});
+
+// ESC closes modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeManual();
+});
+</script>
+
+</body>
+</html>

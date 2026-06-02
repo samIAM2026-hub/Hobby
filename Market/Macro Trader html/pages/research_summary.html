@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>U.S. Market Monitoring Framework — Interactive Summary</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{
+  --bg:#F5F6F7; --bg2:#FFFFFF; --bg3:#FAFAFA; --bg4:#F0F1F3;
+  --border:#E5E5E5; --border2:#C8C8C8;
+  --text:#1E1E1E; --text2:#5B5B5B; --text3:#8A8A8A;
+  --navy:#1B3A5C; --accent:#C72E0B; --accent2:#0077CC;
+  --green:#00936C; --amber:#D8A000; --red:#E63000;
+  --purple:#7B5EA7; --teal:#007A90;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;padding-top:3px;min-height:100vh;
+}
+body::before{content:'';display:block;height:3px;background:var(--accent);position:fixed;top:0;left:0;right:0;z-index:9999;}
+
+/* HEADER */
+.hero{background:var(--navy);color:#fff;padding:30px 40px 26px;box-shadow:0 2px 6px rgba(0,0,0,0.25);}
+.hero-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;}
+.hero h1{font-size:24px;font-weight:700;letter-spacing:-.4px;}
+.hero .sub{color:rgba(255,255,255,0.72);font-size:13px;margin-top:6px;max-width:680px;}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.28);border-radius:4px;padding:3px 12px;font-size:11px;letter-spacing:.4px;text-transform:uppercase;font-weight:600;margin-bottom:10px;}
+.hero .badge::before{content:'';width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.9);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero-meta{text-align:right;display:flex;flex-direction:column;gap:4px;}
+.hero-meta .date{font-size:12px;color:rgba(255,255,255,0.72);}
+.hero-meta .home{font-size:12px;color:#7EE0CC;text-decoration:none;}
+.hero-meta .home:hover{text-decoration:underline;}
+
+/* SCORECARD STRIP — sticky, compact */
+.scorestrip{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:7px 40px;position:sticky;top:0;z-index:50;box-shadow:0 1px 3px rgba(0,0,0,0.05);
+}
+.scorestrip-inner{max-width:1200px;margin:0 auto;display:flex;gap:14px;align-items:center;flex-wrap:nowrap;}
+.score-total{display:flex;align-items:center;gap:8px;background:var(--navy);color:#fff;border-radius:4px;padding:5px 11px;flex:0 0 auto;}
+.score-total .num{font-size:18px;font-weight:800;line-height:1;}
+.score-total .lbl{font-size:9px;text-transform:uppercase;letter-spacing:.4px;opacity:.78;line-height:1.1;max-width:78px;}
+.score-pillars{display:flex;gap:5px;flex-wrap:nowrap;flex:0 0 auto;}
+.pillar{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:3px 7px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;transition:all .15s;font-size:11px;line-height:1;}
+.pillar:hover{border-color:var(--border2);background:var(--bg4);}
+.pillar-name{color:var(--text2);font-weight:500;font-size:11px;}
+.pillar-score{font-weight:700;min-width:18px;text-align:center;border-radius:2px;padding:1px 3px;font-size:10px;}
+.pillar-score.pos{background:rgba(0,147,108,0.15);color:#006648;}
+.pillar-score.neu{background:rgba(123,134,144,0.15);color:#5B5B5B;}
+.pillar-score.neg{background:rgba(230,48,0,0.15);color:#BF2A00;}
+.score-call{flex:1;min-width:160px;font-size:12px;color:var(--text2);line-height:1.35;}
+.score-call strong{color:var(--accent);font-weight:700;}
+@media (max-width: 900px){
+  .scorestrip-inner{flex-wrap:wrap;}
+  .score-call{flex-basis:100%;}
+}
+
+/* TABS */
+.tabs-wrap{background:var(--bg2);border-bottom:1px solid var(--border);}
+.tabs{max-width:1200px;margin:0 auto;display:flex;gap:0;padding:0 40px;overflow-x:auto;}
+.tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--text2);font-weight:500;font-size:13px;padding:12px 18px;cursor:pointer;white-space:nowrap;transition:color .15s;font-family:inherit;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
+
+/* MAIN */
+.main{max-width:1200px;margin:0 auto;padding:28px 40px 60px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fadeIn .2s;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTION HEADER */
+section{margin-bottom:36px;}
+.s-label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.s-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.s-title{font-size:18px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.s-sub{color:var(--text2);font-size:13px;margin-bottom:18px;max-width:780px;}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:18px 20px;box-shadow:0 1px 3px rgba(0,0,0,0.07);}
+.card h3{font-size:13px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:14px;}
+
+/* REGIME BANNER */
+.regime-banner{background:linear-gradient(135deg,rgba(216,160,0,0.10),rgba(199,46,11,0.06));border:1px solid rgba(216,160,0,0.32);border-radius:4px;padding:18px 22px;margin-bottom:24px;}
+.regime-banner .top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:10px;}
+.regime-banner .label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);font-weight:700;}
+.regime-banner .title{font-size:18px;font-weight:700;color:var(--text);margin-top:3px;line-height:1.3;}
+.regime-banner p{color:var(--text2);font-size:13px;line-height:1.6;margin:0;}
+.regime-banner .lede{color:var(--text);font-size:13px;line-height:1.55;margin:0 0 10px 0;font-weight:500;}
+.regime-bullets{list-style:none;padding:0;margin:0 0 10px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:6px 18px;}
+.regime-bullets li{position:relative;padding:4px 0 4px 22px;font-size:12.5px;line-height:1.45;color:var(--text2);}
+.regime-bullets li::before{content:'';position:absolute;left:6px;top:11px;width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.regime-bullets li.pos::before{background:var(--green);}
+.regime-bullets li.warn::before{background:var(--amber);}
+.regime-bullets li.neg::before{background:var(--red);}
+.regime-bullets li strong{color:var(--text);font-weight:600;}
+.regime-bullets li .hl{color:var(--accent);font-weight:600;}
+.regime-stance{background:rgba(255,255,255,0.55);border-left:3px solid var(--accent);border-radius:0 3px 3px 0;padding:8px 12px;margin-top:8px;font-size:12.5px;color:var(--text);line-height:1.5;}
+.regime-stance .k{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--accent);font-weight:700;margin-right:6px;}
+.regime-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.r-tag{font-size:11px;padding:3px 9px;border-radius:3px;font-weight:600;}
+.r-tag.warn{background:rgba(216,160,0,0.18);color:#885500;border:1px solid rgba(216,160,0,0.30);}
+.r-tag.neg{background:rgba(230,48,0,0.14);color:#BF2A00;border:1px solid rgba(230,48,0,0.28);}
+.r-tag.pos{background:rgba(0,147,108,0.14);color:#006648;border:1px solid rgba(0,147,108,0.28);}
+
+/* KEY FACTS GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:6px;}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:12px;box-shadow:0 1px 2px rgba(0,0,0,0.04);}
+.kpi-label{font-size:10px;text-transform:uppercase;color:var(--text3);font-weight:600;letter-spacing:.4px;}
+.kpi-val{font-size:18px;font-weight:700;color:var(--text);margin-top:4px;}
+.kpi-val.pos{color:var(--green);}
+.kpi-val.neg{color:var(--red);}
+.kpi-val.warn{color:var(--amber);}
+.kpi-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+
+/* INDICATOR LIST */
+.ind-table{width:100%;border-collapse:collapse;font-size:13px;}
+.ind-table th,.ind-table td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);}
+.ind-table th{background:#F5F6F7;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;border-bottom:2px solid var(--border2);}
+.ind-table tbody tr:nth-child(even){background:var(--bg3);}
+.ind-table tbody tr:hover{background:#EEF5FF;cursor:pointer;}
+.ind-table td.tag-cell{width:120px;}
+.ind-table strong{color:var(--text);}
+
+/* DCA MATRIX (clickable) */
+.dca-modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:14px;}
+.dca-mode{border:1px solid var(--border);background:var(--bg2);border-radius:4px;padding:14px;cursor:pointer;transition:all .15s;text-align:center;}
+.dca-mode:hover{border-color:var(--border2);background:var(--bg3);transform:translateY(-1px);}
+.dca-mode.active{border-color:var(--accent);background:#FFF5F2;}
+.dca-mode .name{font-size:14px;font-weight:600;color:var(--text);}
+.dca-mode .pill{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-top:4px;}
+.dca-mode.active .pill{color:var(--accent);}
+.dca-mode.current{box-shadow:inset 0 0 0 2px var(--accent);background:#FFF5F2;}
+.dca-mode.current .pill{color:var(--accent);font-weight:700;}
+.dca-mode.current .pill::before{content:'◆ ';}
+.dca-detail{background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:4px;padding:18px 22px;}
+.dca-detail h4{font-size:14px;color:var(--text);margin-bottom:8px;font-weight:600;}
+.dca-detail .row{display:grid;grid-template-columns:130px 1fr;gap:10px;margin-top:8px;font-size:13px;line-height:1.6;}
+.dca-detail .row .k{color:var(--text3);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px;padding-top:3px;}
+.dca-detail .row .v{color:var(--text);}
+
+/* SELLOFF CLASSIFIER */
+.classifier{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:22px;box-shadow:0 1px 3px rgba(0,0,0,0.06);position:relative;z-index:5;}
+.classifier .q-row{margin-bottom:14px;}
+.classifier .q-label{font-size:12px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+.choice-row{display:flex;gap:6px;flex-wrap:wrap;}
+.choice{border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:12px;padding:6px 12px;border-radius:3px;cursor:pointer;font-family:inherit;transition:all .15s;pointer-events:auto;position:relative;z-index:1;display:inline-block;user-select:none;line-height:1.4;}
+.choice:hover{border-color:var(--border2);}
+.choice.active{border-color:var(--accent);background:#FFF5F2;color:var(--accent);font-weight:600;}
+/* Native radio inputs (hidden) drive selection state via :checked — works even with JS fully disabled. */
+.choice-radio{position:absolute;opacity:0;width:0;height:0;pointer-events:none;}
+.choice-radio:checked + label.choice{border-color:var(--accent);background:#FFF5F2;color:var(--accent);font-weight:600;}
+.choice-radio:focus + label.choice{outline:2px solid var(--accent2);outline-offset:2px;}
+.classifier-result{margin-top:18px;padding:14px 18px;border-radius:4px;border:1px solid var(--border);background:var(--bg3);}
+.classifier-result.show{border-color:rgba(0,119,204,0.30);background:rgba(0,119,204,0.06);}
+.classifier-result .label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);font-weight:600;}
+.classifier-result .verdict{font-size:16px;font-weight:700;color:var(--text);margin-top:4px;}
+.classifier-result .desc{font-size:13px;color:var(--text2);margin-top:6px;line-height:1.6;}
+
+/* MAG 7 BUCKETS (expandable) */
+.bucket{background:var(--bg2);border:1px solid var(--border);border-radius:4px;margin-bottom:10px;overflow:hidden;}
+.bucket-head{padding:12px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .15s;}
+.bucket-head:hover{background:var(--bg3);}
+.bucket-head .name{font-size:14px;font-weight:600;color:var(--text);}
+.bucket-head .tickers{font-size:12px;color:var(--text3);margin-top:2px;}
+.bucket-head .toggle{font-size:18px;color:var(--text3);transition:transform .2s;}
+.bucket.open .bucket-head .toggle{transform:rotate(45deg);color:var(--accent);}
+.bucket-body{display:none;padding:0 18px 16px;border-top:1px solid var(--border);}
+.bucket.open .bucket-body{display:block;}
+.bucket-body .watch{margin-top:12px;font-size:13px;color:var(--text2);line-height:1.6;}
+.bucket-body .watch strong{color:var(--text);}
+
+/* STRESS THRESHOLDS */
+.threshold-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:16px 18px;}
+.threshold-card h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.threshold-card .levels{display:flex;flex-direction:column;gap:6px;font-size:12px;}
+.threshold-card .lvl{display:flex;justify-content:space-between;padding:5px 8px;background:var(--bg3);border-radius:3px;}
+.threshold-card .lvl.normal{border-left:3px solid var(--green);}
+.threshold-card .lvl.watch{border-left:3px solid var(--amber);}
+.threshold-card .lvl.stress{border-left:3px solid var(--accent);}
+.threshold-card .lvl.panic{border-left:3px solid var(--red);}
+
+/* CHECKLIST */
+.check-list{background:var(--bg2);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.check-list .row{display:grid;grid-template-columns:1fr 1.4fr;gap:14px;padding:12px 18px;border-bottom:1px solid var(--border);font-size:13px;}
+.check-list .row:last-child{border-bottom:none;}
+.check-list .row:hover{background:var(--bg3);}
+.check-list .q{font-weight:600;color:var(--text);}
+.check-list .a{color:var(--text2);}
+
+/* FOOTER */
+footer{padding:20px 40px;border-top:1px solid var(--border);color:var(--text3);font-size:11px;text-align:center;}
+footer a{color:var(--accent);text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+
+/* HELP BUTTON · floating */
+.help-btn{
+  position:fixed;bottom:24px;right:24px;z-index:200;
+  width:54px;height:54px;border-radius:50%;
+  background:var(--accent);color:#fff;border:none;cursor:pointer;
+  box-shadow:0 6px 16px rgba(199,46,11,0.36);
+  font-size:22px;font-weight:700;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .15s,box-shadow .15s;
+}
+.help-btn:hover{transform:scale(1.06);box-shadow:0 8px 22px rgba(199,46,11,0.48);}
+.help-btn .ico{line-height:1;}
+.help-btn .lbl{position:absolute;right:64px;background:var(--navy);color:#fff;padding:6px 12px;border-radius:4px;font-size:12px;white-space:nowrap;font-weight:500;opacity:0;transform:translateX(6px);transition:opacity .15s,transform .15s;pointer-events:none;}
+.help-btn:hover .lbl{opacity:1;transform:translateX(0);}
+
+/* HELP-BUTTON · also in header */
+.hero-help{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.28);border-radius:4px;padding:4px 10px;font-size:12px;color:#fff;text-decoration:none;cursor:pointer;margin-top:6px;transition:background .15s;font-family:inherit;}
+.hero-help:hover{background:rgba(255,255,255,0.22);}
+
+/* MODAL · overlay */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(20,30,46,0.55);backdrop-filter:blur(2px);
+  z-index:300;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;
+}
+.modal-overlay.open{display:flex;animation:fadeIn .15s;}
+.modal{
+  background:var(--bg2);border-radius:6px;max-width:920px;width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.35);overflow:hidden;
+  display:flex;flex-direction:column;max-height:calc(100vh - 80px);
+}
+.modal-head{
+  background:var(--navy);color:#fff;padding:18px 26px;
+  display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-shrink:0;
+}
+.modal-head h2{font-size:18px;font-weight:700;letter-spacing:-.2px;}
+.modal-head .sub{font-size:12px;color:rgba(255,255,255,0.72);margin-top:4px;}
+.modal-close{background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.28);color:#fff;border-radius:4px;width:30px;height:30px;cursor:pointer;font-size:18px;line-height:1;font-family:inherit;transition:background .15s;}
+.modal-close:hover{background:rgba(255,255,255,0.28);}
+.modal-tabs{
+  display:flex;gap:0;background:var(--bg3);border-bottom:1px solid var(--border);
+  overflow-x:auto;flex-shrink:0;
+}
+.modal-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--text2);
+  font-weight:500;font-size:12px;padding:11px 16px;cursor:pointer;white-space:nowrap;
+  transition:color .15s;font-family:inherit;}
+.modal-tab:hover{color:var(--text);}
+.modal-tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
+.modal-body{padding:24px 28px;overflow-y:auto;flex:1;}
+.modal-sec{display:none;}
+.modal-sec.active{display:block;animation:fadeIn .2s;}
+.modal-sec h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.modal-sec .purpose{font-size:13px;color:var(--text2);background:#FFF8E6;border-left:3px solid var(--amber);padding:10px 14px;border-radius:3px;margin-bottom:14px;line-height:1.6;}
+.modal-sec .purpose strong{color:#885500;}
+.modal-sec h4{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);font-weight:700;margin-top:18px;margin-bottom:8px;}
+.modal-sec p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:10px;}
+.modal-sec ul{font-size:13px;color:var(--text2);line-height:1.7;padding-left:20px;margin-bottom:10px;}
+.modal-sec ul li{margin-bottom:6px;}
+.modal-sec ul li strong{color:var(--text);}
+.modal-sec .entry-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:10px;}
+.modal-sec .entry-table th{background:var(--bg3);color:var(--text2);font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;border-bottom:2px solid var(--border2);padding:7px 10px;text-align:left;}
+.modal-sec .entry-table td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);}
+.modal-sec .entry-table td.k{font-weight:600;color:var(--text);background:var(--bg3);white-space:nowrap;width:140px;}
+.modal-sec .entry-table tbody tr:hover td{background:#EEF5FF;}
+.modal-sec .tip{font-size:12px;color:var(--text2);background:var(--bg3);border-radius:3px;padding:8px 12px;margin-top:8px;border-left:3px solid var(--accent2);}
+.modal-sec .tip strong{color:var(--accent2);}
+
+/* INLINE INFO PILL */
+.info-pill{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--bg4);color:var(--text2);font-size:10px;font-weight:700;
+  margin-left:6px;cursor:help;border:1px solid var(--border2);font-family:inherit;
+  transition:background .15s,color .15s;
+}
+.info-pill:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+.info-pill::after{
+  content:attr(data-tip);
+  position:absolute;background:var(--navy);color:#fff;font-size:11px;font-weight:500;
+  padding:8px 12px;border-radius:4px;line-height:1.5;max-width:260px;
+  bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  opacity:0;pointer-events:none;transition:opacity .12s;z-index:60;white-space:normal;
+  box-shadow:0 4px 12px rgba(0,0,0,0.18);
+}
+.info-pill:hover::after{opacity:1;}
+.info-anchor{position:relative;display:inline-block;}
+
+/* Active band row (in scoring-rule table) */
+.ind-table tr.band-active td{background:#FFF8E6 !important;}
+.ind-table tr.band-active td:first-child{box-shadow:inset 3px 0 0 var(--accent);}
+.band-badge{display:none;font-size:10px;text-transform:uppercase;letter-spacing:.5px;background:var(--accent);color:#fff;padding:2px 7px;border-radius:3px;margin-left:6px;font-weight:700;vertical-align:middle;}
+.band-badge.show{display:inline-block;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="badge">Deep-Research Synthesis</div>
+      <h1>U.S. Market Monitoring Framework</h1>
+      <p class="sub">Interactive summary of the macro-trading &amp; dynamic-DCA research report. Score, classify, and decide — all on one page.</p>
+    </div>
+    <div class="hero-meta">
+      <span class="date">Framework reference · last reviewed <span data-live="asOfLong">May 22, 2026</span></span>
+      <a class="home" href="../index.html">← Back to hub</a>
+      <button class="hero-help" onclick="openHelp('start')">? How to use this page</button>
+    </div>
+  </div>
+</header>
+
+<!-- 6-PILLAR SCOREBOARD (framework demo · click pillars to try the model) -->
+<div class="scorestrip">
+  <div class="scorestrip-inner">
+    <div class="score-total" title="Sum of the 6 pillar scores (−6 to +6). Drives the regime label and DCA action.">
+      <span class="num" id="scoreNum">0</span>
+      <span class="lbl" id="scoreLbl">Neutral · click pillars to score</span>
+    </div>
+    <div class="score-pillars" id="pillars" title="Demo — click any pillar to cycle +1 → 0 → −1 and see how the framework reacts. For today's actual read see daily_briefing.html.">
+      <div class="pillar" data-name="Trend" data-score="0" title="Score the index trend: price vs 20/50/200-day MAs. Above all = +1, mixed = 0, broken below 200d = −1."><span class="pillar-name">Trend</span><span class="pillar-score">0</span></div>
+      <div class="pillar" data-name="Breadth" data-score="0" title="Are advancers &gt; decliners? Equal-weight (RSP) confirming? % above 50-day healthy? Broad = +1, narrow = −1."><span class="pillar-name">Breadth</span><span class="pillar-score">0</span></div>
+      <div class="pillar" data-name="Rates" data-score="0" title="Real-yield direction. Falling/stable real yields = +1; rising real yields with rising oil/USD = −1."><span class="pillar-name">Rates</span><span class="pillar-score">0</span></div>
+      <div class="pillar" data-name="Credit" data-score="0" title="HY &amp; IG OAS levels. Tight/stable = +1, modest widening = 0, fast widening or bank stress = −1."><span class="pillar-name">Credit</span><span class="pillar-score">0</span></div>
+      <div class="pillar" data-name="Liquidity" data-score="0" title="Fed plumbing + NFCI. Loose conditions = +1; tightening with reserve drains = −1."><span class="pillar-name">Liquidity</span><span class="pillar-score">0</span></div>
+      <div class="pillar" data-name="Earnings" data-score="0" title="EPS revisions, guidance, beat-rate breadth. Rising/stable = +1; rolling over = −1."><span class="pillar-name">Earnings</span><span class="pillar-score">0</span></div>
+    </div>
+    <div class="score-call">
+      <strong id="callTitle">Framework demo.</strong>
+      <span id="callDesc"> Score each pillar to see how the regime label and DCA action map. Today's read lives on the Daily Briefing.</span>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-pane="overview">Overview</button>
+    <button class="tab" data-pane="indicators">Highest-value indicators</button>
+    <button class="tab" data-pane="dca">DCA matrix</button>
+    <button class="tab" data-pane="regimes">Regime map</button>
+    <button class="tab" data-pane="rotation">Sector &amp; AI rotation</button>
+    <button class="tab" data-pane="stress">Stress dashboard</button>
+    <button class="tab" data-pane="bands">Quantified bands</button>
+    <button class="tab" data-pane="checklists">Daily / weekly checklists</button>
+    <button class="tab" data-pane="pitfalls">Pitfalls</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ════════ OVERVIEW ════════ -->
+  <div class="panel active" id="pane-overview">
+
+    <!-- Daily snapshot moved to daily_briefing.html — this page is now pure framework -->
+    <div style="background:#F0F1F3; border:1px solid var(--border); border-radius:10px; padding:16px 20px; margin-bottom:22px; display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;">
+      <div style="font-size:13px; color:var(--text2); line-height:1.55;">
+        <strong style="color:var(--text);">Looking for today's regime read?</strong> The current snapshot — indices, yields, vol &amp; credit, valuation, DCA stance — now lives on the Daily Briefing. This page is the underlying framework: the 6-pillar scoreboard logic, selloff classifier, regime map, DCA matrix, stress dashboard, quantified bands, checklists, and pitfalls.
+      </div>
+      <a href="daily_briefing.html" style="background:var(--accent); color:#fff; text-decoration:none; font-size:12px; font-weight:600; padding:9px 16px; border-radius:6px; white-space:nowrap;">Open Daily Briefing →</a>
+    </div>
+
+    <section>
+      <div class="s-label">Selloff classifier · what type of pullback is this?<span class="info-anchor"><span class="info-pill" data-tip="Use on any down day. Pick how five drivers are behaving — yields, credit, USD, oil, banks. The page maps your selection to one of six selloff taxonomies (normal pullback, growth scare, inflation shock, etc.).">?</span></span></div>
+      <p class="s-sub">Pick the behaviour of each driver below. The classifier picks the closest regime from the report's selloff taxonomy. <button class="hero-help" style="background:rgba(199,46,11,0.10);border-color:rgba(199,46,11,0.32);color:var(--accent);" onclick="openHelp('classifier')">Open the field guide →</button></p>
+      <div class="classifier" id="classifier">
+        <div class="q-row">
+          <div class="q-label">1 · Treasury yields</div>
+          <div class="choice-row" data-q="yields">
+            <input type="radio" class="choice-radio" name="yields" id="y-yields-up" value="up"><label class="choice" for="y-yields-up">Rising</label>
+            <input type="radio" class="choice-radio" name="yields" id="y-yields-down" value="down"><label class="choice" for="y-yields-down">Falling</label>
+            <input type="radio" class="choice-radio" name="yields" id="y-yields-flat" value="flat"><label class="choice" for="y-yields-flat">Flat</label>
+          </div>
+        </div>
+        <div class="q-row">
+          <div class="q-label">2 · Credit spreads (HY OAS)</div>
+          <div class="choice-row" data-q="credit">
+            <input type="radio" class="choice-radio" name="credit" id="y-credit-tight" value="tight"><label class="choice" for="y-credit-tight">Tight / stable</label>
+            <input type="radio" class="choice-radio" name="credit" id="y-credit-widening" value="widening"><label class="choice" for="y-credit-widening">Widening modestly</label>
+            <input type="radio" class="choice-radio" name="credit" id="y-credit-blowing" value="blowing"><label class="choice" for="y-credit-blowing">Widening fast</label>
+          </div>
+        </div>
+        <div class="q-row">
+          <div class="q-label">3 · US Dollar (DXY)</div>
+          <div class="choice-row" data-q="dxy">
+            <input type="radio" class="choice-radio" name="dxy" id="y-dxy-up" value="up"><label class="choice" for="y-dxy-up">Strong / bid</label>
+            <input type="radio" class="choice-radio" name="dxy" id="y-dxy-down" value="down"><label class="choice" for="y-dxy-down">Soft</label>
+            <input type="radio" class="choice-radio" name="dxy" id="y-dxy-flat" value="flat"><label class="choice" for="y-dxy-flat">Flat</label>
+          </div>
+        </div>
+        <div class="q-row">
+          <div class="q-label">4 · Oil &amp; commodities</div>
+          <div class="choice-row" data-q="oil">
+            <input type="radio" class="choice-radio" name="oil" id="y-oil-up" value="up"><label class="choice" for="y-oil-up">Up sharply</label>
+            <input type="radio" class="choice-radio" name="oil" id="y-oil-down" value="down"><label class="choice" for="y-oil-down">Soft / falling</label>
+            <input type="radio" class="choice-radio" name="oil" id="y-oil-flat" value="flat"><label class="choice" for="y-oil-flat">Sideways</label>
+          </div>
+        </div>
+        <div class="q-row">
+          <div class="q-label">5 · Banks &amp; regionals (KRE)</div>
+          <div class="choice-row" data-q="banks">
+            <input type="radio" class="choice-radio" name="banks" id="y-banks-ok" value="ok"><label class="choice" for="y-banks-ok">In line / outperforming</label>
+            <input type="radio" class="choice-radio" name="banks" id="y-banks-weak" value="weak"><label class="choice" for="y-banks-weak">Underperforming</label>
+            <input type="radio" class="choice-radio" name="banks" id="y-banks-crack" value="crack"><label class="choice" for="y-banks-crack">Cracking</label>
+          </div>
+        </div>
+        <div class="classifier-result" id="classifierResult">
+          <div class="label">Verdict</div>
+          <div class="verdict" id="verdictText">Make selections above to classify the selloff</div>
+          <div class="desc" id="verdictDesc">The classifier maps yield / credit / dollar / oil / bank behaviour to one of six regime labels: normal pullback, growth scare, inflation shock, credit event, liquidity crisis, or technical correction.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ════════ INDICATORS ════════ -->
+  <div class="panel" id="pane-indicators">
+    <section>
+      <div class="s-label">For the macro trader</div>
+      <div class="s-title">Indicators that outrank others — and why</div>
+      <table class="ind-table">
+        <thead><tr><th>Indicator</th><th>Why it outranks others</th><th>Use it for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>SPX / NDX trend + breadth</strong></td><td>Index trend alone hides narrow leadership; breadth tells you whether a rally is healthy or brittle.</td><td>Daily trading, weekly risk budget, regime ID</td></tr>
+          <tr><td><strong>10Y real yield &amp; 2Y</strong></td><td>Real yields are the cleanest discount-rate pressure on long-duration growth; 2Y is the cleanest market expression of policy repricing.</td><td>QQQ, semis, duration, tactical hedging</td></tr>
+          <tr><td><strong>HY &amp; IG credit spreads</strong></td><td>Best "truth serum" for whether an equity selloff is just technical or becoming macro/fundamental.</td><td>Downside-risk assessment, DCA sizing</td></tr>
+          <tr><td><strong>VIX + MOVE together</strong></td><td>VIX isolates equity-vol stress; MOVE tells you whether the bond market is the shock source.</td><td>Stress detection, hedge timing</td></tr>
+          <tr><td><strong>Fed / liquidity complex</strong></td><td>Balance sheet, RRP, TGA, reserves, EFFR/SOFR, NFCI determine whether markets swim in or are short of liquidity.</td><td>Macro trading, liquidity regime</td></tr>
+          <tr><td><strong>Forward EPS revisions &amp; guidance</strong></td><td>Tells you whether equity weakness is valuation pain or a real profit-cycle rollover.</td><td>Medium-term allocation, DCA confidence</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="s-label">For the DCA investor</div>
+      <div class="s-title">Indicators that matter most for systematic accumulators</div>
+      <table class="ind-table">
+        <thead><tr><th>Indicator</th><th>Why it matters most for DCA</th><th>Practical use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>SPX vs 200-day trend</strong></td><td>Basic filter between "buy routine dips" and "protect against regime change."</td><td>Above 200d: normal DCA. Below + worsening credit: slow &amp; tranche.</td></tr>
+          <tr><td><strong>Breadth &amp; equal-weight participation</strong></td><td>Narrow rallies keep the benchmark high while most stocks weaken.</td><td>Strong breadth: keep DCA. Weak breadth: tranche.</td></tr>
+          <tr><td><strong>HY spreads &amp; bank/credit stress</strong></td><td>Single best filter between "good buying opportunity" and "possible bear-market leg."</td><td>Stable: buy corrections. Rapid widening: preserve dry powder.</td></tr>
+          <tr><td><strong>Forward P/E, CAPE &amp; ERP context</strong></td><td>Poor short-term timing tools but useful for setting return expectations and DCA aggression. CAPE in particular drives 10-year expected real returns.</td><td>High: tranche. Better valuation: add more on drawdowns.</td></tr>
+          <tr><td><strong>Free cash flow yield</strong></td><td>Cash actually generated vs price — bypasses accounting and tax noise that distorts EPS-based valuation.</td><td>Cross-check P/E and CAPE with FCF yield before declaring a market "cheap".</td></tr>
+          <tr><td><strong>Recession dashboard</strong></td><td>LEI, claims, payrolls, unemployment, PMIs, revisions — tells you if drawdowns are cyclical setbacks or recessionary resets.</td><td>Low recession risk: buy weakness confidently.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- ════════ DCA MATRIX ════════ -->
+  <div class="panel" id="pane-dca">
+    <section>
+      <div class="s-label">DCA decision matrix · interactive<span class="info-anchor"><span class="info-pill" data-tip="Five DCA modes ordered most-defensive to most-aggressive. Click each card to see when it applies, why the logic works, and the main risk. Use this to challenge your impulse before placing a contribution.">?</span></span></div>
+      <div class="s-title">Click a mode below to see its conditions, logic, and risks <button class="hero-help" style="background:rgba(199,46,11,0.10);border-color:rgba(199,46,11,0.32);color:var(--accent);font-size:11px;" onclick="openHelp('dca')">How to pick a mode →</button></div>
+      <p class="s-sub">The matrix is designed to prevent the two most expensive mistakes: <em>buying the most aggressively into euphoric extensions</em>, and <em>stopping purchases just when expected returns improve</em>.</p>
+
+      <div class="dca-modes" id="dcaModes">
+        <div class="dca-mode" data-id="normal" data-default="Risk-on regime"><div class="name">Normal DCA</div><div class="pill">Risk-on regime</div></div>
+        <div class="dca-mode" data-id="increase" data-default="5–10% pullback"><div class="name">Increase DCA</div><div class="pill">5–10% pullback</div></div>
+        <div class="dca-mode" data-id="aggressive" data-default="10–20% correction"><div class="name">Aggressively increase</div><div class="pill">10–20% correction</div></div>
+        <div class="dca-mode" data-id="tranche" data-default="Late-cycle / extended"><div class="name">Tranche &amp; wait</div><div class="pill">Late-cycle / extended</div></div>
+        <div class="dca-mode" data-id="hold" data-default="Recession / stress"><div class="name">Hold extra cash</div><div class="pill">Recession / stress</div></div>
+      </div>
+
+      <div class="dca-detail" id="dcaDetail">
+        <!-- filled by JS -->
+      </div>
+    </section>
+
+    <section>
+      <div class="s-label">Final scoring rule · the operating model</div>
+      <div class="s-title">Score 6 pillars each day · trend, breadth, rates, credit, liquidity, earnings</div>
+      <table class="ind-table">
+        <thead><tr><th>Total score</th><th>Interpretation</th><th>DCA action</th></tr></thead>
+        <tbody>
+          <tr data-band="hi"><td><strong style="color:var(--green);">+4 to +6</strong> <span class="band-badge" data-for="hi"></span></td><td>Risk-on; favour growth/cyclicals depending on rates</td><td>Normal DCA</td></tr>
+          <tr data-band="mid"><td><strong style="color:var(--green);">+1 to +3</strong> <span class="band-badge" data-for="mid"></span></td><td>Constructive but selective</td><td>Normal DCA or weekly tranches</td></tr>
+          <tr data-band="zero"><td><strong style="color:var(--amber);">−1 to 0</strong> <span class="band-badge" data-for="zero"></span></td><td>Choppy / late-cycle</td><td>Keep DCA on, slow the pace</td></tr>
+          <tr data-band="lo"><td><strong style="color:var(--red);">−2 to −4</strong> <span class="band-badge" data-for="lo"></span></td><td>Correction risk rising</td><td>Wait for better prices / confirmation</td></tr>
+          <tr data-band="vlo"><td><strong style="color:var(--red);">−5 to −6</strong> <span class="band-badge" data-for="vlo"></span></td><td>Recessionary or credit-stress regime</td><td>Preserve cash; buy only on capitulation with stabilising credit</td></tr>
+        </tbody>
+      </table>
+      <p class="s-sub" style="margin-top:14px;">Current score: <strong style="color:var(--accent);" id="liveBandText">+2 (Constructive · weekly tranches)</strong> — <span id="liveBandTone">net positive market with rising tactical risk.</span></p>
+    </section>
+  </div>
+
+  <!-- ════════ REGIMES ════════ -->
+  <div class="panel" id="pane-regimes">
+    <section>
+      <div class="s-label">Macro regime framework</div>
+      <div class="s-title">Twelve regimes you'll meet — pick which one fits today</div>
+      <p class="s-sub">Distinguishing the type of drawdown matters more than whether the index is red or green on a given day.</p>
+      <table class="ind-table">
+        <thead><tr><th>Regime</th><th>What it looks like</th><th>Best confirming indicators</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Risk-on uptrend</strong></td><td>SPX/NDX above 50d &amp; 200d, breadth healthy, spreads tight, VIX subdued</td><td>Price + breadth + credit + stable/falling real yields</td></tr>
+          <tr><td><strong>Liquidity-driven melt-up</strong></td><td>Price accelerates faster than EPS revisions; valuation expands; VIX low; leadership narrows</td><td>Easier Fed/liquidity, RRP falls, reserves firm, valuation expansion &gt; EPS</td></tr>
+          <tr><td><strong>AI / mega-cap leadership</strong></td><td>NDX and Mag 7 lead; semis strong; RSP/IWM lag; cap-weight crushes equal-weight</td><td>NDX &gt; SPX; RSP lag; semis lead; concentrated revisions</td></tr>
+          <tr><td><strong>Broad cyclical expansion</strong></td><td>Industrials, financials, small caps, homebuilders, transports participate</td><td>ISM/retail/IP firm; yields rise modestly for good reasons; spreads tight</td></tr>
+          <tr><td><strong>Choppy consolidation</strong></td><td>SPX range-bound, breadth mixed, rates noisy, leadership rotates often</td><td>Flat trend; VIX 16-22-ish; no spread breakout</td></tr>
+          <tr><td><strong style="color:var(--amber);">Pullback within uptrend</strong></td><td>Price still above 20d/50d/200d but pulling back from recent highs; breadth weakening; credit calm. Becomes a textbook "below 20d/50d, above 200d" pullback only if SPX breaks the 20-day average.</td><td>VIX up modestly; spreads contained; recession data still okay</td></tr>
+          <tr><td><strong>Correction</strong></td><td>5–10% drawdown; breadth oversold; vol spike</td><td>VIX &gt;25; support tests; no systemic credit stress</td></tr>
+          <tr><td><strong>Bear-market breakdown</strong></td><td>Below 200d with failed rallies and worsening participation</td><td>Credit widening; banks weak; revisions rolling over; VIX stays high</td></tr>
+          <tr><td><strong>Oversold rebound</strong></td><td>Violent bounce after washout, often junk-beta and most-shorted lead</td><td>Sentiment capitulation; VIX drops from extremes; breadth thrusts</td></tr>
+          <tr><td><strong>Recessionary bear market</strong></td><td>Equities down with falling yields, rising unemployment, softer PMIs, cuts priced</td><td>Claims/PCE/payrolls weaken; LEI falls; spreads widen; revisions cut</td></tr>
+          <tr style="background:rgba(230,48,0,0.06);"><td><strong style="color:var(--red);">Inflation / rates-driven selloff</strong> <span style="color:var(--accent);">◆ also fits</span></td><td>Equities down with <em>rising</em> nominal &amp; real yields, oil and USD firmer</td><td>CPI/PCE/PPI up; real yields up; QQQ underperforms</td></tr>
+          <tr><td><strong>Credit-stress selloff</strong></td><td>Equities down with widening spreads, bank weakness, dollar bid</td><td>HY/IG/CDX widen; banks/KRE weak; funding stress worsens</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- ════════ ROTATION & MAG 7 ════════ -->
+  <div class="panel" id="pane-rotation">
+    <section>
+      <div class="s-label">Sector rotation · reduced to 4 drivers</div>
+      <div class="s-title">Growth · Inflation · Real rates · Credit</div>
+      <table class="ind-table">
+        <thead><tr><th>Sector</th><th>Outperforms when</th><th>Struggles when</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Technology</strong></td><td>Falling real yields; soft landing; AI capex up; revisions strong</td><td>Rising real yields; regulatory risk; spending slowdown</td></tr>
+          <tr><td><strong>Comm Services</strong></td><td>Ad cycle improving; AI platform monetisation; growth leadership</td><td>Regulatory hits; ad contraction; defensive rotation</td></tr>
+          <tr><td><strong>Discretionary</strong></td><td>Real wages okay; rates stable/falling; soft landing</td><td>Oil spikes; consumer stress; rates hurting autos/housing</td></tr>
+          <tr><td><strong>Staples</strong></td><td>Late cycle; defensives; growth scare</td><td>Broad risk-on and reflation</td></tr>
+          <tr><td><strong>Health Care</strong></td><td>Defensive rotation; earnings resilience; lower-vol leadership</td><td>Narrow AI-led melt-ups dominating</td></tr>
+          <tr><td><strong>Financials</strong></td><td>Healthy steepening; benign credit; loan growth</td><td>Credit stress; deposit/funding worries; recessionary steepening</td></tr>
+          <tr><td><strong>Industrials</strong></td><td>PMIs rising; capex cycle; infra &amp; defence demand</td><td>Global growth scare; oil spikes; tighter conditions</td></tr>
+          <tr><td><strong>Energy</strong></td><td>Reflation; supply shocks; higher oil &amp; inflation expectations</td><td>Disinflation; global demand slump; oil collapse</td></tr>
+          <tr><td><strong>Materials</strong></td><td>Weaker USD; improving China/global manufacturing; commodity strength</td><td>Dollar strength; global slowdown</td></tr>
+          <tr><td><strong>Utilities</strong></td><td>Falling yields; defensives in favour</td><td>Rising long yields; strong cyclical risk-on</td></tr>
+          <tr><td><strong>Real Estate</strong></td><td>Falling real yields; easing conditions; disinflation</td><td>Rising yields; tighter credit; office/financing stress</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="s-label">Magnificent 7 + AI complex · monitor by bucket, not by stock</div>
+      <div class="s-title">Click a bucket to see what to watch</div>
+      <div id="buckets">
+        <div class="bucket"><div class="bucket-head"><div><div class="name">Consumer platform AI monetisers</div><div class="tickers">AAPL · GOOGL · META · AMZN</div></div><div class="toggle">+</div></div>
+          <div class="bucket-body"><div class="watch"><strong>Watch:</strong> Revenue growth, ad/search/services monetisation, AI product adoption, capex discipline, regulatory risk. Alphabet, Amazon, and Meta were the biggest contributors to the post-March 31 increase in S&amp;P 500 earnings growth.</div></div>
+        </div>
+        <div class="bucket"><div class="bucket-head"><div><div class="name">Cloud &amp; enterprise AI enablers</div><div class="tickers">MSFT · AMZN · GOOGL · ORCL · major software/cloud</div></div><div class="toggle">+</div></div>
+          <div class="bucket-body"><div class="watch"><strong>Watch:</strong> Cloud growth, remaining performance obligations / backlog, AI-related price uplift, margin durability, capex intensity. Workday's Q1 FY27 update raised its non-GAAP operating margin guide while reiterating subscription-revenue guidance — useful evidence for software guide quality.</div></div>
+        </div>
+        <div class="bucket"><div class="bucket-head"><div><div class="name">Compute &amp; accelerator leaders</div><div class="tickers">NVDA · AMD · AVGO</div></div><div class="toggle">+</div></div>
+          <div class="bucket-body"><div class="watch"><strong>Watch:</strong> Data-centre growth, accelerator demand, networking / custom silicon, gross margin, customer concentration, export-control risk. NVIDIA's Q1 FY27 beat confirmed demand — $81.6B revenue, $75.2B data-center revenue, and Q2 guide near $91B — but the muted stock reaction shows the valuation bar is high.</div></div>
+        </div>
+        <div class="bucket"><div class="bucket-head"><div><div class="name">Semicap &amp; foundry backbone</div><div class="tickers">TSM · ASML</div></div><div class="toggle">+</div></div>
+          <div class="bucket-body"><div class="watch"><strong>Watch:</strong> Wafer demand, node mix, pricing power, capex plans, equipment order book, geopolitical / export-control risk.</div></div>
+        </div>
+        <div class="bucket"><div class="bucket-head"><div><div class="name">Server &amp; infrastructure build-out</div><div class="tickers">SMCI · ANET · VRT · ETN · GEV · power/cooling</div></div><div class="toggle">+</div></div>
+          <div class="bucket-body"><div class="watch"><strong>Watch:</strong> Lead times, inventory discipline, power / cooling bottlenecks, customer concentration, margin sustainability.</div></div>
+        </div>
+        <div class="bucket"><div class="bucket-head"><div><div class="name">Legacy swing factor</div><div class="tickers">TSLA</div></div><div class="toggle">+</div></div>
+          <div class="bucket-body"><div class="watch"><strong>Watch:</strong> Delivery growth, auto gross margin, pricing, FSD / robotaxi narrative, China competition.</div></div>
+        </div>
+      </div>
+      <p class="s-sub" style="margin-top:12px;">Concentration check: the top 10 S&amp;P 500 names represented <strong>~40%</strong> of the index by mid-2025 — an extreme not seen since the mid-1960s. If an AI capex reset appears, both QQQ and SPX can re-rate quickly because concentration remains historically high.</p>
+    </section>
+  </div>
+
+  <!-- ════════ STRESS DASHBOARD ════════ -->
+  <div class="panel" id="pane-stress">
+    <section>
+      <div class="s-label">Stress dashboard · for disorderly days only</div>
+      <div class="s-title">Thresholds to classify the selloff quickly</div>
+      <p class="s-sub">Focus on vol, rates, credit, breadth, funding, banks, and forced-flow proxies — not normal-market indicators.</p>
+      <div class="grid-2">
+        <div class="threshold-card">
+          <h4>VIX · equity hedging demand</h4>
+          <div class="levels">
+            <div class="lvl normal">Normal · &lt;18</div>
+            <div class="lvl watch">Stress watch · &gt;25</div>
+            <div class="lvl stress">Correction · &gt;30</div>
+            <div class="lvl panic">Panic · &gt;40 (backwardation matters more than spot)</div>
+          </div>
+        </div>
+        <div class="threshold-card">
+          <h4>MOVE · bond-market source of stress</h4>
+          <div class="levels">
+            <div class="lvl normal">Normal · &lt;90</div>
+            <div class="lvl watch">Rates stress · &gt;100</div>
+            <div class="lvl stress">Serious · &gt;120</div>
+            <div class="lvl panic">Disorderly · &gt;140</div>
+          </div>
+        </div>
+        <div class="threshold-card">
+          <h4>HY OAS · systemic credit risk</h4>
+          <div class="levels">
+            <div class="lvl normal">Calm · &lt;3.5%</div>
+            <div class="lvl watch">Caution · &gt;4.5–5.0%</div>
+            <div class="lvl stress">High stress · &gt;6%</div>
+            <div class="lvl panic">Crisis · &gt;8% with rapid widening</div>
+          </div>
+        </div>
+        <div class="threshold-card">
+          <h4>IG OAS · financial conditions</h4>
+          <div class="levels">
+            <div class="lvl normal">Tight · &lt;1.0%</div>
+            <div class="lvl watch">Tightening · &gt;1.5–1.75%</div>
+            <div class="lvl stress">Material · &gt;2.0%</div>
+            <div class="lvl panic">Severe · &gt;2.5%</div>
+          </div>
+        </div>
+        <div class="threshold-card">
+          <h4>Dollar funding &amp; plumbing</h4>
+          <div class="levels">
+            <div class="lvl normal">Quiet · SOFR/EFFR stable, RRP &amp; reserves normal</div>
+            <div class="lvl watch">Tightening · FRA-OIS widening; repo specials</div>
+            <div class="lvl stress">Stress · Treasury depth deteriorates; reserve drains</div>
+            <div class="lvl panic">Crisis · Emergency Fed facilities open</div>
+          </div>
+        </div>
+        <div class="threshold-card">
+          <h4>Banks / regionals (KRE)</h4>
+          <div class="levels">
+            <div class="lvl normal">Normal · KRE neutral to SPX</div>
+            <div class="lvl watch">Watch · KRE underperforms with widening spreads</div>
+            <div class="lvl stress">Stress · KRE crashes while long yields rip → duration shock</div>
+            <div class="lvl panic">Crisis · KRE crashes while yields <em>fall</em> → recession/credit event</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="s-label">Quick selloff classifier</div>
+      <div class="s-title">Six taxonomies you'll see again and again</div>
+      <table class="ind-table">
+        <thead><tr><th>Type</th><th>Tell</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Normal pullback</strong></td><td>SPX below 20d/50d; VIX up; credit stable; breadth weakens without financial stress</td></tr>
+          <tr><td><strong>Technical correction</strong></td><td>SPX down 5–10%; breadth oversold; VIX 25–35; spreads only modestly wider</td></tr>
+          <tr><td><strong>Growth scare</strong></td><td>Yields fall; cyclicals/semis/small caps lag; defensives lead; PMIs/claims soften</td></tr>
+          <tr style="background:rgba(216,160,0,0.10);"><td><strong style="color:var(--amber);">Inflation shock</strong> <span style="color:var(--accent);">◆ May 19 risk, easing May 21–22</span></td><td>Oil up, USD up, yields and real yields up; QQQ/semis underperform; gold may not help</td></tr>
+          <tr><td><strong>Credit event</strong></td><td>Spreads jump; banks lead lower; HYG underperforms; VIX <em>and</em> MOVE both rise</td></tr>
+          <tr><td><strong>Liquidity crisis</strong></td><td>USD up hard; funding measures gap; Treasury liquidity deteriorates; correlations spike</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- ════════ QUANTIFIED BANDS ════════ -->
+  <div class="panel" id="pane-bands">
+    <section>
+      <div class="s-label">Quantified bands · concrete numbers behind the qualitative reads<span class="info-anchor"><span class="info-pill" data-tip="The rest of the dashboard scores indicators directionally (positive / neutral / negative). This tab gives you the numerical bands the underlying research uses to draw those lines, so 'sentiment elevated' or 'CAPE stretched' has a specific number behind it.">?</span></span></div>
+      <p class="s-sub">Most of this page scores indicators directionally. This tab gives you the explicit numerical bands the research uses to draw those lines — so when the score moves you can audit it against a number instead of a feeling.</p>
+    </section>
+
+    <section>
+      <div class="s-label">Sentiment &amp; positioning · contrarian only at extremes</div>
+      <table class="ind-table">
+        <thead><tr><th>Indicator</th><th>Bullish extreme (buy signal)</th><th>Neutral / normal band</th><th>Complacency extreme (risk signal)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>AAII bull−bear spread</strong></td><td>&lt; −15% (retail panic bottom)</td><td>−5% to +10%</td><td>&gt; +25% (complacency top)</td></tr>
+          <tr><td><strong>AAII bullishness (raw)</strong></td><td>Bearishness &gt; 50% (capitulation)</td><td>~37% bullish (avg)</td><td>Bullishness &gt; 55%</td></tr>
+          <tr><td><strong>NAAIM exposure</strong></td><td>&lt; 30% (forced selling)</td><td>60% to 80%</td><td>&gt; 100% (leveraged long)</td></tr>
+          <tr><td><strong>Equity put/call (10d MA)</strong></td><td>&gt; 0.85 (panic)</td><td>0.50 – 0.85</td><td>&lt; 0.50 (euphoria)</td></tr>
+          <tr><td><strong>Index put/call (daily)</strong></td><td>&gt; 1.40 (intense hedging)</td><td>0.90 – 1.10</td><td>&lt; 0.90 (under-hedged)</td></tr>
+          <tr><td><strong>Total put/call ratio</strong></td><td>&gt; 1.1 (panic hedging)</td><td>0.75 – 0.95</td><td>&lt; 0.75 (high call buying)</td></tr>
+          <tr><td><strong>CFTC non-comm. net longs</strong></td><td>Multi-year net shorts</td><td>Near 3-yr historical average</td><td>Multi-year net longs (crowding)</td></tr>
+          <tr><td><strong>ETF / mutual-fund flows</strong></td><td>Multi-week outflows</td><td>Flat / neutral</td><td>Accelerating weekly inflows</td></tr>
+          <tr><td><strong>Margin debt trend</strong></td><td>Multi-month deleveraging</td><td>Trending with index</td><td>Multi-month acceleration to highs</td></tr>
+          <tr><td><strong>Short interest (index)</strong></td><td>&gt; 4% of float (squeeze fuel)</td><td>1 – 3%</td><td>&lt; 1% (complacency)</td></tr>
+        </tbody>
+      </table>
+      <p class="s-sub" style="margin-top:8px;"><strong>Key rule from the research:</strong> these readings are <em>only meaningful at extremes</em>. NAAIM logically sits above 80% throughout a structural expansion; treating that as bearish is the classic premature-selling mistake.</p>
+    </section>
+
+    <section>
+      <div class="s-label">Valuation · five lenses, five different cadences</div>
+      <table class="ind-table">
+        <thead><tr><th>Lens</th><th>Attractive (buy more)</th><th>Neutral / 5-yr avg</th><th>Stretched (tranche / hold)</th><th>What it's actually best for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Forward 12M P/E</strong></td><td>&lt; 18x</td><td>18 – 20x</td><td>&gt; 21x</td><td>Medium-term sentiment + earnings reactions</td></tr>
+          <tr><td><strong>Shiller CAPE (P/E10)</strong></td><td>&lt; 22x</td><td>22 – 30x</td><td>&gt; 35x</td><td>10-year expected real return; poor short-term timing</td></tr>
+          <tr><td><strong>Equity risk premium (ERP)</strong></td><td>&gt; 5%</td><td>3 – 4.5%</td><td>&lt; 1.5%</td><td>Equities vs bonds compensation</td></tr>
+          <tr><td><strong>Free cash flow yield</strong></td><td>High vs history</td><td>Around average</td><td>Low / negative vs price</td><td>Quality / cash generation vs price (resists accounting noise)</td></tr>
+          <tr><td><strong>Index vs 200d SMA</strong></td><td>At/below 200d in healthy credit</td><td>Modestly above 200d</td><td>Heavily extended above 50d / 200d</td><td>Allocation filter — increase when index tests structural support</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="s-label">Macro · monthly business-cycle indicators</div>
+      <table class="ind-table">
+        <thead><tr><th>Indicator</th><th>Bullish reading</th><th>Neutral reading</th><th>Bearish reading</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Real GDP nowcast</strong></td><td>&gt; 2.5% annualised</td><td>1.5 – 2%</td><td>&lt; 0.5% (stagnation)</td></tr>
+          <tr><td><strong>ISM Manufacturing PMI</strong></td><td>&gt; 53</td><td>48 – 51</td><td>&lt; 45 (industrial recession)</td></tr>
+          <tr><td><strong>ISM Services PMI</strong></td><td>&gt; 55</td><td>50 – 53</td><td>&lt; 48 (recession risk)</td></tr>
+          <tr><td><strong>Retail sales (YoY)</strong></td><td>&gt; 4.5% (above inflation)</td><td>2 – 3.5%</td><td>Nominal monthly contraction</td></tr>
+          <tr><td><strong>Industrial production (MoM)</strong></td><td>&gt; +0.5%</td><td>Flat</td><td>&lt; −0.8%</td></tr>
+          <tr><td><strong>LEI (Conference Board)</strong></td><td>Rising 3 months running</td><td>Flat</td><td>Falling 6 months running</td></tr>
+          <tr><td><strong>Nonfarm payrolls</strong></td><td>+150k to +220k</td><td>+50k to +100k</td><td>Net job losses</td></tr>
+          <tr><td><strong>Unemployment rate</strong></td><td>Stable / declining &lt; 4%</td><td>4 – 4.5%</td><td>Spike &gt; 4.8% (recession signal)</td></tr>
+          <tr><td><strong>Wage growth (AHE YoY)</strong></td><td>≈ +3.2% (with productivity)</td><td>3.8 – 4.2%</td><td>&gt; 5% (wage-price spiral)</td></tr>
+          <tr><td><strong>Core CPI YoY</strong></td><td>Cooling toward 2.0%</td><td>2.2 – 2.8%</td><td>&gt; 3.5% (inflation shock)</td></tr>
+          <tr><td><strong>Core PCE YoY</strong></td><td>Cooling toward 2.0%</td><td>2.2 – 2.5%</td><td>&gt; 3.0%</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="s-label">Systemic stress · single-print triggers</div>
+      <p class="s-sub">Concrete numerical levels that escalate a normal-market read into a stress-dashboard read. Pair with the threshold cards on the Stress tab.</p>
+      <table class="ind-table">
+        <thead><tr><th>Indicator</th><th>Stress trigger</th><th>What it actually signals</th></tr></thead>
+        <tbody>
+          <tr><td><strong>VIX (decisive print)</strong></td><td>&gt; 30</td><td>Mandatory risk-reductions and dealer hedging sweeps</td></tr>
+          <tr><td><strong>MOVE index</strong></td><td>&gt; 130</td><td>Treasury-market illiquidity; sovereign borrowing costs rising</td></tr>
+          <tr><td><strong>HY OAS</strong></td><td>&gt; 550 bps</td><td>Corporate insolvency risk rising; commercial lending freeze</td></tr>
+          <tr><td><strong>CDX HY index</strong></td><td>&gt; 500 bps</td><td>Derivative-market pricing of high-conviction bankruptcy risk</td></tr>
+          <tr><td><strong>FRA-OIS spread</strong></td><td>&gt; 50 bps</td><td>Banks refuse to lend unsecured — credit crunch</td></tr>
+          <tr><td><strong>SOFR vs Fed Funds target</strong></td><td>Spiking above target range</td><td>Structural shortage of short-term liquid reserves</td></tr>
+          <tr><td><strong>10Y bid-ask spread</strong></td><td>&gt; 0.5 bps</td><td>Market-maker liquidity breakdown in risk-free debt</td></tr>
+          <tr><td><strong>KRE (regional banks)</strong></td><td>&gt; 5% drop in one session</td><td>Funding strain or unrealised loss reveal</td></tr>
+          <tr><td><strong>% stocks above 20d SMA</strong></td><td>&lt; 5%</td><td>Capitulation — correlations converge to 1.0</td></tr>
+          <tr><td><strong>HYG vs 50d / 200d</strong></td><td>Break below on heavy volume</td><td>Early capital flight from credit ETFs</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="s-label">Data sources · where to read each indicator</div>
+      <table class="ind-table">
+        <thead><tr><th>Domain</th><th>Primary source</th><th>Update cadence</th></tr></thead>
+        <tbody>
+          <tr><td>Sovereign yields, TIPS, HY/IG spreads</td><td><strong>FRED</strong> (St. Louis Fed)</td><td>Daily</td></tr>
+          <tr><td>Options gamma, Zero Gamma, Call/Put Walls</td><td><strong>SpotGamma</strong> or <strong>MenthorQ</strong></td><td>Daily (intraday for 0DTE)</td></tr>
+          <tr><td>S&amp;P 500 forward EPS, blended growth, guidance</td><td><strong>FactSet Earnings Insight</strong></td><td>Weekly (Friday)</td></tr>
+          <tr><td>Retail sentiment</td><td><strong>AAII</strong> Investor Sentiment Survey</td><td>Weekly (Wed–Thu)</td></tr>
+          <tr><td>Active-manager exposure</td><td><strong>NAAIM</strong> Exposure Index</td><td>Weekly (Wed)</td></tr>
+          <tr><td>Real-time GDP nowcast</td><td><strong>Atlanta Fed GDPNow</strong></td><td>Daily (updated on data)</td></tr>
+          <tr><td>Inflation nowcast</td><td><strong>Cleveland Fed</strong> Inflation Nowcasting</td><td>Daily</td></tr>
+          <tr><td>Employment, CPI, wages</td><td><strong>BLS</strong> · <strong>BEA</strong> · Census</td><td>Monthly</td></tr>
+          <tr><td>ISM Manufacturing &amp; Services PMI</td><td><strong>ISM</strong></td><td>Monthly (1st &amp; 3rd biz day)</td></tr>
+          <tr><td>Fund-flow data</td><td><strong>Lipper / Morningstar</strong></td><td>Weekly</td></tr>
+          <tr><td>Futures positioning</td><td><strong>CFTC</strong> Commitments of Traders</td><td>Weekly (Fri, lagged Tue)</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- ════════ CHECKLISTS ════════ -->
+  <div class="panel" id="pane-checklists">
+    <section>
+      <div class="s-label">Daily checklist</div>
+      <div class="s-title">Force yourself to answer in plain English</div>
+      <div class="check-list">
+        <div class="row"><div class="q">Is the tape risk-on or risk-off today?</div><div class="a">SPX / QQQ / IWM / RSP trend; breadth; sector leadership</div></div>
+        <div class="row"><div class="q">Did rates or credit drive the move?</div><div class="a">2y, 10y real yield, HY/IG spreads, banks</div></div>
+        <div class="row"><div class="q">Is volatility confirming the move?</div><div class="a">VIX level, VVIX, futures curve shape, put/call</div></div>
+        <div class="row"><div class="q">Is the move broad or narrow?</div><div class="a">A/D line, NH/NL, RSP/SPY, IWM/SPY</div></div>
+        <div class="row"><div class="q">Is liquidity helping or hurting?</div><div class="a">Fed plumbing, DXY, SOFR/EFFR, NFCI</div></div>
+        <div class="row"><div class="q">Which sectors does leadership tell me to favour or avoid?</div><div class="a">Semis, software, financials, industrials, defensives</div></div>
+        <div class="row"><div class="q">Does today change my DCA stance?</div><div class="a">Only if trend, breadth, rates, <em>and</em> credit all moved materially</div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="s-label">Weekly checklist</div>
+      <div class="s-title">DCA decisions get made here, not in daily noise</div>
+      <div class="check-list">
+        <div class="row"><div class="q">Has the weekly trend changed?</div><div class="a">Uptrend intact, consolidating, or breaking</div></div>
+        <div class="row"><div class="q">Is breadth improving or deteriorating?</div><div class="a">Broadening rally vs narrow cap-weight leadership</div></div>
+        <div class="row"><div class="q">What is the macro impulse?</div><div class="a">Growth improving, inflation re-accelerating, or recession risk rising</div></div>
+        <div class="row"><div class="q">What are earnings revisions saying?</div><div class="a">Stable/up, softening, or rolling over</div></div>
+        <div class="row"><div class="q">What is my DCA mode for next week?</div><div class="a">Normal, increased, tranches, or defensive holdback</div></div>
+        <div class="row"><div class="q">Where should fresh risk go?</div><div class="a">SPX core, equal-weight tilt, sector tilt, bond hedge, cash buffer</div></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ════════ PITFALLS ════════ -->
+  <div class="panel" id="pane-pitfalls">
+    <section>
+      <div class="s-label">Common mistakes &amp; false signals</div>
+      <div class="s-title">Six errors that show up in this kind of environment</div>
+      <table class="ind-table">
+        <thead><tr><th>Mistake</th><th>The correction</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Treating VIX alone as a stress gauge</strong></td><td>Low-to-mid teens can mean complacency; high teens can still be normal. Pair with credit and breadth.</td></tr>
+          <tr><td><strong>Using yield-curve steepening as automatically bullish</strong></td><td>Inflation/term-premium steepening ≠ easier-policy steepening into a soft landing.</td></tr>
+          <tr><td><strong>Letting valuation become a timing trigger</strong></td><td>Expensive markets can stay expensive for long periods, especially when earnings are accelerating.</td></tr>
+          <tr><td><strong>Ignoring equal-weight and small-cap confirmation</strong></td><td>Cap-weighted SPX can look far healthier than the average stock. Put RSP / IWM on screen 1.</td></tr>
+          <tr><td><strong>Confusing a growth scare with an inflation shock</strong></td><td>Growth scare → yields fall. Inflation shock → yields, oil, USD rise together. May 21–22's oil reversal reduced inflation-shock pressure, but the risk has not disappeared.</td></tr>
+          <tr><td><strong>Using sentiment without credit</strong></td><td>Panic + tight spreads = opportunity. Panic + widening spreads = something worse may be starting.</td></tr>
+          <tr><td><strong>Reading nominal data as real strength</strong></td><td>Under sticky CPI, nominal retail sales and corporate revenue can keep rising while <em>volumes</em> shrink. Always check real GDP and unit growth before declaring earnings durable — otherwise stagflation hides inside strong-looking nominals.</td></tr>
+          <tr><td><strong>Treating GEX levels as hard rails</strong></td><td>Call Wall / Put Wall / Zero Gamma are a real-time pressure map of dealer inventory, not predictive price targets. 0DTE flows can shift the intraday Zero Gamma fast — verify daily, never read in isolation from credit and trend.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="s-label">Acknowledged limits</div>
+      <div class="s-title">What this framework can't see well without paid data</div>
+      <p class="s-sub">Dealer gamma, CTA positioning, CDX basis, Treasury order-book depth, FRA-OIS, single-name CDS. The framework emphasises the highest-confidence public indicators and uses paid-style signals only when public proxies still make decisions useful.</p>
+    </section>
+  </div>
+
+</div>
+
+<footer>
+  Source: Deep-research framework synthesis · Indicator references from FRED, Fed, BLS, BEA, Census, ISM, Cboe, FactSet, AP, company IR · Last reviewed <span data-live="asOfLong">May 22, 2026</span> ·
+  <a href="../index.html">Return to hub</a>
+</footer>
+
+<!-- FLOATING HELP BUTTON -->
+<button class="help-btn" onclick="openHelp('start')" aria-label="User manual">
+  <span class="ico">?</span>
+  <span class="lbl">User manual</span>
+</button>
+
+<!-- USER-MANUAL MODAL -->
+<div class="modal-overlay" id="helpModal" onclick="if(event.target===this)closeHelp()">
+  <div class="modal" role="dialog" aria-label="User manual">
+    <div class="modal-head">
+      <div>
+        <h2>User manual — how to use this page</h2>
+        <div class="sub">Five interactive widgets, nine tabs. Open this manual any time with the floating "?" button.</div>
+      </div>
+      <button class="modal-close" onclick="closeHelp()" aria-label="Close">×</button>
+    </div>
+    <div class="modal-tabs" id="modalTabs">
+      <button class="modal-tab active" data-sec="start">Getting started</button>
+      <button class="modal-tab" data-sec="scorecard">6-pillar scorecard</button>
+      <button class="modal-tab" data-sec="classifier">Selloff classifier</button>
+      <button class="modal-tab" data-sec="dca">DCA mode picker</button>
+      <button class="modal-tab" data-sec="tabs">The nine tabs</button>
+      <button class="modal-tab" data-sec="mag7">Mag 7 accordion</button>
+      <button class="modal-tab" data-sec="cadence">Suggested cadence</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- GETTING STARTED -->
+      <div class="modal-sec active" id="sec-start">
+        <h3>What this page is for</h3>
+        <div class="purpose"><strong>Purpose · </strong>Turn a 9-page macro framework into a daily tool. Score what you see, classify any selloff, and pick a DCA stance — without re-reading the source report each time.</div>
+
+        <h4>Three things to do first</h4>
+        <ul>
+          <li><strong>Score the day.</strong> Click any pillar in the sticky top strip to cycle +1 → 0 → −1. The total score on the right updates instantly and changes the regime label.</li>
+          <li><strong>If the tape is ugly, classify it.</strong> Use the selloff classifier on the Overview tab — pick how yields/credit/USD/oil/banks are behaving and it returns a regime label.</li>
+          <li><strong>Pick a DCA mode.</strong> On the DCA Matrix tab, click each of the five mode cards to read its conditions before sizing a contribution.</li>
+        </ul>
+
+        <h4>What's saved between sessions</h4>
+        <p>Nothing. Pillar scores reset every reload — by design. Forcing you to re-score each day is part of the discipline.</p>
+
+        <div class="tip"><strong>Tip · </strong>Hover any "<span class="info-pill" style="position:relative;margin:0;">?</span>" pill on the page for a quick hint without opening this manual.</div>
+      </div>
+
+      <!-- SCORECARD -->
+      <div class="modal-sec" id="sec-scorecard">
+        <h3>6-pillar scorecard (sticky top strip)</h3>
+        <div class="purpose"><strong>Purpose · </strong>Compress today's market into one number from −6 to +6. The total drives the regime label and DCA action shown on the right of the strip.</div>
+
+        <h4>What each pillar means and how to score it</h4>
+        <table class="entry-table">
+          <thead><tr><th>Pillar</th><th>What to look at</th><th>How to score</th></tr></thead>
+          <tbody>
+            <tr><td class="k">Trend</td><td>SPX price vs 20-, 50-, 200-day MAs; weekly trend</td><td><strong>+1</strong> above all key MAs · <strong>0</strong> mixed · <strong>−1</strong> below 200d with failed rallies</td></tr>
+            <tr><td class="k">Breadth</td><td>Advance/decline line, % above 50-day, RSP vs SPY, IWM vs SPY</td><td><strong>+1</strong> A/D confirming &amp; equal-weight rising · <strong>0</strong> mixed · <strong>−1</strong> new lows expanding or RSP/IWM diverging</td></tr>
+            <tr><td class="k">Rates</td><td>10Y real yield, 2Y, curve shape, MOVE index</td><td><strong>+1</strong> falling/stable real yields · <strong>0</strong> drifting · <strong>−1</strong> rising real yields with rising oil/USD</td></tr>
+            <tr><td class="k">Credit</td><td>HY OAS, IG OAS, bank/KRE stocks vs SPX</td><td><strong>+1</strong> spreads tight · <strong>0</strong> mild widening · <strong>−1</strong> fast widening or bank stress</td></tr>
+            <tr><td class="k">Liquidity</td><td>NFCI/ANFCI, RRP, TGA, reserves, EFFR/SOFR, DXY</td><td><strong>+1</strong> conditions loose · <strong>0</strong> neutral · <strong>−1</strong> tightening with reserve drains</td></tr>
+            <tr><td class="k">Earnings</td><td>Forward EPS revisions, beat rate, guidance ratio</td><td><strong>+1</strong> revisions up · <strong>0</strong> flat · <strong>−1</strong> rolling over</td></tr>
+          </tbody>
+        </table>
+
+        <h4>How the total maps to action</h4>
+        <ul>
+          <li><strong>+4 to +6</strong> — risk-on; favour growth/cyclicals; normal DCA</li>
+          <li><strong>+1 to +3</strong> — constructive but selective; normal DCA or weekly tranches</li>
+          <li><strong>−1 to 0</strong> — choppy / late-cycle; keep DCA on, slow the pace</li>
+          <li><strong>−2 to −4</strong> — correction risk rising; wait for better prices or confirmation</li>
+          <li><strong>−5 to −6</strong> — recession/stress regime; preserve cash; buy only on capitulation with stabilising credit</li>
+        </ul>
+
+        <div class="tip"><strong>Tip · </strong>If you can't decide between two scores, default to the lower one. The framework is designed to slow you down at extension highs.</div>
+      </div>
+
+      <!-- CLASSIFIER -->
+      <div class="modal-sec" id="sec-classifier">
+        <h3>Selloff classifier (Overview tab)</h3>
+        <div class="purpose"><strong>Purpose · </strong>On a down day, force yourself to read the drivers before reacting. The classifier maps five inputs to one of six selloff types — the response is different for each.</div>
+
+        <h4>What each entry means</h4>
+        <table class="entry-table">
+          <thead><tr><th>Entry</th><th>What to check</th><th>Decision relevance</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1 · Yields</td><td>Direction of 10Y and 2Y today. Up if both rising more than ~3-5 bps.</td><td>Yields up + everything else weak → likely <em>inflation/rates</em>. Yields down → <em>growth scare</em>.</td></tr>
+            <tr><td class="k">2 · Credit (HY OAS)</td><td>Is the high-yield spread tight, modestly wider, or blowing out?</td><td>Tight = positioning shakeout. Blowing = credit event — the most decision-critical entry.</td></tr>
+            <tr><td class="k">3 · US Dollar</td><td>DXY direction today. Up if bid hard; soft if losing ground.</td><td>USD up + yields up + oil up → inflation shock. USD up hard alone → possible liquidity stress.</td></tr>
+            <tr><td class="k">4 · Oil / commodities</td><td>WTI / Brent / copper. Up if sharply higher on geopolitics or supply.</td><td>Oil up confirms inflation shock. Oil down argues growth scare or disinflation pullback.</td></tr>
+            <tr><td class="k">5 · Banks (KRE)</td><td>Are regional/large banks underperforming SPX hard?</td><td>Banks cracking with falling yields → recession/credit event. Banks cracking with rising long yields → duration/term-premium shock.</td></tr>
+          </tbody>
+        </table>
+
+        <h4>What the verdict tells you</h4>
+        <ul>
+          <li><strong>Normal pullback / technical correction</strong> — credit refuses to widen; DCA opportunity if breadth gets oversold</li>
+          <li><strong>Growth scare</strong> — yields fall; defensives lead; watch PMIs &amp; claims</li>
+          <li><strong>Inflation shock</strong> — yields, oil, USD all up; cut beta in QQQ/semis; tranche DCA</li>
+          <li><strong>Credit event</strong> — spreads jump and banks lead lower; raise hedges fast</li>
+          <li><strong>Liquidity crisis</strong> — USD up hard with funding stress; assume systematic deleveraging</li>
+        </ul>
+
+        <div class="tip"><strong>Tip · </strong>If two answers seem true, pick the more pessimistic one. The classifier is meant to slow you down, not give comfort.</div>
+      </div>
+
+      <!-- DCA -->
+      <div class="modal-sec" id="sec-dca">
+        <h3>DCA mode picker (DCA matrix tab)</h3>
+        <div class="purpose"><strong>Purpose · </strong>Pick a contribution size that matches the regime — designed to stop you buying most aggressively into euphoric extensions and stopping just when expected returns improve.</div>
+
+        <h4>What each mode is for</h4>
+        <table class="entry-table">
+          <thead><tr><th>Mode</th><th>When to pick it</th><th>Worth remembering</th></tr></thead>
+          <tbody>
+            <tr><td class="k">Normal DCA</td><td>Above 200d; breadth healthy; spreads tight; revisions stable</td><td>Your default state. Don't try to time every wiggle.</td></tr>
+            <tr><td class="k">Increase</td><td>5–10% pullback in an intact uptrend; VIX elevated; spreads stable</td><td>The sweet spot for buying without a recession overlay.</td></tr>
+            <tr><td class="k">Aggressively increase</td><td>10–20% correction; sentiment capitulation; no credit/funding accident</td><td>Where long-run returns improve most. Requires conviction.</td></tr>
+            <tr><td class="k">Tranche &amp; wait</td><td>Extended above trend; narrow leadership; yields &amp; USD &amp; oil rising (today)</td><td>You don't stop compounding — you stop rewarding euphoria.</td></tr>
+            <tr><td class="k">Hold extra cash</td><td>Below 200d AND spreads widening AND revisions falling AND recession risk rising</td><td>Multiple pillars must line up. Cash is dangerous on false breakdowns.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="tip"><strong>Tip · </strong>You should land in <em>Tranche &amp; wait</em> or <em>Normal DCA</em> most of the year. If you're picking the extremes weekly, you're probably overreacting.</div>
+      </div>
+
+      <!-- TABS -->
+      <div class="modal-sec" id="sec-tabs">
+        <h3>The nine tabs and when to use them</h3>
+        <div class="purpose"><strong>Purpose · </strong>Each tab answers a specific question. Use them on different cadences — daily, weekly, or as-needed.</div>
+
+        <table class="entry-table">
+          <thead><tr><th>Tab</th><th>Purpose</th><th>How often to open</th></tr></thead>
+          <tbody>
+            <tr><td class="k">Overview</td><td>Today's regime read + selloff classifier + key facts (SPX, yields, EPS, P/E)</td><td>Daily</td></tr>
+            <tr><td class="k">Highest-value indicators</td><td>Which signals matter most for macro traders vs DCA investors, and why</td><td>Reference</td></tr>
+            <tr><td class="k">DCA matrix</td><td>Five DCA modes + final scoring rule + interpretation table</td><td>Weekly (when sizing contributions)</td></tr>
+            <tr><td class="k">Regime map</td><td>Twelve possible regimes with their tells and confirming indicators</td><td>Weekly + on regime shifts</td></tr>
+            <tr><td class="k">Sector &amp; AI rotation</td><td>Sector behaviour vs 4 macro drivers + Mag 7 buckets</td><td>Quarterly (allocation tweaks)</td></tr>
+            <tr><td class="k">Stress dashboard</td><td>Threshold cards for VIX, MOVE, OAS, funding, banks — normal/watch/stress/panic</td><td>On disorderly days only</td></tr>
+            <tr><td class="k">Quantified bands</td><td>Concrete numerical bands for sentiment, positioning, valuation, macro, and systemic-stress triggers · plus data-source reference</td><td>Reference (look up a number)</td></tr>
+            <tr><td class="k">Daily / weekly checklists</td><td>Plain-English questions you must answer to close out the day/week</td><td>Daily &amp; Friday close</td></tr>
+            <tr><td class="k">Pitfalls</td><td>Eight classic mistakes (incl. nominal-vs-real GDP and GEX-misreading) + acknowledged limits</td><td>Monthly reminder</td></tr>
+          </tbody>
+        </table>
+
+        <div class="tip"><strong>Tip · </strong>Don't try to consume every tab every day. Overview + Checklists is the daily minimum; the rest is reference.</div>
+      </div>
+
+      <!-- MAG7 -->
+      <div class="modal-sec" id="sec-mag7">
+        <h3>Mag 7 + AI accordion (Sector &amp; AI Rotation tab)</h3>
+        <div class="purpose"><strong>Purpose · </strong>Stop tracking 20 stocks individually. Monitor the AI complex by <em>bucket</em>, each with a tiny set of variables that actually matter for that group.</div>
+
+        <h4>What each bucket is for</h4>
+        <ul>
+          <li><strong>Consumer platform AI monetisers</strong> (AAPL · GOOGL · META · AMZN) — does AI translate into ad/services/search revenue and margin?</li>
+          <li><strong>Cloud &amp; enterprise AI enablers</strong> (MSFT · AMZN · GOOGL · ORCL) — backlog/RPO growth, AI price uplift, capex intensity</li>
+          <li><strong>Compute &amp; accelerator leaders</strong> (NVDA · AMD · AVGO) — data-centre growth, gross margin, customer concentration, export-control risk</li>
+          <li><strong>Semicap &amp; foundry backbone</strong> (TSM · ASML) — wafer demand, node mix, equipment order book, geopolitics</li>
+          <li><strong>Server &amp; infrastructure build-out</strong> (SMCI · ANET · VRT · ETN · GEV) — lead times, power/cooling bottlenecks, margin sustainability</li>
+          <li><strong>Legacy swing factor</strong> (TSLA) — delivery growth, auto margin, FSD/robotaxi narrative, China competition</li>
+        </ul>
+
+        <p>Click any bucket header to expand and read what to watch. The "+" rotates to "×" when open.</p>
+
+        <div class="tip"><strong>Tip · </strong>If three or more buckets stop showing the variable they're supposed to (e.g. compute buckets show capex slowing AND backlog flattening), expect re-rating. Concentration is ~40% of SPX — bucket failure is index-level news.</div>
+      </div>
+
+      <!-- CADENCE -->
+      <div class="modal-sec" id="sec-cadence">
+        <h3>Suggested cadence</h3>
+        <div class="purpose"><strong>Purpose · </strong>You don't need to use every widget every day. Here's a routine that's manageable and still catches the moves that matter.</div>
+
+        <h4>Daily (2–3 min)</h4>
+        <ul>
+          <li>Open page → click each pillar to set today's score</li>
+          <li>Skim the daily checklist on the Checklists tab</li>
+          <li>If the tape was disorderly, run the selloff classifier</li>
+        </ul>
+
+        <h4>Weekly · Friday close or Sunday (10–15 min)</h4>
+        <ul>
+          <li>Complete the weekly checklist (DCA mode for next week)</li>
+          <li>Re-read the active row on the Regime map</li>
+          <li>Open the DCA matrix and confirm which mode applies</li>
+        </ul>
+
+        <h4>Quarterly (30 min)</h4>
+        <ul>
+          <li>Re-read the Sector &amp; AI rotation tab for allocation tweaks</li>
+          <li>Review the Pitfalls tab as a self-check</li>
+        </ul>
+
+        <h4>Event-driven</h4>
+        <ul>
+          <li><strong>Big down day:</strong> Selloff classifier + Stress dashboard</li>
+          <li><strong>Big earnings reaction:</strong> Mag 7 bucket for the relevant group</li>
+          <li><strong>Fed meeting / CPI surprise:</strong> Rescore Rates &amp; Liquidity pillars</li>
+        </ul>
+
+        <div class="tip"><strong>Tip · </strong>The framework is meant to be boring most of the time. If you're using every tool every day, you're trading too much for a DCA strategy.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ───── DCA matrix content (moved up so it's available when refreshScore() runs early) ───── */
+const dcaContent = {
+  normal: {
+    title: 'Normal DCA — default state',
+    cond: 'SPX above 200d; breadth not breaking; HY/IG spreads contained; revisions stable; Fed not accelerating tightening; valuation elevated but not being cut through by collapsing earnings.',
+    logic: 'You keep compounding without pretending to time every wiggle. This should be your default state.',
+    risk: 'Buying at high multiples can still mean flat returns for a while.'
+  },
+  increase: {
+    title: 'Increase DCA — buy a routine dip',
+    cond: '5–10% pullback within an intact uptrend; SPX near 50d/200d; VIX elevated but not panicked; breadth oversold rather than structurally broken; spreads stable; no deterioration in payrolls/claims/PMIs.',
+    logic: 'This is the sweet spot where expected returns improve most often without a full recession regime.',
+    risk: 'Catching a falling knife if credit is starting to widen faster than equities imply.'
+  },
+  aggressive: {
+    title: 'Aggressively increase DCA — buy a real correction',
+    cond: '10–20% correction; sentiment capitulation; VIX spike; but no real credit/funding accident, or the Fed is pivoting / easing into slowing growth.',
+    logic: 'Big drawdowns with manageable systemic stress are where long-run returns improve the most.',
+    risk: 'In real recessionary bears, "cheap" can keep getting cheaper.'
+  },
+  tranche: {
+    title: 'Tranche & wait — current stance',
+    cond: 'SPX near record territory; valuation stretched; leadership still AI-heavy; rates remain high even after oil-led intraday relief; credit calm; earnings supportive but reactions show the bar is high.',
+    logic: 'You do not stop compounding, but you stop rewarding euphoria. Weekly tranching is the right compromise.',
+    risk: 'If the melt-up continues, you underdeploy short-term.'
+  },
+  hold: {
+    title: 'Temporarily hold extra cash',
+    cond: 'SPX below 200d AND spreads widening rapidly AND earnings revisions falling AND recession risk rising AND liquidity tightening or hawkish surprise.',
+    logic: 'This protects dry powder for genuinely better forward-return windows.',
+    risk: 'Holding too much cash on a false breakdown. Use only when multiple pillars line up.'
+  }
+};
+function renderDca(id){
+  const d = dcaContent[id];
+  if (!d) return;
+  const detail = document.getElementById('dcaDetail');
+  if (!detail) return;
+  detail.innerHTML = `
+    <h4>${d.title}</h4>
+    <div class="row"><div class="k">Conditions</div><div class="v">${d.cond}</div></div>
+    <div class="row"><div class="k">Why it works</div><div class="v">${d.logic}</div></div>
+    <div class="row"><div class="k">Main risk</div><div class="v">${d.risk}</div></div>`;
+}
+
+/* ───── Tabs ───── */
+document.querySelectorAll('#tabs .tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#tabs .tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('pane-' + btn.dataset.pane).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+/* ───── 6-pillar live score (clickable to cycle +1 / 0 / -1) ───── */
+function suggestedDcaForScore(total){
+  if (total >= 4)  return { id:'normal',   pill:'Suggested — risk-on' };
+  if (total >= 1)  return { id:'tranche',  pill:'Suggested — constructive but selective' };
+  if (total >= -1) return { id:'tranche',  pill:'Suggested — slow the pace' };
+  if (total >= -4) return { id:'tranche',  pill:'Suggested — wait; switch to Increase if pullback materialises' };
+  return             { id:'hold',     pill:'Suggested — recession / credit-stress regime' };
+}
+function refreshScore(){
+  let total = 0;
+  document.querySelectorAll('#pillars .pillar').forEach(p => {
+    const s = parseInt(p.dataset.score);
+    total += s;
+    const el = p.querySelector('.pillar-score');
+    el.classList.remove('pos','neg','neu');
+    if (s > 0) { el.classList.add('pos'); el.textContent = '+' + s; }
+    else if (s < 0) { el.classList.add('neg'); el.textContent = '−' + Math.abs(s); }
+    else { el.classList.add('neu'); el.textContent = '0'; }
+  });
+  document.getElementById('scoreNum').textContent = (total > 0 ? '+' : '') + total;
+  let lbl='', call='', desc='', band='', liveText='', liveTone='';
+  if (total >= 4)      { band='hi';   lbl='Risk-on · Normal DCA';        call='Risk-on regime, broad confirmation.';     desc=' Normal DCA; favour growth/cyclicals.';
+                         liveText=(total>=0?'+':'')+total+' (Risk-on · Normal DCA)';                  liveTone='broad, confirmed risk-on backdrop.'; }
+  else if (total >= 1) { band='mid';  lbl='Constructive · Tranche';      call='Late-cycle uptrend, rates pressure.';     desc=' Keep core DCA on; split into weekly tranches.';
+                         liveText='+'+total+' (Constructive · weekly tranches)';                     liveTone='net positive market with rising tactical risk.'; }
+  else if (total >= -1){ band='zero'; lbl='Choppy · Slow pace';          call='Mixed signals, late-cycle.';              desc=' Keep DCA on but slow the pace; avoid chasing.';
+                         liveText=(total>=0?'+':'')+total+' (Choppy · slow the pace)';               liveTone='mixed signals — keep DCA on but slow it down.'; }
+  else if (total >= -4){ band='lo';   lbl='Correction risk · Wait';      call='Correction risk rising.';                 desc=' Wait for better prices or better confirmation.';
+                         liveText=total+' (Correction risk · wait)';                                 liveTone='correction risk rising — wait for prices or confirmation.'; }
+  else                 { band='vlo';  lbl='Recession/Stress · Cash';     call='Recessionary or credit-stress regime.';   desc=' Preserve cash; buy only into genuine capitulation.';
+                         liveText=total+' (Recession/Stress · preserve cash)';                       liveTone='recessionary or credit-stress regime — preserve cash.'; }
+  document.getElementById('scoreLbl').textContent = lbl;
+  document.getElementById('callTitle').textContent = call;
+  document.getElementById('callDesc').textContent = desc;
+
+  // Sync the scoring-rule table row + the "Current score" sentence below it
+  document.querySelectorAll('.ind-table tr[data-band]').forEach(tr => {
+    tr.classList.toggle('band-active', tr.dataset.band === band);
+  });
+  document.querySelectorAll('.band-badge').forEach(b => {
+    b.classList.toggle('show', b.dataset.for === band);
+    if (b.dataset.for === band) b.textContent = '◆ Current';
+  });
+  const lt = document.getElementById('liveBandText');
+  const ln = document.getElementById('liveBandTone');
+  if (lt) lt.textContent = liveText;
+  if (ln) ln.textContent = liveTone;
+
+  // Sync DCA mode picker — "current" badge + auto-select detail unless user is browsing
+  const sug = suggestedDcaForScore(total);
+  document.querySelectorAll('.dca-mode').forEach(card => {
+    const isCur = card.dataset.id === sug.id;
+    card.classList.toggle('current', isCur);
+    const pill = card.querySelector('.pill');
+    pill.textContent = isCur ? sug.pill : card.dataset.default;
+  });
+  // If user hasn't manually clicked a different mode, follow the suggestion
+  if (!window._userPickedDca || window._userPickedDca === sug.id) {
+    document.querySelectorAll('.dca-mode').forEach(c => c.classList.toggle('active', c.dataset.id === sug.id));
+    renderDca(sug.id);
+  }
+}
+document.querySelectorAll('#pillars .pillar').forEach(p => {
+  p.addEventListener('click', () => {
+    let s = parseInt(p.dataset.score);
+    s = s === 1 ? 0 : (s === 0 ? -1 : 1);
+    p.dataset.score = s;
+    refreshScore();
+  });
+});
+refreshScore();
+
+/* ───── Selloff classifier ─────
+   DOM-driven approach: don't trust event timing — just READ the actual radio state from the DOM
+   on every click inside the classifier section and update the verdict from there.
+   This is the most reliable possible pattern: visual state and JS state always stay in sync,
+   because JS reads what the browser has rendered, instead of trying to track parallel state. */
+const QUESTION_LABELS = { yields: 'Treasury yields', credit: 'Credit spreads', dxy: 'US Dollar', oil: 'Oil', banks: 'Banks' };
+const CLASSIFIER_KEYS = ['yields', 'credit', 'dxy', 'oil', 'banks'];
+
+function readClassifierState() {
+  const state = {};
+  CLASSIFIER_KEYS.forEach(k => {
+    const checked = document.querySelector('input[name="' + k + '"]:checked');
+    state[k] = checked ? checked.value : null;
+  });
+  return state;
+}
+
+function classify() {
+  const resultEl = document.getElementById('classifierResult');
+  const verdictEl = document.getElementById('verdictText');
+  const descEl = document.getElementById('verdictDesc');
+  if (!resultEl || !verdictEl || !descEl) return;
+  resultEl.classList.add('show');
+
+  const state = readClassifierState();
+  const missing = CLASSIFIER_KEYS.filter(k => state[k] === null);
+
+  /* Partial selection — give live progress feedback */
+  if (missing.length > 0) {
+    const answered = 5 - missing.length;
+    if (answered === 0) {
+      verdictEl.textContent = 'Make selections above to classify the selloff';
+      descEl.textContent = 'The classifier maps yield / credit / dollar / oil / bank behaviour to one of six regime labels: normal pullback, growth scare, inflation shock, credit event, liquidity crisis, or technical correction.';
+    } else {
+      verdictEl.textContent = answered + ' of 5 selected — pick the remaining ' + missing.length;
+      descEl.textContent = 'Still needed: ' + missing.map(k => QUESTION_LABELS[k]).join(', ') + '.';
+    }
+    return;
+  }
+
+  const { yields, credit, dxy, oil, banks } = state;
+  let verdict, desc;
+  if (credit === 'blowing' || banks === 'crack') {
+    verdict = 'Credit event';
+    desc = 'Spreads jump and banks lead lower. Cut beta, raise hedges, watch for HYG underperformance. Both VIX and MOVE typically rise.';
+  } else if (dxy === 'up' && yields === 'up' && oil !== 'down' && banks !== 'ok') {
+    verdict = 'Liquidity crisis (or threat of one)';
+    desc = 'USD bid hard while funding measures gap. Treasury liquidity deteriorates; cross-asset correlation spikes. Assume systematic deleveraging.';
+  } else if (yields === 'up' && oil === 'up' && dxy === 'up') {
+    verdict = 'Inflation shock';
+    desc = 'Yields, oil, and USD rise together. QQQ / semis underperform; gold may not help. This was the dominant mix into May 19, 2026 — partially unwound by May 21–22 as oil reversed lower and yields eased.';
+  } else if (yields === 'down' && banks !== 'ok') {
+    verdict = 'Growth scare';
+    desc = 'Yields fall; cyclicals/semis/small caps lag; defensives lead. Watch PMIs and claims for confirmation.';
+  } else if (credit === 'tight' && banks === 'ok') {
+    verdict = 'Normal pullback or technical correction';
+    desc = 'Equity weakens but credit refuses to widen and banks hold up. Usually a positioning/valuation shakeout — DCA opportunity if breadth gets oversold.';
+  } else {
+    verdict = 'Mixed signals — keep watching';
+    desc = 'Drivers do not yet line up cleanly. Re-check yields and credit in the next session.';
+  }
+  verdictEl.textContent = verdict;
+  descEl.textContent = desc;
+}
+
+/* Re-run classify() any time ANYTHING happens inside the classifier — click, change, keypress.
+   Multiple event types in capture phase means we fire even if one event type is suppressed somewhere. */
+const classifierEl = document.getElementById('classifier');
+if (classifierEl) {
+  ['click', 'change', 'input', 'keyup'].forEach(evt => {
+    classifierEl.addEventListener(evt, function() {
+      /* setTimeout(0) lets the browser finish updating the radio's :checked state first */
+      setTimeout(classify, 0);
+    }, true);
+  });
+}
+
+/* Plus document-level fallback in case the classifier element handler somehow misses */
+document.addEventListener('click', function(e) {
+  if (e.target && e.target.closest && e.target.closest('#classifier')) {
+    setTimeout(classify, 0);
+  }
+}, true);
+
+/* Replace the alias `cls` used elsewhere with a getter so any old code keeps working */
+const cls = new Proxy({}, {
+  get(_, key) {
+    const checked = document.querySelector('input[name="' + key + '"]:checked');
+    return checked ? checked.value : null;
+  },
+  set() { return true; }
+});
+
+/* ───── DCA matrix click bindings (dcaContent + renderDca declared at top of script) ───── */
+document.querySelectorAll('.dca-mode').forEach(m => {
+  m.addEventListener('click', () => {
+    document.querySelectorAll('.dca-mode').forEach(b => b.classList.remove('active'));
+    m.classList.add('active');
+    renderDca(m.dataset.id);
+    // If user clicks the score-suggested card, snap back to "auto-follow"
+    if (m.classList.contains('current')) window._userPickedDca = null;
+    else window._userPickedDca = m.dataset.id;
+  });
+});
+
+/* ───── Mag 7 buckets (accordion) ───── */
+document.querySelectorAll('#buckets .bucket').forEach(b => {
+  b.querySelector('.bucket-head').addEventListener('click', () => b.classList.toggle('open'));
+});
+
+/* ───── User-manual modal ───── */
+function openHelp(sec){
+  const m = document.getElementById('helpModal');
+  m.classList.add('open');
+  if (sec) showHelpSec(sec);
+  document.body.style.overflow = 'hidden';
+}
+function closeHelp(){
+  document.getElementById('helpModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function showHelpSec(id){
+  document.querySelectorAll('#modalTabs .modal-tab').forEach(t => t.classList.toggle('active', t.dataset.sec === id));
+  document.querySelectorAll('.modal-sec').forEach(s => s.classList.toggle('active', s.id === 'sec-' + id));
+  document.querySelector('.modal-body').scrollTop = 0;
+}
+document.querySelectorAll('#modalTabs .modal-tab').forEach(t => {
+  t.addEventListener('click', () => showHelpSec(t.dataset.sec));
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeHelp();
+});
+
+/* Defensive: ensure no stuck modal blocks the page on load.
+   (Auto-open on first load removed — the "?" buttons are discoverable enough.) */
+(function() {
+  const m = document.getElementById('helpModal');
+  if (m) m.classList.remove('open');
+  document.body.style.overflow = '';
+})();
+</script>
+<script src="../assets/js/live_data.js"></script>
+</body>
+</html>

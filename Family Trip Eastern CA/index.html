@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>加拿大东部家庭之旅 · 互动行程指南</title>
+<style>
+  :root{
+    --maple:#D52B1E;
+    --maple-dark:#A8221A;
+    --maple-soft:#FDECEA;
+    --ink:#1B1B1F;
+    --ink-soft:#444;
+    --muted:#6B7280;
+    --line:#E5E7EB;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --accent:#0E7C66;
+    --accent-soft:#E6F4F0;
+    --gold:#C58A2B;
+    --shadow:0 6px 24px rgba(0,0,0,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:15px;
+  }
+  /* HERO */
+  .hero{
+    position:relative;color:#fff;padding:60px 24px 70px;
+    background:
+      radial-gradient(1200px 400px at 80% -10%, rgba(255,255,255,.18), transparent),
+      linear-gradient(135deg,#7a1410 0%, var(--maple) 50%, #e85b50 100%);
+    overflow:hidden;
+  }
+  .hero::after{content:"🍁";position:absolute;right:-30px;bottom:-40px;font-size:280px;opacity:.08;transform:rotate(-15deg)}
+  .hero .wrap{max-width:1100px;margin:0 auto;position:relative;z-index:2}
+  .hero h1{font-size:34px;margin:0 0 10px;font-weight:800;letter-spacing:.5px}
+  .hero .sub{font-size:16px;opacity:.92;max-width:760px;margin:0 0 24px}
+  .hero .meta{display:flex;flex-wrap:wrap;gap:10px 18px;font-size:13.5px;opacity:.95}
+  .hero .meta span{background:rgba(255,255,255,.15);padding:6px 12px;border-radius:999px;backdrop-filter:blur(4px)}
+
+  /* NAV */
+  .nav{
+    position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+  }
+  .nav-inner{max-width:1100px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;padding:10px 16px}
+  .nav a{
+    flex-shrink:0;text-decoration:none;color:var(--ink-soft);
+    font-size:13.5px;font-weight:500;padding:8px 14px;border-radius:999px;
+    transition:all .2s;
+  }
+  .nav a:hover{background:var(--maple-soft);color:var(--maple)}
+
+  main{max-width:1100px;margin:0 auto;padding:32px 24px 80px}
+  section{margin-bottom:48px;scroll-margin-top:64px}
+  .section-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .section-head .num{
+    width:36px;height:36px;border-radius:10px;background:var(--maple);color:#fff;
+    display:grid;place-items:center;font-weight:700;font-size:14px;
+  }
+  .section-head h2{margin:0;font-size:22px;font-weight:700}
+  .section-head .tagline{color:var(--muted);font-size:13.5px}
+
+  /* TABS */
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;background:#fff;padding:6px;border-radius:14px;box-shadow:var(--shadow);width:fit-content;max-width:100%}
+  .tab{
+    border:none;background:transparent;cursor:pointer;font-size:14px;font-weight:600;
+    padding:10px 18px;border-radius:10px;color:var(--ink-soft);transition:all .2s;
+    font-family:inherit;white-space:nowrap;
+  }
+  .tab.active{background:var(--maple);color:#fff;box-shadow:0 4px 12px rgba(213,43,30,.3)}
+  .tab:hover:not(.active){background:var(--maple-soft);color:var(--maple)}
+  .tab-content{display:none}
+  .tab-content.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  /* DAY CARDS */
+  .timeline{display:grid;gap:14px}
+  .day{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;transition:all .2s;
+  }
+  .day:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+  .day-head{
+    display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;
+    user-select:none;
+  }
+  .day-badge{
+    flex-shrink:0;width:54px;height:54px;border-radius:12px;
+    background:linear-gradient(135deg,var(--maple),#e85b50);color:#fff;
+    display:grid;place-items:center;text-align:center;line-height:1.1;
+  }
+  .day-badge b{font-size:18px;display:block}
+  .day-badge small{font-size:10.5px;opacity:.9}
+  .day-info{flex:1;min-width:0}
+  .day-info h3{margin:0 0 3px;font-size:16px;font-weight:700}
+  .day-info p{margin:0;color:var(--muted);font-size:13px}
+  .day-toggle{color:var(--muted);transition:transform .2s;font-size:18px}
+  .day.open .day-toggle{transform:rotate(180deg)}
+  .day-body{display:none;padding:0 18px 18px;border-top:1px solid var(--line)}
+  .day.open .day-body{display:block}
+  .day-body table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13.5px}
+  .day-body th,.day-body td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  .day-body th{font-weight:600;color:var(--ink-soft);background:#FAFAFA;width:90px}
+  .day-body .note{
+    margin-top:12px;padding:10px 14px;background:var(--accent-soft);
+    border-left:3px solid var(--accent);border-radius:6px;font-size:13px;color:#1f4f44;
+  }
+  .day-body .warn{
+    margin-top:10px;padding:10px 14px;background:#FFF7E6;
+    border-left:3px solid var(--gold);border-radius:6px;font-size:13px;color:#7a5414;
+  }
+
+  /* CARDS GRID */
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  /* CITY GROUPS (attractions) */
+  .city-group{margin:18px 0 26px}
+  .city-group + .city-group{padding-top:22px;border-top:1px dashed var(--line)}
+  .city-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+  .city-title{display:flex;align-items:center;gap:8px}
+  .city-emoji{font-size:20px}
+  .city-title h3{margin:0;font-size:18px;font-weight:700;color:var(--ink)}
+  .city-sub{font-size:12.5px;color:var(--muted)}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;transition:all .2s;display:flex;flex-direction:column;
+  }
+  .card:hover{box-shadow:var(--shadow);border-color:#d1d5db}
+  .card h4{margin:0 0 8px;font-size:15.5px;font-weight:700;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .card .tag{
+    display:inline-block;font-size:11.5px;padding:3px 10px;border-radius:999px;
+    background:var(--maple-soft);color:var(--maple);font-weight:600;margin-bottom:8px;align-self:flex-start;
+  }
+  .card .tag.green{background:var(--accent-soft);color:var(--accent)}
+  .card .tag.gold{background:#FFF7E6;color:var(--gold)}
+  .card .tag.blue{background:#EFF6FF;color:#1D4ED8}
+  .card .tag.orange{background:#fff7ed;color:#c2410c}
+  .card .meta-row{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+  .card p{margin:6px 0;font-size:13.5px;color:var(--ink-soft)}
+  .pros, .cons{font-size:13px;margin:4px 0}
+  .pros::before{content:"✓ ";color:var(--accent);font-weight:700}
+  .cons::before{content:"✗ ";color:var(--maple);font-weight:700}
+
+  /* BUTTON ROW IN CARDS */
+  .card-actions{display:flex;gap:8px;margin-top:auto;padding-top:12px;flex-wrap:wrap}
+  .btn{
+    border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;
+    padding:8px 12px;border-radius:8px;transition:all .15s;text-decoration:none;
+    display:inline-flex;align-items:center;gap:5px;
+  }
+  .btn-primary{background:var(--maple);color:#fff}
+  .btn-primary:hover{background:var(--maple-dark);transform:translateY(-1px)}
+  .btn-outline{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .btn-outline:hover{border-color:var(--maple);color:var(--maple)}
+  .btn-link{background:#f4f5f7;color:var(--ink-soft)}
+  .btn-link:hover{background:var(--maple-soft);color:var(--maple)}
+
+  /* TABLE */
+  .data-table{
+    width:100%;border-collapse:collapse;background:var(--card);
+    border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);font-size:13.5px;
+  }
+  .data-table thead{background:linear-gradient(135deg,#2d2d33,#1B1B1F);color:#fff}
+  .data-table th,.data-table td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}
+  .data-table tbody tr:hover{background:#FAFAFA}
+  .data-table tbody tr:last-child td{border-bottom:none}
+  .data-table .total{font-weight:700;background:var(--maple-soft) !important;color:var(--maple)}
+  .data-table a{color:var(--maple);text-decoration:none;font-weight:600}
+  .data-table a:hover{text-decoration:underline}
+
+  /* PILL */
+  .pill{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600}
+  .pill.rec{background:var(--accent-soft);color:var(--accent)}
+  .pill.alt{background:#F3F4F6;color:var(--muted)}
+  .pill.warn{background:#FFF7E6;color:var(--gold)}
+
+  /* KPI */
+  .kpis{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-bottom:18px}
+  .kpi{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px;text-align:center;
+  }
+  .kpi .v{font-size:22px;font-weight:800;color:var(--maple);line-height:1.2}
+  .kpi .l{font-size:12.5px;color:var(--muted);margin-top:4px}
+
+  /* CHECKLIST */
+  .checklist{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .checklist label{
+    display:flex;gap:10px;align-items:flex-start;padding:10px 12px;
+    background:var(--card);border:1px solid var(--line);border-radius:10px;cursor:pointer;
+    font-size:13.5px;transition:all .15s;
+  }
+  .checklist label:hover{background:var(--maple-soft);border-color:var(--maple)}
+  .checklist input{margin-top:3px;accent-color:var(--maple)}
+  .checklist input:checked + span{text-decoration:line-through;color:var(--muted)}
+
+  /* MODAL */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(20,20,25,.55);
+    display:none;align-items:center;justify-content:center;z-index:100;
+    padding:20px;backdrop-filter:blur(3px);
+    animation:fadeOverlay .2s ease;
+  }
+  .modal-overlay.open{display:flex}
+  @keyframes fadeOverlay{from{opacity:0}to{opacity:1}}
+  .modal{
+    background:#fff;border-radius:18px;max-width:560px;width:100%;
+    max-height:90vh;overflow:hidden;display:flex;flex-direction:column;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+    animation:popIn .25s cubic-bezier(.16,1,.3,1);
+  }
+  @keyframes popIn{from{opacity:0;transform:scale(.94) translateY(8px)}to{opacity:1;transform:none}}
+  .modal-header{
+    padding:22px 24px 16px;background:linear-gradient(135deg,#fff5f3 0%,#fff 100%);
+    border-bottom:1px solid var(--line);position:relative;
+  }
+  .modal-header .badge{
+    display:inline-block;background:var(--maple-soft);color:var(--maple);
+    font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;margin-bottom:8px;
+  }
+  .modal-header h3{margin:0;font-size:20px;font-weight:800;line-height:1.3;padding-right:30px}
+  .modal-header .subtitle{margin:4px 0 0;color:var(--muted);font-size:13px}
+  .modal-close{
+    position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;
+    border:none;background:#f3f4f6;cursor:pointer;font-size:18px;color:var(--ink-soft);
+    display:grid;place-items:center;transition:all .15s;
+  }
+  .modal-close:hover{background:var(--maple);color:#fff;transform:rotate(90deg)}
+  .modal-body{padding:20px 24px;overflow-y:auto;flex:1}
+  .modal-body h5{margin:18px 0 8px;font-size:13px;color:var(--maple);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+  .modal-body h5:first-child{margin-top:0}
+  .modal-body p{margin:6px 0;font-size:14px;color:var(--ink-soft);line-height:1.7}
+  .modal-body ul{margin:6px 0;padding-left:22px;font-size:14px;color:var(--ink-soft);line-height:1.7}
+  .modal-body li{margin:4px 0}
+  .modal-body .info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0}
+  .modal-body .info-item{background:#FAFAFA;padding:10px 12px;border-radius:8px}
+  .modal-body .info-item .l{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+  .modal-body .info-item .v{font-size:14px;color:var(--ink);font-weight:600;margin-top:2px}
+  .modal-body .kid-box{
+    background:linear-gradient(135deg,#fff8e6,#fff3d6);border-left:4px solid var(--gold);
+    padding:14px 16px;border-radius:8px;margin:14px 0;font-size:13.5px;color:#7a5414;
+  }
+  .modal-body .kid-box b{color:#5a3a08}
+  .modal-footer{
+    padding:14px 24px 22px;border-top:1px solid var(--line);background:#fafafa;
+    display:flex;gap:10px;flex-wrap:wrap;
+  }
+  .modal-footer .btn{padding:10px 16px;font-size:13.5px;flex:1;justify-content:center}
+
+  /* Footer */
+  footer{text-align:center;padding:30px 20px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);margin-top:40px}
+
+  /* Mobile */
+  @media (max-width:640px){
+    .hero{padding:40px 20px 50px}
+    .hero h1{font-size:26px}
+    main{padding:20px 16px 60px}
+    .day-head{padding:12px 14px}
+    .day-badge{width:46px;height:46px}
+    .day-info h3{font-size:14.5px}
+    .data-table th,.data-table td{padding:8px 10px;font-size:12.5px}
+    .modal-body .info-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>🍁 加拿大东部家庭之旅</h1>
+    <p class="sub">温哥华 → 渥太华 · 蒙特利尔 · 魁北克城<br>一家四口、孩子9岁与11岁 · 2026年6月下旬 · 高端省心亲子方案</p>
+    <div class="meta">
+      <span>📅 6/23 – 7/1 · 8天7晚</span>
+      <span>👨‍👩‍👧‍👦 2 大 2 小（9岁 + 11岁）</span>
+      <span>✅ Air Transat (由Porter运营) · YVR→YOW · 6/23 · 8:00am</span>
+      <span>✅ Air Canada AC395 · YQB→YVR · 7/1</span>
+      <span>✈ 机票合计 $408 USD/人</span>
+      <span>🎟 Canada Strong Pass · 6/19 – 9/7</span>
+    </div>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#overview">总览</a>
+    <a href="#itinerary">行程方案</a>
+    <a href="#transport">交通</a>
+    <a href="#hotels">酒店+餐厅</a>
+    <a href="#attractions">景点门票</a>
+    <a href="#budget">预算</a>
+    <a href="#packing">打包清单</a>
+    <a href="#tips">实用提示</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="section-head">
+    <div class="num">01</div>
+    <div><h2>行程总览</h2><div class="tagline">三份资料合并后的核心结论</div></div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="v">8 天</div><div class="l">6/23 – 7/1 已定</div></div>
+    <div class="kpi"><div class="v">2 城</div><div class="l">渥太华 · 魁北克城</div></div>
+    <div class="kpi" style="border-color:#22c55e;"><div class="v" style="color:#16a34a;">TS</div><div class="l">去程 Air Transat / Porter 经蒙特利尔</div></div>
+    <div class="kpi" style="border-color:#3b82f6;"><div class="v" style="color:#2563eb;">AC395</div><div class="l">回程 Air Canada 直飞 5h34m</div></div>
+    <div class="kpi"><div class="v">$408</div><div class="l">USD/人 · 机票合计</div></div>
+    <div class="kpi"><div class="v">~6h</div><div class="l">VIA Rail 火车 渥太华→魁北克</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <span class="tag green">推荐路线</span>
+      <h4>开口航班 + 火车</h4>
+      <p>温哥华飞 <b>渥太华</b> 入境 → 火车至 <b>蒙特利尔</b> → 火车至 <b>魁北克城</b> → 魁北克城直飞回温哥华。三城连成一线、不走回头路,最佳压轴留给古城。</p>
+    </div>
+    <div class="card">
+      <span class="tag">关键时点</span>
+      <h4>避开两个公众假日</h4>
+      <p>2026 年 <b>6/24 Saint-Jean-Baptiste Day</b>(魁北克省日)与 <b>7/1 Canada Day</b>(国庆)酒店紧、人潮多。最顺的窗口是 <b>6/25 – 6/30</b>。</p>
+    </div>
+    <div class="card">
+      <span class="tag gold">省钱利器</span>
+      <h4>Canada Strong Pass</h4>
+      <p>6/19 – 9/7 期间,<b>17 岁及以下儿童国家级博物馆免费</b>、18–24 岁半价。渥太华博物馆日预算可显著下调。</p>
+      <div class="card-actions">
+        <a class="btn btn-outline" href="https://www.canada.ca/en/canadian-heritage/campaigns/canada-pass.html" target="_blank" rel="noopener">官网 ↗</a>
+      </div>
+    </div>
+    <div class="card">
+      <span class="tag">家庭节奏</span>
+      <h4>三条铁律</h4>
+      <p class="pros">上午体力项目、下午博物馆 / 泳池</p>
+      <p class="pros">长途移动日只安排 1 个主景点</p>
+      <p class="pros">每天保留 60–90 分钟空白</p>
+    </div>
+  </div>
+</section>
+
+<!-- ITINERARY TABS -->
+<section id="itinerary">
+  <div class="section-head">
+    <div class="num">02</div>
+    <div><h2>三套行程方案</h2><div class="tagline">按时长/节奏切换查看</div></div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="t7">7 天高端宽松版</button>
+    <button class="tab" data-tab="t8">8 天推荐版</button>
+    <button class="tab" data-tab="t6">6 天紧凑版</button>
+    <button class="tab" data-tab="tflights" style="background:linear-gradient(135deg,#0d2137,#1a3a5c);color:#fbbf24;border:none;">✈ 已确定交通票</button>
+  </div>
+
+  <!-- 7 DAY -->
+  <div class="tab-content active" id="t7">
+    <div class="timeline">
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D1</b><small>6/23 周二</small></div>
+        <div class="day-info"><h3>温哥华飞渥太华 · 抵达适应</h3><p>不赶景点,先适应 3 小时时差</p></div>
+        <div class="day-toggle">▾</div></div>
+        <div class="day-body">
+          <div style="margin-bottom:12px;background:linear-gradient(135deg,#0d2137,#1a3a5c);border-radius:10px;padding:14px 18px;color:#fff;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
+              <span style="background:#f59e0b;color:#111;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;">✈ 去程 · 已确认</span>
+              <span style="font-size:12px;opacity:.65;">Air Transat · 6月23日（周二）</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;">
+              <div style="text-align:center;"><div style="font-size:22px;font-weight:800;">YVR</div><div style="font-size:13px;font-weight:600;">8:00 am</div><div style="font-size:11px;opacity:.55;">温哥华</div></div>
+              <div style="flex:1;text-align:center;padding:0 8px;"><div style="display:flex;align-items:center;gap:4px;"><div style="flex:1;height:1px;background:rgba(255,255,255,.3)"></div><span style="font-size:16px;">✈</span><div style="flex:1;height:1px;background:rgba(255,255,255,.3)"></div></div><div style="font-size:11.5px;opacity:.65;margin-top:4px;">9h 35m · 经蒙特利尔</div></div>
+              <div style="text-align:center;"><div style="font-size:22px;font-weight:800;">YOW</div><div style="font-size:13px;font-weight:600;">5:35 pm</div><div style="font-size:11px;opacity:.55;">渥太华</div></div>
+            </div>
+            <div style="font-size:11.5px;text-align:center;opacity:.65;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12);">Air Transat · 基础经济舱 · <b style="color:#fbbf24;">$195 USD/人</b> · 1经停蒙特利尔 YUL</div>
+          </div>
+          <table>
+            <tr><th>08:00</th><td>温哥华 YVR 出发 → 渥太华 YOW，Air Transat，1经停蒙特利尔 YUL，约9h35m。</td></tr>
+            <tr><th>17:35</th><td>抵达渥太华。打车约 15 分钟至市区。</td></tr>
+            <tr><th>20:30</th><td>入住 <b>Fairmont Château Laurier</b> 或 <b>The Westin Ottawa</b>,国会山周边步行可达。</td></tr>
+            <tr><th>21:00</th><td>ByWard Market 简单晚餐;早回酒店适应时差。</td></tr>
+          </table>
+          <div class="note">💡 第一天不安排博物馆或夜间演出。下午 5:35 抵达，吃完饭就休息。</div>
+        </div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D2</b><small>6/24 周三</small></div>
+        <div class="day-info"><h3>博物馆 + 两栖巴士</h3><p>渥太华核心亲子日</p></div>
+        <div class="day-toggle">▾</div></div>
+        <div class="day-body">
+          <table>
+            <tr><th>09:15</th><td>前往加拿大历史博物馆,优先进入 <b>加拿大儿童博物馆</b>。</td></tr>
+            <tr><th>09:30-12:30</th><td>历史博物馆 + 儿童博物馆 + CINÉ+ / 临展择一。家庭票 $68;6/19-9/7 儿童免费。</td></tr>
+            <tr><th>12:30</th><td>馆内或河边午餐(Panorama Café)。</td></tr>
+            <tr><th>14:30</th><td><b>Lady Dive Amphibus</b> 两栖巴士,44 Sparks St 出发,陆 30-40 分 + 水 20-30 分。</td></tr>
+            <tr><th>16:00</th><td>酒店泳池 / 休息。</td></tr>
+            <tr><th>18:00</th><td>轻松晚餐,体力好可看国会山夜景;建议 21:00 前回房。</td></tr>
+          </table>
+          <div class="note">🎟 Amphibus:成人 $49.99,3-12 岁 $37.99,9 岁 / 11 岁均按儿童票。</div>
+        </div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D3</b><small>6/25 周四</small></div>
+        <div class="day-info"><h3>VIA Rail 转场 + 旧港下午</h3><p>2h02m 直达,行李最轻松的一天</p></div>
+        <div class="day-toggle">▾</div></div>
+        <div class="day-body">
+          <table>
+            <tr><th>08:30</th><td>早餐、退房,Uber/出租车至渥太华火车站(约 15 分钟)。</td></tr>
+            <tr><th>10:00-12:02</th><td><b>VIA Rail 渥太华→蒙特利尔</b>,2h02min 直达;建议 Business 车厢或 Economy Plus,含餐与较大座位。</td></tr>
+            <tr><th>12:15</th><td>抵达蒙特利尔中央车站,Uber 至 Old Montreal 酒店,入住或寄存行李。</td></tr>
+            <tr><th>13:30</th><td>旧港(Old Port)午餐:Le Vieux-Port Steakhouse 或 Olive et Gourmando。</td></tr>
+            <tr><th>15:00</th><td><b>旧港散步 + La Grande Roue 摩天轮</b>(成人 $30 / 3-13 岁 $20,空调舱),或 <b>蒙特利尔科学中心</b>(成人 $29 / 4-17 岁 $20)。</td></tr>
+            <tr><th>17:00</th><td>回酒店泳池 / 休息。</td></tr>
+            <tr><th>18:30</th><td>老蒙特利尔晚餐 + 灯火街景短走;为 D4 的 AURA 留体力。</td></tr>
+          </table>
+          <div class="note">🚆 行李火车搬，不用包车也不用赶高速。儿童 11 岁及以下用 CANADAFAM 可能免费同行 → 大幅省钱。</div>
+        </div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D4</b><small>6/26 周五</small></div>
+        <div class="day-info"><h3>老城 + 圣母大教堂 + AURA</h3><p>白天+夜晚 双重体验</p></div>
+        <div class="day-toggle">▾</div></div>
+        <div class="day-body">
+          <table>
+            <tr><th>09:30</th><td>老蒙特利尔步行:Place d'Armes、旧港、Bonsecours Market。</td></tr>
+            <tr><th>11:00</th><td><b>圣母大教堂日间参观</b>,2 大 2 小家庭票 $40 含税。</td></tr>
+            <tr><th>12:30</th><td>旧港午餐(建议提前订位)。</td></tr>
+            <tr><th>14:00</th><td>可选:蒙特利尔科学中心 或 回酒店休息(晚上有 AURA 需留体力)。</td></tr>
+            <tr><th>19:00-21:00</th><td><b>AURA Experience 灯光秀</b>,约 40-45 分钟。家庭票 $104+税。</td></tr>
+          </table>
+          <div class="warn">🔊 AURA 含高音量音乐、快速闪光与激光。声光敏感的孩子建议靠后座位 + 耳塞。票不可退换。</div>
+        </div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D5</b><small>6/27 周六</small></div>
+        <div class="day-info"><h3>老城 + 城堡 + 小香普兰街</h3><p>"住进北美欧洲古城"</p></div>
+        <div class="day-toggle">▾</div></div>
+        <div class="day-body">
+          <table>
+            <tr><th>09:00</th><td>蒙特利尔至魁北克城,VIA Rail 约 3h26m,带行李可考虑 Business 或包车。</td></tr>
+            <tr><th>11:30</th><td>入住 <b>Fairmont Le Château Frontenac</b>,步行 Dufferin Terrace。</td></tr>
+            <tr><th>13:00</th><td>午餐后走 Petit-Champlain、Place Royale(穿舒适鞋,石板路多)。</td></tr>
+            <tr><th>15:30</th><td>缆车 / 城墙 / 观景点择一。</td></tr>
+            <tr><th>17:30</th><td>酒店室内泳池、漩涡池、蒸汽浴 / 桑拿。</td></tr>
+          </table>
+          <div class="note">🏰 魁北克城建议连住 2-3 晚,减少搬行李。老城酒店贵,但省下打车与停车心力。</div>
+        </div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D6</b><small>6/28 周日</small></div>
+        <div class="day-info"><h3>蒙莫朗西瀑布 + 奥尔良岛</h3><p>慢节奏一日游</p></div>
+        <div class="day-toggle">▾</div></div>
+        <div class="day-body">
+          <table>
+            <tr><th>09:00</th><td>包车 / 租车前往 <b>蒙莫朗西瀑布</b>,约 20 分钟车程。</td></tr>
+            <tr><th>10:00-12:00</th><td>瀑布吊桥、观景台、缆车择一。瀑布比尼亚加拉高 30 米。</td></tr>
+            <tr><th>12:30</th><td><b>奥尔良岛</b>午餐 / 甜点:草莓、冰淇淋、农场小店。</td></tr>
+            <tr><th>15:30</th><td>回酒店休息或游泳。</td></tr>
+            <tr><th>18:00</th><td>老城晚餐 + 夜景短走。</td></tr>
+          </table>
+          <div class="note">☔ 雨天备选:瀑布改为文明博物馆 + 室内午餐 + 酒店泳池。</div>
+        </div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D7</b><small>6/29 周一</small></div>
+        <div class="day-info"><h3>魁北克城飞温哥华 返程</h3><p>"稳"为先,不安排硬景点</p></div>
+        <div class="day-toggle">▾</div></div>
+        <div class="day-body">
+          <div style="margin-bottom:12px;background:linear-gradient(135deg,#0d2137,#1a3a5c);border-radius:10px;padding:14px 18px;color:#fff;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
+              <span style="background:#3b82f6;color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;">✈ 回程 · 已确认</span>
+              <span style="font-size:12px;opacity:.65;">Air Canada AC395 · 7月1日（国庆日）</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;">
+              <div style="text-align:center;"><div style="font-size:22px;font-weight:800;">YQB</div><div style="font-size:13px;font-weight:600;">6:40 am</div><div style="font-size:11px;opacity:.55;">魁北克城</div></div>
+              <div style="flex:1;text-align:center;padding:0 8px;"><div style="display:flex;align-items:center;gap:4px;"><div style="flex:1;height:1px;background:rgba(255,255,255,.3)"></div><span style="font-size:16px;">✈</span><div style="flex:1;height:1px;background:rgba(255,255,255,.3)"></div></div><div style="font-size:11.5px;opacity:.65;margin-top:4px;">5h 34m · 直飞</div></div>
+              <div style="text-align:center;"><div style="font-size:22px;font-weight:800;">YVR</div><div style="font-size:13px;font-weight:600;">9:14 am</div><div style="font-size:11px;opacity:.55;">温哥华</div></div>
+            </div>
+            <div style="font-size:11.5px;text-align:center;opacity:.65;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12);">🍁 国庆日直飞回家 · 基础经济舱 · <b style="color:#93c5fd;">$213 USD/人</b> · <span style="color:#fca5a5;">⚠ 仅剩 6 座位</span></div>
+          </div>
+          <table>
+            <tr><th>04:30</th><td>⚠ 早起！打车前往 YQB 机场(约 20 分钟)，建议 04:30 出发。</td></tr>
+            <tr><th>06:40</th><td>Air Canada AC395 直飞温哥华，6:40am 起飞。</td></tr>
+            <tr><th>09:14</th><td>抵达温哥华，比 3 小时时差早——国庆日回家！</td></tr>
+          </table>
+          <div class="warn">⚠️ 6:40am 起飞 = 需 04:30 出门。前一晚(6/30)早睡，不安排深夜活动。行李前一天就打包好。</div>
+        </div></div>
+
+    </div>
+  </div>
+
+  <!-- 8 DAY -->
+  <div class="tab-content" id="t8">
+    <div class="timeline">
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D1</b><small>6/23 周二</small></div>
+        <div class="day-info"><h3>抵达 + 邻里晚餐</h3><p>有意"轻安排"的抵达日</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body">
+          <div style="margin-bottom:12px;background:linear-gradient(135deg,#0d2137,#1a3a5c);border-radius:10px;padding:14px 18px;color:#fff;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
+              <span style="background:#f59e0b;color:#111;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;">✈ 去程 · 已确认</span>
+              <span style="font-size:12px;opacity:.65;">Air Transat · 6月23日（周二）</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;">
+              <div style="text-align:center;"><div style="font-size:22px;font-weight:800;">YVR</div><div style="font-size:13px;font-weight:600;">8:00 am</div><div style="font-size:11px;opacity:.55;">温哥华</div></div>
+              <div style="flex:1;text-align:center;padding:0 8px;"><div style="display:flex;align-items:center;gap:4px;"><div style="flex:1;height:1px;background:rgba(255,255,255,.3)"></div><span style="font-size:16px;">✈</span><div style="flex:1;height:1px;background:rgba(255,255,255,.3)"></div></div><div style="font-size:11.5px;opacity:.65;margin-top:4px;">9h 35m · 经蒙特利尔</div></div>
+              <div style="text-align:center;"><div style="font-size:22px;font-weight:800;">YOW</div><div style="font-size:13px;font-weight:600;">5:35 pm</div><div style="font-size:11px;opacity:.55;">渥太华</div></div>
+            </div>
+            <div style="font-size:11.5px;text-align:center;opacity:.65;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12);">Air Transat · 基础经济舱 · <b style="color:#fbbf24;">$195 USD/人</b> · 1经停蒙特利尔 YUL</div>
+          </div>
+          <p>8:00am YVR 出发 → 5:35pm YOW 抵达 → 入住 → 国会山短走 → 简单晚餐 → 早睡。</p>
+        </div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D2</b><small>6/24 周三</small></div>
+        <div class="day-info"><h3>国会大厦 + 首都地标</h3><p>有空就预约 Parliament 早场</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body"><p>上午 Parliament 参观 → 河景轻走 → ByWard / Elgin 区午晚餐 → 下午留缓冲回酒店。</p></div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D3</b><small>6/25 周四</small></div>
+        <div class="day-info"><h3>家庭博物馆日</h3><p>历史/科技选其一</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body"><p>上午 <b>自然博物馆</b>(恐龙化石) → 下午 <b>历史博物馆</b> 或 <b>加拿大科技博物馆</b>(Crazy Kitchen、Artifact Alley)。</p></div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D4</b><small>6/26 周五</small></div>
+        <div class="day-info"><h3>VIA 火车 + 旧港下午</h3><p>2h02m 一段轻松直达</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body"><p>午前火车 → 抵达后 Old Montreal / 旧港 → 老城晚餐 → 酒店泳池。</p></div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D5</b><small>6/27 周六</small></div>
+        <div class="day-info"><h3>蒙特利尔科学中心 + 旧港</h3><p>低强度的探索日</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body"><p>上午 <b>科学中心</b> → 旧港自由活动(摩天轮、迷你高尔夫)→ 较长的坐下午餐。</p></div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D6</b><small>6/28 周日</small></div>
+        <div class="day-info"><h3>Biodôme + Space for Life</h3><p>9-11 岁孩子最爱</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body"><p>整日围绕 <b>Biodôme</b> 5 个生态系统 + 昆虫馆 / 天文馆。晚餐慢节奏。</p></div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D7</b><small>6/29 周一</small></div>
+        <div class="day-info"><h3>下城区 + Old Quebec</h3><p>不要把所有点一次走完</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body"><p>晨间火车 → 上城露台 → Petit-Champlain → Place Royale → 老城内晚餐。</p></div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D8</b><small>6/30 周二</small></div>
+        <div class="day-info"><h3>博物馆 / 水族馆 + 返程</h3><p>给机场留足缓冲</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body">
+          <div style="margin-bottom:12px;background:linear-gradient(135deg,#0d2137,#1a3a5c);border-radius:10px;padding:14px 18px;color:#fff;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
+              <span style="background:#3b82f6;color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;">✈ 回程 · 已确认</span>
+              <span style="font-size:12px;opacity:.65;">Air Canada AC395 · 7月1日（国庆日）</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;">
+              <div style="text-align:center;"><div style="font-size:22px;font-weight:800;">YQB</div><div style="font-size:13px;font-weight:600;">6:40 am</div><div style="font-size:11px;opacity:.55;">魁北克城</div></div>
+              <div style="flex:1;text-align:center;padding:0 8px;"><div style="display:flex;align-items:center;gap:4px;"><div style="flex:1;height:1px;background:rgba(255,255,255,.3)"></div><span style="font-size:16px;">✈</span><div style="flex:1;height:1px;background:rgba(255,255,255,.3)"></div></div><div style="font-size:11.5px;opacity:.65;margin-top:4px;">5h 34m · 直飞</div></div>
+              <div style="text-align:center;"><div style="font-size:22px;font-weight:800;">YVR</div><div style="font-size:13px;font-weight:600;">9:14 am</div><div style="font-size:11px;opacity:.55;">温哥华</div></div>
+            </div>
+            <div style="font-size:11.5px;text-align:center;opacity:.65;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12);">🍁 国庆日直飞 · 基础经济舱 · <b style="color:#93c5fd;">$213 USD/人</b> · <span style="color:#fca5a5;">⚠ 仅剩 6 座位</span></div>
+          </div>
+          <p>⚠ 6:40am 起飞，04:30 出门。前一晚不安排深夜活动，行李提前打包。</p>
+        </div></div>
+    </div>
+  </div>
+
+  <!-- 6 DAY -->
+  <div class="tab-content" id="t6">
+    <div class="timeline">
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D1</b><small>6/23 周二</small></div>
+        <div class="day-info"><h3>软着陆抵达</h3><p>国会山外观 + ByWard 晚餐</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body">
+          <div style="margin-bottom:12px;background:linear-gradient(135deg,#0d2137,#1a3a5c);border-radius:10px;padding:14px 18px;color:#fff;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
+              <span style="background:#f59e0b;color:#111;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;">✈ 去程 · 已确认</span>
+              <span style="font-size:12px;opacity:.65;">Air Transat · 6月23日（周二）</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;">
+              <div style="text-align:center;"><div style="font-size:22px;font-weight:800;">YVR</div><div style="font-size:13px;font-weight:600;">8:00 am</div><div style="font-size:11px;opacity:.55;">温哥华</div></div>
+              <div style="flex:1;text-align:center;padding:0 8px;"><div style="display:flex;align-items:center;gap:4px;"><div style="flex:1;height:1px;background:rgba(255,255,255,.3)"></div><span style="font-size:16px;">✈</span><div style="flex:1;height:1px;background:rgba(255,255,255,.3)"></div></div><div style="font-size:11.5px;opacity:.65;margin-top:4px;">9h 35m · 经蒙特利尔</div></div>
+              <div style="text-align:center;"><div style="font-size:22px;font-weight:800;">YOW</div><div style="font-size:13px;font-weight:600;">5:35 pm</div><div style="font-size:11px;opacity:.55;">渥太华</div></div>
+            </div>
+            <div style="font-size:11.5px;text-align:center;opacity:.65;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12);">Air Transat · 基础经济舱 · <b style="color:#fbbf24;">$195 USD/人</b> · 1经停蒙特利尔 YUL</div>
+          </div>
+          <p>8:00am YVR 出发 → 5:35pm YOW 抵达。到达后只做轻量散步。如要 Parliament 参观需提前预约。</p>
+        </div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D2</b><small>6/24 周三</small></div>
+        <div class="day-info"><h3>博物馆日 + 户外</h3><p>自然博物馆 + 河边时间</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body"><p>上午 <b>自然博物馆</b> → 下午 <b>历史博物馆</b> 或运河散步 → 傍晚酒店泳池放松。</p></div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D3</b><small>6/25 周四</small></div>
+        <div class="day-info"><h3>旧港 + 科学中心</h3><p>抵达半日的最佳组合</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body"><p>晨间火车 → 老城+旧港+蒙特利尔科学中心 → 早睡。</p></div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D4</b><small>6/26 周五</small></div>
+        <div class="day-info"><h3>Biodôme 主力日</h3><p>家庭最高强度日</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body"><p>整日 Biodôme + Space for Life,下午留 90 分钟酒店放空。</p></div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D5</b><small>6/27 周六</small></div>
+        <div class="day-info"><h3>老城步行 + 小香普兰</h3><p>最上镜的城市</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body"><p>火车抵达 → 紧凑老城散步 → Dufferin Terrace → 老城晚餐。地势陡峭、石板路,建议从车站到酒店打车。</p></div></div>
+
+      <div class="day"><div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge"><b>D6</b><small>6/28 周日</small></div>
+        <div class="day-info"><h3>清晨景点 + 返程</h3><p>文明博物馆 / 水族馆择一</p></div><div class="day-toggle">▾</div></div>
+        <div class="day-body">
+          <div style="margin-bottom:12px;background:linear-gradient(135deg,#0d2137,#1a3a5c);border-radius:10px;padding:14px 18px;color:#fff;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
+              <span style="background:#3b82f6;color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;">✈ 回程 · 已确认</span>
+              <span style="font-size:12px;opacity:.65;">Air Canada AC395 · 7月1日（国庆日）</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;">
+              <div style="text-align:center;"><div style="font-size:22px;font-weight:800;">YQB</div><div style="font-size:13px;font-weight:600;">6:40 am</div><div style="font-size:11px;opacity:.55;">魁北克城</div></div>
+              <div style="flex:1;text-align:center;padding:0 8px;"><div style="display:flex;align-items:center;gap:4px;"><div style="flex:1;height:1px;background:rgba(255,255,255,.3)"></div><span style="font-size:16px;">✈</span><div style="flex:1;height:1px;background:rgba(255,255,255,.3)"></div></div><div style="font-size:11.5px;opacity:.65;margin-top:4px;">5h 34m · 直飞</div></div>
+              <div style="text-align:center;"><div style="font-size:22px;font-weight:800;">YVR</div><div style="font-size:13px;font-weight:600;">9:14 am</div><div style="font-size:11px;opacity:.55;">温哥华</div></div>
+            </div>
+            <div style="font-size:11.5px;text-align:center;opacity:.65;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12);">🍁 国庆日直飞 · 基础经济舱 · <b style="color:#93c5fd;">$213 USD/人</b> · <span style="color:#fca5a5;">⚠ 仅剩 6 座位</span></div>
+          </div>
+          <p>⚠ 6:40am 起飞，04:30 出门。前一晚不安排深夜活动，行李提前打包。</p>
+        </div></div>
+    </div>
+  </div>
+
+  <!-- 4th TAB: CONFIRMED FLIGHTS -->
+  <div class="tab-content" id="tflights">
+
+    <!-- Compact outbound card -->
+    <div style="background:linear-gradient(135deg,#0d2137,#1a3a5c);border-radius:12px;padding:16px 20px;color:#fff;margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:6px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="background:#f59e0b;color:#111;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;">✈ 去程 · 已确认</span>
+          <span style="font-size:12.5px;font-weight:600;">Air Transat <span style="opacity:.6;font-weight:400;">（由 Porter 运营）</span></span>
+          <span style="font-size:12px;opacity:.6;">· 2026年6月23日（周二）</span>
+        </div>
+        <div style="font-size:17px;font-weight:800;color:#fbbf24;">$195 <span style="font-size:12px;font-weight:500;opacity:.8;">USD/人</span></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:26px;font-weight:900;letter-spacing:-1px;">YVR</div>
+          <div style="font-size:15px;font-weight:700;">8:00 am</div>
+          <div style="font-size:11px;opacity:.5;">温哥华</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:0 10px;">
+          <div style="display:flex;align-items:center;gap:5px;"><div style="flex:1;height:1px;background:rgba(255,255,255,.25);"></div><span style="font-size:17px;">✈</span><div style="flex:1;height:1px;background:rgba(255,255,255,.25);"></div></div>
+          <div style="font-size:12px;opacity:.65;margin-top:5px;">9h 35m · 1经停蒙特利尔 YUL</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:26px;font-weight:900;letter-spacing:-1px;">YOW</div>
+          <div style="font-size:15px;font-weight:700;">5:35 pm</div>
+          <div style="font-size:11px;opacity:.5;">渥太华</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;">
+        <span style="background:rgba(255,255,255,.1);padding:2px 9px;border-radius:5px;">Air Transat 票务</span>
+        <span style="background:rgba(255,255,255,.1);padding:2px 9px;border-radius:5px;">Porter 执飞</span>
+        <span style="background:rgba(255,255,255,.1);padding:2px 9px;border-radius:5px;">基础经济舱</span>
+        <span style="background:rgba(255,255,255,.1);padding:2px 9px;border-radius:5px;">经停 YUL ~46分钟</span>
+        <a href="https://www.airtransat.com/" target="_blank" rel="noopener" style="margin-left:auto;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);color:#fbbf24;padding:2px 10px;border-radius:5px;text-decoration:none;font-weight:600;">Air Transat ↗</a>
+      </div>
+    </div>
+
+    <!-- Compact return card -->
+    <div style="background:linear-gradient(135deg,#0d2137,#1a3a5c);border-radius:12px;padding:16px 20px;color:#fff;margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:6px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="background:#3b82f6;color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;">✈ 回程</span>
+          <span style="font-size:12.5px;font-weight:600;">Air Canada AC395</span>
+          <span style="font-size:12px;opacity:.6;">· 7月1日 🍁 国庆日</span>
+        </div>
+        <div style="font-size:17px;font-weight:800;color:#93c5fd;">$213 <span style="font-size:12px;font-weight:500;opacity:.8;">USD/人</span></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:26px;font-weight:900;letter-spacing:-1px;">YQB</div>
+          <div style="font-size:15px;font-weight:700;">6:40 am</div>
+          <div style="font-size:11px;opacity:.5;">魁北克城</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:0 10px;">
+          <div style="display:flex;align-items:center;gap:5px;"><div style="flex:1;height:1px;background:rgba(255,255,255,.25);"></div><span style="font-size:17px;">✈</span><div style="flex:1;height:1px;background:rgba(255,255,255,.25);"></div></div>
+          <div style="font-size:12px;opacity:.65;margin-top:5px;">5h 34m · 直飞</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:26px;font-weight:900;letter-spacing:-1px;">YVR</div>
+          <div style="font-size:15px;font-weight:700;">9:14 am</div>
+          <div style="font-size:11px;opacity:.5;">温哥华</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;">
+        <span style="background:rgba(255,255,255,.1);padding:2px 9px;border-radius:5px;">AC395</span>
+        <span style="background:rgba(255,255,255,.1);padding:2px 9px;border-radius:5px;">基础经济舱</span>
+        <span style="background:rgba(239,68,68,.25);border:1px solid rgba(239,68,68,.35);padding:2px 9px;border-radius:5px;color:#fca5a5;">⚠ 仅剩 6 座 · 6:40am早班需04:30出门</span>
+        <a href="https://www.aircanada.com/" target="_blank" rel="noopener" style="margin-left:auto;background:rgba(59,130,246,.2);border:1px solid rgba(59,130,246,.4);color:#93c5fd;padding:2px 10px;border-radius:5px;text-decoration:none;font-weight:600;">购票 ↗</a>
+      </div>
+    </div>
+
+    <!-- Slim cost row -->
+    <div style="background:#fff8e6;border:1px solid #fde68a;border-radius:10px;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:13.5px;">
+      <span style="color:#666;">去程 $195 + 回程 $213 · 基础经济舱不含托运行李</span>
+      <span style="font-weight:800;font-size:16px;color:#d97706;">$408 USD/人 &nbsp;·&nbsp; <span style="font-size:13px;color:#888;">4人约 ~$1,632 USD</span></span>
+    </div>
+
+    <!-- VIA Rail Timetable -->
+    <div style="margin-top:18px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span style="font-size:20px;">🚆</span>
+        <h3 style="font-size:16px;font-weight:800;margin:0;">VIA Rail 实际时刻表</h3>
+        <span style="font-size:11px;background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:999px;font-weight:600;">待购票</span>
+      </div>
+      <div style="font-size:12px;color:#888;margin-bottom:12px;">以下班次来自 viarail.ca 官网实际查询结果，价格为经济舱起价（4人搜索）。建议提前2–4周购票锁定座位与价格。</div>
+
+      <!-- Leg 1: Ottawa → Montreal -->
+      <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:14px 16px;margin-bottom:10px;">
+        <div style="font-weight:700;font-size:13.5px;color:#15803d;margin-bottom:10px;">第1段 · 渥太华 → 蒙特利尔 &nbsp;<span style="font-size:11px;font-weight:500;color:#888;">（约 2h 0m）· 6/25 周四出发</span></div>
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px;">
+          <thead>
+            <tr style="background:#dcfce7;color:#166534;">
+              <th style="padding:6px 10px;text-align:left;border-radius:6px 0 0 0;">班次</th>
+              <th style="padding:6px 10px;text-align:center;">出发 Ottawa</th>
+              <th style="padding:6px 10px;text-align:center;">抵达 Montréal</th>
+              <th style="padding:6px 10px;text-align:center;">经济舱</th>
+              <th style="padding:6px 10px;text-align:right;border-radius:0 6px 0 0;">备注</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #d1fae5;">
+              <td style="padding:7px 10px;font-weight:600;">#22</td>
+              <td style="padding:7px 10px;text-align:center;">06:07</td>
+              <td style="padding:7px 10px;text-align:center;">08:11</td>
+              <td style="padding:7px 10px;text-align:center;">$42起</td>
+              <td style="padding:7px 10px;text-align:right;color:#888;">最早班</td>
+            </tr>
+            <tr style="border-bottom:1px solid #d1fae5;background:#f0fdf4;">
+              <td style="padding:7px 10px;font-weight:600;">⭐ #24</td>
+              <td style="padding:7px 10px;text-align:center;font-weight:700;">10:13</td>
+              <td style="padding:7px 10px;text-align:center;font-weight:700;">12:15</td>
+              <td style="padding:7px 10px;text-align:center;font-weight:700;">$62起</td>
+              <td style="padding:7px 10px;text-align:right;color:#15803d;font-weight:600;">推荐 · 到蒙特利尔可游旧港</td>
+            </tr>
+            <tr style="border-bottom:1px solid #d1fae5;">
+              <td style="padding:7px 10px;font-weight:600;">#26</td>
+              <td style="padding:7px 10px;text-align:center;">14:17</td>
+              <td style="padding:7px 10px;text-align:center;">16:15</td>
+              <td style="padding:7px 10px;text-align:center;">$75起</td>
+              <td style="padding:7px 10px;text-align:right;color:#0369a1;font-weight:600;">直通魁北克城↓</td>
+            </tr>
+            <tr style="border-bottom:1px solid #d1fae5;">
+              <td style="padding:7px 10px;font-weight:600;">#28</td>
+              <td style="padding:7px 10px;text-align:center;">16:05</td>
+              <td style="padding:7px 10px;text-align:center;">18:04</td>
+              <td style="padding:7px 10px;text-align:center;">$58起</td>
+              <td style="padding:7px 10px;text-align:right;color:#888;">傍晚抵达</td>
+            </tr>
+            <tr>
+              <td style="padding:7px 10px;font-weight:600;">#38</td>
+              <td style="padding:7px 10px;text-align:center;">17:55</td>
+              <td style="padding:7px 10px;text-align:center;">19:57</td>
+              <td style="padding:7px 10px;text-align:center;">$45起</td>
+              <td style="padding:7px 10px;text-align:right;color:#888;">晚班</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:8px;font-size:11.5px;color:#0369a1;background:#e0f2fe;border-radius:6px;padding:6px 10px;">🔵 <b>直通车 #26：</b>渥太华 14:17 出发 → 蒙特利尔 16:15（不下车）→ 魁北克城 20:19 抵达。如想跳过蒙特利尔直奔魁北克城可选此班。</div>
+      </div>
+
+      <!-- Leg 2: Montreal → Quebec City -->
+      <div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:10px;padding:14px 16px;">
+        <div style="font-weight:700;font-size:13.5px;color:#1d4ed8;margin-bottom:10px;">第2段 · 蒙特利尔 → 魁北克城 &nbsp;<span style="font-size:11px;font-weight:500;color:#888;">（约 3h20–40m）· 6/27 周六出发</span></div>
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px;">
+          <thead>
+            <tr style="background:#dbeafe;color:#1e40af;">
+              <th style="padding:6px 10px;text-align:left;border-radius:6px 0 0 0;">班次</th>
+              <th style="padding:6px 10px;text-align:center;">出发 Montréal</th>
+              <th style="padding:6px 10px;text-align:center;">抵达 Québec City</th>
+              <th style="padding:6px 10px;text-align:right;border-radius:0 6px 0 0;">备注</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #bfdbfe;">
+              <td style="padding:7px 10px;font-weight:600;">#622</td>
+              <td style="padding:7px 10px;text-align:center;">08:20</td>
+              <td style="padding:7px 10px;text-align:center;">11:39</td>
+              <td style="padding:7px 10px;text-align:right;color:#888;">早班，抵达整天可游览</td>
+            </tr>
+            <tr style="border-bottom:1px solid #bfdbfe;background:#eff6ff;">
+              <td style="padding:7px 10px;font-weight:600;">⭐ #624</td>
+              <td style="padding:7px 10px;text-align:center;font-weight:700;">10:15</td>
+              <td style="padding:7px 10px;text-align:center;font-weight:700;">13:48</td>
+              <td style="padding:7px 10px;text-align:right;color:#1d4ed8;font-weight:600;">推荐 · 下午抵达 Gare du Palais</td>
+            </tr>
+            <tr style="border-bottom:1px solid #bfdbfe;">
+              <td style="padding:7px 10px;font-weight:600;">#24</td>
+              <td style="padding:7px 10px;text-align:center;">12:45</td>
+              <td style="padding:7px 10px;text-align:center;">16:12</td>
+              <td style="padding:7px 10px;text-align:right;color:#888;">下午出发</td>
+            </tr>
+            <tr style="border-bottom:1px solid #bfdbfe;">
+              <td style="padding:7px 10px;font-weight:600;">#26</td>
+              <td style="padding:7px 10px;text-align:center;">16:40</td>
+              <td style="padding:7px 10px;text-align:center;">20:19</td>
+              <td style="padding:7px 10px;text-align:right;color:#0369a1;">直通车（含渥太华出发段）</td>
+            </tr>
+            <tr>
+              <td style="padding:7px 10px;font-weight:600;">#28</td>
+              <td style="padding:7px 10px;text-align:center;">18:25</td>
+              <td style="padding:7px 10px;text-align:center;">21:48</td>
+              <td style="padding:7px 10px;text-align:right;color:#888;">晚班</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:8px;font-size:11.5px;color:#666;background:#fff;border-radius:6px;padding:6px 10px;">💡 蒙特利尔出发站：<b>Gare Centrale（中央站）</b>。魁北克城到站：<b>Gare du Palais</b>（旧城区内，步行至老城约15分钟）。</div>
+      </div>
+
+      <div style="margin-top:10px;text-align:center;">
+        <a href="https://www.viarail.ca/en/explore-our-destinations/trains/ontario-and-quebec/montreal-quebec-city" target="_blank" rel="noopener" style="display:inline-block;background:#0d2137;color:#fbbf24;padding:8px 20px;border-radius:8px;font-weight:700;font-size:13px;text-decoration:none;">🎫 前往 VIA Rail 官网购票 ↗</a>
+      </div>
+    </div>
+
+  </div>
+  <!-- END 4th TAB -->
+
+</section>
+
+<!-- TRANSPORT -->
+<section id="transport">
+  <div class="section-head">
+    <div class="num">03</div>
+    <div><h2>交通方式对比</h2><div class="tagline">城际首选火车,长途机场+游船段建议包车</div></div>
+  </div>
+
+  <!-- ✅ CONFIRMED FLIGHTS BLOCK (removed - see ✈ 已确认航班 & 火车 tab in 行程方案)-->
+  <div style="display:none;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+      <span style="background:#22c55e;color:#fff;font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.4px;">✓ 已确认最优方案</span>
+      <span style="font-size:13px;opacity:.75;">2026年6月23日 – 7月1日 · 8天7晚 · 建议尽快购票（余票有限）</span>
+    </div>
+
+    <!-- Outbound -->
+    <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:16px 20px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="background:#f59e0b;color:#1a1a1a;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;">✈ 去程</span>
+          <span style="font-size:13px;opacity:.75;">Porter Airlines PD264 · 2026年6月23日（周二）</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:22px;font-weight:800;color:#fbbf24;">$288 <span style="font-size:13px;font-weight:500;opacity:.8;">USD/人</span></div>
+          <div style="font-size:11.5px;opacity:.6;margin-top:1px;">4人约 ~$1,152 USD</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:0;justify-content:center;">
+        <div style="text-align:center;">
+          <div style="font-size:28px;font-weight:800;letter-spacing:-1px;">YVR</div>
+          <div style="font-size:16px;font-weight:600;margin-top:2px;">12:20 pm</div>
+          <div style="font-size:12px;opacity:.55;margin-top:2px;">温哥华</div>
+        </div>
+        <div style="flex:1;padding:0 12px;text-align:center;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="flex:1;height:2px;background:rgba(255,255,255,.3);border-radius:2px;"></div>
+            <div style="font-size:18px;">✈</div>
+            <div style="flex:1;height:2px;background:rgba(255,255,255,.3);border-radius:2px;"></div>
+          </div>
+          <div style="font-size:12.5px;opacity:.7;margin-top:4px;">4h 38m · 直飞</div>
+          <div style="background:rgba(255,255,255,.12);border-radius:999px;font-size:11px;padding:2px 10px;margin-top:5px;display:inline-block;">Non-stop</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:28px;font-weight:800;letter-spacing:-1px;">YOW</div>
+          <div style="font-size:16px;font-weight:600;margin-top:2px;">7:58 pm</div>
+          <div style="font-size:12px;opacity:.55;margin-top:2px;">渥太华</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;">
+        <span style="background:rgba(255,255,255,.1);padding:3px 10px;border-radius:6px;">航班 PD264</span>
+        <span style="background:rgba(255,255,255,.1);padding:3px 10px;border-radius:6px;">Embraer 195 E2</span>
+        <span style="background:rgba(255,255,255,.1);padding:3px 10px;border-radius:6px;">基础经济舱</span>
+        <span style="background:rgba(239,68,68,.25);border:1px solid rgba(239,68,68,.4);padding:3px 10px;border-radius:6px;color:#fca5a5;">⚠ 仅剩 9 个座位</span>
+      </div>
+    </div>
+
+    <!-- VIA Rail -->
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 20px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <div>
+          <span style="background:#16a34a;color:#fff;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;">🚆 城际火车</span>
+          <span style="font-size:13px;opacity:.75;margin-left:8px;">VIA Rail 火车 #26 · 2026年6月24日（周三）</span>
+        </div>
+        <div style="font-size:13px;opacity:.65;">~CAD $65–120/人 · 另购</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:0;justify-content:center;margin-top:12px;">
+        <div style="text-align:center;">
+          <div style="font-size:20px;font-weight:800;">渥太华</div>
+          <div style="font-size:15px;font-weight:600;margin-top:2px;">下午 2:17</div>
+        </div>
+        <div style="flex:1;padding:0 14px;text-align:center;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="flex:1;height:2px;background:rgba(255,255,255,.25);border-radius:2px;"></div>
+            <div style="font-size:16px;">🚆</div>
+            <div style="flex:1;height:2px;background:rgba(255,255,255,.25);border-radius:2px;"></div>
+          </div>
+          <div style="font-size:12px;opacity:.65;margin-top:4px;">~6h · 经蒙特利尔</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:20px;font-weight:800;">魁北克城</div>
+          <div style="font-size:15px;font-weight:600;margin-top:2px;">晚上 8:19</div>
+        </div>
+      </div>
+      <div style="font-size:12px;opacity:.55;margin-top:10px;text-align:center;">早上在渥太华游览，下午搭车 · 在 <a href="https://www.viarail.ca" target="_blank" rel="noopener" style="color:#86efac;">viarail.ca</a> 单独购票</div>
+    </div>
+
+    <!-- Return -->
+    <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:16px 20px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="background:#3b82f6;color:#fff;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;">✈ 回程</span>
+          <span style="font-size:13px;opacity:.75;">Air Canada AC395 · 2026年7月1日（周三·国庆日）</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:22px;font-weight:800;color:#93c5fd;">$213 <span style="font-size:13px;font-weight:500;opacity:.8;">USD/人</span></div>
+          <div style="font-size:11.5px;opacity:.6;margin-top:1px;">4人约 ~$852 USD</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:0;justify-content:center;">
+        <div style="text-align:center;">
+          <div style="font-size:28px;font-weight:800;letter-spacing:-1px;">YQB</div>
+          <div style="font-size:16px;font-weight:600;margin-top:2px;">6:40 am</div>
+          <div style="font-size:12px;opacity:.55;margin-top:2px;">魁北克城</div>
+        </div>
+        <div style="flex:1;padding:0 12px;text-align:center;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="flex:1;height:2px;background:rgba(255,255,255,.3);border-radius:2px;"></div>
+            <div style="font-size:18px;">✈</div>
+            <div style="flex:1;height:2px;background:rgba(255,255,255,.3);border-radius:2px;"></div>
+          </div>
+          <div style="font-size:12.5px;opacity:.7;margin-top:4px;">5h 34m · 直飞</div>
+          <div style="background:rgba(255,255,255,.12);border-radius:999px;font-size:11px;padding:2px 10px;margin-top:5px;display:inline-block;">Non-stop</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:28px;font-weight:800;letter-spacing:-1px;">YVR</div>
+          <div style="font-size:16px;font-weight:600;margin-top:2px;">9:14 am</div>
+          <div style="font-size:12px;opacity:.55;margin-top:2px;">温哥华</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;">
+        <span style="background:rgba(255,255,255,.1);padding:3px 10px;border-radius:6px;">航班 AC395</span>
+        <span style="background:rgba(255,255,255,.1);padding:3px 10px;border-radius:6px;">基础经济舱</span>
+        <span style="background:rgba(255,255,255,.1);padding:3px 10px;border-radius:6px;">🍁 国庆日直飞回家</span>
+        <span style="background:rgba(239,68,68,.25);border:1px solid rgba(239,68,68,.4);padding:3px 10px;border-radius:6px;color:#fca5a5;">⚠ 仅剩 6 个座位</span>
+      </div>
+    </div>
+
+    <!-- Total cost bar -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.12);flex-wrap:wrap;gap:8px;">
+      <div style="font-size:13px;opacity:.65;">去程 + 回程（每人）</div>
+      <div style="font-size:20px;font-weight:800;color:#fbbf24;">$501 USD/人 &nbsp;·&nbsp; <span style="font-size:14px;opacity:.8;">4人约 ~$2,004 USD</span></div>
+    </div>
+    <div style="font-size:12px;opacity:.5;margin-top:8px;">⚠ 基础经济舱不含随身携带行李（仅限个人物品）。行李额：Porter ~$50-69 USD · Air Canada ~$45 CAD。购票前请确认日期。</div>
+  </div>
+  <!-- END CONFIRMED FLIGHTS BLOCK -->
+
+  <table class="data-table">
+    <thead><tr><th>路段</th><th>推荐方式</th><th>时间</th><th>家庭花费区间</th><th>官网</th></tr></thead>
+    <tbody>
+      <tr style="background:#f0fdf4;"><td><b>温哥华 → 渥太华</b> <span style="font-size:11px;background:#16a34a;color:#fff;padding:2px 7px;border-radius:4px;margin-left:4px;font-weight:600;">✓ 已确认</span></td><td><span class="pill rec">Air Transat（Porter执飞）经蒙特利尔</span></td><td>9h 35m · 8:00am–5:35pm · 1停YUL</td><td><b>$195 USD/人</b></td><td><a href="https://www.airtransat.com/" target="_blank" rel="noopener">Air Transat ↗</a></td></tr>
+      <tr><td>温哥华 → 蒙特利尔</td><td><span class="pill alt">飞机·备选</span></td><td>4.5-5h 直飞</td><td>$232+/人</td><td><a href="https://www.aircanada.com/" target="_blank" rel="noopener">Air Canada ↗</a> · <a href="https://www.westjet.com/" target="_blank" rel="noopener">WestJet ↗</a></td></tr>
+      <tr><td>渥太华 → 蒙特利尔</td><td><span class="pill rec">VIA Rail</span></td><td>2h 02min</td><td>~$45-110/成人</td><td><a href="https://www.viarail.ca/en/explore-our-destinations/trains/ontario-and-quebec/ottawa-montreal" target="_blank" rel="noopener">VIA Rail ↗</a></td></tr>
+      <tr><td>渥太华 → 蒙特利尔</td><td><span class="pill alt">长途巴士</span></td><td>2h25-40</td><td>$35 起</td><td><a href="https://orleansexpress.com/" target="_blank" rel="noopener">Orléans Express ↗</a></td></tr>
+      <tr><td>蒙特利尔 → 魁北克城</td><td><span class="pill rec">VIA Rail</span></td><td>3h 26min</td><td>~$55-140/成人</td><td><a href="https://www.viarail.ca/en/explore-our-destinations/trains/ontario-and-quebec/montreal-quebec-city" target="_blank" rel="noopener">VIA Rail ↗</a></td></tr>
+      <tr><td>蒙特利尔 → 魁北克城</td><td><span class="pill alt">长途巴士</span></td><td>3h-3h15</td><td>$25 起</td><td><a href="https://orleansexpress.com/" target="_blank" rel="noopener">Orléans Express ↗</a></td></tr>
+      <tr style="background:#f0fdf4;"><td><b>魁北克城 → 温哥华</b> <span style="font-size:11px;background:#16a34a;color:#fff;padding:2px 7px;border-radius:4px;margin-left:4px;font-weight:600;">✓ 已确认</span></td><td><span class="pill rec">Air Canada AC395 直飞</span></td><td>5h 34m · 6:40am–9:14am</td><td><b>$213 USD/人</b></td><td><a href="https://www.aircanada.com/" target="_blank" rel="noopener">Air Canada ↗</a></td></tr>
+    </tbody>
+  </table>
+
+  <div class="grid" style="margin-top:18px">
+    <div class="card">
+      <span class="tag green">儿童火车优惠</span>
+      <h4>VIA Rail 家庭折扣</h4>
+      <p class="pros">2-12 岁经济舱半价、卧铺 25% off</p>
+      <p class="pros"><b>Canada Strong Pass (CANADAFAM)</b>:2026 夏季 17 岁及以下经济舱可能<b>免费</b>同行</p>
+      <p>三个车站均位市中心:Ottawa Station · Montréal Central Station · Gare du Palais</p>
+      <div class="card-actions">
+        <a class="btn btn-outline" href="https://www.viarail.ca/en/offers/family-travel" target="_blank" rel="noopener">VIA 家庭票 ↗</a>
+        <a class="btn btn-outline" href="https://www.viarail.ca/en/offers/canada-strong-pass" target="_blank" rel="noopener">Strong Pass ↗</a>
+      </div>
+    </div>
+    <div class="card">
+      <span class="tag">机场地面</span>
+      <h4>渥太华 · 蒙特利尔 · 魁北克城 机场</h4>
+      <p><b>渥太华机场</b> 直连 O-Train Line 4;10 岁及以下免费</p>
+      <p><b>蒙特利尔机场</b> 747 巴士 24/7;taxi 固定 $49.45 日</p>
+      <p><b>魁北克城机场</b> 80 路 6am-1am;12 岁及以下免费</p>
+      <div class="card-actions">
+        <a class="btn btn-outline" href="https://www.yow.ca/parking-transportation/ground-transportation" target="_blank" rel="noopener">渥太华机场 ↗</a>
+        <a class="btn btn-outline" href="https://www.admtl.com/en-CA/parking-and-transport/transport-services/buses" target="_blank" rel="noopener">蒙特利尔机场 ↗</a>
+        <a class="btn btn-outline" href="https://www.aeroportdequebec.com/en/airport-access/public-transportation" target="_blank" rel="noopener">魁北克城机场 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOTELS -->
+<section id="hotels">
+  <div class="section-head">
+    <div class="num">04</div>
+    <div><h2>家庭友好酒店 + 餐厅</h2><div class="tagline">点击酒店卡片查看详情 · 餐厅含儿童友好评级与地图链接</div></div>
+  </div>
+
+  <h3 style="font-size:17px;margin:18px 0 12px">🏛 渥太华 Ottawa</h3>
+  <div class="grid" id="hotels-ottawa"></div>
+  <h4 style="font-size:14px;margin:18px 0 10px;color:var(--ink-soft);">🍽 步行餐厅推荐</h4>
+  <div class="grid" id="restaurants-ottawa"></div>
+
+  <h3 style="font-size:17px;margin:28px 0 12px">🏙 蒙特利尔 Montreal</h3>
+  <div class="grid" id="hotels-montreal"></div>
+  <h4 style="font-size:14px;margin:18px 0 10px;color:var(--ink-soft);">🍽 步行餐厅推荐</h4>
+  <div class="grid" id="restaurants-montreal"></div>
+
+  <h3 style="font-size:17px;margin:28px 0 12px">🏰 魁北克城 Quebec City</h3>
+  <div class="grid" id="hotels-quebec"></div>
+  <h4 style="font-size:14px;margin:18px 0 10px;color:var(--ink-soft);">🍽 步行餐厅推荐</h4>
+  <div class="grid" id="restaurants-quebec"></div>
+
+  <div class="note" style="margin-top:18px">💡 <b>预订顺序:</b>机票 → 魁北克城酒店 → AURA → VIA Rail 火车票 → 渥太华/蒙特利尔酒店 → Amphibus → 餐厅。</div>
+</section>
+
+<!-- ATTRACTIONS -->
+<section id="attractions">
+  <div class="section-head">
+    <div class="num">05</div>
+    <div><h2>景点门票与儿童优惠</h2><div class="tagline">点击景点卡片查看为什么值得带孩子去</div></div>
+  </div>
+
+  <table class="data-table">
+    <thead><tr><th>景点</th><th>成人</th><th>儿童 / 优惠</th><th>家庭 4 人估算</th><th>注意</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://www.historymuseum.ca/visit/" target="_blank" rel="noopener">加拿大历史博物馆 ↗</a></td><td>$25</td><td>2-12 岁 $18;<b>6/19-9/7 Canada Strong Pass 儿童免费</b></td><td>~$50(用 Pass) / $68</td><td>网订省 10%</td></tr>
+      <tr><td><a href="https://www.ladydive.com/" target="_blank" rel="noopener">Lady Dive Amphibus ↗</a></td><td>$49.99</td><td>3-12 岁 $37.99;学生 13-17 岁 $46.99</td><td>~$175.96</td><td>约 1 小时;44 Sparks St</td></tr>
+      <tr><td><a href="https://www.basiliquenotredame.ca/en/" target="_blank" rel="noopener">蒙特利尔圣母大教堂 ↗</a></td><td>$16 含税</td><td>6-16 岁 $10;5 岁及以下免费</td><td><b>$40 含税</b>(家庭票)</td><td>日间与 AURA 是不同票</td></tr>
+      <tr><td><a href="https://www.aurabasiliquemontreal.com/" target="_blank" rel="noopener">AURA Experience ↗</a></td><td>$37 税前</td><td>6-16 岁 $22;5 岁及以下免费</td><td><b>$104 + 税</b>(家庭票)</td><td>~40-45 分钟;不可退换</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:17px;margin:24px 0 12px">🎯 各城重点亮点(点击查看为什么适合 9-11 岁)</h3>
+  <div id="attractions-grid"></div>
+</section>
+
+<!-- BUDGET -->
+<section id="budget">
+  <div class="section-head">
+    <div class="num">06</div>
+    <div><h2>预算明细(CAD)</h2><div class="tagline">三档对照</div></div>
+  </div>
+
+  <table class="data-table">
+    <thead><tr><th>类别</th><th>6 天紧凑</th><th>8 天推荐</th><th>7 天高端</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr style="background:#f0fdf4;"><td><b>长途机票</b> <span style="font-size:11px;background:#16a34a;color:#fff;padding:1px 6px;border-radius:4px;font-weight:600;">✓ 已确认</span></td><td colspan="3"><b>~$1,632 USD（4人 × $408/人）</b> · Air Transat/Porter 去（经蒙特利尔）+ Air Canada AC395 回</td><td>✅ 已购票</td></tr>
+      <tr><td>城际交通</td><td>$220-450</td><td>$220-450</td><td>$500-1,000</td><td>VIA Rail × 2 段(高端含 Business 车厢)</td></tr>
+      <tr><td>住宿</td><td>$1,300-1,950</td><td>$1,820-2,730</td><td>$4,250-6,550</td><td>5/7/6 晚,高端版地标酒店</td></tr>
+      <tr><td>活动门票</td><td>$180-350</td><td>$260-500</td><td>$360-690</td><td>用 Canada Strong Pass 可降</td></tr>
+      <tr><td>本地交通 / 出租</td><td>$70-140</td><td>$90-180</td><td>含在城际</td><td>儿童多数路段免费</td></tr>
+      <tr><td>餐饮</td><td>—</td><td>—</td><td>$1,600-2,600</td><td>仅高端版列出</td></tr>
+      <tr><td>预留金</td><td>—</td><td>—</td><td>$600-1,200</td><td>仅高端版列出</td></tr>
+      <tr class="total"><td>合计</td><td>$3,370-5,040</td><td>$3,990-6,010</td><td>$10,110-16,440</td><td>建议留 10-15% 余量</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note" style="margin-top:14px">🎟 <b>核心门票示意(2 大 2 小):</b>历史博物馆 $50-68 + Amphibus $176 + 圣母大教堂 $40 + AURA $104 ≈ <b>~$370-388</b>(不含税费、餐饮、停车)。</div>
+</section>
+
+<!-- PACKING -->
+<section id="packing">
+  <div class="section-head">
+    <div class="num">07</div>
+    <div><h2>打包清单</h2><div class="tagline">勾选你已经装好的</div></div>
+  </div>
+
+  <h4 style="margin:6px 0 10px;font-weight:600">🧥 衣物 · 层次穿搭</h4>
+  <div class="checklist">
+    <label><input type="checkbox"><span>速干 T 恤 / 长袖(避免棉)</span></label>
+    <label><input type="checkbox"><span>轻量防水冲锋衣(每人 1 件)</span></label>
+    <label><input type="checkbox"><span>1 件薄抓绒 / 羽绒(早晚与博物馆冷气用)</span></label>
+    <label><input type="checkbox"><span>磨合好的运动鞋 + 凉鞋 / 水鞋</span></label>
+    <label><input type="checkbox"><span>泳衣 × 全员(酒店泳池 / Valcartier)</span></label>
+    <label><input type="checkbox"><span>遮阳帽 + 太阳镜</span></label>
+  </div>
+
+  <h4 style="margin:18px 0 10px;font-weight:600">🎒 装备 · 移动效率</h4>
+  <div class="checklist">
+    <label><input type="checkbox"><span>每人 1 个 carry-on 滚轮 + 共享日包</span></label>
+    <label><input type="checkbox"><span>可折叠水瓶 × 全员</span></label>
+    <label><input type="checkbox"><span>降噪耳机 / 飞机用儿童耳机</span></label>
+    <label><input type="checkbox"><span>移动电源 + 多口 USB 充电器</span></label>
+    <label><input type="checkbox"><span>预下载好的离线内容(动画 / 有声书)</span></label>
+  </div>
+
+  <h4 style="margin:18px 0 10px;font-weight:600">💊 健康 · 急救小包</h4>
+  <div class="checklist">
+    <label><input type="checkbox"><span>常用药 + 退烧药(放手提,不托运)</span></label>
+    <label><input type="checkbox"><span>水泡贴(Compeed / Moleskin)</span></label>
+    <label><input type="checkbox"><span>晕车药 / 止吐袋(飞机+长车程)</span></label>
+    <label><input type="checkbox"><span>高 SPF 防晒 + DEET 驱蚊液</span></label>
+    <label><input type="checkbox"><span>创可贴 + 消毒湿巾</span></label>
+    <label><input type="checkbox"><span>医疗卡 / 旅行保险信息</span></label>
+  </div>
+
+  <h4 style="margin:18px 0 10px;font-weight:600">📄 文件 · 预订</h4>
+  <div class="checklist">
+    <label><input type="checkbox"><span>护照 / 身份证件(成人)</span></label>
+    <label><input type="checkbox"><span>酒店确认单(离线 PDF)</span></label>
+    <label><input type="checkbox"><span>火车 / 飞机票(VIA / Air Canada / Air Transat)</span></label>
+    <label><input type="checkbox"><span>景点二维码截图(AURA / Amphibus / VIA Rail)</span></label>
+    <label><input type="checkbox"><span>租车 / 包车订单 + 儿童增高座椅预约</span></label>
+    <label><input type="checkbox"><span>紧急联系人列表</span></label>
+  </div>
+
+  <h4 style="margin:18px 0 10px;font-weight:600">🎮 防无聊 · 候机/候餐</h4>
+  <div class="checklist">
+    <label><input type="checkbox"><span>1 本书 / 漫画 / 解谜册 / 贴纸</span></label>
+    <label><input type="checkbox"><span>小桌游 / 卡牌</span></label>
+    <label><input type="checkbox"><span>零食包(餐厅等位救星)</span></label>
+  </div>
+</section>
+
+<!-- TIPS -->
+<section id="tips">
+  <div class="section-head">
+    <div class="num">08</div>
+    <div><h2>实用提示</h2><div class="tagline">三份资料里值得反复看的几条</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <span class="tag">⚠️ 节假日</span>
+      <h4>两个关键日期</h4>
+      <p><b>6/24 Saint-Jean-Baptiste Day</b>(魁北克省日)影响蒙城与魁北克。<b>7/1 Canada Day</b>(国庆)影响渥太华市中心。最顺窗口:6/25-6/30。</p>
+    </div>
+    <div class="card">
+      <span class="tag green">🎫 Canada Strong Pass</span>
+      <h4>2026/6/19 – 9/7</h4>
+      <p>国家级博物馆与历史遗址 <b>17 岁及以下免费</b>、18-24 岁半价。<b>VIA Rail (CANADAFAM)</b> 17 岁及以下可能经济舱免费同行。</p>
+      <div class="card-actions">
+        <a class="btn btn-outline" href="https://www.canada.ca/en/canadian-heritage/campaigns/canada-pass.html" target="_blank" rel="noopener">官网 ↗</a>
+      </div>
+    </div>
+    <div class="card">
+      <span class="tag">🚸 儿童座椅</span>
+      <h4>跨省法规差异</h4>
+      <p>魁北克省:必须使用增高座椅 <b>直至 145 cm 高 或 9 岁</b>。<b>租车时务必提前预订增高座椅</b>。</p>
+    </div>
+    <div class="card">
+      <span class="tag gold">🌧 雨天备选</span>
+      <h4>每个城市都有避雨锚</h4>
+      <p><b>渥太华:</b>自然博物馆 / 历史博物馆 / 科技博物馆<br><b>蒙特利尔:</b>Biodôme / 科学中心<br><b>魁北克城:</b>文明博物馆 / 水族馆</p>
+    </div>
+    <div class="card">
+      <span class="tag">🍂 6 月天气</span>
+      <h4>层次 + 防雨</h4>
+      <p>渥太华 6 月下旬常态:白天 ~24.6°C,夜晚 ~13.9°C。湿度比温哥华高;薄防水外套比雨伞实用。</p>
+    </div>
+    <div class="card">
+      <span class="tag">♿ 无障碍</span>
+      <h4>VIA 与车站</h4>
+      <p>VIA Rail 特殊辅助请提前 <b>48 小时</b> 申请。老魁北克石板路+陡坡是全程最大挑战,建议尽量轻装。</p>
+    </div>
+    <div class="card">
+      <span class="tag">🍽 餐饮策略</span>
+      <h4>每天只订一顿正式餐</h4>
+      <p>蒙城必吃:贝果(St-Viateur)、烟肉(Schwartz's)、Poutine(La Banquise);渥太华:ByWard Market 的 BeaverTails。</p>
+    </div>
+    <div class="card">
+      <span class="tag warn">🔊 AURA 注意</span>
+      <h4>声光敏感的孩子</h4>
+      <p>圣母大教堂的 AURA 含高音量与快速闪光 / 激光。<b>票不可退换</b>。建议靠后座位 + 准备耳塞。</p>
+    </div>
+  </div>
+
+  <div class="note" style="margin-top:18px">🎯 <b>如果只优化一件事:</b>对比 <b>温哥华→渥太华 / 魁北克城→温哥华</b> 与 <b>温哥华→蒙特利尔 往返</b> 的家庭总价。除非蒙城往返便宜很多,否则保持开口航班是最干净的方案。</div>
+</section>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="badge" id="m-badge"></span>
+      <h3 id="m-title"></h3>
+      <p class="subtitle" id="m-subtitle"></p>
+      <button class="modal-close" onclick="closeModal()" aria-label="关闭">✕</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+    <div class="modal-footer" id="m-footer"></div>
+  </div>
+</div>
+
+<footer>
+  整理自 3 份原始资料:<i>Family Trip Report</i>、<i>Eastern Canada Family Trip Planning</i>、<i>ottawa-quebec-7-day-family-trip-guide</i><br>
+  所有价格为 2026 年 5 月公开信息,正式预订前请二次核验 · 🍁
+</footer>
+
+<script>
+  // ============ DATA: HOTELS ============
+  const HOTELS = {
+    ottawa: [
+      {
+        id:'hotel-laurier', name:'Fairmont Château Laurier', tag:'gold', tagText:'高端首选',
+        url:'https://www.fairmont.com/laurier-ottawa/',
+        rate:'$650-950/晚', location:'1 Rideau St · 国会山旁',
+        short:'地标位置、步行国会山 / ByWard。住客可用 Health Club 与泳池。',
+        cons:'代客泊车 ~$67.80/天 含税',
+        why:`<h5>为什么选它</h5>
+          <p>1912 年建成的法式哥特复兴风建筑,<b>"加拿大最上镜城堡酒店"之一</b>。地理位置无可挑剔——出门 1 分钟即 Rideau Canal 船闸,步行 5 分钟到国会山,7 分钟到 ByWard Market。</p>
+          <h5>家庭功能</h5>
+          <ul>
+            <li>室内泳池 + Health Club 全程免费使用</li>
+            <li>双 Queen 房型 + 转角套房</li>
+            <li>带管家级服务的奢华亲子选项</li>
+          </ul>`,
+        info:[
+          ['位置','Rideau Canal 旁'],['泳池','室内 + 健身中心'],
+          ['儿童','童床免费 / 加床收费'],['停车','代客 ~$67.80/天']
+        ]
+      },
+      {
+        id:'hotel-westin-ottawa', name:'The Westin Ottawa', tag:'gold', tagText:'高端备选',
+        url:'https://www.marriott.com/en-us/hotels/yowwi-the-westin-ottawa/overview/',
+        rate:'$650-950/晚', location:'直连 Rideau Centre 购物中心',
+        short:'连接 Rideau Centre,室内盐水泳池,适合雨天和购物补给。',
+        why:`<h5>为什么选它</h5>
+          <p>市中心连廊酒店,<b>不出门就能直达大型商场和地铁</b>。雨天对孩子最友好——从客房一路走到电影院、餐厅、超市都不需要伞。</p>
+          <h5>家庭功能</h5>
+          <ul><li><b>室内盐水泳池</b>(对孩子皮肤更温和)</li><li>Westin 标志性"Heavenly Bed"双 Queen 房</li><li>Rideau Centre 内有适合孩子的连锁餐厅</li></ul>`,
+        info:[['位置','直连 Rideau Centre'],['泳池','室内盐水'],['距 ByWard','步行 5 分钟'],['距车站','打车 8 分钟']]
+      },
+      {
+        id:'hotel-homewood-ottawa', name:'Homewood Suites Ottawa Downtown', tag:'green', tagText:'套房性价比',
+        url:'https://www.hilton.com/en/hotels/yowqshw-homewood-suites-ottawa-downtown/',
+        rate:'~$252/晚 起', location:'361 Queen St',
+        short:'套房 + 厨房 + 室内泳池 + 免费早餐。家庭性价比强。',
+        cons:'不如老港酒店有氛围',
+        why:`<h5>为什么选它</h5>
+          <p>同等位置预算 <b>~1/3 价格</b> 就能拿到带客厅、迷你厨房和洗衣区的整套套房。对于 6 月下旬抵达后第一晚就需要"家"的疲劳家庭来说,这是最高 ROI 的选择。</p>
+          <h5>家庭功能</h5>
+          <ul><li><b>免费热早餐</b>(出门前一小时省钱省时)</li><li><b>套房带厨房</b>:可以热孩子的奶 / 简易晚餐</li><li><b>室内泳池</b> + 投币洗衣</li><li>步行 12 分钟到国会山</li></ul>`,
+        info:[['位置','361 Queen Street'],['类型','一室 / 两室套房'],['含早','是 · 热早餐'],['厨房','迷你厨房 + 微波']]
+      },
+      {
+        id:'hotel-delta-ottawa', name:'Delta Hotels Ottawa City Centre', tag:'tag', tagText:'中端',
+        url:'https://www.marriott.com/en-us/hotels/yowdm-delta-hotels-ottawa-city-centre/overview/',
+        rate:'~$469/晚', location:'101 Lyon St N',
+        short:'上中端可靠,室内泳池,Marriott Bonvoy 积分友好。',
+        cons:'早餐不含;价格略高',
+        why:`<h5>为什么选它</h5>
+          <p>Marriott Delta 系列以"全功能商务酒店"为定位,但对家庭很友好:<b>大房型</b>、<b>室内泳池+热水池</b>、稳定的服务标准。位置稍偏南但距国会山步行可达。</p>`,
+        info:[['位置','101 Lyon St N'],['泳池','室内 + 热水池'],['早餐','不含'],['Bonvoy','积分可用']]
+      }
+    ],
+    montreal: [
+      {
+        id:'hotel-westin-mtl', name:'Le Westin Montréal', tag:'gold', tagText:'高端首选',
+        url:'https://www.marriott.com/en-us/hotels/yulwi-le-westin-montreal/overview/',
+        rate:'$550-900/晚', location:'270 Saint-Antoine St W',
+        short:'老蒙特利尔 / 会议中心旁,室内泳池 + 漩涡池 + 健身房,步行去圣母大教堂方便。',
+        why:`<h5>为什么选它</h5>
+          <p>老蒙特利尔与新市中心的<b>交界点</b>——一边是石板巷、圣母大教堂、AURA 灯光秀;另一边是地铁、地下城、shopping。对孩子来说,意味着 <b>走 8 分钟去任何主要景点</b>。</p>
+          <h5>家庭功能</h5>
+          <ul><li>室内泳池 + 漩涡池</li><li>双 Queen 房型 / Connecting Rooms 选项</li><li>到圣母大教堂步行 4 分钟,看 AURA 不用打车</li></ul>`,
+        info:[['位置','老蒙特利尔/会议中心'],['泳池','室内+漩涡'],['距圣母大教堂','步行 4 分钟'],['距旧港','步行 8 分钟']]
+      },
+      {
+        id:'hotel-bonaventure', name:'Hotel Bonaventure Montreal', tag:'gold', tagText:'奢华加分项',
+        url:'https://hotelbonaventure.com/en/',
+        rate:'需单独询价', location:'900 De La Gauchetière W',
+        short:'著名的加热屋顶泳池与花园,明确主打家庭友好。',
+        why:`<h5>为什么选它</h5>
+          <p><b>蒙特利尔最特别的酒店体验之一</b>。建在中央车站楼上的"空中花园",有 <b>全年开放的加热户外泳池</b>——即使下雪也能游!孩子在水中、家长看落雪,是会被记一辈子的场景。</p>
+          <h5>家庭功能</h5>
+          <ul><li><b>加热屋顶泳池</b>(2.5 英亩花园环绕)</li><li>看得见火烈鸟和鸭子的水景客房</li><li>直连中央车站(VIA 火车到达即入住)</li></ul>`,
+        info:[['位置','900 De La Gauchetière W'],['泳池','屋顶加热 · 全年'],['火车直连','VIA Central Station'],['特色','花园+野生鸟类']]
+      },
+      {
+        id:'hotel-residence-mtl', name:'Residence Inn Montreal Downtown', tag:'green', tagText:'套房性价比',
+        url:'https://www.marriott.com/en-us/hotels/yulri-residence-inn-montreal-downtown/overview/',
+        rate:'~$332/晚', location:'2045 Peel St',
+        short:'市中心便利地铁,含全套厨房 + 免费早餐,家庭长住设置。',
+        why:`<h5>为什么选它</h5>
+          <p>Marriott 的"长住"品牌,标配 <b>全套厨房</b>(炉灶+冰箱+洗碗机)、客厅、洗衣机。如果孩子挑食或正发烧,这种"小家"配置是救命稻草。</p>
+          <h5>家庭功能</h5>
+          <ul><li>含早(热食)</li><li>分睡客厅 + 卧室</li><li>距 McGill 地铁 3 分钟</li></ul>`,
+        info:[['位置','Peel St 市中心'],['类型','Studio / 1BR 套房'],['含早','是 · 热早餐'],['厨房','全套+洗碗机']]
+      },
+      {
+        id:'hotel-faubourg', name:'Hôtel Faubourg Montréal', tag:'green', tagText:'套房性价比',
+        url:'https://www.hotelfaubourgmontreal.com/',
+        rate:'$189-287/晚', location:'1616 Saint-Hubert St',
+        short:'市中心边缘,靠近老城 / 中国城。宽敞套房 + 小厨房 + 免费早餐。',
+        why:`<h5>为什么选它</h5>
+          <p>本地经营、欧式精品风格。位置在 <b>Quartier Latin 拉丁区</b>,周边有大量平价餐厅、地铁、公园。预算敏感但仍要城市步行可达的家庭最佳选择。</p>`,
+        info:[['位置','拉丁区 · 中国城旁'],['类型','Studio / 套房'],['含早','是'],['距地铁','2 分钟']]
+      }
+    ],
+    quebec: [
+      {
+        id:'hotel-frontenac', name:'Fairmont Le Château Frontenac', tag:'gold', tagText:'高端首选',
+        url:'https://www.fairmont.com/frontenac-quebec/',
+        rate:'$800-1,250/晚', location:'1 Rue des Carrières · Old Quebec',
+        short:'世界最被拍照的酒店,老城核心 + 室内泳池 + 漩涡池 + 桑拿。"住进城堡"。',
+        why:`<h5>为什么选它</h5>
+          <p><b>列入吉尼斯纪录的"世界最被拍照的酒店"</b>。1893 年建成的法式古堡,矗立在圣劳伦斯河上方的悬崖上。对孩子来说不是"住酒店"——是"住进城堡":可以坐在窗台上看河里的游轮,可以在大堂走廊里探险。</p>
+          <h5>家庭功能</h5>
+          <ul><li><b>室内泳池 + 漩涡池 + 蒸汽浴 + 桑拿</b>(顶级 spa 设施)</li><li>"探索包"儿童项目:寻宝任务卡 / 城堡历史互动</li><li>3 家餐厅(含适合孩子的 Bistro Le Sam)</li><li>Dufferin Terrace 出酒店门就是</li></ul>`,
+        info:[['位置','Old Quebec 核心'],['年代','1893 年'],['泳池','室内 + Spa 全套'],['儿童','探索包 + 童床']]
+      },
+      {
+        id:'hotel-hilton-quebec', name:'Hilton Quebec', tag:'gold', tagText:'高端备选',
+        url:'https://www.hilton.com/en/hotels/yqbhihh-hilton-quebec/',
+        rate:'~$240/晚 起', location:'1100 Boul. René-Lévesque E',
+        short:'对望老城 / 议会区,加热屋顶泳池,比深入城内酒店更易行李进出。',
+        why:`<h5>为什么选它</h5>
+          <p>站在 23 楼客房窗前,<b>整个 Old Quebec 像电影画面</b>。屋顶加热泳池可以一边游一边看老城天际线。地理位置对带行李的家庭友好——不用拖箱子上下石阶。</p>`,
+        info:[['位置','议会区(老城外)'],['泳池','屋顶加热 + 健身'],['观景','22-23 楼客房最佳'],['停车','室内 ~$28/天']]
+      },
+      {
+        id:'hotel-manoir-victoria', name:'Hôtel Manoir Victoria', tag:'green', tagText:'老城内',
+        url:'https://www.manoir-victoria.com/',
+        rate:'~$245+/晚', location:'44 Côte du Palais · Old Quebec',
+        short:'真正的老城位置,2 Queen 及大房型,官网直订享 10% off。',
+        cons:'行李抵达稍不便',
+        why:`<h5>为什么选它</h5>
+          <p>4 星级精品酒店,藏在 Old Quebec 心脏的一栋历史建筑里。<b>室内盐水泳池</b>、桑拿、按摩,氛围比 Frontenac 更亲密。出门 2 分钟到 Petit-Champlain。</p>`,
+        info:[['位置','Old Quebec 内'],['泳池','室内盐水 + Spa'],['官网直订','-10%'],['儿童','两 Queen 房型多']]
+      },
+      {
+        id:'hotel-hampton-beauport', name:'Hampton Inn & Suites Beauport', tag:'tag', tagText:'郊区·有车',
+        url:'https://www.hilton.com/en/hotels/yqbbphx-hampton-suites-quebec-city-beauport/',
+        rate:'~$140/晚 起', location:'Beauport · 距老城 14 km',
+        short:'离老城 14 km,免早 + 免停车 + 室内泳池 + 婴儿床。租车段神选。',
+        cons:'不适合无车 / 全程步行',
+        why:`<h5>为什么选它</h5>
+          <p>如果你这一段租车,<b>每天省下的停车费和老城溢价加起来,可能比住宿差额还多</b>。距 Valcartier 水乐园车程更近(15 分钟)、距 Montmorency Falls 8 分钟。</p>`,
+        info:[['位置','Beauport (距老城 14km)'],['停车','免费 + 室外'],['含早','是'],['泳池','室内 + 婴儿池']]
+      },
+      {
+        id:'hotel-home2-airport', name:'Home2 Suites by Hilton Quebec City', tag:'blue', tagText:'✈ 最后一晚·机场',
+        url:'https://www.hilton.com/en/hotels/yqbwhht-home2-suites-quebec-city/',
+        rate:'~$114–137 USD/晚', location:'7088 Wilfrid-Hamel Blvd · 距 YQB 3.6 km',
+        short:'2023 年新开 · 套房型 · 室内盐水泳池 · 免费早餐 · 免费停车 · 距机场 10 分钟。专为 6:40am 早班机设计的最后一晚。',
+        why:`<h5>为什么选它</h5>
+          <p>返程航班 <b>AC395 魁北克城 → 温哥华 6:40am</b> 要求凌晨 4:30 出发。这家 <b>2023 年新开的套房式酒店</b>距 YQB 仅 3.6 km / 10 分钟打车,是机场周边评分最高的新酒店。</p>
+          <h5>家庭亮点</h5>
+          <ul>
+            <li><b>套房布局</b>:一家四口有独立睡眠区,比普通双床房宽敞</li>
+            <li><b>室内盐水泳池</b>:晚上让孩子消耗精力,有助于早睡早起</li>
+            <li><b>免费热早餐</b>:早班机前如果来得及可以带走;否则前台可申请打包</li>
+            <li><b>免费停车 + EV 充电桩</b></li>
+            <li><b>无机场穿梭巴士</b>:需打车 / Uber,约 CAD$15 以内,加拿大国庆日凌晨基本无堵车</li>
+          </ul>`,
+        info:[['距机场','3.6 km · 约 10 分钟'],['开业','2023 年(全新)'],['泳池','室内盐水'],['含早','免费热早餐'],['停车','免费'],['机场班车','❌ 无(打车约 $15 CAD)']]
+      }
+    ]
+  };
+
+  // ============ DATA: ATTRACTIONS ============
+  const ATTRACTIONS = [
+    {
+      id:'attr-canada-history', city:'渥太华', name:'加拿大历史博物馆',
+      url:'https://www.historymuseum.ca/visit/', tag:'渥太华',
+      short:'加拿大最大的博物馆,内含儿童博物馆(全球冒险主题)。',
+      ageNote:'9-11 岁完美区间',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>馆内独立的 <b>加拿大儿童博物馆</b> 主题是"全球大冒险":孩子拿到一本"护照",在墨西哥小村庄、印度集市、日本茶屋、土耳其市场中"周游世界"——盖章、试穿当地衣服、扮演角色。比单纯看展更让人沉浸。</p>
+        <p>大人则可以去 <b>First Peoples Hall(原住民展厅)和 Grand Hall</b>:世界最大室内 <b>图腾柱收藏</b>,8 米高的雪松雕刻,视觉冲击力惊人。</p>
+        <h5>具体亮点</h5>
+        <ul>
+          <li>儿童博物馆:全球角色扮演 + 巨型积木城</li>
+          <li>Grand Hall:全长 100 米的玻璃幕墙 + 6 根图腾柱</li>
+          <li>CINÉ+ 巨幕影院(单独购票)</li>
+          <li>Panorama Café 可眺望国会山(适合馆内午餐)</li>
+        </ul>`,
+      info:[['用时','3-4 小时'],['位置','Gatineau(渡河 5min)'],['票价','成人$25 / 家庭$68'],['Strong Pass','17岁以下免费']]
+    },
+    {
+      id:'attr-amphibus', city:'渥太华', name:'Lady Dive Amphibus 两栖巴士',
+      url:'https://www.ladydive.com/', tag:'渥太华',
+      short:'1 小时陆水双栖,从市中心驶入 Ottawa River。',
+      ageNote:'9-11 岁最爱',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>这是孩子会一路尖叫的"游乐设施"——<b>一辆巴士直接开进河里变成船</b>。陆地段用 30-40 分钟绕国会山、ByWard Market、Rideau Canal 讲解,然后 <b>" Splashdown!"</b> 入水,在河上看国会山的水边视角。</p>
+        <p>讲解员通常英法双语,会带孩子做"鸭子叫"等互动。9-11 岁孩子尤其会被入水那一刻的物理过渡震撼到。</p>
+        <h5>实用提示</h5>
+        <ul><li><b>提前订位</b>,夏季常爆满</li><li>水上风大,带薄外套</li><li>从 44 Sparks St 出发</li><li>司机会发给孩子"鸭子叫"塑料口哨</li></ul>`,
+      info:[['用时','1 小时整'],['票价','成人$49.99 / 童$37.99'],['出发','44 Sparks St'],['期间','5月-10月']]
+    },
+    {
+      id:'attr-parliament', city:'渥太华', name:'Parliament Hill 国会山',
+      url:'https://lop.parl.ca/sites/Visit/default/en_CA/', tag:'渥太华',
+      short:'加拿大政治中心,夏季 10:00 卫兵换岗仪式。',
+      ageNote:'9-11 岁建议',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>夏季每天 10:00 的 <b>卫兵换岗仪式(Changing of the Guard)</b> 是孩子的视觉盛宴——红制服 + 熊皮帽的士兵、铜管乐队、马匹仪仗。仪式约 30 分钟,免费观看。</p>
+        <p>2024 年起新增的 <b>"Parliament: The Immersive Experience"</b> 是 45 分钟的高科技投影秀,把国会山的历史投在巨大的环形空间——比传统讲解效果好得多。</p>
+        <h5>预订提醒</h5>
+        <ul><li>Senate / House of Commons 参观需提前网上预约</li><li>夜间灯光秀 Northern Lights(夏季周末)免费</li></ul>`,
+      info:[['用时','1-2 小时'],['票价','外观免费'],['换岗','夏季 10:00'],['预约','部分参观需提前']]
+    },
+    {
+      id:'attr-museum-nature', city:'渥太华', name:'加拿大自然博物馆',
+      url:'https://nature.ca/en/visit-us/', tag:'渥太华',
+      short:'恐龙化石、蓝鲸骨架、北极动物全套。',
+      ageNote:'9-11 岁经典选择',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>建筑本身是 1905 年的"维多利亚纪念博物馆",像哈利波特电影里的城堡。馆内有 <b>暴龙 / 三角龙真实化石骨架</b>、20 米的 <b>蓝鲸骨架</b>(可走在下方)、<b>北极展厅的麝牛、北极熊和因纽特艺术</b>。</p>
+        <p>对 9-11 岁特别合适——不像儿童博物馆那么"幼",也不像历史展那么"闷"。</p>`,
+      info:[['用时','2-3 小时'],['位置','市中心步行 15 分'],['Strong Pass','17岁以下免费'],['最佳','雨天首选']]
+    },
+    {
+      id:'attr-scitech', city:'渥太华', name:'加拿大科技博物馆',
+      url:'https://ingeniumcanada.org/scitech/visit', tag:'渥太华',
+      short:'"Crazy Kitchen"重力错觉房、巨型蒸汽机车、Artifact Alley。',
+      ageNote:'9-11 岁动手党最爱',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>这是渥太华最"hands-on"的博物馆。<b>Crazy Kitchen</b>:走进一个完全倾斜的厨房,水却往墙上"流"——挑战大脑的空间感知。孩子会反复走 5 次还不肯出来。</p>
+        <p><b>Steam 展厅</b>:十几台 1880 年代的真蒸汽机车,可以登上驾驶舱拉汽笛。<b>Artifact Alley</b>:从打字机到太空仓的 4500+ 件物品塞满一整条走廊,孩子能感受到工业时代的尺度。</p>`,
+      info:[['用时','3-4 小时'],['位置','市中心打车 12 分'],['特色','可触摸+动手区'],['周末','需预约时段']]
+    },
+    {
+      id:'attr-rideau-canal', city:'渥太华', name:'Rideau Canal 运河船闸',
+      url:'https://www.pc.gc.ca/en/lhn-nhs/on/rideau', tag:'渥太华',
+      short:'19 世纪手动船闸,可看船被"抬"上 8 级落差。',
+      ageNote:'9-11 岁工程兴趣',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>就在 Fairmont Château Laurier 后面,一组 <b>8 级船闸</b>,船只从 Ottawa River 抬到运河水面要 30-45 分钟。<b>全程手动操作</b>——工作人员用大杠杆开关闸门。</p>
+        <p>这是孩子能亲眼看到 <b>"阿基米德浮力定律"在真实世界运作</b> 的稀有机会。整个过程免费,可坐在草坡上吃冰淇淋边看边讲。</p>`,
+      info:[['用时','45-60 分钟'],['票价','免费'],['位置','Fairmont 旁'],['最佳','晴天黄昏']]
+    },
+    {
+      id:'attr-byward', city:'渥太华', name:'ByWard Market 拜沃德市场',
+      url:'https://byward-market.com/', tag:'渥太华',
+      short:'1826 年开埠至今的露天市场,著名 BeaverTails 发源地。',
+      ageNote:'9-11 岁尝鲜',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>BeaverTails(海狸尾巴):油炸面饼,长得真的像海狸尾巴,撒糖+肉桂或抹巧克力榛子酱——加拿大国民甜点的<b>发源地就在这儿</b>。还有 Obama 总统访问后火遍全美的 Obama Cookie。</p>
+        <p>市场分露天摊和室内楼,夏季傍晚有街头艺人和涂鸦巷;农场摊位会让孩子认识枫糖浆等级、有机果蔬。</p>`,
+      info:[['用时','晚餐 + 1 小时'],['位置','市中心'],['必尝','BeaverTails $7'],['夜晚','街头表演']]
+    },
+    {
+      id:'attr-notre-dame', city:'蒙特利尔', name:'蒙特利尔圣母大教堂',
+      url:'https://www.basiliquenotredame.ca/en/', tag:'蒙特利尔',
+      short:'1829 年新哥特式杰作,蓝金穹顶被誉为北美最美。',
+      ageNote:'9-11 岁视觉震撼',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>走进去的第一秒,孩子通常会"哇"——<b>整个内部是深蓝色,镶嵌 2,400 颗金箔星星</b>,主祭坛雕刻精细到能数清每一个人物。</p>
+        <p>这里是席琳·迪翁结婚的地方,也是历届蒙特利尔市长葬礼地。日间参观含简短英语 / 法语讲解,推荐选 11:00 场。<b>晚上的 AURA 灯光秀是完全不同的体验</b>(看下条)。</p>`,
+      info:[['用时','45-60 分钟'],['票价','家庭票 $40 含税'],['位置','110 Notre-Dame W'],['Tour','英/法语含讲解']]
+    },
+    {
+      id:'attr-aura', city:'蒙特利尔', name:'AURA Experience 灯光秀',
+      url:'https://www.aurabasiliquemontreal.com/', tag:'蒙特利尔',
+      short:'圣母大教堂内的 40 分钟沉浸式声光秀,Moment Factory 出品。',
+      ageNote:'⚠️ 声光敏感慎选',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>同样的大教堂,晚上变成 <b>360° 投影+管弦乐+激光</b> 的沉浸艺术装置。前 20 分钟可自由走动欣赏雕塑被光"激活";后 20 分钟是定点坐着看主秀,讲述"光与造物"的视觉诗。</p>
+        <p>这不是音乐剧,没有故事线,更像<b>"巨型音乐 MV"</b>——9-11 岁孩子会被震撼,但需要事先告诉他们:不要拍照(规定),会有响声和强光。</p>
+        <h5>声光警告</h5>
+        <ul><li>含 <b>高音量管弦乐</b> 与 <b>快速激光闪烁</b></li><li>声光敏感 / 自闭谱系孩子 → 坐后排 + 带耳塞</li><li>票不可退换</li></ul>`,
+      info:[['用时','40-45 分钟'],['票价','家庭票 $104+税'],['位置','圣母大教堂内'],['年龄','建议 6+']]
+    },
+    {
+      id:'attr-mtl-science', city:'蒙特利尔', name:'蒙特利尔科学中心',
+      url:'https://www.montrealsciencecentre.com/', tag:'蒙特利尔',
+      short:'旧港边的互动科学馆,主题：动手做 + 数字技术。',
+      ageNote:'9-11 岁高互动',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>展厅都是"按按钮 / 拼装 / 动手做"的形式,几乎没有"只能看"的展品。常设 <b>Hu·mani·té</b>(关于人类未来)、<b>Mini Mondo</b>(角色扮演城)、<b>IMAX 巨幕影院</b>。</p>
+        <p>位置就在旧港,看完可以直接出门玩摩天轮、SOS Labyrinthe 迷宫,孩子的下午能填得满满当当。</p>`,
+      info:[['用时','3 小时'],['位置','Old Port'],['IMAX','单独购票'],['周二闭馆','季节性']]
+    },
+    {
+      id:'attr-biodome', city:'蒙特利尔', name:'Biodôme + Space for Life',
+      url:'https://espacepourlavie.ca/en/biodome', tag:'蒙特利尔',
+      short:'5 个真实生态系统 + 昆虫馆 + 天文馆,1988 奥运场馆改建。',
+      ageNote:'9-11 岁绝配',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>从 28°C 的 <b>热带雨林</b>(真的有云有雨)走 50 米,进入 12°C 的 <b>圣劳伦斯湾</b>(看大西洋海鸟),再走进 -5°C 的 <b>亚极地</b>(企鹅在脚边走过)。<b>一栋楼内体验 5 种气候带</b>,是 9-11 岁理解生物地理学的最佳现场。</p>
+        <p>同一票区还有:<b>昆虫馆</b>(2000 多种昆虫 + 自由飞舞的热带蝴蝶,会停在孩子手上)、<b>天文馆</b>(两个穹幕影厅放天文 / 极光主题片)。</p>
+        <h5>实用提示</h5>
+        <ul><li>建议组合 <b>Biodôme + Insectarium</b> 半天</li><li>买 "M:tl Museums Pass" 可以 3 天通览</li><li>记得 <b>带薄外套</b>(亚极地区温度)</li></ul>`,
+      info:[['用时','整天(分馆)'],['位置','奥林匹克公园'],['门票','分馆或套票'],['Strong Pass','部分项目适用']]
+    },
+    {
+      id:'attr-sos-labyrinth', city:'蒙特利尔', name:'SOS Labyrinthe 港口迷宫',
+      url:'https://www.soslabyrinthe.com/', tag:'蒙特利尔',
+      short:'旧港巨大室内迷宫,3 km 路线 + 任务点,90 分钟玩透。',
+      ageNote:'9-11 岁体力党',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>3 公里长的"沉船救援"主题迷宫,在一座 19 世纪仓库里。<b>家庭分组找线索 + 解谜 + 找密码</b>,激烈程度可调(标准 / 终极)。下雨天的最佳救援。</p>`,
+      info:[['用时','60-90 分钟'],['位置','旧港 King Edward Pier'],['票价','成人~$23 / 童~$18'],['雨天','室内首选']]
+    },
+    {
+      id:'attr-old-quebec', city:'魁北克城', name:'Old Quebec + Petit-Champlain',
+      url:'https://quartierpetitchamplain.com/', tag:'魁北克城',
+      short:'北美唯一保留城墙的城市,400 年历史的"小巴黎"。',
+      ageNote:'9-11 岁古城探险',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p><b>北美最古老的商业街</b> Rue du Petit-Champlain,1685 年开埠,只有 350 米长但有 30 多家小店。圣诞元素全年:糖果店、玩具店、巧克力坊。</p>
+        <p>从下城到上城有 3 种方式:<b>funicular 缆车</b>($4)、<b>断颈梯 Breakneck Stairs</b>(59 级超陡)、Côte de la Montagne 缓坡。建议上行坐缆车、下行走台阶,孩子会喜欢这种"小冒险"。</p>
+        <p>城墙上能走完整一圈(4.6 km),途中有 4 座炮门,讲解牌讲 1759 年英法之战。</p>`,
+      info:[['用时','半天-1 天'],['位置','上下城'],['缆车','$4 单程'],['提示','穿舒适鞋·石板路']]
+    },
+    {
+      id:'attr-montmorency', city:'魁北克城', name:'Montmorency Falls 蒙莫朗西瀑布',
+      url:'https://www.sepaq.com/destinations/parc-chute-montmorency/', tag:'魁北克城',
+      short:'83 米高瀑布,比尼亚加拉高 30 米,有悬索桥+缆车+楼梯。',
+      ageNote:'9-11 岁体力探险',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p><b>悬索桥直接横跨在瀑布顶端</b>——可以从桥上往下看 83 米的水流坠落,水雾扑面而来。脚下的栈道用钢栅可以看见瀑布。</p>
+        <p>3 种玩法可选:<b>缆车</b>(轻松)、<b>487 级悬空木楼梯</b>(从顶走到底,腿会发抖)、<b>Zipline 滑索</b>(横跨瀑布上空,需买票)。</p>
+        <p>距 Old Quebec 仅 15 分钟车程,与 <b>奥尔良岛(Île d'Orléans)</b>的"草莓+冰淇淋之旅"完美组合一天。</p>`,
+      info:[['用时','2-3 小时'],['距老城','15 分钟车程'],['门票','停车 $14.5'],['缆车','单程$11.5']]
+    },
+    {
+      id:'attr-musee-civ', city:'魁北克城', name:'Musée de la civilisation 文明博物馆',
+      url:'https://www.mcq.org/en/', tag:'魁北克城',
+      short:'魁北克最现代的博物馆,儿童专区"Boréalis"互动 + 全屏投影。',
+      ageNote:'9-11 岁雨天首选',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p>整馆都按 <b>"沉浸式"叙事</b> 设计——展厅会随主题切换光线、声音、嗅觉。<b>魁北克省的故事</b> 展厅(People of Quebec, Then and Now)会让孩子穿过 1900 年的客厅、伐木营地、雪车工厂。</p>
+        <p>临展通常是 "Pixar 动画背后" 或 "黑色电影特效" 这类高互动主题。下城核心,雨天的避难所。</p>`,
+      info:[['用时','2-3 小时'],['位置','下城 85 Dalhousie'],['特色','沉浸+多感官'],['Strong Pass','适用']]
+    },
+    {
+      id:'attr-aquarium', city:'魁北克城', name:'Aquarium du Québec 魁北克水族馆',
+      url:'https://www.sepaq.com/destinations/aquarium-quebec/', tag:'魁北克城',
+      short:'10,000 只动物,"Awesome Ocean" 海底隧道 + 北极熊馆。',
+      ageNote:'9-11 岁动物党',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p><b>北极熊和海象在户外区</b>——魁北克纬度让这些北极动物"真实地"生活在户外,而不是冷气房。<b>海豹喂食秀</b>(11:00 / 14:30)有训练员一边喂一边讲生物知识。</p>
+        <p><b>"Awesome Ocean" 360° 海底隧道</b>:鲨鱼、海龟、彩色珊瑚鱼从头顶游过。距魁北克城机场只有 15 分钟,可以安排在最后一天上午+午餐再去机场。</p>`,
+      info:[['用时','3-4 小时'],['位置','距老城 15 分钟'],['门票','成人$22 / 童$11'],['距魁北克城机场','15 分钟车程']]
+    },
+    {
+      id:'attr-valcartier', city:'魁北克城', name:'Village Vacances Valcartier / Bora Parc',
+      url:'https://www.valcartier.com/en/', tag:'魁北克城',
+      short:'北美最大水乐园群,室内 Bora Parc + 户外 100+ 水滑梯。',
+      ageNote:'9-11 岁极限娱乐',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p><b>Bora Parc</b>:10.2 万平方英尺的 <b>室内热带水乐园</b>,全年 30°C。14 条滑梯,包括 <b>波利尼西亚冲浪机</b>、<b>3 层水滑塔</b>、<b>儿童冒险河</b>。</p>
+        <p><b>户外水乐园</b>(夏季限定):有 <b>"Everest" 北美加速最快的水滑梯</b>、波浪池、漂流河。配套有 <b>越野跑卡丁车</b>、<b>蹦床公园</b>、<b>冬季 ice tube 滑梯</b>。</p>
+        <p>距 Old Quebec 30 分钟车程,可一日往返,也可住在度假村酒店做 2 日通票。<b>对孩子来说,这是"加拿大版迪士尼"</b>。</p>`,
+      info:[['用时','整日'],['位置','距老城 30 分钟'],['Bora Parc','全年开放'],['户外','6-8月]']]
+    },
+    {
+      id:'attr-parc-omega', city:'渥太华-蒙城段', name:'Parc Omega 野生动物公园',
+      url:'https://parcomega.ca/en/', tag:'扩展选项',
+      short:'2,200 英亩的车上野生动物公园,可摇下车窗喂麋鹿。',
+      ageNote:'9-11 岁野生动物迷',
+      why:`<h5>为什么 9-11 岁孩子喜欢</h5>
+        <p><b>开自己的车穿过 10 公里野生动物道</b>。麋鹿、白尾鹿会主动走到车窗前讨要 <b>胡萝卜</b>(可在入口处买,但建议提前买大袋——一只麋鹿可以一口气吃掉半袋)。</p>
+        <p>步道区可步行观察:<b>狼群</b>、<b>黑熊</b>、<b>北美狼獾</b>、<b>狐狸</b>。最特别的住宿是 <b>Wolf Chalets 狼屋</b>——三面玻璃直接俯瞰狼群围栏,据说凌晨 3 点会被狼嚎叫醒(对 9-11 岁是难忘的回忆,对 4 岁可能太刺激)。</p>
+        <h5>位置</h5>
+        <p>Montebello,在 Ottawa→Montreal 路上一半位置。可结合 Fairmont Château Montebello(世界最大原木建筑酒店)做 1-2 晚的"中场休息"。</p>`,
+      info:[['用时','3-4 小时'],['位置','Montebello (路中点)'],['门票','成人$45 / 童$30'],['必备','大袋胡萝卜!']]
+    }
+  ];
+
+  // ============ RENDER HOTELS ============
+  function renderHotels(){
+    ['ottawa','montreal','quebec'].forEach(city=>{
+      const container = document.getElementById('hotels-'+city);
+      container.innerHTML = HOTELS[city].map(h=>`
+        <div class="card">
+          <span class="tag ${h.tag==='gold'?'gold':h.tag==='green'?'green':h.tag==='blue'?'blue':''}">${h.tagText}</span>
+          <h4>${h.name}</h4>
+          <p>${h.short}</p>
+          ${h.cons?`<p class="cons">${h.cons}</p>`:''}
+          <div class="meta-row"><span>${h.location}</span><span>${h.rate}</span></div>
+          <div class="card-actions">
+            <button class="btn btn-primary" onclick="openHotel('${h.id}')">📖 查看详情</button>
+            <a class="btn btn-outline" href="${h.url}" target="_blank" rel="noopener">官网 ↗</a>
+          </div>
+        </div>
+      `).join('');
+    });
+  }
+
+  // ============ RENDER ATTRACTIONS ============
+  function renderAttractions(){
+    const container = document.getElementById('attractions-grid');
+    const CITY_META = {
+      '渥太华':       {emoji:'🏛️', sub:'首都 · 博物馆与国会山'},
+      '蒙特利尔':     {emoji:'⛪', sub:'法语都会 · 老城与灯光秀'},
+      '魁北克城':     {emoji:'🏰', sub:'北美欧洲古城 · 城堡与瀑布'},
+      '渥太华-蒙城段':{emoji:'🦌', sub:'城际中途 · 自驾或包车可顺访'}
+    };
+    // group preserving array order
+    const groups = [];
+    const seen = new Set();
+    for(const a of ATTRACTIONS){
+      if(!seen.has(a.city)){ seen.add(a.city); groups.push({city:a.city, items:[]}); }
+      groups.find(g=>g.city===a.city).items.push(a);
+    }
+    container.innerHTML = groups.map(g=>{
+      const meta = CITY_META[g.city] || {emoji:'📍', sub:''};
+      const cards = g.items.map(a=>`
+        <div class="card">
+          <span class="tag">${a.tag}</span>
+          <h4>${a.name}</h4>
+          <p>${a.short}</p>
+          <div class="meta-row"><span>👶 ${a.ageNote}</span></div>
+          <div class="card-actions">
+            <button class="btn btn-primary" onclick="openAttraction('${a.id}')">📖 为什么去</button>
+            <a class="btn btn-outline" href="${a.url}" target="_blank" rel="noopener">官网 ↗</a>
+          </div>
+        </div>
+      `).join('');
+      return `
+        <div class="city-group">
+          <div class="city-head">
+            <div class="city-title"><span class="city-emoji">${meta.emoji}</span><h3>${g.city}</h3></div>
+            <div class="city-sub">${meta.sub} · ${g.items.length} 项</div>
+          </div>
+          <div class="grid">${cards}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ============ MODAL ============
+  function openModal(badge, title, subtitle, body, url, urlText){
+    document.getElementById('m-badge').textContent = badge;
+    document.getElementById('m-title').textContent = title;
+    document.getElementById('m-subtitle').textContent = subtitle;
+    document.getElementById('m-body').innerHTML = body;
+    document.getElementById('m-footer').innerHTML = `
+      <a class="btn btn-primary" href="${url}" target="_blank" rel="noopener">🌐 ${urlText||'打开官方网站'}</a>
+      <button class="btn btn-link" onclick="closeModal()">关闭</button>
+    `;
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeModal(){
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow='';
+  }
+  function openHotel(id){
+    let h;
+    for(const city in HOTELS){
+      h = HOTELS[city].find(x=>x.id===id);
+      if(h)break;
+    }
+    if(!h)return;
+    const infoHtml = `<div class="info-grid">${h.info.map(i=>`<div class="info-item"><div class="l">${i[0]}</div><div class="v">${i[1]}</div></div>`).join('')}</div>`;
+    const consHtml = h.cons?`<div class="kid-box">⚠️ <b>注意:</b>${h.cons}</div>`:'';
+    openModal('🏨 '+h.tagText, h.name, h.location, h.why + infoHtml + consHtml, h.url, '前往酒店官网预订');
+  }
+  function openAttraction(id){
+    const a = ATTRACTIONS.find(x=>x.id===id);
+    if(!a)return;
+    const infoHtml = `<div class="info-grid">${a.info.map(i=>`<div class="info-item"><div class="l">${i[0]}</div><div class="v">${i[1]}</div></div>`).join('')}</div>`;
+    const kidBox = `<div class="kid-box">👶 <b>适合年龄:</b>${a.ageNote}</div>`;
+    openModal('📍 '+a.tag, a.name, a.short, a.why + infoHtml + kidBox, a.url, '前往景点官网');
+  }
+
+  // ESC key close
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape')closeModal();
+  });
+
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(target).classList.add('active');
+    });
+  });
+
+  // Open D1 of first tab by default
+  document.querySelector('#t7 .day')?.classList.add('open');
+
+  // Persist checklist state
+  document.querySelectorAll('.checklist input').forEach((cb, i) => {
+    const key = 'pack_' + i;
+    cb.checked = localStorage.getItem(key) === '1';
+    cb.addEventListener('change', () => localStorage.setItem(key, cb.checked ? '1' : '0'));
+  });
+
+  // ============ DATA: RESTAURANTS ============
+  const RESTAURANTS = {
+    ottawa: [
+      {
+        name:'Murray St Kitchen',
+        tag:'green', tagText:'⭐ 强推',
+        cuisine:'加拿大本地风味',
+        walk:'步行约5分钟',
+        price:'$$',
+        short:'渥太华厨师圈最爱的小馆子。本土熟肉板（charcuterie）起家，猪头肉饼、自制香肠、本地奶酪，搭配精酿啤酒，氛围随意，孩子友好。',
+        address:'110 Murray St, Ottawa',
+        url:'https://www.google.com/maps/search/?api=1&query=Murray+St+Kitchen+110+Murray+St+Ottawa'
+      },
+      {
+        name:'The Metropolitain Brasserie',
+        tag:'green', tagText:'👶 适合孩子 · #2 · 有儿童菜单',
+        cuisine:'法式布拉塞丽',
+        walk:'步行约3分钟',
+        price:'$$',
+        short:'<b>官网明确提供 Kids Menu</b>，定位 relaxed setting，不是正式 fine dining。离 Fairmont Château Laurier 最近，孩子玩累了随时可以回酒店。适合午餐或稍早的晚餐。法式风格融合加拿大食材，大人也吃得好。',
+        address:'700 Sussex Dr, Ottawa',
+        url:'https://www.google.com/maps/search/?api=1&query=Metropolitain+Brasserie+700+Sussex+Dr+Ottawa'
+      }
+    ],
+    montreal: [
+      {
+        name:'Taverne Gaspar',
+        tag:'green', tagText:'👶 最适合孩子 · #1',
+        cuisine:'休闲美式·加拿大',
+        walk:'步行约5分钟',
+        price:'$$',
+        short:'<b>旧蒙特利尔最适合家庭的休闲餐厅之一。</b>汉堡、poutine、nachos、烤鸡，菜单孩子一看就懂。氛围热闹随意，不用担心孩子吵到别人。本地家庭周末常去，价格合理。适合午餐或晚餐。',
+        address:'89 Rue McGill, Montréal',
+        url:'https://www.google.com/maps/search/?api=1&query=Taverne+Gaspar+89+Rue+McGill+Montreal'
+      },
+      {
+        name:'Bevo Bar + Pizzeria',
+        tag:'green', tagText:'👶 适合孩子 · #2 · 披萨',
+        cuisine:'意式披萨·意面',
+        walk:'步行约8分钟',
+        price:'$$',
+        short:'旧蒙特利尔意式餐厅，主打披萨和意面。石头砖墙老建筑，气氛好，孩子对披萨接受度永远最高。环境热闹不拘谨，适合晚餐。',
+        address:'410 Rue Saint-Vincent, Montréal',
+        url:'https://www.google.com/maps/search/?api=1&query=Bevo+Bar+Pizzeria+410+Saint-Vincent+Montreal'
+      },
+      {
+        name:'Stash Café',
+        tag:'tag', tagText:'👶 适合孩子 · #3 · 舒适料理',
+        cuisine:'波兰风味·舒适料理',
+        walk:'步行约8分钟',
+        price:'$',
+        short:'波兰风味老馆子，pierogi（饺子）、炸猪排、浓汤，份量足、价格实惠。菜式简单朴实，孩子接受度高，氛围轻松随意。旧蒙特利尔性价比最高的选择。',
+        address:'200 Rue Saint-Paul Ouest, Montréal',
+        url:'https://www.google.com/maps/search/?api=1&query=Stash+Cafe+200+Saint-Paul+Ouest+Montreal'
+      }
+    ],
+    quebec: [
+      {
+        name:'Aux Anciens Canadiens',
+        tag:'green', tagText:'👶 有儿童菜单 · #3 · 传统体验',
+        cuisine:'魁北克传统菜',
+        walk:'步行约1分钟',
+        price:'$$$',
+        short:'1677年老木屋，出酒店门走1分钟。<b>8岁及以下儿童菜单 $24.95 CAD</b>，含肉派、肉丸炖菜、炸鸡配薯条或 poutine，附汤、饮料、冰淇淋。服务员穿传统服装，氛围偏游客体验型、较正式，适合当作一次"品尝魁北克传统菜"的仪式感午餐。',
+        address:'34 Rue Saint-Louis, Québec City',
+        url:'https://www.google.com/maps/search/?api=1&query=Aux+Anciens+Canadiens+34+Rue+Saint-Louis+Quebec+City'
+      },
+      {
+        name:'La Bûche',
+        tag:'green', tagText:'👶 最适合孩子 · #1',
+        cuisine:'魁北克舒适料理',
+        walk:'步行约4分钟',
+        price:'$$',
+        short:'<b>全程最适合孩子的餐厅。</b>环境热闹轻松，完全不是那种安静正式的餐厅；菜单"好懂"——poutine、肉派、烤肉、甜点，孩子接受度高。OpenTable 列为 casual dining，价格不夸张。猎人小木屋风装修，氛围有趣。适合午餐或晚餐。',
+        address:'49 Rue Saint-Louis, Québec City',
+        url:'https://www.google.com/maps/search/?api=1&query=La+Buche+49+Rue+Saint-Louis+Quebec+City'
+      },
+      {
+        name:'Le Lapin Sauté',
+        tag:'tag', tagText:'下城·Petit-Champlain',
+        cuisine:'兔肉特色·法式',
+        walk:'缆车或步行约10分钟',
+        price:'$$',
+        short:'魁北克城最有特色的小餐厅之一，在下城 Petit-Champlain 石板街上，户外座位俯瞰鹅卵石街道。兔肉是招牌，多种烹饪方式，适合下城游览后顺道用餐。',
+        address:'52 Rue du Petit-Champlain, Québec City',
+        url:'https://www.google.com/maps/search/?api=1&query=Le+Lapin+Saute+52+Rue+du+Petit-Champlain+Quebec+City'
+      }
+    ]
+  };
+
+  // ============ RENDER RESTAURANTS ============
+  function renderRestaurants(){
+    ['ottawa','montreal','quebec'].forEach(city=>{
+      const container = document.getElementById('restaurants-'+city);
+      if(!container) return;
+      container.innerHTML = RESTAURANTS[city].map(r=>`
+        <div class="card">
+          <span class="tag ${r.tag==='green'?'green':r.tag==='orange'?'orange':''}">${r.tagText}</span>
+          <h4>${r.name}</h4>
+          <p>${r.short}</p>
+          <div class="meta-row">
+            <span>🚶 ${r.walk} · ${r.cuisine}</span>
+            <span>${r.price}</span>
+          </div>
+          <div class="card-actions">
+            <a class="btn btn-outline" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.address)}" target="_blank" rel="noopener">📍 地图 ↗</a>
+          </div>
+        </div>
+      `).join('');
+    });
+  }
+
+  // Init
+  renderHotels();
+  renderRestaurants();
+  renderAttractions();
+</script>
+
+</body>
+</html>

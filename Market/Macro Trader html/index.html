@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>US Equity Dashboard Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Brand */
+    --navy:      #1B3A5C;
+    --navy-2:    #16314E;
+    --navy-3:    #0F2438;
+    --red:       #C72E0B;
+    --red-soft:  #FFF4F1;
+
+    /* Surfaces */
+    --bg:        #F4F6F8;
+    --surface:   #FFFFFF;
+    --surface-2: #F8FAFB;
+    --border:    #E6E9ED;
+    --border-2:  #D4D9E0;
+
+    /* Text */
+    --ink:       #18222E;
+    --ink-2:     #5A6675;
+    --ink-3:     #8B95A3;
+
+    /* Category accents */
+    --c-blue:    #1E6FD0;
+    --c-teal:    #08808F;
+    --c-amber:   #B7791F;
+    --c-purple:  #6B4FA3;
+    --c-green:   #0B8A63;
+
+    /* Semantic */
+    --green:     #0B8A63;
+    --amber:     #B7791F;
+
+    --radius:    14px;
+    --radius-sm: 9px;
+    --shadow:    0 1px 2px rgba(20,40,65,.05), 0 4px 14px rgba(20,40,65,.06);
+    --shadow-lg: 0 6px 16px rgba(20,40,65,.10), 0 14px 40px rgba(20,40,65,.10);
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:var(--font);
+    background:
+      radial-gradient(1200px 480px at 50% -260px, rgba(27,58,92,.10), transparent 70%),
+      var(--bg);
+    color:var(--ink);
+    font-size:14px;
+    line-height:1.6;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  /* thin red brand rule at very top */
+  .brandbar{ height:3px; background:var(--red); width:100%; }
+
+  /* ─────────── HERO ─────────── */
+  .hero{
+    background:
+      radial-gradient(900px 340px at 88% -120px, rgba(199,46,11,.30), transparent 60%),
+      linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 55%, var(--navy-3) 100%);
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size:34px 34px;
+    mask-image:linear-gradient(180deg, rgba(0,0,0,.6), transparent 75%);
+    pointer-events:none;
+  }
+  .hero-inner{
+    max-width:1180px; margin:0 auto;
+    padding:34px 40px 30px;
+    position:relative; z-index:1;
+    display:flex; align-items:flex-start; justify-content:space-between;
+    flex-wrap:wrap; gap:18px;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:7px;
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.22);
+    border-radius:100px;
+    padding:4px 13px;
+    font-size:11px; font-weight:600; letter-spacing:.6px; text-transform:uppercase;
+    color:#EAF1F8; margin-bottom:14px;
+  }
+  .eyebrow .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:#48E0B0; box-shadow:0 0 0 0 rgba(72,224,176,.6);
+    animation:pulse 2.4s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(72,224,176,.55); }
+    70%{ box-shadow:0 0 0 7px rgba(72,224,176,0); }
+    100%{ box-shadow:0 0 0 0 rgba(72,224,176,0); }
+  }
+  .hero h1{
+    font-size:30px; font-weight:800; letter-spacing:-.6px; line-height:1.1;
+    color:#fff;
+  }
+  .hero h1 .accent{ color:#FF8A6B; }
+  .hero p{
+    margin-top:9px; max-width:560px;
+    font-size:13.5px; color:rgba(255,255,255,.74);
+  }
+  .hero-meta{
+    text-align:right; display:flex; flex-direction:column; gap:10px; align-items:flex-end;
+  }
+  .hero-date{
+    font-size:12.5px; color:rgba(255,255,255,.78);
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16);
+    border-radius:8px; padding:7px 12px; font-variant-numeric:tabular-nums;
+  }
+  .hero-count{
+    display:flex; gap:18px;
+  }
+  .hero-stat{ text-align:right; }
+  .hero-stat b{ display:block; font-size:20px; font-weight:800; color:#fff; line-height:1; }
+  .hero-stat span{ font-size:10.5px; letter-spacing:.5px; text-transform:uppercase; color:rgba(255,255,255,.6); }
+
+  /* ─────────── MAIN ─────────── */
+  .main{ max-width:1180px; margin:0 auto; padding:26px 40px 64px; }
+
+  /* legend */
+  .legend{
+    display:flex; gap:22px; flex-wrap:wrap;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius-sm); box-shadow:var(--shadow);
+    padding:13px 18px; margin-bottom:30px;
+  }
+  .legend-item{ display:flex; align-items:center; gap:9px; font-size:12px; color:var(--ink-2); }
+  .legend-item strong{ color:var(--ink); font-weight:600; }
+  code.k{ background:#EEF1F4; padding:1px 6px; border-radius:5px; font-size:11.5px; color:var(--navy); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+
+  /* section heading */
+  .section-head{
+    display:flex; align-items:baseline; gap:12px;
+    margin:30px 0 14px;
+  }
+  .section-head:first-of-type{ margin-top:4px; }
+  .section-num{
+    font-size:11px; font-weight:800; color:#fff;
+    background:var(--navy); border-radius:6px;
+    padding:2px 8px; letter-spacing:.5px;
+  }
+  .section-title{ font-size:15px; font-weight:700; color:var(--ink); letter-spacing:-.2px; }
+  .section-desc{ font-size:12px; color:var(--ink-3); }
+  .section-rule{ flex:1; height:1px; background:var(--border); align-self:center; }
+
+  /* ─────────── GRID + CARDS ─────────── */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(278px, 1fr));
+    gap:16px;
+  }
+
+  .card{
+    position:relative;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:18px 18px 16px;
+    text-decoration:none;
+    display:flex; flex-direction:column; gap:11px;
+    box-shadow:var(--shadow);
+    transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    overflow:hidden;
+  }
+  .card::before{ /* top accent */
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:var(--cc, var(--navy));
+    opacity:.9;
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    box-shadow:var(--shadow-lg);
+    border-color:var(--border-2);
+  }
+
+  .card-top{ display:flex; align-items:center; gap:12px; }
+  .card-icon{
+    width:38px; height:38px; flex-shrink:0;
+    border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:19px;
+    background:color-mix(in srgb, var(--cc) 12%, white);
+    border:1px solid color-mix(in srgb, var(--cc) 22%, white);
+  }
+  .card-titles{ min-width:0; flex:1; }
+  .card-title{ font-size:14.5px; font-weight:700; color:var(--ink); line-height:1.25; letter-spacing:-.2px; }
+  .card-sub{ font-size:11px; color:var(--ink-3); margin-top:2px; }
+
+  .badge{
+    position:absolute; top:14px; right:14px;
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:9px; font-weight:700; letter-spacing:.5px; text-transform:uppercase;
+    padding:3px 8px; border-radius:6px; line-height:1; white-space:nowrap; z-index:2;
+  }
+  .badge::before{ content:''; width:5px; height:5px; border-radius:50%; }
+  .badge.live{ background:var(--red-soft); color:#BF2A00; border:1px solid #FFCDBF; }
+  .badge.live::before{ background:var(--red); animation:blink 2s infinite; }
+  .badge.static{ background:#EEF3FA; color:#345A87; border:1px solid #CFDEEE; }
+  .badge.static::before{ background:#5A7FA8; }
+  @keyframes blink{ 0%,100%{ opacity:1; } 50%{ opacity:.3; } }
+  .card-titles{ padding-right:64px; }
+
+  .card-desc{
+    font-size:12px; line-height:1.55; color:var(--ink-2);
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:4; line-clamp:4;
+    overflow:hidden;
+  }
+
+  .tags{ display:flex; flex-wrap:wrap; gap:5px; }
+  .tag{
+    font-size:10px; font-weight:600; letter-spacing:.2px;
+    padding:2px 8px; border-radius:100px;
+    background:color-mix(in srgb, var(--tc, var(--navy)) 9%, white);
+    color:color-mix(in srgb, var(--tc, var(--navy)) 78%, black);
+    border:1px solid color-mix(in srgb, var(--tc, var(--navy)) 20%, white);
+  }
+  .tag.blue{ --tc:var(--c-blue); } .tag.teal{ --tc:var(--c-teal); }
+  .tag.amber{ --tc:var(--c-amber); } .tag.green{ --tc:var(--c-green); }
+  .tag.purple{ --tc:var(--c-purple); }
+
+  .card-foot{
+    margin-top:auto; padding-top:11px;
+    border-top:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .open{ font-size:11.5px; font-weight:700; letter-spacing:.2px; color:var(--cc, var(--navy)); }
+  .arrow{
+    width:24px; height:24px; border-radius:7px;
+    display:flex; align-items:center; justify-content:center; font-size:13px;
+    background:color-mix(in srgb, var(--cc) 12%, white);
+    color:var(--cc, var(--navy));
+    transition:transform .16s ease;
+  }
+  .card:hover .arrow{ transform:translateX(4px); }
+
+  /* category color vars per card */
+  .blue{ --cc:var(--c-blue); }
+  .teal{ --cc:var(--c-teal); }
+  .amber{ --cc:var(--c-amber); }
+  .purple{ --cc:var(--c-purple); }
+  .green{ --cc:var(--c-green); }
+
+  /* footer */
+  .foot-note{
+    margin-top:36px; padding:16px 18px;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius-sm); box-shadow:var(--shadow);
+    color:var(--ink-2); font-size:12px; line-height:1.6;
+    display:flex; gap:11px; align-items:flex-start;
+  }
+  .foot-note svg{ flex-shrink:0; color:var(--navy); opacity:.6; margin-top:2px; }
+  .foot-note strong{ color:var(--ink); }
+
+  /* fallback if color-mix unsupported */
+  @supports not (background:color-mix(in srgb, red 10%, white)){
+    .card-icon{ background:#EEF2F6; border-color:#DCE3EB; }
+    .tag{ background:#EEF2F6; color:var(--navy); border-color:#DCE3EB; }
+    .arrow{ background:#EEF2F6; }
+  }
+
+  /* responsive */
+  @media (max-width:780px){
+    .hero-inner{ padding:26px 22px; }
+    .hero h1{ font-size:24px; }
+    .main{ padding:22px 22px 48px; }
+    .grid{ grid-template-columns:1fr; }
+    .hero-meta{ text-align:left; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="brandbar"></div>
+
+<!-- ───── HERO ───── -->
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow"><span class="dot"></span>US Equity Research · Live</span>
+      <h1>Market Dashboard <span class="accent">Hub</span></h1>
+      <p>One launchpad for the US-equity research suite. Every page opens in its own tab — edit <code class="k" style="color:#FFD9CC;background:rgba(255,255,255,.12)">live_data.js</code> once and every dashboard refreshes on reload.</p>
+    </div>
+    <div class="hero-meta">
+      <span class="hero-date" id="today-date"></span>
+      <div class="hero-count">
+        <div class="hero-stat"><b>11</b><span>Dashboards</span></div>
+        <div class="hero-stat"><b>3</b><span>Tiers</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ───── MAIN ───── -->
+<main class="main">
+
+  <div class="legend">
+    <div class="legend-item">
+      <span class="badge live" style="position:static">Live data</span>
+      <span><strong>Refreshable</strong> — values come from <code class="k">live_data.js</code>. Edit one file to update every page below.</span>
+    </div>
+    <div class="legend-item">
+      <span class="badge static" style="position:static">Static</span>
+      <span><strong>Educational reference</strong> — frameworks, rules, thresholds. Open when learning a concept, not for daily numbers.</span>
+    </div>
+  </div>
+
+  <!-- ══ TIER 1 ══ -->
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <span class="section-title">Daily focus</span>
+    <span class="section-desc">open every day</span>
+    <span class="section-rule"></span>
+  </div>
+  <div class="grid">
+
+    <a class="card blue" href="pages/daily_briefing.html" target="_blank">
+      <span class="badge live" title="The one page to open every morning — live indices, yields, vol, credit, valuation, earnings, levels, catalysts.">Live</span>
+      <div class="card-top">
+        <div class="card-icon">☀️</div>
+        <div class="card-titles">
+          <div class="card-title">Daily Briefing</div>
+          <div class="card-sub">Today's Read · Numbers-First</div>
+        </div>
+      </div>
+      <div class="card-desc">The one page for the daily check-in. Regime label, KPI grid (5 indices, 3 yields, vol &amp; credit, Brent), valuation snapshot, Q1 earnings snapshot, SPX key levels, DCA stance, and the 2-week catalyst calendar — all wired to <code class="k">live_data.js</code>.</div>
+      <div class="tags">
+        <span class="tag blue">Today</span><span class="tag teal">KPI grid</span><span class="tag amber">Catalysts</span><span class="tag green">DCA stance</span>
+      </div>
+      <div class="card-foot"><span class="open">Open daily briefing</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card purple" href="pages/strategic_outlook_may24_jun7.html" target="_blank">
+      <span class="badge live" title="Tactical 2-week earnings + macro window: PCE, Broadcom, Salesforce, LULU, Macy's. SaaSpocalypse vs. AI infra framework.">Live</span>
+      <div class="card-top">
+        <div class="card-icon">🎯</div>
+        <div class="card-titles">
+          <div class="card-title">Strategic Outlook · May 24 – Jun 7</div>
+          <div class="card-sub">Earnings + Macro Crosscurrents · 2-week window</div>
+        </div>
+      </div>
+      <div class="card-desc">Tactical bridge: 27 catalysts ranked by market impact. May 28 PCE is the gate; Broadcom (Jun 3), Salesforce (May 27), LULU (Jun 4), Macy's (Jun 3) are the marquee prints. SaaSpocalypse vs. AI-infra super-cycle framework, 7 Powers moat scorecard, barbell posture with catalyst-driven action map.</div>
+      <div class="tags">
+        <span class="tag purple">PCE</span><span class="tag purple">AVGO</span><span class="tag amber">CRM</span><span class="tag green">Barbell</span><span class="tag blue">SaaSpocalypse</span>
+      </div>
+      <div class="card-foot"><span class="open">Open dashboard</span><span class="arrow">→</span></div>
+    </a>
+
+  </div>
+
+  <!-- ══ TIER 2 ══ -->
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <span class="section-title">Deep dives</span>
+    <span class="section-desc">open weekly or on a thesis</span>
+    <span class="section-rule"></span>
+  </div>
+  <div class="grid">
+
+    <a class="card amber" href="pages/earnings_briefing.html" target="_blank">
+      <span class="badge live" title="Q1 2026 earnings season deep dive — sector scorecards, Mag 7, weekly read.">Live</span>
+      <div class="card-top">
+        <div class="card-icon">📋</div>
+        <div class="card-titles">
+          <div class="card-title">Earnings Season Briefing</div>
+          <div class="card-sub">Q1 2026 · Investor Summary</div>
+        </div>
+      </div>
+      <div class="card-desc">Beat/miss rates, sector-level EPS trends, guidance revisions, Mag 7 detail, valuation tab, and the May 18–22 weekly earnings read framed as macro signals (consumer health, AI capex, software demand, industrial cycle).</div>
+      <div class="tags">
+        <span class="tag amber">Q1 2026</span><span class="tag amber">EPS</span><span class="tag green">Beat rate</span><span class="tag purple">Guidance</span>
+      </div>
+      <div class="card-foot"><span class="open">Open dashboard</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card purple" href="pages/ai_value_chain_2026.html" target="_blank">
+      <span class="badge static" title="Synthesised research deck — value chain map of the 2026 AI compute supercycle.">Research</span>
+      <div class="card-top">
+        <div class="card-icon">🏭</div>
+        <div class="card-titles">
+          <div class="card-title">AI Economy Value Chain · 2026</div>
+          <div class="card-sub">CapEx Returns · Margin Capture · Sector ROI</div>
+        </div>
+      </div>
+      <div class="card-desc">Seven-tab interactive deck mapping capital flow through the $602B hyperscaler buildout: silicon &amp; foundries → cloud landlords → SaaS tenants → end-enterprise → data/security enablers. KPI strip, clickable value-chain stack, custom-silicon comparison, Agentforce pricing calculator, pilot-purgatory funnel, EBIT-expansion chart, and master comparison table.</div>
+      <div class="tags">
+        <span class="tag purple">Value chain</span><span class="tag amber">CapEx</span><span class="tag teal">Margins</span><span class="tag blue">Hyperscalers</span><span class="tag green">EBIT</span>
+      </div>
+      <div class="card-foot"><span class="open">Open dashboard</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card blue" href="pages/value_line_explorer_may29_2026.html" target="_blank">
+      <span class="badge static" title="Weekly Value Line Summary & Index — 93 industry Timeliness ranks + 4 universe-median series.">Weekly PDF</span>
+      <div class="card-top">
+        <div class="card-icon">🔄</div>
+        <div class="card-titles">
+          <div class="card-title">Value Line Summary &amp; Index Explorer</div>
+          <div class="card-sub">Sector Rotation · Vol. LXXXI No. 44· June 5, 2026</div>
+        </div>
+      </div>
+      <div class="card-desc">Interactive read of Value Line's weekly Summary &amp; Index: all 93 industries ranked 1–5 by Timeliness with filter/sort, universe-median P/E · yield · 3–5 yr appreciation · 18-mo target tiles vs. market-low / market-high benchmarks, and TL;DR rotation read with top-12 / bottom-12 chips + week-over-week rank movers.</div>
+      <div class="tags">
+        <span class="tag blue">Timeliness</span><span class="tag amber">Rotation</span><span class="tag teal">93 industries</span><span class="tag green">Median P/E</span><span class="tag purple">Value Line</span>
+      </div>
+      <div class="card-foot"><span class="open">Open dashboard</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card blue" href="pages/selection_opinion_explorer_jun5_2026.html" target="_blank">
+      <span class="badge static" title="Weekly Value Line Selection &amp; Opinion — model portfolios, screens, rates, market monitor.">Weekly PDF</span>
+      <div class="card-top">
+        <div class="card-icon">📋</div>
+        <div class="card-titles">
+          <div class="card-title">Value Line Selection &amp; Opinion Explorer</div>
+          <div class="card-sub">Model Portfolios &amp; Macro · Vol. LXXXI No. 44 · June 5, 2026</div>
+        </div>
+      </div>
+      <div class="card-desc">Interactive read of Value Line's weekly Selection &amp; Opinion: The View commentary (new Fed chair Warsh, hawkish-hold, 30-yr at a 2007 high), five model portfolios (I–V) with stat tiles + sortable holdings, three published screens, an interactive Treasury yield curve, the 65/10/25 asset-allocation model, market-monitor range bars, six-week industry rotation, and insider flow.</div>
+      <div class="tags">
+        <span class="tag blue">5 Portfolios</span><span class="tag green">3 Screens</span><span class="tag teal">Yield Curve</span><span class="tag amber">Allocation</span><span class="tag purple">Value Line</span>
+      </div>
+      <div class="card-foot"><span class="open">Open explorer</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card amber" href="pages/sp500_valuation_report.html" target="_blank">
+      <span class="badge live" title="Macro valuation deep dive — CAPE, ERP, sensitivity, allocation matrix.">Live</span>
+      <div class="card-top">
+        <div class="card-icon">🚩</div>
+        <div class="card-titles">
+          <div class="card-title">S&amp;P 500 Valuation Report</div>
+          <div class="card-sub">Macro Valuation · ERP Red Flag</div>
+        </div>
+      </div>
+      <div class="card-desc">Six-tab interactive briefing on S&amp;P 500 valuation. Shiller CAPE in the 99th percentile, negative Equity Risk Premium on both trailing and Shiller bases, FactSet Forward P/E in context, peak comparison vs 1929/2000/2021, ERP calculator, sensitivity heatmap, and defensive allocation matrix.</div>
+      <div class="tags">
+        <span class="tag amber">CAPE</span><span class="tag amber">ERP</span><span class="tag green">Allocation</span><span class="tag blue">FactSet</span><span class="tag purple">Macro</span>
+      </div>
+      <div class="card-foot"><span class="open">Open dashboard</span><span class="arrow">→</span></div>
+    </a>
+
+  </div>
+
+  <!-- ══ TIER 3 ══ -->
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <span class="section-title">Educational</span>
+    <span class="section-desc">open occasionally to relearn or rebuild intuition</span>
+    <span class="section-rule"></span>
+  </div>
+  <div class="grid">
+
+    <a class="card blue" href="pages/us_equity_indices_macro.html" target="_blank">
+      <span class="badge static" title="Reference content — index profiles, sector weights, historical drawdowns, monitoring-framework panes.">Static</span>
+      <div class="card-top">
+        <div class="card-icon">📊</div>
+        <div class="card-titles">
+          <div class="card-title">U.S. Equity Indices · Reference</div>
+          <div class="card-sub">Index profiles &amp; monitoring framework</div>
+        </div>
+      </div>
+      <div class="card-desc">Index profiles for SPX, NDX, RUT, DJI; sector weights; historical drawdowns; macro regime overlay framework; and the five-pane monitoring structure (benchmark risk, breadth, rates, credit, sentiment). Today's read moved to the Daily Briefing.</div>
+      <div class="tags">
+        <span class="tag blue">SPX</span><span class="tag blue">NDX</span><span class="tag blue">RUT</span><span class="tag purple">Macro</span><span class="tag green">Reference</span>
+      </div>
+      <div class="card-foot"><span class="open">Open reference</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card amber" href="pages/dca_framework.html" target="_blank">
+      <span class="badge static" title="Methodology, checklists, regimes and decision rules — written reference, no outside data feeds.">Static</span>
+      <div class="card-top">
+        <div class="card-icon">🧮</div>
+        <div class="card-titles">
+          <div class="card-title">DCA Investment Framework</div>
+          <div class="card-sub">Daily Review System · 10 Sections</div>
+        </div>
+      </div>
+      <div class="card-desc">Complete decision framework for a macro-aware DCA investor: 9 market regimes, 7 data categories with 50+ indicators, fillable morning &amp; evening checklists, weekly review template, 8 DCA decision rules, risk guardrails, daily output template, and an interactive −10 to +10 scoring widget with auto-action mapping.</div>
+      <div class="tags">
+        <span class="tag amber">Framework</span><span class="tag teal">Checklists</span><span class="tag blue">Scoring</span><span class="tag green">DCA rules</span><span class="tag purple">Risk</span>
+      </div>
+      <div class="card-foot"><span class="open">Open framework</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="card purple" href="pages/research_summary.html" target="_blank">
+      <span class="badge static" title="Synthesised framework, regimes, classifiers and stress thresholds — purely educational since the live overlays were moved to the Daily Briefing.">Static</span>
+      <div class="card-top">
+        <div class="card-icon">🧭</div>
+        <div class="card-titles">
+          <div class="card-title">Market Monitoring Framework</div>
+          <div class="card-sub">Research Synthesis · Framework Reference</div>
+        </div>
+      </div>
+      <div class="card-desc">Interactive 6-pillar scoring framework (try it yourself), selloff classifier, DCA mode picker, 12-regime map, sector &amp; AI rotation guide, stress dashboard, quantified bands, daily &amp; weekly checklists, and pitfalls — synthesised from the deep-research macro &amp; DCA framework with a built-in user manual.</div>
+      <div class="tags">
+        <span class="tag purple">Framework</span><span class="tag purple">Regimes</span><span class="tag green">Interactive</span><span class="tag blue">DCA</span><span class="tag amber">Thresholds</span>
+      </div>
+      <div class="card-foot"><span class="open">Open framework</span><span class="arrow">→</span></div>
+    </a>
+
+  </div>
+
+  <div class="foot-note">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span>Three-tier layout. <strong>Daily focus</strong> — the morning check-in pages, both driven by <code class="k">live_data.js</code>. <strong>Deep dives</strong> — heavier weekly reads (DCA briefing, earnings, valuation) that also consume <code class="k">live_data.js</code>. <strong>Educational</strong> — framework reference content that stands on its own and doesn't change with the market. To refresh the numbers across every dashboard, edit <code class="k">live_data.js</code> only.</span>
+  </div>
+
+</main>
+
+<script>
+  const d = new Date();
+  document.getElementById('today-date').textContent =
+    d.toLocaleDateString('en-US', { weekday:'short', year:'numeric', month:'short', day:'numeric' });
+</script>
+</body>
+</html>

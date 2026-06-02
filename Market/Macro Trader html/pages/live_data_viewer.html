@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Data Snapshot · Macro Trader</title>
+<style>
+  :root {
+    --bg:     #F5F6F7;
+    --bg2:    #FFFFFF;
+    --bg3:    #F0F1F3;
+    --border: #E5E5E5;
+    --border2:#D5D5D5;
+    --text:   #1E1E1E;
+    --text2:  #5B5B5B;
+    --text3:  #8A8A8A;
+    --accent: #0077CC;
+    --red:    #C72E0B;
+    --green:  #00936C;
+    --amber:  #D8A000;
+    --purple: #7B5EA7;
+    --teal:   #007A90;
+    --font:   -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    line-height: 1.55;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px 22px;
+  }
+  .header-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(199,46,11,0.10);
+    border: 1px solid rgba(199,46,11,0.25);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 11px;
+    color: var(--red);
+    margin-bottom: 10px;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .header-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50%      { opacity: .35; }
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .header .sub {
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .header .as-of {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .header .as-of strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .header-links {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .header-links a, .header-links button {
+    font: inherit;
+    font-size: 12px;
+    color: var(--text2);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .header-links a:hover, .header-links button:hover {
+    background: var(--bg2);
+    color: var(--text);
+    border-color: var(--border2);
+  }
+  .header-links .copy-ok {
+    color: var(--green);
+    border-color: var(--green);
+  }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 40px 60px;
+  }
+  .section {
+    margin-bottom: 28px;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-head h2 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: .6px;
+  }
+  .section-head .count {
+    font-size: 11px;
+    color: var(--text3);
+    font-weight: 500;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+  }
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .card:hover {
+    border-color: var(--border2);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .card .label {
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .card .key {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+    color: var(--text3);
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    background: var(--bg3);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  .card .val {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+  }
+  .card .note {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 3px;
+  }
+  .card.accent .val   { color: var(--accent); }
+  .card.red .val      { color: var(--red); }
+  .card.green .val    { color: var(--green); }
+  .card.amber .val    { color: var(--amber); }
+  .card.purple .val   { color: var(--purple); }
+  .card.teal .val     { color: var(--teal); }
+
+  /* error banner */
+  .err {
+    background: rgba(199,46,11,0.08);
+    border: 1px solid rgba(199,46,11,0.25);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: var(--red);
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  /* footer */
+  .foot {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 40px 40px;
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.6;
+  }
+  .foot code {
+    background: var(--bg3);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    color: var(--text2);
+  }
+
+  @media (max-width: 640px) {
+    .header, .main, .foot { padding-left: 18px; padding-right: 18px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    .card .val { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div>
+      <div class="header-badge">Live Data Snapshot</div>
+      <h1>Macro Trader · Live Data</h1>
+      <div class="sub">Read-only view of every refreshable value used by the dashboards.</div>
+      <div class="as-of">As of <strong id="hdrAsOf">—</strong> · sourced from <code>live_data.js</code></div>
+    </div>
+    <div class="header-links">
+      <a href="../index.html">← Hub</a>
+      <button id="copyJson" type="button">Copy JSON</button>
+    </div>
+  </div>
+</header>
+
+<div class="main" id="main">
+  <div id="err" class="err" style="display:none;">live_data.js could not be loaded.</div>
+
+  <!-- Cards are rendered by the script below from window.MARKET_LIVE -->
+  <div id="sections"></div>
+</div>
+
+<div class="foot">
+  Edit values in <code>live_data.js</code>. All 5 dashboards in this folder consume the same file, so changes here propagate everywhere on the next reload. Narrative qualifiers around the numbers ("dropping to", "stabilized at") are NOT auto-refreshed — skim the prose after bumping values.
+</div>
+
+<script src="../assets/js/live_data.js"></script>
+<script>
+(function () {
+  // Layout config — order, grouping, labels, color tone, and one-line notes.
+  // Reads keys straight from window.MARKET_LIVE; missing keys render as "—".
+  var LAYOUT = [
+    {
+      title: '§1 · Snapshot · As of',
+      items: [
+        { k: 'asOfLong',  l: 'Long form',         tone: 'accent' },
+        { k: 'asOfShort', l: 'Short form',        tone: 'accent' },
+        { k: 'asOfDow',   l: 'Day-of-week form',  tone: 'accent' }
+      ]
+    },
+    {
+      title: '§2 · U.S. Equity · Broad Indices',
+      items: [
+        { k: 'spxClose',  l: 'S&P 500',                tone: 'accent', sub: 'spxChg' },
+        { k: 'dowClose',  l: 'Dow Jones Ind.',         tone: 'accent', sub: 'dowChg' },
+        { k: 'ndxClose',  l: 'Nasdaq 100',             tone: 'purple', sub: 'ndxChg' },
+        { k: 'ixicClose', l: 'Nasdaq Composite',       tone: 'purple', sub: 'ixicChg' },
+        { k: 'rutClose',  l: 'Russell 2000',           tone: 'amber',  sub: 'rutChg' },
+        { k: 'rspClose',  l: 'S&P 500 Equal-Wgt (RSP)',tone: 'green',  sub: 'rspChg' }
+      ]
+    },
+    {
+      title: '§3 · U.S. Equity · Magnificent 7',
+      items: [
+        { k: 'nvda',  l: 'NVIDIA',             tone: 'purple', sub: 'nvdaChg' },
+        { k: 'msft',  l: 'Microsoft',          tone: 'purple', sub: 'msftChg' },
+        { k: 'aapl',  l: 'Apple',              tone: 'purple', sub: 'aaplChg' },
+        { k: 'googl', l: 'Alphabet (GOOGL)',   tone: 'purple', sub: 'googlChg' },
+        { k: 'amzn',  l: 'Amazon',             tone: 'purple', sub: 'amznChg' },
+        { k: 'meta',  l: 'Meta Platforms',     tone: 'purple', sub: 'metaChg' },
+        { k: 'tsla',  l: 'Tesla',              tone: 'purple', sub: 'tslaChg' }
+      ]
+    },
+    {
+      title: '§4 · U.S. Equity · Sector ETFs',
+      items: [
+        { k: 'xlk',  l: 'XLK · Technology',           tone: 'accent', sub: 'xlkChg' },
+        { k: 'xlf',  l: 'XLF · Financials',           tone: 'accent', sub: 'xlfChg' },
+        { k: 'xle',  l: 'XLE · Energy',               tone: 'accent', sub: 'xleChg' },
+        { k: 'xli',  l: 'XLI · Industrials',          tone: 'accent', sub: 'xliChg' },
+        { k: 'xly',  l: 'XLY · Cons. Discretionary',  tone: 'accent', sub: 'xlyChg' },
+        { k: 'xlp',  l: 'XLP · Cons. Staples',        tone: 'accent', sub: 'xlpChg' },
+        { k: 'xlv',  l: 'XLV · Health Care',          tone: 'accent', sub: 'xlvChg' },
+        { k: 'xlu',  l: 'XLU · Utilities',            tone: 'accent', sub: 'xluChg' },
+        { k: 'xlb',  l: 'XLB · Materials',            tone: 'accent', sub: 'xlbChg' },
+        { k: 'xlre', l: 'XLRE · Real Estate',         tone: 'accent', sub: 'xlreChg' },
+        { k: 'xlc',  l: 'XLC · Communication Svcs',   tone: 'accent', sub: 'xlcChg' },
+        { k: 'smh',  l: 'SMH · Semiconductors',       tone: 'purple', sub: 'smhChg' }
+      ]
+    },
+    {
+      title: '§5 · Dow Theory Adjuncts',
+      items: [
+        { k: 'djt', l: 'Dow Transports (DJT)', tone: 'amber', sub: 'djtChg' },
+        { k: 'dju', l: 'Dow Utilities (DJU)',  tone: 'amber', sub: 'djuChg' }
+      ]
+    },
+    {
+      title: '§6 · International Equities · Developed',
+      items: [
+        { k: 'stoxx600Close',  l: 'STOXX Europe 600',     tone: 'teal', sub: 'stoxx600Chg' },
+        { k: 'dax',            l: 'DAX 40 (Germany)',     tone: 'teal', sub: 'daxChg' },
+        { k: 'ftse100',        l: 'FTSE 100 (UK)',        tone: 'teal', sub: 'ftse100Chg' },
+        { k: 'cac40',          l: 'CAC 40 (France)',      tone: 'teal', sub: 'cac40Chg' },
+        { k: 'nikkei225Close', l: 'Nikkei 225 (Japan)',   tone: 'teal', sub: 'nikkei225Chg' },
+        { k: 'kospi',          l: 'KOSPI (Korea)',        tone: 'teal', sub: 'kospiChg' },
+        { k: 'asx200',         l: 'ASX 200 (Australia)',  tone: 'teal', sub: 'asx200Chg' },
+        { k: 'tsx',            l: 'S&P/TSX (Canada)',     tone: 'teal', sub: 'tsxChg' }
+      ]
+    },
+    {
+      title: '§7 · International Equities · Emerging',
+      items: [
+        { k: 'hangSengClose', l: 'Hang Seng (HK)',     tone: 'teal',   sub: 'hangSengChg' },
+        { k: 'csi300Close',   l: 'CSI 300 (China)',    tone: 'teal',   sub: 'csi300Chg' },
+        { k: 'nifty50',       l: 'Nifty 50 (India)',   tone: 'teal',   sub: 'nifty50Chg' },
+        { k: 'bovespa',       l: 'Bovespa (Brazil)',   tone: 'teal',   sub: 'bovespaChg' }
+      ]
+    },
+    {
+      title: '§8 · Treasury Yields',
+      items: [
+        { k: 'yld2yFull',  l: '2Y (precise)',  tone: 'red' },
+        { k: 'yld2y',      l: '2Y (rounded)',  tone: 'red' },
+        { k: 'yld5y',      l: '5Y Treasury',   tone: 'red' },
+        { k: 'yld10yFull', l: '10Y (precise)', tone: 'red' },
+        { k: 'yld10y',     l: '10Y (rounded)', tone: 'red' },
+        { k: 'yld30yFull', l: '30Y (precise)', tone: 'red' },
+        { k: 'yld30y',     l: '30Y (rounded)', tone: 'red' },
+        { k: 'yld10yReal', l: '10Y Real Yield (TIPS)', tone: 'red' }
+      ]
+    },
+    {
+      title: '§9 · Yield Curve & Inflation Expectations',
+      items: [
+        { k: 'curve2s10s',  l: '10Y − 2Y',                  tone: 'amber' },
+        { k: 'curve2s30s',  l: '30Y − 2Y',                  tone: 'amber' },
+        { k: 'curve5s30s',  l: '30Y − 5Y',                  tone: 'amber' },
+        { k: 'breakeven5y', l: '5Y Breakeven Inflation',    tone: 'amber' },
+        { k: 'breakeven10y',l: '10Y Breakeven Inflation',   tone: 'amber' }
+      ]
+    },
+    {
+      title: '§10 · Credit Spreads',
+      items: [
+        { k: 'hyOas', l: 'HY OAS (ICE BofA)', tone: 'green' },
+        { k: 'igOas', l: 'IG OAS (ICE BofA)', tone: 'green' },
+        { k: 'bbOas', l: 'BB OAS',            tone: 'green' }
+      ]
+    },
+    {
+      title: '§11 · Credit & Duration ETFs',
+      items: [
+        { k: 'hyg', l: 'HYG · iBoxx HY',          tone: 'green', sub: 'hygChg' },
+        { k: 'lqd', l: 'LQD · iBoxx IG',          tone: 'green', sub: 'lqdChg' },
+        { k: 'tlt', l: 'TLT · 20+Y Treasury',     tone: 'red',   sub: 'tltChg' },
+        { k: 'ief', l: 'IEF · 7-10Y Treasury',    tone: 'red',   sub: 'iefChg' },
+        { k: 'bil', l: 'BIL · 1-3M T-Bills',      tone: 'red',   sub: 'bilChg' }
+      ]
+    },
+    {
+      title: '§12 · Volatility',
+      items: [
+        { k: 'vix',   l: 'VIX',                        tone: 'amber' },
+        { k: 'vvix',  l: 'VVIX (vol of VIX)',          tone: 'amber' },
+        { k: 'vix9d', l: 'VIX9D (9-day)',              tone: 'amber' },
+        { k: 'vix3m', l: 'VIX3M (3-month)',            tone: 'amber' },
+        { k: 'move',  l: 'MOVE (Treasury vol)',        tone: 'amber' },
+        { k: 'skew',  l: 'Cboe SKEW (tail risk)',      tone: 'amber' },
+        { k: 'ovx',   l: 'OVX (Oil vol)',              tone: 'amber' }
+      ]
+    },
+    {
+      title: '§13 · Market Breadth',
+      items: [
+        { k: 'spxAbove50d',  l: '% SPX > 50-day MA',      tone: 'green' },
+        { k: 'spxAbove200d', l: '% SPX > 200-day MA',     tone: 'green' },
+        { k: 'advDecLine',   l: 'NYSE A/D Line',          tone: 'green' },
+        { k: 'newHighLow',   l: 'NYSE New H − New L',     tone: 'green' }
+      ]
+    },
+    {
+      title: '§14 · Sentiment & Positioning',
+      items: [
+        { k: 'putCallRatio', l: 'Equity Put/Call',          tone: 'amber' },
+        { k: 'aaiiBull',     l: 'AAII Bullish %',           tone: 'amber' },
+        { k: 'aaiiBear',     l: 'AAII Bearish %',           tone: 'amber' },
+        { k: 'naaim',        l: 'NAAIM Exposure',           tone: 'amber' },
+        { k: 'consumerConf', l: 'Consumer Confidence',      tone: 'amber' },
+        { k: 'umichSent',    l: 'U-Mich Sentiment',         tone: 'amber' }
+      ]
+    },
+    {
+      title: '§15 · Currencies · Majors',
+      items: [
+        { k: 'dxy',    l: 'DXY (Dollar Index)', tone: 'accent', sub: 'dxyChg' },
+        { k: 'eurUsd', l: 'EUR / USD',          tone: 'accent', sub: 'eurUsdChg' },
+        { k: 'usdJpy', l: 'USD / JPY',          tone: 'accent', sub: 'usdJpyChg' },
+        { k: 'gbpUsd', l: 'GBP / USD (Cable)',  tone: 'accent', sub: 'gbpUsdChg' },
+        { k: 'audUsd', l: 'AUD / USD',          tone: 'accent', sub: 'audUsdChg' },
+        { k: 'usdCad', l: 'USD / CAD',          tone: 'accent', sub: 'usdCadChg' },
+        { k: 'usdChf', l: 'USD / CHF',          tone: 'accent', sub: 'usdChfChg' },
+        { k: 'usdCny', l: 'USD / CNY',          tone: 'accent', sub: 'usdCnyChg' }
+      ]
+    },
+    {
+      title: '§16 · Currencies · Emerging',
+      items: [
+        { k: 'usdMxn', l: 'USD / MXN',          tone: 'accent', sub: 'usdMxnChg' },
+        { k: 'usdInr', l: 'USD / INR',          tone: 'accent', sub: 'usdInrChg' },
+        { k: 'usdKrw', l: 'USD / KRW',          tone: 'accent', sub: 'usdKrwChg' },
+        { k: 'usdBrl', l: 'USD / BRL',          tone: 'accent', sub: 'usdBrlChg' }
+      ]
+    },
+    {
+      title: '§17 · Commodities · Energy',
+      items: [
+        { k: 'brent',      l: 'Brent crude (per bbl)',  tone: 'teal', sub: 'brentChg' },
+        { k: 'wti',        l: 'WTI crude (per bbl)',    tone: 'teal', sub: 'wtiChg' },
+        { k: 'natgas',     l: 'Natural Gas (per MMBtu)',tone: 'teal', sub: 'natgasChg' },
+        { k: 'heatingOil', l: 'Heating Oil',            tone: 'teal', sub: 'heatingOilChg' },
+        { k: 'gasoline',   l: 'RBOB Gasoline',          tone: 'teal', sub: 'gasolineChg' }
+      ]
+    },
+    {
+      title: '§18 · Commodities · Precious Metals',
+      items: [
+        { k: 'gold',      l: 'Gold (XAU/USD)',      tone: 'amber', sub: 'goldChg' },
+        { k: 'silver',    l: 'Silver (XAG/USD)',    tone: 'amber', sub: 'silverChg' },
+        { k: 'platinum',  l: 'Platinum (XPT/USD)',  tone: 'amber', sub: 'platinumChg' },
+        { k: 'palladium', l: 'Palladium (XPD/USD)', tone: 'amber', sub: 'palladiumChg' }
+      ]
+    },
+    {
+      title: '§19 · Commodities · Industrial Metals',
+      items: [
+        { k: 'copper',   l: 'Copper',   tone: 'amber', sub: 'copperChg' },
+        { k: 'aluminum', l: 'Aluminum', tone: 'amber', sub: 'aluminumChg' }
+      ]
+    },
+    {
+      title: '§20 · Commodities · Agriculturals',
+      items: [
+        { k: 'wheat',    l: 'Wheat',    tone: 'green', sub: 'wheatChg' },
+        { k: 'corn',     l: 'Corn',     tone: 'green', sub: 'cornChg' },
+        { k: 'soybeans', l: 'Soybeans', tone: 'green', sub: 'soybeansChg' },
+        { k: 'sugar',    l: 'Sugar',    tone: 'green', sub: 'sugarChg' },
+        { k: 'coffee',   l: 'Coffee',   tone: 'green', sub: 'coffeeChg' },
+        { k: 'cocoa',    l: 'Cocoa',    tone: 'green', sub: 'cocoaChg' }
+      ]
+    },
+    {
+      title: '§21 · Commodity Indices',
+      items: [
+        { k: 'bcom', l: 'Bloomberg Commodity (BCOM)',         tone: 'teal', sub: 'bcomChg' },
+        { k: 'dbc',  l: 'Invesco DB Commodity Tracking',      tone: 'teal', sub: 'dbcChg' }
+      ]
+    },
+    {
+      title: '§22 · Cryptocurrencies',
+      items: [
+        { k: 'bitcoin',    l: 'Bitcoin (BTC/USD)',    tone: 'purple', sub: 'bitcoinChg' },
+        { k: 'ethereum',   l: 'Ethereum (ETH/USD)',   tone: 'purple', sub: 'ethereumChg' },
+        { k: 'cryptoMcap', l: 'Total Crypto Mkt Cap', tone: 'purple', sub: 'cryptoMcapChg' },
+        { k: 'solana',     l: 'Solana (SOL/USD)',     tone: 'purple', sub: 'solanaChg' }
+      ]
+    },
+    {
+      title: '§23 · Fed Policy & Liquidity',
+      items: [
+        { k: 'fedFundsTarget',  l: 'Fed Funds Target Range', tone: 'red' },
+        { k: 'effFedFunds',     l: 'Effective Fed Funds',    tone: 'red' },
+        { k: 'sofr',            l: 'SOFR',                   tone: 'red' },
+        { k: 'fedBalanceSheet', l: 'Fed Balance Sheet',      tone: 'red' },
+        { k: 'rrpBalance',      l: 'Reverse Repo (RRP)',     tone: 'red' },
+        { k: 'tgaBalance',      l: 'Treasury General Acct',  tone: 'red' },
+        { k: 'm2Money',         l: 'M2 Money Supply',        tone: 'red' }
+      ]
+    },
+    {
+      title: '§24 · Financial Conditions',
+      items: [
+        { k: 'nfci',         l: 'Chicago Fed NFCI',     tone: 'green' },
+        { k: 'anfci',        l: 'Chicago Fed ANFCI',    tone: 'green' },
+        { k: 'goldmanFci',   l: 'Goldman Sachs FCI',    tone: 'green' },
+        { k: 'bloombergFci', l: 'Bloomberg US FCI',     tone: 'green' }
+      ]
+    },
+    {
+      title: '§25 · Macro Economic Data',
+      items: [
+        // Growth / Activity
+        { k: 'ismMfgPmi',       l: 'ISM Manufacturing PMI',  tone: 'green' },
+        { k: 'ismSvcPmi',       l: 'ISM Services PMI',       tone: 'green' },
+        { k: 'gdpNowQ2',        l: 'Atlanta Fed GDPNow',     tone: 'green' },
+        { k: 'realGdpQ1',       l: 'Real GDP (latest qtr)',  tone: 'green' },
+        { k: 'retailSalesMoM',  l: 'Retail Sales m/m',       tone: 'green' },
+        // Inflation
+        { k: 'cpiYoY',          l: 'CPI y/y',                tone: 'red' },
+        { k: 'coreCpiYoY',      l: 'Core CPI y/y',           tone: 'red' },
+        { k: 'pceYoY',          l: 'PCE y/y',                tone: 'red' },
+        { k: 'corePceYoY',      l: 'Core PCE y/y',           tone: 'red' },
+        { k: 'ppiYoY',          l: 'PPI y/y',                tone: 'red' },
+        { k: 'corePpiYoY',      l: 'Core PPI y/y',           tone: 'red' },
+        { k: 'fiveYrFiveYr',    l: '5y5y Fwd Inflation',     tone: 'amber' },
+        { k: 'nyfedCons1y',     l: 'NY Fed 1y Inflation Exp',tone: 'amber' },
+        // Labor
+        { k: 'unemploymentRate',l: 'Unemployment Rate (U-3)',tone: 'amber' },
+        { k: 'initialClaims',   l: 'Initial Jobless Claims', tone: 'amber' },
+        { k: 'continuingClaims',l: 'Continuing Claims',      tone: 'amber' },
+        { k: 'nfpChange',       l: 'NFP (jobs added)',       tone: 'green' },
+        { k: 'adpPayrolls',     l: 'ADP Private Payrolls',   tone: 'green' },
+        { k: 'avgHourlyEarnings',l:'Avg Hourly Earnings y/y',tone: 'amber' },
+        { k: 'joltsOpenings',   l: 'JOLTS Job Openings',     tone: 'green' }
+      ]
+    },
+    {
+      title: '§25a · Housing',
+      items: [
+        { k: 'mortgage30y',       l: '30-Yr Fixed Mortgage',   tone: 'red' },
+        { k: 'existingHomeSales', l: 'Existing Home Sales',     tone: 'amber' },
+        { k: 'housingStarts',     l: 'Housing Starts (SAAR)',   tone: 'amber' },
+        { k: 'caseShillerHpi',    l: 'Case-Shiller HPI y/y',    tone: 'amber' },
+        { k: 'nahbHmi',           l: 'NAHB Housing Mkt Index',  tone: 'red' }
+      ]
+    },
+    {
+      title: '§26 · Valuation Anchors · S&P 500',
+      items: [
+        { k: 'fwdPe',         l: 'Fwd P/E (rounded)',        tone: 'red' },
+        { k: 'fwdPeFactSet',  l: 'Fwd P/E (FactSet/Yardeni)',tone: 'red' },
+        { k: 'fwdEps',        l: 'Fwd 12M EPS',              tone: 'red' },
+        { k: 'shillerCape',   l: 'Shiller CAPE',             tone: 'red' },
+        { k: 'trailingEps',   l: 'Trailing EPS',             tone: 'red' },
+        { k: 'trailingPe',    l: 'Trailing P/E',             tone: 'red' }
+      ]
+    },
+    {
+      title: '§27 · Q1 2026 Earnings Season · Core',
+      items: [
+        { k: 'q1EpsGrowth',   l: 'Q1 EPS Growth (blended)', tone: 'green' },
+        { k: 'q1BeatRate',    l: 'Q1 EPS Beat Rate',         tone: 'green' },
+        { k: 'q1RevBeatRate', l: 'Q1 Revenue Beat Rate',     tone: 'green' },
+        { k: 'q1NetMargin',   l: 'Q1 Net Margin',            tone: 'green' },
+        { k: 'cy26EpsGrowth', l: 'CY26 EPS Growth Estimate', tone: 'green' }
+      ]
+    },
+    {
+      title: '§27a · Earnings Season · Extended',
+      items: [
+        // Backward-looking
+        { k: 'q1Reported',           l: 'Q1 % Reported',            tone: 'green' },
+        { k: 'q1RevGrowth',          l: 'Q1 Revenue Growth',        tone: 'green' },
+        { k: 'q1AvgEpsSurprise',     l: 'Q1 Avg EPS Surprise',      tone: 'green' },
+        { k: 'q1AvgRevSurprise',     l: 'Q1 Avg Rev Surprise',      tone: 'green' },
+        { k: 'bestSectorBeat',       l: 'Best Sector Beat Rate',    tone: 'green' },
+        { k: 'worstSectorBeat',      l: 'Worst Sector Beat Rate',   tone: 'red' },
+        // Forward-looking
+        { k: 'q2EpsGrowthEst',       l: 'Q2 EPS Growth Estimate',   tone: 'amber' },
+        { k: 'q3EpsGrowthEst',       l: 'Q3 EPS Growth Estimate',   tone: 'amber' },
+        { k: 'q4EpsGrowthEst',       l: 'Q4 EPS Growth Estimate',   tone: 'amber' },
+        { k: 'q2RevGrowthEst',       l: 'Q2 Revenue Growth Est.',   tone: 'amber' },
+        { k: 'q2NegPreAnnounce',     l: 'Q2 Negative Pre-Announce', tone: 'red' },
+        { k: 'q2PosPreAnnounce',     l: 'Q2 Positive Pre-Announce', tone: 'green' },
+        { k: 'cy27EpsGrowthEst',     l: 'CY27 EPS Growth Est.',     tone: 'amber' },
+        { k: 'epsRevisionsBreadth',  l: 'EPS Revisions Breadth',    tone: 'amber' },
+        // Concentration & quality
+        { k: 'magn7EpsContribution', l: 'Mag 7 EPS Contribution',   tone: 'purple' },
+        { k: 'exMagn7EpsGrowth',     l: 'Ex-Mag 7 EPS Growth',      tone: 'purple' },
+        { k: 'spxDivYield',          l: 'S&P 500 Dividend Yield',   tone: 'accent' },
+        { k: 'q1BuybackYield',       l: 'S&P 500 Buyback Yield',    tone: 'accent' },
+        { k: 'payoutRatio',          l: 'Payout Ratio',             tone: 'accent' }
+      ]
+    },
+    {
+      title: '§28 · Daily Briefing · Editorial',
+      items: [
+        { k: 'regimeLabel',       l: 'Regime label',         tone: 'red' },
+        { k: 'regimeOneLiner',    l: 'One-line read',        tone: 'red' },
+        { k: 'regimeScore',       l: 'Regime score',         tone: 'red' },
+        { k: 'regimeScoreLabel',  l: 'Regime score label',   tone: 'red' },
+        { k: 'dcaStance',         l: 'DCA stance',           tone: 'accent' },
+        { k: 'confidence',        l: 'Confidence',           tone: 'accent' },
+        { k: 'spxNextResistance', l: 'SPX next resistance',  tone: 'amber' },
+        { k: 'spxFirstSupport',   l: 'SPX first support',    tone: 'green' }
+      ]
+    },
+    {
+      title: '§29 · Upcoming Catalysts (next 2 weeks)',
+      items: [
+        { k: 'catalysts', l: 'Catalyst events',  tone: 'purple' }
+      ]
+    }
+  ];
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+
+  function render() {
+    var data = window.MARKET_LIVE;
+    if (!data || typeof data !== 'object') {
+      document.getElementById('err').style.display = '';
+      return;
+    }
+    // header as-of
+    document.getElementById('hdrAsOf').textContent = data.asOfLong || '—';
+
+    // formatValue — string passes through; array shows count + first 2 items as preview
+    function formatValue(v) {
+      if (v === undefined || v === null) return '—';
+      if (Array.isArray(v)) {
+        var preview = v.slice(0, 2).map(function (e) {
+          if (e && typeof e === 'object' && e.desc) return e.date + ' · ' + e.desc;
+          return JSON.stringify(e);
+        }).join(' | ');
+        return v.length + ' items';
+      }
+      if (typeof v === 'object') return JSON.stringify(v).slice(0, 60);
+      return String(v);
+    }
+    function formatNote(v) {
+      if (Array.isArray(v) && v.length) {
+        var first = v[0];
+        if (first && typeof first === 'object' && first.desc) {
+          return 'first: ' + first.date + ' · ' + first.desc;
+        }
+      }
+      return '';
+    }
+
+    var out = '';
+    var seenKeys = {};
+    for (var i = 0; i < LAYOUT.length; i++) {
+      var sec = LAYOUT[i];
+      var cards = '';
+      for (var j = 0; j < sec.items.length; j++) {
+        var it = sec.items[j];
+        seenKeys[it.k] = true;
+        var v = data.hasOwnProperty(it.k) ? data[it.k] : '—';
+        var subTxt = '';
+        if (it.sub && data.hasOwnProperty(it.sub)) {
+          seenKeys[it.sub] = true;
+          subTxt = '<div class="note">' + escapeHtml(data[it.sub]) + '</div>';
+        } else {
+          var arrNote = formatNote(v);
+          if (arrNote) subTxt = '<div class="note">' + escapeHtml(arrNote) + '</div>';
+        }
+        cards += '<div class="card ' + (it.tone || '') + '">' +
+                   '<div class="label"><span>' + escapeHtml(it.l) + '</span><span class="key">' + escapeHtml(it.k) + '</span></div>' +
+                   '<div class="val">' + escapeHtml(formatValue(v)) + '</div>' +
+                   subTxt +
+                 '</div>';
+      }
+      out += '<section class="section">' +
+               '<div class="section-head">' +
+                 '<h2>' + escapeHtml(sec.title) + '</h2>' +
+                 '<span class="count">' + sec.items.length + ' value' + (sec.items.length === 1 ? '' : 's') + '</span>' +
+               '</div>' +
+               '<div class="grid">' + cards + '</div>' +
+             '</section>';
+    }
+
+    // Catch-all: any keys in MARKET_LIVE that aren't in the layout — render so nothing's hidden
+    var orphanCards = '';
+    var orphanCount = 0;
+    var allKeys = Object.keys(data);
+    for (var n = 0; n < allKeys.length; n++) {
+      var k = allKeys[n];
+      if (seenKeys[k]) continue;
+      orphanCount++;
+      orphanCards += '<div class="card">' +
+                       '<div class="label"><span>(unmapped)</span><span class="key">' + escapeHtml(k) + '</span></div>' +
+                       '<div class="val">' + escapeHtml(formatValue(data[k])) + '</div>' +
+                     '</div>';
+    }
+    if (orphanCount) {
+      out += '<section class="section">' +
+               '<div class="section-head">' +
+                 '<h2>Other keys (not in layout)</h2>' +
+                 '<span class="count">' + orphanCount + ' value' + (orphanCount === 1 ? '' : 's') + '</span>' +
+               '</div>' +
+               '<div class="grid">' + orphanCards + '</div>' +
+             '</section>';
+    }
+
+    document.getElementById('sections').innerHTML = out;
+  }
+
+  function attachCopy() {
+    var btn = document.getElementById('copyJson');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var data = window.MARKET_LIVE || {};
+      var txt = JSON.stringify(data, null, 2);
+      // try modern API, fall back to a hidden textarea
+      var done = function () {
+        var prev = btn.textContent;
+        btn.textContent = '✓ Copied';
+        btn.classList.add('copy-ok');
+        setTimeout(function () {
+          btn.textContent = prev;
+          btn.classList.remove('copy-ok');
+        }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(done, function () {
+          fallback(txt, done);
+        });
+      } else {
+        fallback(txt, done);
+      }
+    });
+  }
+  function fallback(txt, done) {
+    var ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { render(); attachCopy(); });
+  } else {
+    render(); attachCopy();
+  }
+})();
+</script>
+</body>
+</html>

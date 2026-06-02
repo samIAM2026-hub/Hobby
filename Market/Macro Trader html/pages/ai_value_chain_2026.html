@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Economy Value Chain · 2026 · CapEx, Margin Capture & Sector ROI</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F6F7;
+    --bg2: #FFFFFF;
+    --bg3: #F0F1F3;
+    --bg4: #FAFBFC;
+    --border: #E5E5E5;
+    --border2: #CFD2D6;
+    --text: #1E1E1E;
+    --muted: #5B5B5B;
+    --muted2: #8A8A8A;
+    --navy: #1B3A5C;
+    --navy-dark: #122A45;
+    --red: #C72E0B;
+    --red-light: #E63000;
+    --green: #00936C;
+    --yellow: #D8A000;
+    --orange: #E07B2D;
+    --purple: #7B5EA7;
+    --blue: #2A6CB8;
+    --teal: #007A90;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; line-height: 1.55; }
+  body::before { content:''; display:block; height:3px; background:var(--red); position:fixed; top:0; left:0; right:0; z-index:9999; }
+  body { padding-top: 3px; }
+
+  /* ── HEADER ── */
+  .header { background: var(--navy); color:#fff; padding: 28px 40px 24px; box-shadow: 0 2px 6px rgba(0,0,0,.18); }
+  .header-top { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; }
+  .header-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(199,46,11,.22); border:1px solid rgba(255,200,180,.4); border-radius:4px; padding:4px 12px; font-size:11px; color:#FFE0D6; text-transform:uppercase; letter-spacing:.6px; font-weight:600; margin-bottom:10px; }
+  .header-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:#FFB196; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
+  h1 { font-size: 26px; font-weight: 700; letter-spacing:-0.4px; color:#fff; }
+  h1 .accent { color: #FFB196; }
+  .header-meta { color: rgba(255,255,255,.72); font-size:12px; margin-top:6px; max-width:760px; }
+  .header-actions { display:flex; gap:8px; align-items:center; }
+  .btn-ghost { background: rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25); color:#fff; padding:7px 14px; border-radius:4px; font-size:12px; cursor:pointer; font-weight:500; transition:background .15s; font-family:inherit; }
+  .btn-ghost:hover { background: rgba(255,255,255,.2); }
+
+  /* ── KPI STRIP ── */
+  .kpi-strip { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px,1fr)); gap:1px; background:var(--border); border-top:1px solid var(--border); }
+  .kpi { background:var(--bg2); padding:18px 22px; }
+  .kpi-label { font-size:10px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin-bottom:6px; font-weight:600; }
+  .kpi-value { font-size:26px; font-weight:700; line-height:1; font-variant-numeric: tabular-nums; }
+  .kpi-value.red { color: var(--red); }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.yellow { color: var(--yellow); }
+  .kpi-value.navy { color: var(--navy); }
+  .kpi-value.purple { color: var(--purple); }
+  .kpi-sub { font-size:11px; color:var(--muted); margin-top:6px; }
+
+  /* ── TABS ── */
+  .tabs { display:flex; gap:0; border-bottom:1px solid var(--border); padding:0 40px; background:var(--bg2); overflow-x:auto; position:sticky; top:0; z-index:50; box-shadow:0 1px 0 var(--border); }
+  .tab { padding:14px 18px; font-size:13px; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:3px solid transparent; white-space:nowrap; transition:color .15s, border-color .15s; background:none; border-left:none; border-top:none; border-right:none; font-family:inherit; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--red); border-bottom-color: var(--red); }
+  .tab .tab-num { font-size:10px; color:var(--muted2); margin-right:6px; font-weight:700; }
+  .tab.active .tab-num { color: var(--red); }
+
+  /* ── MAIN ── */
+  .main { padding: 30px 40px 60px; max-width:1400px; margin: 0 auto; }
+  .section { display:none; }
+  .section.active { display:block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:translateY(0)} }
+
+  .section-heading { font-size:20px; font-weight:700; margin-bottom:6px; color:var(--text); }
+  .section-sub { font-size:13px; color:var(--muted); margin-bottom:24px; max-width: 920px; }
+
+  /* ── CARDS ── */
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  @media (max-width: 900px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+  .card { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:22px; }
+  .card-title { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.7px; margin-bottom:14px; }
+  .card h3 { font-size:15px; font-weight:700; margin-bottom:10px; }
+  .card.alert { border-top:3px solid var(--red); }
+  .card.good  { border-top:3px solid var(--green); }
+  .card.warn  { border-top:3px solid var(--yellow); }
+  .card.navy  { border-top:3px solid var(--navy); }
+  .card.purple{ border-top:3px solid var(--purple); }
+
+  /* ── TABLES ── */
+  table.dt { width:100%; border-collapse:collapse; }
+  table.dt th { padding:10px 12px; text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); border-bottom:1px solid var(--border); font-weight:700; }
+  table.dt td { padding:12px; border-bottom:1px solid var(--border); font-size:13px; vertical-align:middle; }
+  table.dt tr:last-child td { border-bottom:none; }
+  table.dt td.metric-name { font-weight:600; }
+  table.dt td.right { text-align:right; }
+  table.dt td.num { text-align:right; font-variant-numeric: tabular-nums; }
+  table.dt tr.row-hover:hover { background: var(--bg4); cursor:pointer; }
+  .pill { display:inline-block; padding:3px 9px; border-radius:4px; font-size:11px; font-weight:600; }
+  .pill-bad { background:rgba(199,46,11,.12); color:var(--red); border:1px solid rgba(199,46,11,.28); }
+  .pill-warn { background:rgba(216,160,0,.13); color:var(--yellow); border:1px solid rgba(216,160,0,.3); }
+  .pill-ok { background:rgba(0,147,108,.12); color:var(--green); border:1px solid rgba(0,147,108,.3); }
+  .pill-neutral { background:rgba(91,91,91,.12); color:var(--muted); border:1px solid rgba(91,91,91,.25); }
+  .pill-navy { background:rgba(27,58,92,.12); color:var(--navy); border:1px solid rgba(27,58,92,.3); }
+  .pill-purple { background:rgba(123,94,167,.12); color:var(--purple); border:1px solid rgba(123,94,167,.28); }
+
+  /* ── INSIGHT BOX ── */
+  .insight { background:var(--bg4); border:1px solid var(--border); border-left:3px solid var(--red); border-radius:6px; padding:14px 16px; font-size:13px; color:var(--muted); line-height:1.6; margin-top:14px; }
+  .insight.green { border-left-color:var(--green); }
+  .insight.navy  { border-left-color:var(--navy); }
+  .insight.yellow{ border-left-color:var(--yellow); }
+  .insight.purple{ border-left-color:var(--purple); }
+  .insight strong { color: var(--text); }
+
+  /* ── VALUE-CHAIN FLOW DIAGRAM ── */
+  .vc-stack { display:grid; gap:10px; }
+  .vc-row {
+    display:grid;
+    grid-template-columns: 200px 1fr 220px 110px;
+    gap:14px;
+    align-items:stretch;
+    padding:0;
+    background:var(--bg2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+    cursor:pointer;
+    transition: border-color .15s, transform .15s, box-shadow .15s;
+  }
+  .vc-row:hover { border-color: var(--navy); transform: translateY(-1px); box-shadow:0 3px 10px rgba(0,0,0,.05); }
+  .vc-row.active { border-color: var(--red); box-shadow:0 0 0 1px var(--red); }
+  .vc-layer {
+    padding:18px 18px;
+    color:#fff;
+    display:flex; flex-direction:column; justify-content:center;
+    gap:4px;
+  }
+  .vc-layer .vc-tag { font-size:10px; text-transform:uppercase; letter-spacing:.7px; opacity:.75; font-weight:600; }
+  .vc-layer .vc-name { font-size:15px; font-weight:700; line-height:1.2; }
+  .vc-row.infra .vc-layer { background: linear-gradient(135deg, #122A45, #1B3A5C); }
+  .vc-row.land  .vc-layer { background: linear-gradient(135deg, #1B3A5C, #2A6CB8); }
+  .vc-row.tenant .vc-layer { background: linear-gradient(135deg, #2A6CB8, #007A90); }
+  .vc-row.end   .vc-layer { background: linear-gradient(135deg, #007A90, #00936C); }
+  .vc-row.enabler .vc-layer { background: linear-gradient(135deg, #7B5EA7, #5C3A99); }
+  .vc-body { padding:14px 18px; font-size:13px; color:var(--muted); line-height:1.5; display:flex; flex-direction:column; justify-content:center; }
+  .vc-body strong { color:var(--text); }
+  .vc-firms { padding:14px 18px; font-size:11px; color:var(--muted); display:flex; flex-direction:column; justify-content:center; gap:5px; border-left:1px solid var(--border); }
+  .vc-firms .vc-firms-label { font-size:9px; text-transform:uppercase; letter-spacing:.7px; font-weight:700; color:var(--muted2); }
+  .vc-firms .vc-firms-list { font-weight:600; color:var(--text); line-height:1.5; font-size:12px; }
+  .vc-metric { padding:14px; text-align:center; display:flex; flex-direction:column; justify-content:center; border-left:1px solid var(--border); background: var(--bg4); }
+  .vc-metric .vc-metric-val { font-size:18px; font-weight:800; font-variant-numeric: tabular-nums; line-height:1; }
+  .vc-metric .vc-metric-label { font-size:10px; color:var(--muted); margin-top:4px; text-transform:uppercase; letter-spacing:.5px; font-weight:600; }
+
+  /* ── HORIZONTAL BAR ROW ── */
+  .hbar-row { display:grid; grid-template-columns: 140px 1fr 70px; gap:12px; align-items:center; padding:10px 0; border-bottom:1px solid var(--border); }
+  .hbar-row:last-child { border-bottom:none; }
+  .hbar-label { font-size:12px; font-weight:600; }
+  .hbar-label .hbar-sub { color:var(--muted); font-weight:500; font-size:11px; display:block; }
+  .hbar-track { background:var(--bg3); height:22px; border-radius:4px; position:relative; overflow:hidden; }
+  .hbar-fill { height:100%; border-radius:4px; transition:width 1s ease; }
+  .hbar-fill.navy   { background: var(--navy); }
+  .hbar-fill.red    { background: var(--red); }
+  .hbar-fill.green  { background: var(--green); }
+  .hbar-fill.yellow { background: var(--yellow); }
+  .hbar-fill.purple { background: var(--purple); }
+  .hbar-fill.orange { background: var(--orange); }
+  .hbar-fill.blue   { background: var(--blue); }
+  .hbar-fill.teal   { background: var(--teal); }
+  .hbar-val { font-size:13px; font-weight:700; text-align:right; font-variant-numeric: tabular-nums; }
+
+  /* ── CALCULATOR ── */
+  .calc-row { display:grid; grid-template-columns: 200px 1fr 90px; gap:14px; align-items:center; padding:10px 0; }
+  .calc-label { font-size:12px; color:var(--muted); font-weight:500; }
+  .calc-slider { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:3px; background:var(--bg3); outline:none; }
+  .calc-slider::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:var(--red); cursor:pointer; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+  .calc-slider::-moz-range-thumb { width:16px; height:16px; border-radius:50%; background:var(--red); cursor:pointer; border:2px solid #fff; }
+  .calc-output { font-size:13px; font-weight:700; font-variant-numeric:tabular-nums; text-align:right; }
+  .calc-result { background:var(--bg3); border-radius:6px; padding:16px 18px; margin-top:14px; display:flex; justify-content:space-between; align-items:center; }
+  .calc-result-label { font-size:12px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+  .calc-result-val { font-size:26px; font-weight:800; font-variant-numeric:tabular-nums; color: var(--navy); }
+  .calc-result-val.red { color: var(--red); }
+  .calc-reset { background:none; border:1px solid var(--border); color:var(--muted); padding:5px 12px; border-radius:4px; font-size:11px; cursor:pointer; font-family:inherit; }
+  .calc-reset:hover { border-color:var(--red); color:var(--red); }
+
+  /* ── SCENARIO TABS ── */
+  .scen-tabs { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .scen-btn { padding:7px 14px; border-radius:4px; border:1px solid var(--border); background:var(--bg2); color:var(--muted); font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .15s; }
+  .scen-btn:hover { border-color:var(--navy); color:var(--navy); }
+  .scen-btn.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .scen-btn.active.bull { background:var(--green); border-color:var(--green); }
+  .scen-btn.active.bear { background:var(--red); border-color:var(--red); }
+
+  /* ── FUNNEL ── */
+  .funnel { display:flex; flex-direction:column; gap:6px; align-items:stretch; margin-top:8px; }
+  .funnel-step { background: var(--navy); color:#fff; padding: 12px 16px; font-size:13px; font-weight:600; border-radius:4px; display:flex; justify-content:space-between; align-items:center; margin: 0 auto; }
+  .funnel-step .fn-val { font-variant-numeric: tabular-nums; opacity:.85; font-weight:700; }
+  .funnel-step.s1 { background: var(--navy); width: 100%; }
+  .funnel-step.s2 { background: var(--blue); width: 78%; }
+  .funnel-step.s3 { background: var(--yellow); width: 50%; }
+  .funnel-step.s4 { background: var(--orange); width: 28%; color:#fff; }
+  .funnel-step.s5 { background: var(--red); width: 12%; }
+
+  /* ── CHART BOX ── */
+  .chart-box { position:relative; height: 300px; }
+  .chart-box.tall { height: 380px; }
+  .chart-legend { display:flex; gap:14px; flex-wrap:wrap; font-size:11px; color:var(--muted); margin-top:10px; }
+  .lg-dot { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:5px; vertical-align:middle; }
+
+  /* ── FOOTNOTES ── */
+  .source { font-size:10px; color:var(--muted2); margin-top:8px; font-style: italic; }
+  .src-num { font-size:9px; vertical-align: super; color:var(--muted2); font-weight:600; }
+
+  /* ── MODAL ── */
+  .modal-back { position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; z-index:1000; align-items:center; justify-content:center; padding:30px; }
+  .modal-back.open { display:flex; }
+  .modal { background:var(--bg2); border-radius:10px; padding:30px 34px; max-width:760px; width:100%; max-height:88vh; overflow-y:auto; box-shadow:0 14px 50px rgba(0,0,0,.35); }
+  .modal h2 { font-size:20px; margin-bottom:8px; color: var(--navy); }
+  .modal h3 { font-size:14px; font-weight:700; margin-top:18px; margin-bottom:6px; color: var(--text); }
+  .modal p, .modal li { font-size:13px; color:var(--muted); line-height:1.65; }
+  .modal ul { padding-left:20px; margin:6px 0; }
+  .modal .close { float:right; background:none; border:1px solid var(--border); padding:5px 10px; border-radius:4px; cursor:pointer; font-family:inherit; font-size:12px; color:var(--muted); margin-top:-8px; }
+  .modal .close:hover { border-color:var(--red); color:var(--red); }
+
+  /* ── DEPTH / SUBSECTION ── */
+  .subsection { margin-top: 28px; }
+  .subsection h4 { font-size:14px; font-weight:700; margin-bottom:10px; color:var(--text); display:flex; align-items:center; gap:8px; }
+  .subsection h4::before { content:''; width:4px; height:14px; background:var(--red); display:inline-block; border-radius:2px; }
+
+  /* ── EXEC SUMMARY ── */
+  .exec-grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:14px; }
+  @media (max-width: 900px) { .exec-grid { grid-template-columns: 1fr; } }
+  .exec-item { padding: 14px 16px; background:var(--bg4); border-left:3px solid var(--navy); border-radius:0 6px 6px 0; font-size:13px; color:var(--muted); line-height:1.6; }
+  .exec-item.l1 { border-left-color: var(--navy); }
+  .exec-item.l2 { border-left-color: var(--blue); }
+  .exec-item.l3 { border-left-color: var(--teal); }
+  .exec-item.l4 { border-left-color: var(--green); }
+  .exec-item.l5 { border-left-color: var(--purple); }
+  .exec-item strong { color: var(--text); }
+  .exec-item .exec-tag { font-size:10px; text-transform:uppercase; letter-spacing:.6px; font-weight:700; color: var(--navy); margin-bottom:4px; display:block; }
+  .exec-item.l2 .exec-tag { color: var(--blue); }
+  .exec-item.l3 .exec-tag { color: var(--teal); }
+  .exec-item.l4 .exec-tag { color: var(--green); }
+  .exec-item.l5 .exec-tag { color: var(--purple); }
+
+  /* ── BIO / SMALL CARD ── */
+  .firm-card { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:18px; display:flex; flex-direction:column; gap:8px; }
+  .firm-card .firm-name { font-size:15px; font-weight:700; color:var(--text); }
+  .firm-card .firm-sub { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; font-weight:600; }
+  .firm-card .firm-metric { display:flex; justify-content:space-between; align-items:baseline; padding:6px 0; border-bottom:1px solid var(--border); font-size:12px; }
+  .firm-card .firm-metric:last-of-type { border-bottom:none; }
+  .firm-card .firm-metric .lbl { color:var(--muted); }
+  .firm-card .firm-metric .val { font-weight:700; font-variant-numeric: tabular-nums; color:var(--text); }
+  .firm-card .firm-note { font-size:12px; color:var(--muted); line-height:1.55; margin-top:4px; }
+
+  /* footer */
+  .footer-bar { padding: 24px 40px; max-width:1400px; margin: 0 auto; color: var(--muted2); font-size:11px; border-top:1px solid var(--border); margin-top: 20px; }
+  .footer-bar a { color: var(--blue); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- ════════ HEADER ════════ -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="header-badge">Deep dive · Synthesised research</div>
+      <h1>AI Economy Value Chain <span class="accent">· 2026</span></h1>
+      <div class="header-meta">CapEx returns, margin capture, and sectoral ROI across the $602B hyperscaler supercycle. Maps capital flow from silicon → cloud → SaaS → end-enterprise → enablers, with interactive tabs for each layer.</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-ghost" onclick="openManual()">📖 User manual</button>
+      <button class="btn-ghost" onclick="window.print()">⎙ Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ KPI STRIP ════════ -->
+<div class="kpi-strip">
+  <div class="kpi">
+    <div class="kpi-label">Hyperscaler CapEx 2026</div>
+    <div class="kpi-value red">$602B</div>
+    <div class="kpi-sub">+36% YoY · ~$450B to AI</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">CapEx Intensity</div>
+    <div class="kpi-value yellow">45–57%</div>
+    <div class="kpi-sub">of revenue · utility-like</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">2025 Debt Issued</div>
+    <div class="kpi-value navy">$108B</div>
+    <div class="kpi-sub">3× historical avg</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">FCF Margin Δ</div>
+    <div class="kpi-value red">-50%</div>
+    <div class="kpi-sub">vs 2025 baseline</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">AI Adopter EBIT</div>
+    <div class="kpi-value green">+310 bps</div>
+    <div class="kpi-sub">24→25, +230 bps in '26e</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">2025–27 Total Build</div>
+    <div class="kpi-value navy">$1.15T</div>
+    <div class="kpi-sub">$7.6T by 2031 (GS)</div>
+  </div>
+</div>
+
+<!-- ════════ TABS ════════ -->
+<div class="tabs" id="tabs">
+  <button class="tab active" data-tab="overview"><span class="tab-num">00</span>Overview</button>
+  <button class="tab" data-tab="infra"><span class="tab-num">01</span>Infrastructure</button>
+  <button class="tab" data-tab="landlords"><span class="tab-num">02</span>Landlords</button>
+  <button class="tab" data-tab="tenants"><span class="tab-num">03</span>Tenants</button>
+  <button class="tab" data-tab="endusers"><span class="tab-num">04</span>End-Users</button>
+  <button class="tab" data-tab="enablers"><span class="tab-num">05</span>Enablers</button>
+  <button class="tab" data-tab="synth"><span class="tab-num">06</span>Synthesis</button>
+</div>
+
+<div class="main">
+
+  <!-- ════════════════ TAB 0: OVERVIEW ════════════════ -->
+  <div class="section active" id="overview">
+    <div class="section-heading">The Trillion-Dollar Compute Supercycle</div>
+    <div class="section-sub">Tech has entered what J.P. Morgan calls its "Industrial Era." Click any layer below to drill into its margin capture mechanics, strategic vulnerabilities, and 2026 financial run-rates.</div>
+
+    <!-- VALUE-CHAIN INTERACTIVE STACK -->
+    <div class="vc-stack" id="vcStack">
+      <div class="vc-row infra" data-target="infra">
+        <div class="vc-layer">
+          <div class="vc-tag">Layer 1 · Toll Booths</div>
+          <div class="vc-name">Foundational Infrastructure</div>
+        </div>
+        <div class="vc-body">Semiconductor designers, equipment, advanced lithography & memory. Sells picks-and-shovels into the hyperscaler buildout. <strong>Captures the highest gross margins (&gt;70%) without taking CapEx depreciation risk.</strong></div>
+        <div class="vc-firms">
+          <div class="vc-firms-label">Representative firms</div>
+          <div class="vc-firms-list">ASML · Nvidia · TSMC · SK Hynix · Broadcom · Marvell</div>
+        </div>
+        <div class="vc-metric">
+          <div class="vc-metric-val" style="color:var(--green)">&gt;73%</div>
+          <div class="vc-metric-label">Nvidia GM</div>
+        </div>
+      </div>
+
+      <div class="vc-row land" data-target="landlords">
+        <div class="vc-layer">
+          <div class="vc-tag">Layer 2 · The Landlords</div>
+          <div class="vc-name">Hyperscaler Cloud</div>
+        </div>
+        <div class="vc-body">Big Five absorb the CapEx, build the data centers, rent out fractional compute. <strong>Operating margins reaccelerating</strong> as custom ASIC (TPU, Trainium, Maia) erodes the Nvidia tax.</div>
+        <div class="vc-firms">
+          <div class="vc-firms-label">Representative firms</div>
+          <div class="vc-firms-list">AWS · Microsoft Azure · Google Cloud · Meta · Oracle</div>
+        </div>
+        <div class="vc-metric">
+          <div class="vc-metric-val" style="color:var(--green)">37.7%</div>
+          <div class="vc-metric-label">AWS Op Margin</div>
+        </div>
+      </div>
+
+      <div class="vc-row tenant" data-target="tenants">
+        <div class="vc-layer">
+          <div class="vc-tag">Layer 3 · The Tenants</div>
+          <div class="vc-name">SaaS &amp; Application Layer</div>
+        </div>
+        <div class="vc-body">Software vendors and AI-natives that consume cloud compute. <strong>Seat licenses cannibalised by agents</strong>; survivors pivoted to consumption (Salesforce, Snowflake) or own outcome-based platforms (Palantir, Cursor, Sierra).</div>
+        <div class="vc-firms">
+          <div class="vc-firms-label">Representative firms</div>
+          <div class="vc-firms-list">Salesforce · Palantir · Snowflake · Cursor · Sierra AI · ServiceNow</div>
+        </div>
+        <div class="vc-metric">
+          <div class="vc-metric-val" style="color:var(--purple)">155x</div>
+          <div class="vc-metric-label">PLTR Fwd P/E</div>
+        </div>
+      </div>
+
+      <div class="vc-row end" data-target="endusers">
+        <div class="vc-layer">
+          <div class="vc-tag">Layer 4 · End-Users</div>
+          <div class="vc-name">Non-Tech Enterprise</div>
+        </div>
+        <div class="vc-body">Retail, manufacturing, logistics, finance. <strong>The ultimate ROI test</strong> — early adopters expand EBIT by hundreds of bps; laggards trapped in "pilot purgatory" with 30–95% project abandonment.</div>
+        <div class="vc-firms">
+          <div class="vc-firms-label">Representative firms</div>
+          <div class="vc-firms-list">Walmart · FANUC · ABB · KUKA · Industrial conglomerates</div>
+        </div>
+        <div class="vc-metric">
+          <div class="vc-metric-val" style="color:var(--green)">+310bps</div>
+          <div class="vc-metric-label">EBIT Δ '24→'25</div>
+        </div>
+      </div>
+
+      <div class="vc-row enabler" data-target="enablers">
+        <div class="vc-layer">
+          <div class="vc-tag">Layer 5 · Lateral Enablers</div>
+          <div class="vc-name">Proprietary Data &amp; AI Security</div>
+        </div>
+        <div class="vc-body">Horizontal capture of high-margin streams: walled-garden data licensing and Agentic Security Posture Management. <strong>Google's $32B Wiz deal</strong> validated AI-SPM as a stand-alone category.</div>
+        <div class="vc-firms">
+          <div class="vc-firms-label">Representative firms</div>
+          <div class="vc-firms-list">Reddit · News Corp · People Inc. · Wiz · Palo Alto · HiddenLayer</div>
+        </div>
+        <div class="vc-metric">
+          <div class="vc-metric-val" style="color:var(--purple)">$32B</div>
+          <div class="vc-metric-label">Wiz Acquisition</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight navy" style="margin-top:22px;">
+      <strong>The macro thesis.</strong> The Big Five's average FCF margins are projected to drop to low single digits in 2026 — a ~50% decline from 2025 — forcing $108B of 2025 debt issuance (3× historical norm), with the sector potentially issuing up to $1.5T over coming years. Tech is no longer asset-light. The analytical question is not "is this real?" but "who keeps the margin when the music stops?"
+    </div>
+
+    <!-- LAYER VS GROSS MARGIN CHART -->
+    <div class="card" style="margin-top:22px;">
+      <div class="card-title">Margin Capture by Layer · Gross Margin vs CapEx Intensity</div>
+      <div class="chart-box tall"><canvas id="layerMarginChart"></canvas></div>
+      <div class="insight">
+        <strong>Inversion of the traditional tech model.</strong> For two decades, software claimed the highest margins because it was asset-light. In the 2026 buildout, the <strong>highest GM accrues at Layer 1</strong> (silicon monopolies) while Layer 2 absorbs the heavy CapEx — flipping the relationship between asset intensity and margin capture.
+      </div>
+    </div>
+
+    <!-- EXEC SUMMARY -->
+    <div class="subsection">
+      <h4>Executive Summary by Layer</h4>
+      <div class="exec-grid">
+        <div class="exec-item l1">
+          <span class="exec-tag">Layer 1 · Infrastructure</span>
+          <strong>Extracts the ultimate rent.</strong> Nvidia + ASML operate as monopoly tollbooths. >70% GM, near-zero CapEx-to-revenue. Geopolitical and physical (HBM, power) chokepoints — not financial — are the binding constraints.
+        </div>
+        <div class="exec-item l2">
+          <span class="exec-tag">Layer 2 · Landlords</span>
+          <strong>Absorb the CapEx, recapture record op income.</strong> AWS op margin 37.7%, GCP 32.9%, Azure AI run-rate $37B. The custom ASIC pivot (TPU v7, Trainium2, Maia 200) is the long-term margin defense against the Nvidia tax.
+        </div>
+        <div class="exec-item l3">
+          <span class="exec-tag">Layer 3 · Tenants</span>
+          <strong>Existential revenue realignment.</strong> Seat-based SaaS is being cannibalised. Survivors pivot to consumption pricing (Agentforce, Snowflake) or own outcome-based platforms (Palantir 60% adj op margin, Cursor $2B ARR).
+        </div>
+        <div class="exec-item l4">
+          <span class="exec-tag">Layer 4 · End-Users</span>
+          <strong>True ROI through radical efficiency.</strong> Adopters expand EBIT +310 bps (24→25), +230 bps in '26e — 2× the MSCI World. But 30–95% of pilots are abandoned. Winners have clean APIs, bounded governance, and human-in-loop design.
+        </div>
+        <div class="exec-item l5" style="grid-column: 1 / -1;">
+          <span class="exec-tag">Layer 5 · Enablers</span>
+          <strong>Lateral monetisation at near-100% margin.</strong> Reddit pre-IPO secured $203M+ in data deals; News Corp $250M/5yr from OpenAI. Wiz hit $1B ARR fastest in history and sold to Google for $32B — validating AI-SPM as a multi-billion-dollar standalone budget line.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 1: INFRASTRUCTURE ════════════════ -->
+  <div class="section" id="infra">
+    <div class="section-heading">Part 1 · Foundational Infrastructure &amp; the Silicon Supply Chain</div>
+    <div class="section-sub">The chokepoints that dictate the physical limits of the digital economy. Equipment makers and fabless designers operate as highly profitable tollbooths while hyperscalers shoulder the debt.</div>
+
+    <div class="grid-3">
+      <div class="firm-card">
+        <div class="firm-sub">EUV monopoly</div>
+        <div class="firm-name">ASML</div>
+        <div class="firm-metric"><span class="lbl">2026 Net Sales (guide)</span><span class="val">€36–40B</span></div>
+        <div class="firm-metric"><span class="lbl">Gross Margin</span><span class="val">51–53%</span></div>
+        <div class="firm-metric"><span class="lbl">Q1'26 Revenue</span><span class="val">€8.76B</span></div>
+        <div class="firm-metric"><span class="lbl">Forward P/E</span><span class="val">~35.8x</span></div>
+        <div class="firm-metric"><span class="lbl">FCF / Revenue</span><span class="val">27.7%</span></div>
+        <div class="firm-note">67 advanced lithography machines shipped Q1'26. Structural demand &gt; supply — not forced to torch FCF for share.</div>
+      </div>
+      <div class="firm-card">
+        <div class="firm-sub">GPU monopoly</div>
+        <div class="firm-name">Nvidia</div>
+        <div class="firm-metric"><span class="lbl">AI GPU Market Share</span><span class="val">~86%</span></div>
+        <div class="firm-metric"><span class="lbl">Gross Margin</span><span class="val">&gt;73%</span></div>
+        <div class="firm-metric"><span class="lbl">Margin transfer</span><span class="val">Direct</span></div>
+        <div class="firm-metric"><span class="lbl">Physical AI ecosystem</span><span class="val">Omniverse · Cosmos · Isaac</span></div>
+        <div class="firm-note">Every dollar of MSFT/META spend on Nvidia GPUs is a margin transfer out of software and into silicon. ASIC pivot is the only known defense.</div>
+      </div>
+      <div class="firm-card">
+        <div class="firm-sub">Foundry chokepoint</div>
+        <div class="firm-name">TSMC + SK Hynix</div>
+        <div class="firm-metric"><span class="lbl">TSMC advanced node share</span><span class="val">~90%</span></div>
+        <div class="firm-metric"><span class="lbl">DRAM price spike (late '25)</span><span class="val">+171%</span></div>
+        <div class="firm-metric"><span class="lbl">HBM supplier dominance</span><span class="val">SK Hynix</span></div>
+        <div class="firm-metric"><span class="lbl">Downstream impact</span><span class="val">Dell 90-day pricing</span></div>
+        <div class="firm-note">HBM is the binding constraint. Triggered Dell company-wide price hikes within 90 days and forced Apple to restructure memory procurement.</div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h4>The Stargate Paradox</h4>
+      <div class="card alert">
+        <div class="card-title">Capital ≠ Capacity</div>
+        <p style="font-size:13px; color:var(--muted); line-height:1.65;">
+          The <strong>$500B Stargate Project</strong> (OpenAI · SoftBank · Oracle · MGX) — conceived as the largest single AI infrastructure deployment in history — has effectively stalled. Mid-2025 reports show no meaningful capital raised, due to market uncertainty, trade policy, and the physical impossibility of procuring sufficient hardware and power within the proposed timeframe.
+        </p>
+        <div class="insight">
+          <strong>Strategic implication.</strong> Financial capital is effectively infinite in a debt-fueled market. <strong>Physical infrastructure is strictly finite.</strong> The constraint binding 2026's compute supercycle is not money — it is silicon supply, HBM availability, and grid-scale power generation.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 2: LANDLORDS ════════════════ -->
+  <div class="section" id="landlords">
+    <div class="section-heading">Part 2 · The "Landlords" · Hyperscaler Cloud Dynamics</div>
+    <div class="section-sub">The Big Five absorb the CapEx and rent out fractional compute. The 2026 evidence shows record operating leverage — capital is being monetised, not incinerated.</div>
+
+    <div class="grid-3">
+      <div class="firm-card">
+        <div class="firm-sub">Cloud — AWS</div>
+        <div class="firm-name">Amazon Web Services</div>
+        <div class="firm-metric"><span class="lbl">Q1'26 Revenue</span><span class="val">$37.6B</span></div>
+        <div class="firm-metric"><span class="lbl">YoY Growth</span><span class="val">+28%</span></div>
+        <div class="firm-metric"><span class="lbl">Operating Income</span><span class="val">$14.2B</span></div>
+        <div class="firm-metric"><span class="lbl">Op Margin (Q1'26)</span><span class="val" style="color:var(--green)">37.7%</span></div>
+        <div class="firm-metric"><span class="lbl">Q4'25 Op Margin</span><span class="val">32.9%</span></div>
+        <div class="firm-metric"><span class="lbl">Custom Silicon ARR</span><span class="val">&gt;$20B</span></div>
+        <div class="firm-note">Amazon's overall capital intensity hit 57% — but AWS converted it into record-margin op income that offsets lower-margin retail/fulfillment.</div>
+      </div>
+      <div class="firm-card">
+        <div class="firm-sub">Cloud — Microsoft</div>
+        <div class="firm-name">Microsoft Azure</div>
+        <div class="firm-metric"><span class="lbl">Total Cloud Growth (FQ3'26)</span><span class="val">+29%</span></div>
+        <div class="firm-metric"><span class="lbl">Azure CC Growth</span><span class="val">high-30s%</span></div>
+        <div class="firm-metric"><span class="lbl">AI services contribution</span><span class="val">+13 ppts</span></div>
+        <div class="firm-metric"><span class="lbl">AI Business Run-Rate</span><span class="val">$37B</span></div>
+        <div class="firm-metric"><span class="lbl">AI Business YoY</span><span class="val" style="color:var(--green)">+123%</span></div>
+        <div class="firm-note">Strategic dilemma: divert constrained GPU capacity to first-party Copilot (higher GM) vs external Azure IaaS. Margin-optimising at the cost of CapEx transparency.</div>
+      </div>
+      <div class="firm-card">
+        <div class="firm-sub">Cloud — Google</div>
+        <div class="firm-name">Google Cloud Platform</div>
+        <div class="firm-metric"><span class="lbl">Sales (late '25)</span><span class="val">$15.15B</span></div>
+        <div class="firm-metric"><span class="lbl">YoY Growth</span><span class="val">+34%</span></div>
+        <div class="firm-metric"><span class="lbl">Op Margin (latest)</span><span class="val" style="color:var(--green)">32.9%</span></div>
+        <div class="firm-metric"><span class="lbl">Prior year Op Margin</span><span class="val">17.8%</span></div>
+        <div class="firm-metric"><span class="lbl">TPU Generation</span><span class="val">v7 "Ironwood"</span></div>
+        <div class="firm-note">Op margin nearly doubled YoY. Structural advantage: extensive TPU deployment shields internal workloads from third-party silicon margin extraction.</div>
+      </div>
+    </div>
+
+    <!-- CUSTOM SILICON BREAKDOWN -->
+    <div class="subsection">
+      <h4>The Custom Silicon Race · Escaping the Nvidia Tax</h4>
+      <div class="card">
+        <div class="card-title">ASIC Programs by Hyperscaler</div>
+        <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">
+          The economic calculus: a 50–67% reduction in cost-per-token of inference turns a $10–100M ASIC design cost into a <strong>first-year payback event</strong>. Once a workload reaches predictable scale, paying GPU flexibility premiums is no longer rational.
+        </p>
+        <table class="dt">
+          <thead><tr><th>Hyperscaler</th><th>ASIC Program</th><th class="right">Generation</th><th class="right">Performance / Scale</th><th class="right">Design Partner</th></tr></thead>
+          <tbody>
+            <tr><td class="metric-name">Google</td><td>TPU "Ironwood"</td><td class="num">v7</td><td class="num">v6 Trillium: 4.7× perf/chip, -67% inference power</td><td class="right"><span class="pill pill-navy">Broadcom (through 2031)</span></td></tr>
+            <tr><td class="metric-name">AWS</td><td>Trainium2</td><td class="num">v2</td><td class="num">500K+ chips in production; up to 50% inference cost savings</td><td class="right"><span class="pill pill-purple">Marvell</span></td></tr>
+            <tr><td class="metric-name">Microsoft</td><td>Maia 200</td><td class="num">v2</td><td class="num">TSMC 3nm, 216GB HBM3e; routes OpenAI inference</td><td class="right"><span class="pill pill-purple">Marvell</span></td></tr>
+            <tr><td class="metric-name">Google (external)</td><td>Anthropic deal</td><td class="num">—</td><td class="num">Multi-GW contract; up to 5GW of TPU starting 2027</td><td class="right"><span class="pill pill-ok">Locked-in revenue</span></td></tr>
+          </tbody>
+        </table>
+        <div class="insight green">
+          <strong>The hidden Layer-1 winners.</strong> Hyperscalers don't design these architectures alone. Broadcom + Marvell together enable &gt;80% of all hyperscaler custom silicon. Broadcom alone holds ~70% market share — AI semi revenue hit <strong>$8.4B in Q1'26 (+106% YoY)</strong> with Q2 guide $10.7B.
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h4>Operating Margin Trajectory</h4>
+      <div class="card">
+        <div class="chart-box"><canvas id="hyperscalerMarginChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 3: TENANTS ════════════════ -->
+  <div class="section" id="tenants">
+    <div class="section-heading">Part 3 · The "Tenants" · Software &amp; the Application Layer</div>
+    <div class="section-sub">The SaaSpocalypse: agentic AI is dismantling seat-based pricing. Winners pivot to consumption (Salesforce, Snowflake) or own AI-native, outcome-based platforms (Palantir, Cursor, Sierra).</div>
+
+    <!-- AGENTFORCE CALCULATOR -->
+    <div class="card">
+      <div class="card-title">Interactive · Salesforce Agentforce Pricing Calculator</div>
+      <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">
+        Salesforce enforces a strict mutually-exclusive model. Conversations ($2.00/interaction) for external agents. Flex Credits ($500 per 100K credits) for internal/voice/field. Adjust workload mix below to see real monthly cost.
+      </p>
+      <div class="calc-row">
+        <span class="calc-label">Monthly customer conversations</span>
+        <input type="range" class="calc-slider" id="convSlider" min="0" max="500000" step="1000" value="50000">
+        <span class="calc-output" id="convOutput">50,000</span>
+      </div>
+      <div class="calc-row">
+        <span class="calc-label">Monthly internal agent actions (credits)</span>
+        <input type="range" class="calc-slider" id="creditSlider" min="0" max="2000000" step="10000" value="300000">
+        <span class="calc-output" id="creditOutput">300,000</span>
+      </div>
+      <div class="calc-row">
+        <span class="calc-label">Field service tasks (6 actions / 120 credits each)</span>
+        <input type="range" class="calc-slider" id="fieldSlider" min="0" max="20000" step="100" value="2000">
+        <span class="calc-output" id="fieldOutput">2,000</span>
+      </div>
+      <div class="calc-result">
+        <div>
+          <div class="calc-result-label">Estimated monthly Agentforce spend</div>
+          <div style="font-size:11px; color:var(--muted); margin-top:4px;">Conversations + (Credits + Field credits) ÷ 100K × $500</div>
+        </div>
+        <div class="calc-result-val red" id="agentforceTotal">$0</div>
+      </div>
+      <div class="insight">
+        <strong>Risk transfer in plain sight.</strong> The pivot moves <em>operational volatility</em> from vendor to customer. A surge in customer interactions yields uncapped variable cost — protecting Salesforce's revenue growth while embedding micro-transaction architecture into corporate operations. Agentforce hit <strong>$800M ARR (+169% YoY)</strong>; with Data Cloud the suite is <strong>$2.9B ARR</strong> at 4.1× P/S.
+      </div>
+    </div>
+
+    <!-- PALANTIR + SNOWFLAKE -->
+    <div class="grid-2" style="margin-top:22px;">
+      <div class="firm-card">
+        <div class="firm-sub">Outcome-based AI platform</div>
+        <div class="firm-name">Palantir Technologies (PLTR)</div>
+        <div class="firm-metric"><span class="lbl">Q1'26 Revenue</span><span class="val">$1.63B</span></div>
+        <div class="firm-metric"><span class="lbl">YoY Growth</span><span class="val" style="color:var(--green)">+84.7%</span></div>
+        <div class="firm-metric"><span class="lbl">U.S. Commercial YoY</span><span class="val" style="color:var(--green)">+104%</span></div>
+        <div class="firm-metric"><span class="lbl">Adj Op Income</span><span class="val">$984M (60% margin)</span></div>
+        <div class="firm-metric"><span class="lbl">Adj FCF Margin</span><span class="val">57%</span></div>
+        <div class="firm-metric"><span class="lbl">Forward P/E</span><span class="val" style="color:var(--purple)">~155x</span></div>
+        <div class="firm-note">AIP positioned as the operating system for commercial + defense. Verifiable ROI without hyperscaler CapEx burden = monopoly multiple.</div>
+      </div>
+      <div class="firm-card">
+        <div class="firm-sub">Consumption data warehouse</div>
+        <div class="firm-name">Snowflake (SNOW)</div>
+        <div class="firm-metric"><span class="lbl">FQ4'26 Growth</span><span class="val" style="color:var(--green)">+30%</span></div>
+        <div class="firm-metric"><span class="lbl">Annual Product Rev</span><span class="val">$4.68B</span></div>
+        <div class="firm-metric"><span class="lbl">FY27 Consensus</span><span class="val">$5.91B</span></div>
+        <div class="firm-metric"><span class="lbl">Non-GAAP Op Margin</span><span class="val">12.5%</span></div>
+        <div class="firm-metric"><span class="lbl">Path to GAAP</span><span class="val">Reducing SBC</span></div>
+        <div class="firm-note">Pure consumption model aligns directly with SaaSpocalypse trend. 9-figure enterprise commitments supporting reacceleration.</div>
+      </div>
+    </div>
+
+    <!-- AI CODING WAR -->
+    <div class="subsection">
+      <h4>The AI Coding Wars · $12.8B TAM, 85% Developer Adoption</h4>
+      <div class="card">
+        <div class="card-title">Tool Stacking · ~70% of devs use 2–4 AI coding tools simultaneously</div>
+        <div class="chart-box"><canvas id="codingChart"></canvas></div>
+        <div class="chart-legend">
+          <span><span class="lg-dot" style="background:var(--blue)"></span>ARR ($B)</span>
+          <span><span class="lg-dot" style="background:var(--green)"></span>Developer satisfaction (%)</span>
+          <span><span class="lg-dot" style="background:var(--yellow)"></span>Workplace adoption (%)</span>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top:18px;">
+        <div class="firm-card">
+          <div class="firm-sub">Revenue leader · AI-first IDE</div>
+          <div class="firm-name">Cursor</div>
+          <div class="firm-metric"><span class="lbl">ARR (Feb '26)</span><span class="val">$2.0B+</span></div>
+          <div class="firm-metric"><span class="lbl">Paying users</span><span class="val">1M+</span></div>
+          <div class="firm-metric"><span class="lbl">Post-money valuation</span><span class="val">$29.3B</span></div>
+          <div class="firm-metric"><span class="lbl">Autocomplete accept (Kimi K2.5)</span><span class="val">72%</span></div>
+          <div class="firm-note">Mid-market adoption ~50%. Not a plugin — a complete reimagining of the IDE.</div>
+        </div>
+        <div class="firm-card">
+          <div class="firm-sub">Volume leader · Distribution</div>
+          <div class="firm-name">GitHub Copilot</div>
+          <div class="firm-metric"><span class="lbl">Paid subscribers</span><span class="val">4.7M</span></div>
+          <div class="firm-metric"><span class="lbl">YoY growth</span><span class="val">+75%</span></div>
+          <div class="firm-metric"><span class="lbl">Code generated in installed repos</span><span class="val">~46%</span></div>
+          <div class="firm-metric"><span class="lbl">"Most-loved" rating</span><span class="val" style="color:var(--red)">9%</span></div>
+          <div class="firm-note">Wins on Microsoft enterprise distribution but seen as autocomplete utility, not reasoning engine.</div>
+        </div>
+        <div class="firm-card">
+          <div class="firm-sub">Agentic leader · Satisfaction</div>
+          <div class="firm-name">Claude Code</div>
+          <div class="firm-metric"><span class="lbl">Workplace adoption (Apr '26)</span><span class="val">18%</span></div>
+          <div class="firm-metric"><span class="lbl">YoY growth multiplier</span><span class="val">6×</span></div>
+          <div class="firm-metric"><span class="lbl">Developer satisfaction</span><span class="val" style="color:var(--green)">46%</span></div>
+          <div class="firm-metric"><span class="lbl">Sweet spot</span><span class="val">End-to-end shipping</span></div>
+          <div class="firm-note">Preferred for complex multi-step agentic work and massive codebase refactoring.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUTONOMOUS CS -->
+    <div class="subsection">
+      <h4>Autonomous Customer Success</h4>
+      <div class="grid-2">
+        <div class="firm-card">
+          <div class="firm-sub">Transactional agents</div>
+          <div class="firm-name">Sierra AI</div>
+          <div class="firm-metric"><span class="lbl">ARR (year 2)</span><span class="val">$150M</span></div>
+          <div class="firm-metric"><span class="lbl">YoY Growth</span><span class="val" style="color:var(--green)">+354%</span></div>
+          <div class="firm-metric"><span class="lbl">Series E valuation</span><span class="val">$15.8B</span></div>
+          <div class="firm-metric"><span class="lbl">Series E raise</span><span class="val">$950M</span></div>
+          <div class="firm-note">Touches 95%+ of US retail shoppers and 70% of fintech value chain. Agents originate mortgages, authenticate healthcare data, manage supply chains — driving top-line, not just cost deflection.</div>
+        </div>
+        <div class="firm-card">
+          <div class="firm-sub">Premium specialised CS</div>
+          <div class="firm-name">Decagon AI</div>
+          <div class="firm-metric"><span class="lbl">ARR (late '25)</span><span class="val">$35M</span></div>
+          <div class="firm-metric"><span class="lbl">Valuation</span><span class="val">$1.5B</span></div>
+          <div class="firm-metric"><span class="lbl">Forward Revenue Multiple</span><span class="val" style="color:var(--purple)">42.9×</span></div>
+          <div class="firm-note">Valuation premium for orchestrating internal enterprise knowledge bases.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICENOW RISK -->
+    <div class="subsection">
+      <h4>The Casualty Watch · ServiceNow Risk</h4>
+      <div class="card warn">
+        <div class="card-title">Structural margin compression risk</div>
+        <p style="font-size:13px; color:var(--muted); line-height:1.65;">
+          Long considered the leader in ITSM, ServiceNow faces direct bundling pressure as Microsoft and Salesforce embed automated workflow into their broader ecosystems. As enterprises consolidate vendors to manage consumption costs, legacy workflow platforms <strong>require margin-diluting S&amp;M increases just to maintain existing share</strong>. The seat-based model that built the franchise is the model now under existential threat.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 4: END-USERS ════════════════ -->
+  <div class="section" id="endusers">
+    <div class="section-heading">Part 4 · The "End-Users" · Non-Tech Enterprise ROI</div>
+    <div class="section-sub">The validation of the entire $600B cycle. Early adopters expand EBIT margins by hundreds of basis points; everyone else is stuck in "pilot purgatory."</div>
+
+    <!-- EBIT EXPANSION CHART -->
+    <div class="card">
+      <div class="card-title">EBIT Margin Expansion · AI Adopters vs MSCI World (Morgan Stanley)</div>
+      <div class="chart-box"><canvas id="ebitChart"></canvas></div>
+      <div class="insight green">
+        <strong>2× the broader index.</strong> AI adopters expanded EBIT by 310 bps from 24→25, vs 150 bps for the MSCI World. Forecast adds another 230 bps in 2026. Forward earnings revisions for adopters are running <strong>2× the pace</strong> of disrupted incumbents — equities are pricing in verifiable AI ROI, not narrative.
+      </div>
+    </div>
+
+    <!-- WALMART CASE STUDY -->
+    <div class="subsection">
+      <h4>Case Study · Walmart</h4>
+      <div class="grid-2">
+        <div class="card good">
+          <div class="card-title">Operational leverage in a low-margin business</div>
+          <div class="hbar-row">
+            <div class="hbar-label">E-commerce fulfillment<br><span class="hbar-sub">% volume automated</span></div>
+            <div class="hbar-track"><div class="hbar-fill green" style="width:50%"></div></div>
+            <div class="hbar-val">~50%</div>
+          </div>
+          <div class="hbar-row">
+            <div class="hbar-label">Physical store freight<br><span class="hbar-sub">% processed via automated facilities</span></div>
+            <div class="hbar-track"><div class="hbar-fill green" style="width:60%"></div></div>
+            <div class="hbar-val">60%</div>
+          </div>
+          <div class="hbar-row">
+            <div class="hbar-label">Sparky AOV lift<br><span class="hbar-sub">avg order value vs non-users</span></div>
+            <div class="hbar-track"><div class="hbar-fill blue" style="width:35%"></div></div>
+            <div class="hbar-val">+35%</div>
+          </div>
+          <div class="hbar-row">
+            <div class="hbar-label">Comp sales growth<br><span class="hbar-sub">latest reported quarter</span></div>
+            <div class="hbar-track"><div class="hbar-fill yellow" style="width:45%"></div></div>
+            <div class="hbar-val">+4.5%</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>The blueprint</h3>
+          <p style="font-size:13px; color:var(--muted); line-height:1.65;">
+            Walmart is the prototypical example of AI as <strong>operational leverage in a structurally low-margin industry.</strong> The strategy stack:
+          </p>
+          <ul style="font-size:13px; color:var(--muted); line-height:1.8; margin-left:18px; margin-top:6px;">
+            <li>Automate &gt;50% of e-commerce fulfillment volume by end of FY26</li>
+            <li>Route 60% of physical store freight through automated facilities</li>
+            <li>Deploy Sparky GenAI assistant for intent-driven commerce</li>
+            <li>Capture 35% higher AOV from Sparky users vs non-users</li>
+            <li>Translate compute spend into lower marginal labor costs &amp; sharper inventory deployment</li>
+          </ul>
+          <div class="insight green">
+            <strong>The takeaway.</strong> AI infrastructure can deliver scale advantages to traditional retailers if and only if the operator owns the distribution network into which the automation plugs.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PILOT PURGATORY FUNNEL -->
+    <div class="subsection">
+      <h4>The Generative AI Value Paradox · "Pilot Purgatory"</h4>
+      <div class="grid-2">
+        <div class="card alert">
+          <div class="card-title">Enterprise AI deployment funnel</div>
+          <div class="funnel" id="funnel">
+            <div class="funnel-step s1">Organizations regularly using GenAI <span class="fn-val">65%</span></div>
+            <div class="funnel-step s2">Have a defined production strategy <span class="fn-val">~50%</span></div>
+            <div class="funnel-step s3">Reach measurable POC <span class="fn-val">~33%</span></div>
+            <div class="funnel-step s4">Reach production scale <span class="fn-val">5–70%</span></div>
+            <div class="funnel-step s5">Deliver measurable P&amp;L impact <span class="fn-val">~10%</span></div>
+          </div>
+          <div class="insight yellow">
+            <strong>The headline number.</strong> Per Gartner/McKinsey, <strong>30–95% of enterprise AI pilots are abandoned</strong> before production. The bottleneck is rarely model capability — it's the absence of foundational digital architecture.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">The "Great Divide" · 3 Foundations Most Enterprises Lack</div>
+          <h3 style="margin-top:8px;">1. Clean API architecture</h3>
+          <p style="font-size:13px; color:var(--muted); line-height:1.6;">Agents demand permissioned, structured access to ERP/ITSM/Payroll. Dirty integrations → silent failures → manual human recovery → zero productivity gain.</p>
+          <h3 style="margin-top:14px;">2. Bounded governance models</h3>
+          <p style="font-size:13px; color:var(--muted); line-height:1.6;">Programmatic boundaries defining what an agent can execute autonomously, what requires human review, how exceptions are logged. Without it: audit failures and liability.</p>
+          <h3 style="margin-top:14px;">3. Human-in-the-loop design</h3>
+          <p style="font-size:13px; color:var(--muted); line-height:1.6;">Migrate high-repetition / low-judgment tasks to the agent. Route edge cases, anomalies, high-stakes relationship work to humans. This preserves auditability while extracting productivity.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHYSICAL AI -->
+    <div class="subsection">
+      <h4>Physical AI · Simulation-First Engineering</h4>
+      <div class="card navy">
+        <p style="font-size:13px; color:var(--muted); line-height:1.65;">
+          You cannot test an autonomous forklift via trial and error on a live warehouse floor. Industrial ROI is captured through simulation-first engineering: Nvidia <strong>Omniverse · Isaac Sim · Cosmos 3</strong> generate photorealistic digital twins. Mechanical engineers train perception models, validate robotic policies, and test across millions of randomized scenarios — long before code touches a physical machine.
+        </p>
+        <div class="grid-4" style="margin-top:14px;">
+          <div class="kpi" style="background:var(--bg4); border-radius:6px;">
+            <div class="kpi-label">Industrial Robots Deployed</div>
+            <div class="kpi-value navy" style="font-size:22px;">~2M</div>
+            <div class="kpi-sub">FANUC · ABB · KUKA</div>
+          </div>
+          <div class="kpi" style="background:var(--bg4); border-radius:6px;">
+            <div class="kpi-label">Sim Stack</div>
+            <div class="kpi-value navy" style="font-size:18px;">Omniverse</div>
+            <div class="kpi-sub">Isaac Sim · Cosmos 3</div>
+          </div>
+          <div class="kpi" style="background:var(--bg4); border-radius:6px;">
+            <div class="kpi-label">Integrator</div>
+            <div class="kpi-value navy" style="font-size:18px;">SoftServe</div>
+            <div class="kpi-sub">Photorealistic digital twins</div>
+          </div>
+          <div class="kpi" style="background:var(--bg4); border-radius:6px;">
+            <div class="kpi-label">Distribution Channel</div>
+            <div class="kpi-value navy" style="font-size:18px;">NVIDIA</div>
+            <div class="kpi-sub">Owns orchestration layer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 5: ENABLERS ════════════════ -->
+  <div class="section" id="enablers">
+    <div class="section-heading">Part 5 · The "Enablers" · Data Monetisation &amp; Cybersecurity</div>
+    <div class="section-sub">Outside the direct hyperscaler-to-enterprise flow, two horizontal sectors capture outsized value: walled-garden data licensing and Agentic Security Posture Management.</div>
+
+    <!-- DATA LICENSING TABLE -->
+    <div class="card">
+      <div class="card-title">Proprietary Data Licensing Deals (2024–2026)</div>
+      <table class="dt">
+        <thead><tr><th>Data Owner</th><th>Partner</th><th>Annualised Deal Value</th><th>Structure</th></tr></thead>
+        <tbody>
+          <tr><td class="metric-name">Reddit</td><td>Google · OpenAI</td><td class="num">$60M (Google) + ~$70M (OpenAI)</td><td>Multi-year licensing · $143.7M RPO</td></tr>
+          <tr><td class="metric-name">News Corp</td><td>OpenAI</td><td class="num">$50M / yr ($250M / 5yr)</td><td>Cash + technology credits</td></tr>
+          <tr><td class="metric-name">News Corp</td><td>Meta</td><td class="num">$50M / yr</td><td>Real-time AI product integration</td></tr>
+          <tr><td class="metric-name">People Inc. (Dotdash)</td><td>Microsoft / OpenAI</td><td class="num">Variable</td><td><span class="pill pill-purple">Usage-based</span> · Microsoft Publisher Marketplace</td></tr>
+          <tr><td class="metric-name">Reach (Mirror/Express)</td><td>Amazon</td><td class="num">Variable</td><td><span class="pill pill-purple">Usage-based</span> · Nova + Alexa real-time retrieval</td></tr>
+        </tbody>
+      </table>
+      <div class="insight purple">
+        <strong>The market is evolving</strong> from flat-fee toward dynamic, usage-based compensation. Microsoft's Publisher Content Marketplace pays per Copilot usage; Amazon's Reach deal compensates per Nova/Alexa query. Publishers capture a fraction of LLM-generated value rather than negotiating a one-time license. Reddit's strategic choice to keep data licensing conceptually separate from advertising metrics preserves its core valuation from genAI hype-cycle volatility.
+      </div>
+    </div>
+
+    <!-- AI-SPM SECURITY -->
+    <div class="subsection">
+      <h4>Securing the Autonomous Agent · The Rise of AI-SPM</h4>
+
+      <div class="grid-4" style="margin-bottom:18px;">
+        <div class="kpi" style="background:var(--bg2); border:1px solid var(--border); border-radius:8px;">
+          <div class="kpi-label">Enterprise agents over-permissioned</div>
+          <div class="kpi-value red">~90%</div>
+          <div class="kpi-sub">access beyond required scope</div>
+        </div>
+        <div class="kpi" style="background:var(--bg2); border:1px solid var(--border); border-radius:8px;">
+          <div class="kpi-label">Data movement vs humans</div>
+          <div class="kpi-value yellow">16×</div>
+          <div class="kpi-sub">more data across systems</div>
+        </div>
+        <div class="kpi" style="background:var(--bg2); border:1px solid var(--border); border-radius:8px;">
+          <div class="kpi-label">Wiz acquisition value</div>
+          <div class="kpi-value purple">$32B</div>
+          <div class="kpi-sub">closed by Google '26</div>
+        </div>
+        <div class="kpi" style="background:var(--bg2); border:1px solid var(--border); border-radius:8px;">
+          <div class="kpi-label">Wiz Fortune 100 share</div>
+          <div class="kpi-value navy">50%</div>
+          <div class="kpi-sub">as clients</div>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="firm-card">
+          <div class="firm-sub">AI-SPM platform</div>
+          <div class="firm-name">Wiz (Google)</div>
+          <div class="firm-metric"><span class="lbl">$1B ARR milestone</span><span class="val">Fastest in software history</span></div>
+          <div class="firm-metric"><span class="lbl">Acquisition price</span><span class="val">$32B</span></div>
+          <div class="firm-metric"><span class="lbl">Multi-cloud posture</span><span class="val">Preserved post-deal</span></div>
+          <div class="firm-note">Security Graph correlates AI risks with underlying cloud config — alerts instantly if vulnerable LLM runs in a production VPC with open internet egress. Dual purpose: leapfrog Azure/AWS in native security AND preserve Wiz's multi-cloud revenue.</div>
+        </div>
+        <div class="firm-card">
+          <div class="firm-sub">End-to-end runtime suite</div>
+          <div class="firm-name">Palo Alto · Prisma AIRS</div>
+          <div class="firm-metric"><span class="lbl">Core capability</span><span class="val">AI Agent Gateway</span></div>
+          <div class="firm-metric"><span class="lbl">Identity controls</span><span class="val">Live execution</span></div>
+          <div class="firm-metric"><span class="lbl">Pre-deploy scanning</span><span class="val">Model architecture</span></div>
+          <div class="firm-note">Central control plane enforcing identity-based access during live execution. Blocks prompt manipulation during multi-turn interactions.</div>
+        </div>
+        <div class="firm-card">
+          <div class="firm-sub">Model-layer integrity</div>
+          <div class="firm-name">HiddenLayer</div>
+          <div class="firm-metric"><span class="lbl">Focus</span><span class="val">ML model layer</span></div>
+          <div class="firm-metric"><span class="lbl">Threats covered</span><span class="val">Adversarial · Poisoning · IP theft</span></div>
+          <div class="firm-metric"><span class="lbl">Target client</span><span class="val">Custom-model enterprises</span></div>
+          <div class="firm-note">Where Wiz secures the surroundings, HiddenLayer secures the model itself. Critical for enterprises whose proprietary models function as core trade secrets.</div>
+        </div>
+      </div>
+
+      <div class="insight purple" style="margin-top:18px;">
+        <strong>The threat landscape has evolved beyond jailbreaks.</strong> The 2026 critical vectors are <strong>OAuth token compromise</strong> (hijacking non-human identities), <strong>malicious pre-deployment model deserialization</strong>, and <strong>live prompt injection</strong>. AI-SPM has transitioned from pre-deployment code scanning into active, continuous governance — the only way enterprises can move from pilot to production without catastrophic regulatory or breach liability.
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TAB 6: SYNTHESIS ════════════════ -->
+  <div class="section" id="synth">
+    <div class="section-heading">Synthesising the AI Value Chain</div>
+    <div class="section-sub">The 2026 evidence: the AI ecosystem is no longer governed by speculative narratives. It is strictly dictated by empirical financial execution and operational leverage.</div>
+
+    <div class="grid-2">
+      <div class="card alert">
+        <h3>Layer 1 · Infrastructure</h3>
+        <p style="font-size:13px; color:var(--muted); line-height:1.65;">
+          <strong>Extracts the ultimate rent.</strong> Nvidia + ASML operate as the physical tollbooths of compute. Near-monopoly control over physical chip constraints captures the highest GM in the ecosystem (&gt;70%), without shouldering the depreciation risk borne by cloud providers.
+        </p>
+      </div>
+      <div class="card navy">
+        <h3>Layer 2 · Landlords</h3>
+        <p style="font-size:13px; color:var(--muted); line-height:1.65;">
+          <strong>Absorb the CapEx, recapture record op income.</strong> The $602B burden has forced heavy debt and FCF compression — yet capital is not being incinerated. AWS and Azure post record margins; the custom ASIC push (TPU · Trainium · Maia) is eroding the Nvidia margin tax by up to 67%, trapping value within walled gardens.
+        </p>
+      </div>
+      <div class="card warn">
+        <h3>Layer 3 · Tenants</h3>
+        <p style="font-size:13px; color:var(--muted); line-height:1.65;">
+          <strong>Existential realignment.</strong> The Tenants absorb compute costs while facing seat-license cannibalisation from agentic automation. Only those pivoting to consumption (Salesforce Agentforce) or owning AI-native outcome platforms (Palantir · Cursor · Sierra) capture the application-layer multiples.
+        </p>
+      </div>
+      <div class="card good">
+        <h3>Layer 4 · End-Users</h3>
+        <p style="font-size:13px; color:var(--muted); line-height:1.65;">
+          <strong>Generate true ROI via radical efficiency.</strong> Traditional non-tech enterprises ultimately absorb costs from both upstream layers. Those navigating "pilot purgatory" with clean APIs, strict governance, and simulation-first engineering realise verifiable ROI — hundreds of bps of EBIT expansion through agentic workflows and physical robotics.
+        </p>
+      </div>
+      <div class="card purple" style="grid-column: 1 / -1;">
+        <h3>Layer 5 · Enablers · The lateral capture</h3>
+        <p style="font-size:13px; color:var(--muted); line-height:1.65;">
+          The proprietary data owners (Reddit · News Corp · People Inc · Reach) and AI security platforms (Wiz · Palo Alto · HiddenLayer) capture near-100% margin revenue without taking infrastructure risk or competing on model performance. Google's $32B Wiz acquisition validated AI-SPM as a stand-alone multi-billion-dollar category. The data-licensing market shifted to usage-based comp, giving publishers fractional ongoing capture of LLM-generated value rather than one-time license fees.
+        </p>
+      </div>
+    </div>
+
+    <div class="insight navy" style="margin-top:22px;">
+      <strong>The final verdict.</strong> In the 2026 paradigm, maximum value is captured not by those who train the most advanced foundation models, but by those who control the <strong>physical compute chokepoints</strong>, secure the <strong>proprietary enterprise data</strong>, and convert <strong>autonomous output directly into financial leverage</strong>. The AI economy has matured from speculative asset into an industrial-grade infrastructure matrix.
+    </div>
+
+    <!-- KEY METRICS SUMMARY -->
+    <div class="subsection">
+      <h4>Master Comparison Table · Value Capture by Layer</h4>
+      <div class="card">
+        <table class="dt">
+          <thead>
+            <tr>
+              <th>Layer</th>
+              <th>Representative firms</th>
+              <th class="right">CapEx Intensity</th>
+              <th class="right">Margin / Valuation</th>
+              <th>Key vulnerability</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="metric-name">Infrastructure</td><td>ASML · TSMC · Nvidia · Broadcom · Marvell</td><td class="num">&lt; 15%</td><td class="num">NVDA GM &gt;73%; ASML Fwd P/E 35.8×</td><td>Geopolitical chokepoints; physical supply</td></tr>
+            <tr><td class="metric-name">Landlords</td><td>Amazon AWS · Microsoft Azure · Google Cloud</td><td class="num">45–57%</td><td class="num">AWS Op Margin 37.7%; Azure AI $37B run-rate</td><td>Hardware depreciation; debt accumulation</td></tr>
+            <tr><td class="metric-name">Tenants</td><td>Salesforce · Palantir · Snowflake · Sierra · Cursor</td><td class="num">&lt; 10%</td><td class="num">PLTR Fwd P/E 155×; CRM P/S 4.1×</td><td>Seat cannibalisation; open-source commoditisation</td></tr>
+            <tr><td class="metric-name">End-Users</td><td>Walmart · FANUC · ABB · KUKA · non-tech enterprise</td><td class="num">Variable</td><td class="num">Target EBIT +230 bps in '26e</td><td>Pilot purgatory; legacy ERP integration</td></tr>
+            <tr><td class="metric-name">Enablers</td><td>Reddit · News Corp · Wiz · Palo Alto · HiddenLayer</td><td class="num">&lt; 5%</td><td class="num">Near-100% GM; $32B Wiz precedent</td><td>Concentration in M&amp;A; deal-by-deal repricing</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ FOOTER ════════ -->
+<div class="footer-bar">
+  Synthesised research deck · Compiled from "AI Economy Value Chain Analysis" (May 23, 2026). Figures from sources cited in the originating document: CreditSights · Goldman Sachs · J.P. Morgan · BNY · S&amp;P Global · ASML · Macrotrends · Investor relations filings · Morgan Stanley · McKinsey · Gartner · Sierra · Sacra · Press Gazette · Digiday · Tickeron · Quartz · Investing.com · Hashrate Index · Windows Forum · 247 Wall St · Motley Fool · TIKR · Perplexity Finance · NetNetWeb · Accenture · The SaaS CFO · Ideaplan · Panto AI · SoftServe · Encyclopedia.pub · Astrafy · CRN · LexisNexis · Reddit (RDDT investor commentary).
+</div>
+
+<!-- ════════ USER MANUAL MODAL ════════ -->
+<div class="modal-back" id="manualModal" onclick="if(event.target.id==='manualModal') closeManual()">
+  <div class="modal">
+    <button class="close" onclick="closeManual()">✕ Close</button>
+    <h2>How to read this dashboard</h2>
+    <p>Synthesised value-chain map of the 2026 AI compute supercycle. Built to make a 90-page macro thesis actionable in two minutes per layer.</p>
+
+    <h3>Tab structure</h3>
+    <ul>
+      <li><strong>Overview</strong> — click any of the 5 value-chain rows to jump straight to that layer. Headline KPI strip at top is always-visible.</li>
+      <li><strong>Infrastructure → Enablers</strong> — one tab per value-chain layer with firm-level cards, charts, and margin/CapEx breakdowns.</li>
+      <li><strong>Synthesis</strong> — five sentences (one per layer) and the master comparison table.</li>
+    </ul>
+
+    <h3>Interactive widgets</h3>
+    <ul>
+      <li><strong>Value-chain stack (Overview).</strong> Hover to see the row lift. Click to jump to that layer's tab.</li>
+      <li><strong>Margin Capture chart.</strong> Bar chart showing the inversion of the historical asset-light = high-margin rule.</li>
+      <li><strong>Agentforce calculator (Tenants).</strong> Drag the three sliders to simulate consumption cost under Salesforce's mutually-exclusive pricing.</li>
+      <li><strong>AI Coding tools chart.</strong> Tri-axis bar — ARR vs satisfaction vs adoption — illustrates why no single tool wins (developers stack 2–4 simultaneously).</li>
+      <li><strong>Pilot Purgatory funnel.</strong> Visual abandonment curve from 65% adopting → ~10% delivering P&amp;L impact.</li>
+      <li><strong>EBIT chart.</strong> Morgan Stanley AI-adopter vs MSCI World comparison.</li>
+    </ul>
+
+    <h3>Macro-trader take</h3>
+    <ul>
+      <li>The thesis is about <strong>capital flows between layers</strong>, not stock picks. Use this to size sector exposure: how much of the AI dollar ends up at silicon vs cloud vs SaaS vs end-enterprise vs data/security.</li>
+      <li>For an index investor: the dominant question is whether SPX/NDX margin expansion priced in by the market matches the empirical EBIT lift in Layer 4. If end-enterprise ROI stalls, the whole CapEx stack reprices.</li>
+      <li>Tail risks live at Layer 1 (geopolitics, HBM supply) and Layer 4 (pilot abandonment). Layer 2 has financial fragility (debt + FCF compression).</li>
+    </ul>
+
+    <h3>Data freshness</h3>
+    <p>All figures sourced from the source research document (May 23, 2026 compilation). This is a synthesised deep dive — it does not auto-refresh from <code>live_data.js</code>. Re-generate to incorporate new quarterly prints.</p>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// TAB CONTROLLER
+// ════════════════════════════════════════════════════════════════
+const tabs = document.querySelectorAll('.tab');
+const sections = document.querySelectorAll('.section');
+tabs.forEach(t => t.addEventListener('click', () => {
+  const target = t.dataset.tab;
+  tabs.forEach(x => x.classList.remove('active'));
+  sections.forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById(target).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Trigger chart resize if Chart is loaded
+  if (typeof Chart !== 'undefined') {
+    setTimeout(() => Chart.helpers.each(Chart.instances, c => c.resize()), 100);
+  }
+}));
+
+// ════════════════════════════════════════════════════════════════
+// VALUE-CHAIN ROW CLICK → JUMP TO TAB
+// ════════════════════════════════════════════════════════════════
+document.querySelectorAll('.vc-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const target = row.dataset.target;
+    const tabBtn = document.querySelector(`.tab[data-tab="${target}"]`);
+    if (tabBtn) tabBtn.click();
+  });
+});
+
+// ════════════════════════════════════════════════════════════════
+// MODAL
+// ════════════════════════════════════════════════════════════════
+function openManual() { document.getElementById('manualModal').classList.add('open'); }
+function closeManual() { document.getElementById('manualModal').classList.remove('open'); }
+
+// ════════════════════════════════════════════════════════════════
+// AGENTFORCE CALCULATOR
+// ════════════════════════════════════════════════════════════════
+function fmtNum(n) { return n.toLocaleString('en-US'); }
+function fmt$(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+
+function updateAgentforce() {
+  const conv = +document.getElementById('convSlider').value;
+  const credits = +document.getElementById('creditSlider').value;
+  const field = +document.getElementById('fieldSlider').value;
+
+  document.getElementById('convOutput').textContent = fmtNum(conv);
+  document.getElementById('creditOutput').textContent = fmtNum(credits);
+  document.getElementById('fieldOutput').textContent = fmtNum(field);
+
+  // Conversations: $2.00 each
+  const convCost = conv * 2.0;
+  // Field credits: 120 credits per task, $500 per 100,000 credits
+  const fieldCredits = field * 120;
+  // Total credits (internal + field), $500 per 100,000
+  const totalCredits = credits + fieldCredits;
+  const creditCost = totalCredits / 100000 * 500;
+
+  const total = convCost + creditCost;
+  document.getElementById('agentforceTotal').textContent = fmt$(total);
+}
+['convSlider','creditSlider','fieldSlider'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateAgentforce);
+});
+updateAgentforce();
+
+// ════════════════════════════════════════════════════════════════
+// CHARTS · LAYER MARGIN CAPTURE
+// ════════════════════════════════════════════════════════════════
+const layerMarginCtx = document.getElementById('layerMarginChart').getContext('2d');
+new Chart(layerMarginCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Infrastructure', 'Landlords', 'Tenants (AI-native)', 'Tenants (legacy SaaS)', 'End-Users', 'Enablers'],
+    datasets: [
+      {
+        label: 'Representative Gross Margin (%)',
+        data: [73, 38, 60, 50, null, 95],
+        backgroundColor: '#00936C',
+        borderRadius: 4,
+        yAxisID: 'y',
+      },
+      {
+        label: 'CapEx Intensity (% of revenue)',
+        data: [12, 51, 8, 12, null, 4],
+        backgroundColor: '#C72E0B',
+        borderRadius: 4,
+        yAxisID: 'y',
+      },
+      {
+        label: 'EBIT margin Δ (bps, 2024→2025)',
+        data: [null, null, null, null, 310, null],
+        backgroundColor: '#2A6CB8',
+        borderRadius: 4,
+        yAxisID: 'y2',
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12, color: '#5B5B5B' } },
+      tooltip: { backgroundColor: '#1B3A5C', titleFont: { size: 12 }, bodyFont: { size: 12 }, padding: 10 }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { color: '#5B5B5B', callback: v => v + '%' }, grid: { color: '#F0F1F3' }, title: { display: true, text: 'Margin / Intensity (%)', color: '#5B5B5B', font: { size: 11 } } },
+      y2: { beginAtZero: true, position: 'right', ticks: { color: '#5B5B5B', callback: v => v + ' bps' }, grid: { drawOnChartArea: false }, title: { display: true, text: 'EBIT Δ (bps)', color: '#5B5B5B', font: { size: 11 } } },
+      x: { ticks: { color: '#5B5B5B', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// ════════════════════════════════════════════════════════════════
+// CHART · HYPERSCALER OP MARGIN
+// ════════════════════════════════════════════════════════════════
+const hsMarginCtx = document.getElementById('hyperscalerMarginChart').getContext('2d');
+new Chart(hsMarginCtx, {
+  type: 'bar',
+  data: {
+    labels: ['AWS Q4 2025', 'AWS Q1 2026', 'GCP prior year', 'GCP latest', 'Azure cloud growth', 'Azure AI growth'],
+    datasets: [{
+      label: 'Operating margin (%) or growth (%)',
+      data: [32.9, 37.7, 17.8, 32.9, 29, 123],
+      backgroundColor: ['#1B3A5C','#00936C','#1B3A5C','#00936C','#2A6CB8','#7B5EA7'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1B3A5C', padding: 10,
+        callbacks: { label: ctx => ctx.parsed.y + '%' }
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { color: '#5B5B5B', callback: v => v + '%' }, grid: { color: '#F0F1F3' } },
+      x: { ticks: { color: '#5B5B5B', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// ════════════════════════════════════════════════════════════════
+// CHART · AI CODING TOOLS
+// ════════════════════════════════════════════════════════════════
+const codingCtx = document.getElementById('codingChart').getContext('2d');
+new Chart(codingCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Cursor', 'GitHub Copilot', 'Claude Code'],
+    datasets: [
+      { label: 'ARR ($B, est)', data: [2.0, 2.5, 1.2], backgroundColor: '#2A6CB8', borderRadius: 4, yAxisID: 'y' },
+      { label: 'Developer satisfaction (%)', data: [40, 9, 46], backgroundColor: '#00936C', borderRadius: 4, yAxisID: 'y2' },
+      { label: 'Workplace adoption (%)', data: [50, 75, 18], backgroundColor: '#D8A000', borderRadius: 4, yAxisID: 'y2' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12, color: '#5B5B5B' } },
+      tooltip: { backgroundColor: '#1B3A5C', padding: 10 }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { color: '#5B5B5B', callback: v => '$' + v + 'B' }, grid: { color: '#F0F1F3' }, title: { display: true, text: 'ARR ($B)', color: '#5B5B5B', font: { size: 11 } } },
+      y2: { beginAtZero: true, position: 'right', max: 100, ticks: { color: '#5B5B5B', callback: v => v + '%' }, grid: { drawOnChartArea: false }, title: { display: true, text: 'Satisfaction / Adoption (%)', color: '#5B5B5B', font: { size: 11 } } },
+      x: { ticks: { color: '#5B5B5B', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// ════════════════════════════════════════════════════════════════
+// CHART · EBIT EXPANSION
+// ════════════════════════════════════════════════════════════════
+const ebitCtx = document.getElementById('ebitChart').getContext('2d');
+new Chart(ebitCtx, {
+  type: 'bar',
+  data: {
+    labels: ['AI Adopters · 2024→2025', 'MSCI World · 2024→2025', 'AI Adopters · 2026e'],
+    datasets: [{
+      label: 'EBIT margin expansion (bps)',
+      data: [310, 150, 230],
+      backgroundColor: ['#00936C', '#5B5B5B', '#1B3A5C'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1B3A5C', padding: 10,
+        callbacks: { label: ctx => '+' + ctx.parsed.y + ' bps EBIT margin' }
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { color: '#5B5B5B', callback: v => '+' + v + ' bps' }, grid: { color: '#F0F1F3' } },
+      x: { ticks: { color: '#5B5B5B', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeManual();
+});
+</script>
+
+</body>
+</html>

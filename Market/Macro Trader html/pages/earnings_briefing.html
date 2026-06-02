@@ -1,0 +1,2252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>U.S. Earnings Season Investor Briefing · Q1 2026 · May 29 Update</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #F5F6F7;
+    --bg2: #FFFFFF;
+    --bg3: #F0F1F3;
+    --border: #E5E5E5;
+    --text: #1E1E1E;
+    --muted: #5B5B5B;
+    --accent: #0077CC;
+    --green: #00936C;
+    --red: #E63000;
+    --yellow: #D8A000;
+    --purple: #7B5EA7;
+    --orange: #ffa657;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; }
+
+  /* ── HEADER ── */
+  .header { background: linear-gradient(135deg, #0d1117 0%, #1a2540 100%); border-bottom: 1px solid var(--border); padding: 32px 40px 24px; }
+  .header-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .header-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(88,166,255,0.12); border: 1px solid rgba(88,166,255,0.3); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: var(--accent); margin-bottom: 12px; }
+  .header-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  h1 span { color: var(--accent); }
+  .header-meta { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+  /* ── KPI STRIP ── */
+  .kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--border); border-top: 1px solid var(--border); }
+  .kpi { background: var(--bg2); padding: 20px 24px; }
+  .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin-bottom: 6px; }
+  .kpi-value { font-size: 28px; font-weight: 700; line-height: 1; }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.accent { color: var(--accent); }
+  .kpi-value.yellow { color: var(--yellow); }
+  .kpi-value.purple { color: var(--purple); }
+  .kpi-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* ── TABS ── */
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); padding: 0 40px; background: var(--bg2); overflow-x: auto; }
+  .tab { padding: 14px 20px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .2s; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── MAIN ── */
+  .main { padding: 32px 40px; max-width: 1400px; margin: 0 auto; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── CARDS / GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
+  .card-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 16px; }
+  .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+
+  /* ── SECTOR TABLE ── */
+  .sector-controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+  .filter-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg2); color: var(--muted); font-size: 12px; cursor: pointer; transition: all .2s; }
+  .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(88,166,255,.08); }
+  .sector-table { width: 100%; border-collapse: collapse; }
+  .sector-table th { padding: 10px 14px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .sector-table td { padding: 13px 14px; border-bottom: 1px solid rgba(48,54,61,.5); font-size: 13px; vertical-align: middle; }
+  .sector-table tr:last-child td { border-bottom: none; }
+  .sector-table tr { cursor: pointer; transition: background .15s; }
+  .sector-table tr:hover td { background: rgba(88,166,255,.04); }
+  .view-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .view-strong { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+  .view-strong-neutral { background: rgba(88,166,255,.1); color: var(--accent); border: 1px solid rgba(88,166,255,.25); }
+  .view-neutral { background: rgba(139,148,158,.12); color: var(--muted); border: 1px solid rgba(139,148,158,.25); }
+  .view-neutral-pos { background: rgba(210,153,34,.12); color: var(--yellow); border: 1px solid rgba(210,153,34,.3); }
+  .view-neutral-weak { background: rgba(255,166,87,.12); color: var(--orange); border: 1px solid rgba(255,166,87,.3); }
+  .view-weak { background: rgba(248,81,73,.12); color: var(--red); border: 1px solid rgba(248,81,73,.3); }
+  .eps-up { color: var(--green); font-weight: 600; }
+  .eps-down { color: var(--red); font-weight: 600; }
+  .pe-bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .pe-bar { height: 6px; border-radius: 3px; background: var(--accent); min-width: 4px; }
+
+  /* ── MAG 7 ── */
+  .mag7-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
+  .company-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 22px; transition: border-color .2s; cursor: pointer; }
+  .company-card:hover { border-color: var(--accent); }
+  .company-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+  .company-name { font-size: 17px; font-weight: 700; }
+  .company-ticker { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .company-reaction { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .reaction-up { background: rgba(63,185,80,.12); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+  .reaction-down { background: rgba(248,81,73,.12); color: var(--red); border: 1px solid rgba(248,81,73,.3); }
+  .reaction-mixed { background: rgba(210,153,34,.12); color: var(--yellow); border: 1px solid rgba(210,153,34,.3); }
+  .company-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .metric { background: var(--bg3); border-radius: 8px; padding: 10px 12px; }
+  .metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin-bottom: 4px; }
+  .metric-value { font-size: 15px; font-weight: 700; color: var(--text); }
+  .metric-value.up { color: var(--green); }
+  .metric-value.down { color: var(--red); }
+  .company-note { font-size: 12px; color: var(--muted); line-height: 1.55; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px; }
+  .ai-chip { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 4px; background: rgba(188,140,255,.12); color: var(--purple); border: 1px solid rgba(188,140,255,.25); margin-left: 6px; vertical-align: middle; }
+
+  /* ── VALUATION ── */
+  .val-gauge-wrap { display: flex; justify-content: center; margin: 10px 0 20px; }
+  .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid rgba(48,54,61,.5); }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { color: var(--muted); font-size: 13px; }
+  .stat-value { font-weight: 600; font-size: 13px; }
+  .progress-track { height: 6px; background: var(--bg3); border-radius: 3px; margin-top: 10px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; transition: width .8s ease; }
+  .insight-box { background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 16px; margin-top: 16px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .insight-box strong { color: var(--text); }
+
+  /* ── ACTION PLAN ── */
+  .action-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .action-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 22px; }
+  .action-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 14px; }
+  .action-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .action-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .catalyst-list { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .catalyst { display: flex; align-items: flex-start; gap: 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .catalyst-icon { font-size: 22px; flex-shrink: 0; }
+  .catalyst h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .catalyst p { font-size: 12px; color: var(--muted); line-height: 1.55; }
+  .tag { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 4px; margin-right: 4px; margin-top: 6px; }
+  .tag-bull { background: rgba(63,185,80,.12); color: var(--green); border: 1px solid rgba(63,185,80,.25); }
+  .tag-bear { background: rgba(248,81,73,.12); color: var(--red); border: 1px solid rgba(248,81,73,.25); }
+  .tag-watch { background: rgba(210,153,34,.12); color: var(--yellow); border: 1px solid rgba(210,153,34,.25); }
+
+  /* ── OVERVIEW ── */
+  .summary-bullets { display: flex; flex-direction: column; gap: 10px; }
+  .bullet { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; background: var(--bg3); border-radius: 8px; }
+  .bullet-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .bullet p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+  .bullet p strong { color: var(--text); }
+  .section-heading { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+  .section-heading + .muted { color: var(--muted); font-size: 13px; margin-top: -14px; margin-bottom: 20px; }
+  .surprise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+  .surprise-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .surprise-card.positive { border-top: 3px solid var(--green); }
+  .surprise-card.negative { border-top: 3px solid var(--red); }
+  .surprise-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+  .surprise-item { font-size: 12px; color: var(--muted); padding: 7px 0; border-bottom: 1px solid rgba(48,54,61,.5); line-height: 1.5; }
+  .surprise-item:last-child { border-bottom: none; }
+  .surprise-item strong { color: var(--text); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .header, .main { padding: 20px; }
+    .tabs { padding: 0 20px; }
+    .grid-2, .grid-3, .surprise-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 22px; }
+    .kpi-value { font-size: 22px; }
+  }
+
+  /* ── TOOLTIP ── */
+  [data-tip] { position: relative; }
+  [data-tip]:hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #1B3A5C; border: 1px solid var(--border); color: var(--text); font-size: 11px; padding: 6px 10px; border-radius: 6px; white-space: nowrap; z-index: 99; pointer-events: none; }
+
+  /* ── WEEKLY EARNINGS ANALYSIS ── */
+  .earnings-company-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
+  .earnings-company-card.reported { border-left: 4px solid var(--green); }
+  .earnings-company-card.upcoming { border-left: 4px solid var(--accent); }
+  .earnings-ticker { font-size: 22px; font-weight: 800; color: var(--accent); }
+  .earnings-name { font-size: 14px; color: var(--muted); }
+  .timing-pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; white-space: nowrap; }
+  .timing-reported { background: rgba(63,185,80,.12); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+  .timing-upcoming { background: rgba(88,166,255,.12); color: var(--accent); border: 1px solid rgba(88,166,255,.3); }
+  .earnings-metrics-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(130px,1fr)); gap: 8px; margin-bottom: 12px; }
+  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 10px 0; }
+  .scenario-box { padding: 10px 12px; border-radius: 8px; font-size: 12px; line-height: 1.5; }
+  .scenario-bull { background: rgba(63,185,80,.07); border: 1px solid rgba(63,185,80,.2); }
+  .scenario-base { background: rgba(88,166,255,.07); border: 1px solid rgba(88,166,255,.2); }
+  .scenario-bear { background: rgba(248,81,73,.07); border: 1px solid rgba(248,81,73,.2); }
+  .scenario-title { font-weight: 700; margin-bottom: 4px; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; }
+  .scenario-bull .scenario-title { color: var(--green); }
+  .scenario-base .scenario-title { color: var(--accent); }
+  .scenario-bear .scenario-title { color: var(--red); }
+  .scenario-box p { color: var(--muted); }
+  .bias-row { display: flex; align-items: flex-start; gap: 10px; padding: 12px 0 0; border-top: 1px solid var(--border); margin-top: 6px; flex-wrap: wrap; }
+  .bias-label { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); padding-top: 4px; }
+  .bias-badge { font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 20px; white-space: nowrap; }
+  .bias-bull { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+  .bias-neutral { background: rgba(139,148,158,.12); color: var(--muted); border: 1px solid rgba(139,148,158,.25); }
+  .bias-bear { background: rgba(248,81,73,.12); color: var(--red); border: 1px solid rgba(248,81,73,.3); }
+  .debate-list { list-style: none; padding: 0; margin: 0 0 10px; }
+  .debate-list li { font-size: 12px; color: var(--muted); padding: 5px 0 5px 16px; position: relative; line-height: 1.55; }
+  .debate-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 10px; top: 7px; }
+  .rank-table { width: 100%; border-collapse: collapse; }
+  .rank-table th { padding: 10px 14px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .rank-table td { padding: 12px 14px; border-bottom: 1px solid rgba(48,54,61,.5); font-size: 13px; vertical-align: middle; }
+  .rank-table tr:last-child td { border-bottom: none; }
+  .rank-table tr:hover td { background: rgba(88,166,255,.03); }
+  .rank-num { font-size: 18px; font-weight: 800; }
+  @media(max-width: 768px) { .scenario-grid { grid-template-columns: 1fr; } .earnings-company-card { padding: 16px; } }
+
+  /* ── EARNINGS ACCORDION SYSTEM ── */
+  .ec-snapshot { display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:1px; background:var(--border); border-radius:10px; overflow:hidden; margin-bottom:20px; }
+  .ec-snap-item { background:var(--bg2); padding:14px 18px; }
+  .ec-snap-v { font-size:20px; font-weight:800; line-height:1.1; }
+  .ec-snap-l { font-size:10px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-top:4px; }
+
+  .ec-filter-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+  .ec-filter-btn { padding:6px 14px; border-radius:20px; border:1px solid var(--border); background:var(--bg2); color:var(--muted); font-size:12px; cursor:pointer; transition:all .2s; white-space:nowrap; }
+  .ec-filter-btn:hover { border-color:var(--accent); color:var(--accent); background:rgba(88,166,255,.06); }
+  .ec-filter-btn.active { border-color:var(--accent); color:var(--accent); background:rgba(88,166,255,.1); font-weight:600; }
+
+  .ec-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; overflow:hidden; transition:border-color .2s; }
+  .ec-card.ec-reported { border-left:4px solid var(--green); }
+  .ec-card.ec-upcoming { border-left:4px solid var(--accent); }
+  .ec-card:hover { border-color:rgba(88,166,255,.35); }
+
+  .ec-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; cursor:pointer; gap:12px; user-select:none; }
+  .ec-header:hover { background:rgba(255,255,255,.02); }
+  .ec-header-left { display:flex; align-items:center; gap:14px; flex-wrap:wrap; flex:1; min-width:0; }
+  .ec-ticker-wrap { min-width:110px; }
+  .ec-ticker { font-size:19px; font-weight:800; color:var(--accent); line-height:1; }
+  .ec-name { font-size:11px; color:var(--muted); margin-top:2px; max-width:210px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ec-badges { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+
+  .ec-header-right { display:flex; align-items:center; gap:18px; flex-shrink:0; }
+  .ec-mini-stat { text-align:right; }
+  .ec-mini-label { font-size:9px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); }
+  .ec-mini-value { font-size:14px; font-weight:700; line-height:1.3; }
+
+  .ec-chevron { font-size:11px; color:var(--muted); transition:transform .25s ease,color .2s; width:18px; text-align:center; flex-shrink:0; }
+  .ec-chevron.open { transform:rotate(90deg); color:var(--accent); }
+
+  .ec-body { border-top:1px solid var(--border); padding:18px 20px; animation:fadeIn .18s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+  .ec-timing-line { font-size:11px; color:var(--muted); margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(48,54,61,.5); }
+  .ec-section-label { font-size:10px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:8px; }
+
+  .ec-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:0; }
+  .ec-metrics-row { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:10px; }
+  .ec-metric { background:var(--bg3); border-radius:8px; padding:9px 11px; }
+  .ec-metric-l { font-size:9px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); margin-bottom:3px; }
+  .ec-metric-v { font-size:12px; font-weight:700; }
+  .ec-kpi-box { background:var(--bg3); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:8px; padding:10px 13px; font-size:12px; color:var(--muted); line-height:1.55; }
+  .ec-kpi-box strong { color:var(--text); }
+
+  .ec-scenario-tabs { display:flex; gap:6px; margin-bottom:10px; }
+  .ec-stab { padding:5px 14px; border-radius:20px; border:1px solid var(--border); background:var(--bg3); color:var(--muted); font-size:12px; font-weight:600; cursor:pointer; transition:all .18s; }
+  .ec-stab:hover { border-color:var(--muted); color:var(--text); }
+  .ec-stab.active[data-s="bull"] { border-color:var(--green); color:var(--green); background:rgba(63,185,80,.08); }
+  .ec-stab.active[data-s="base"] { border-color:var(--accent); color:var(--accent); background:rgba(88,166,255,.08); }
+  .ec-stab.active[data-s="bear"] { border-color:var(--red); color:var(--red); background:rgba(248,81,73,.08); }
+  .ec-scenario-content { font-size:12px; color:var(--muted); line-height:1.65; padding:12px 14px; border-radius:8px; border:1px solid var(--border); background:var(--bg3); }
+
+  @media(max-width:768px) {
+    .ec-header-right { gap:10px; }
+    .ec-mini-stat:nth-child(3) { display:none; }
+    .ec-grid-2 { grid-template-columns:1fr; }
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   MORNINGSTAR DESIGN SYSTEM  ·  morningstar.com visual style
+   Light theme · Navy header (#1B3A5C) · Red accent (#C72E0B)
+═══════════════════════════════════════════════════════════════ */
+
+/* Google Fonts: Inter (close to Morningstar's type) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+  background: #F5F6F7 !important;
+  color: #1E1E1E !important;
+}
+
+/* ─── Morningstar brand top bar ─── */
+body::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: #C72E0B;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+}
+body { padding-top: 3px; }
+
+/* ─── Header / hero → Morningstar navy ─── */
+.header, header.hero,
+.header-inner { background: #1B3A5C !important; border: none !important;
+  border-radius: 0 !important; box-shadow: 0 2px 6px rgba(0,0,0,0.25) !important; color: #fff !important; }
+h1, .header h1, header.hero h1, header.hero h1 { color: #FFFFFF !important; }
+.header p, .subtitle, .header-meta .date { color: rgba(255,255,255,0.72) !important; }
+.header-badge { background: rgba(255,255,255,0.14) !important; border-color: rgba(255,255,255,0.28) !important; color: #FFFFFF !important; }
+.header-badge::before { background: rgba(255,255,255,0.9) !important; }
+/* Hero price / change */
+.price { color: #FFFFFF !important; font-size: 28px !important; }
+header.hero .chg.pos { color: #7EE0CC !important; }
+header.hero .chg.neg { color: #FFBBAA !important; }
+/* Pills in hero */
+.pill { background: rgba(255,255,255,0.15) !important; color: #FFFFFF !important; border-color: rgba(255,255,255,0.28) !important; border-radius: 4px !important; }
+.pill.warn { background: rgba(216,160,0,0.28) !important; color: #FFE49A !important; }
+.pill.bad  { background: rgba(230,48,0,0.28) !important;  color: #FFBFAF !important; }
+.pill.good { background: rgba(0,147,108,0.28) !important; color: #8EEFD8 !important; }
+
+/* ─── Topbar (macro dashboard) → navy ─── */
+#topbar { background: #1B3A5C !important; border-bottom: none !important; }
+#topbar .tb-label   { color: rgba(255,255,255,0.55) !important; }
+#topbar .tb-value   { color: #FFFFFF !important; }
+#topbar .tb-summary { color: rgba(255,255,255,0.82) !important; }
+#topbar .tb-item    { border-right-color: rgba(255,255,255,0.14) !important; }
+
+/* ─── Navigation tabs → underline style ─── */
+.nav, #nav { background: #FFFFFF !important; border-bottom: 1px solid #E5E5E5 !important; box-shadow: 0 1px 0 #E5E5E5; }
+.nav button, .nav-btn {
+  color: #5B5B5B !important; background: none !important; border: none !important;
+  border-bottom: 2px solid transparent !important; border-radius: 0 !important;
+  font-weight: 500 !important; transition: color .15s !important;
+}
+.nav button:hover, .nav-btn:hover { color: #1E1E1E !important; background: none !important; }
+.nav button.active, .nav-btn.active {
+  color: #C72E0B !important; background: none !important;
+  border-bottom-color: #C72E0B !important; font-weight: 600 !important;
+}
+/* Pill-tabs → underline style */
+.tabs { border-bottom: 1px solid #E5E5E5 !important; gap: 0 !important; margin-bottom: 0 !important; }
+.tab {
+  background: none !important; border: none !important;
+  border-bottom: 2px solid transparent !important; border-radius: 0 !important;
+  color: #5B5B5B !important; padding: 10px 16px !important; font-weight: 500 !important;
+  transition: color .15s !important;
+}
+.tab:hover { color: #1E1E1E !important; background: none !important; }
+.tab.active { color: #C72E0B !important; background: none !important; border-bottom-color: #C72E0B !important; font-weight: 600 !important; }
+.tab.bull.active { color: #00936C !important; border-bottom-color: #00936C !important; }
+.tab.bear.active { color: #E63000   !important; border-bottom-color: #E63000   !important; }
+.tabpane { padding-top: 16px !important; }
+
+/* ─── Cards ─── */
+.card {
+  background: #FFFFFF !important; border: 1px solid #E5E5E5 !important;
+  border-radius: 4px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.07) !important;
+}
+.card:hover { border-color: #C8C8C8 !important; background: #FAFAFA !important; transform: translateY(-1px) !important; }
+.card h3, .card-label, .card-title { color: #5B5B5B !important; }
+.card .sub, .card-note, .card-desc, .card-subtitle { color: #5B5B5B !important; }
+.card .big, .card-value { color: #1E1E1E !important; }
+.detail-panel { background: #FFFFFF !important; border-color: #E5E5E5 !important; }
+.detail-panel h2 { color: #1E1E1E !important; }
+.detail-panel .ticker { color: #8A8A8A !important; }
+.detail-block { background: #F5F6F7 !important; }
+.detail-block h3 { color: #8A8A8A !important; }
+.detail-block p, .detail-block ul { color: #5B5B5B !important; }
+.detail-block ul li::before { color: #C72E0B !important; }
+.signal-box { background: #FFF5F3 !important; border-color: rgba(199,46,11,0.25) !important; }
+.signal-box h3 { color: #C72E0B !important; }
+.signal-box p  { color: #5B5B5B !important; }
+
+/* ─── Tables ─── */
+table.macro th, .sector-table th, thead th {
+  background: #F5F6F7 !important; color: #5B5B5B !important;
+  border-bottom: 2px solid #C8C8C8 !important; font-size: 11px !important;
+  text-transform: uppercase !important; letter-spacing: .5px !important;
+}
+table.macro td, .sector-table td, tbody td {
+  color: #1E1E1E !important; border-bottom: 1px solid #E5E5E5 !important;
+}
+table.macro tbody tr:nth-child(even) td,
+.sector-table tbody tr:nth-child(even) td,
+tbody tr:nth-child(even) td { background: #FAFAFA !important; }
+table.macro tr:hover td, .sector-table tr:hover td, tbody tr:hover td { background: #EEF5FF !important; }
+
+/* ─── Status / semantic tags ─── */
+.tag.bull, .eps-up, .view-strong, .reaction-up, .tag-up {
+  background: #E6F7F2 !important; color: #007850 !important; border: 1px solid #A8DFD0 !important;
+}
+.tag.bear, .eps-down, .view-weak, .reaction-down, .tag-down {
+  background: #FFF0ED !important; color: #BF2A00 !important; border: 1px solid #FFC4B5 !important;
+}
+.tag.neutral, .view-neutral, .tag-neut {
+  background: #F0F4FF !important; color: #3558A8 !important; border: 1px solid #C0CCEE !important;
+}
+.tag-warn, .view-neutral-pos {
+  background: #FFF8E6 !important; color: #885500 !important; border: 1px solid #FFD870 !important;
+}
+.view-strong-neutral {
+  background: #EEF4FF !important; color: #0050A0 !important; border: 1px solid #B0C8F0 !important;
+}
+.view-neutral-weak {
+  background: #FFF3E6 !important; color: #7A4200 !important; border: 1px solid #FFD0A0 !important;
+}
+.imp-high { background: #FFF0ED !important; color: #BF2A00 !important; border: 1px solid #FFC4B5 !important; }
+.imp-med  { background: #FFF8E6 !important; color: #885500 !important; border: 1px solid #FFD870 !important; }
+.imp-low  { background: #EEF4FF !important; color: #3558A8 !important; border: 1px solid #C0CCEE !important; }
+
+/* Category badges */
+.cat-benchmark { background: rgba(0,119,204,0.08) !important; color: #005099 !important; }
+.cat-growth    { background: rgba(123,94,167,0.08) !important; color: #5C3A99 !important; }
+.cat-smallcap  { background: rgba(216,160,0,0.08) !important; color: #885500 !important; }
+.cat-breadth   { background: rgba(0,122,144,0.08) !important; color: #005C6A !important; }
+.cat-vol       { background: rgba(230,48,0,0.08) !important;  color: #BF2A00 !important; }
+.cat-credit    { background: rgba(0,147,108,0.08) !important; color: #006648 !important; }
+.cat-sector    { background: rgba(224,108,0,0.08) !important; color: #994500 !important; }
+
+/* Hub card tags */
+.tag.blue   { background: rgba(0,119,204,0.08) !important; border-color: rgba(0,119,204,0.22) !important; color: #0050A0 !important; }
+.tag.teal   { background: rgba(0,122,144,0.08) !important; border-color: rgba(0,122,144,0.22) !important; color: #005C6A !important; }
+.tag.amber  { background: rgba(216,160,0,0.08) !important; border-color: rgba(216,160,0,0.22)  !important; color: #885500 !important; }
+.tag.green  { background: rgba(0,147,108,0.08) !important; border-color: rgba(0,147,108,0.22) !important; color: #006648 !important; }
+.tag.purple { background: rgba(123,94,167,0.08) !important; border-color: rgba(123,94,167,0.22)!important; color: #5C3A99 !important; }
+.tag-blue   { background: rgba(0,119,204,0.08) !important; color: #0050A0 !important; border: 1px solid rgba(0,119,204,0.22) !important; }
+
+/* ─── Positive / Negative ─── */
+.pos, .chg.pos { color: #00936C !important; }
+.neg, .chg.neg { color: #E63000   !important; }
+.level-bull { color: #00936C !important; font-weight: 600 !important; }
+.level-bear { color: #E63000   !important; font-weight: 600 !important; }
+.level-piv  { color: #D8A000 !important; font-weight: 600 !important; }
+.risk-normal { color: #00936C !important; font-weight: 700 !important; }
+.risk-watch  { color: #D8A000 !important; font-weight: 700 !important; }
+.risk-stress { color: #E63000   !important; font-weight: 700 !important; }
+
+/* ─── Section headings ─── */
+section h2 {
+  color: #5B5B5B !important; border-bottom: 1px solid #E5E5E5 !important;
+  padding-bottom: 8px !important;
+}
+section h2 .dot { background: #C72E0B !important; }
+.section-label { color: #8A8A8A !important; font-weight: 700 !important; }
+.section-label::after { background: #E5E5E5 !important; }
+.section-title { color: #1E1E1E !important; font-weight: 600 !important; }
+.section-sub   { color: #5B5B5B !important; }
+
+/* ─── Key levels ─── */
+.levels-wrap {
+  background: #FFFFFF !important; border: 1px solid #E5E5E5 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07) !important; border-radius: 4px !important;
+}
+.lvl-col h4 { color: #5B5B5B !important; }
+.lvl-row {
+  background: #FAFAFA !important; border-color: #E5E5E5 !important; border-radius: 2px !important;
+}
+.lvl-row.sup { background: #F4FBF8 !important; border-left-color: #00936C !important; }
+.lvl-row.res { background: #FFF8F6 !important; border-left-color: #E63000   !important; }
+.lvl-row.now {
+  background: #FFFBE6 !important; border-color: #D8A000 !important;
+  border-left-color: #D8A000 !important;
+}
+.lvl-row.now .price { color: #D8A000 !important; }
+.lvl-row.now .dist  { color: #D8A000 !important; }
+.lvl-row .why  { color: #5B5B5B !important; }
+.lvl-row .dist { color: #8A8A8A !important; }
+.lvl-row .price { color: #1E1E1E !important; }
+.ma-chip { background: #F5F6F7 !important; border-color: #E5E5E5 !important; }
+.ma-chip strong { color: #1E1E1E !important; }
+.ma-chip .delta  { color: #D8A000 !important; }
+
+/* ─── Evidence (bull/bear lists) ─── */
+ul.evidence li {
+  background: #FAFAFA !important; border-color: #E5E5E5 !important;
+  border-left-color: #0077CC !important; color: #1E1E1E !important;
+  border-radius: 3px !important;
+}
+ul.evidence li.bull { background: #F4FBF8 !important; border-left-color: #00936C !important; }
+ul.evidence li.bear { background: #FFF8F6 !important; border-left-color: #E63000   !important; }
+ul.evidence li strong { color: #1E1E1E !important; }
+
+/* ─── Catalyst rows ─── */
+.cat-row {
+  background: #FAFAFA !important; border-color: #E5E5E5 !important; border-radius: 3px !important;
+}
+.cat-row .date { color: #1B3A5C !important; font-weight: 700 !important; }
+.cat-row .desc { color: #1E1E1E !important; }
+
+/* ─── Decision trigger cards ─── */
+.trigger-card {
+  background: #FFFFFF !important; border-color: #E5E5E5 !important;
+  border-radius: 4px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.07) !important;
+}
+.trig-risk { background: #FFF8F6 !important; border-left: 4px solid #E63000 !important; }
+.trig-opp  { background: #F4FBF8 !important; border-left: 4px solid #00936C !important; }
+.trigger-card h3 { color: #1E1E1E !important; }
+.trigger-card ul  { color: #5B5B5B !important; }
+.trigger-card ul li strong { color: #1E1E1E !important; }
+
+/* ─── DCA planner ─── */
+.tranche { background: #FAFAFA !important; border-color: #E5E5E5 !important; border-radius: 3px !important; }
+.tranche .when { color: #1E1E1E !important; }
+.tranche .when small { color: #5B5B5B !important; }
+.tranche .amt  { color: #00936C !important; }
+.mode-btn {
+  background: #F5F6F7 !important; border-color: #E5E5E5 !important;
+  color: #1E1E1E !important; border-radius: 3px !important;
+}
+.mode-btn:hover { border-color: #C8C8C8 !important; }
+.mode-btn.active {
+  background: #FFF5F2 !important; border-color: #C72E0B !important; color: #C72E0B !important;
+}
+.mode-btn .mt { color: inherit !important; }
+.mode-btn .ms { color: #5B5B5B !important; }
+input[type=number] {
+  background: #FFFFFF !important; border-color: #C8C8C8 !important;
+  color: #1E1E1E !important; border-radius: 3px !important;
+}
+input[type=number]:focus { border-color: #C72E0B !important; outline: none; }
+.planner label { color: #8A8A8A !important; }
+
+/* ─── Confidence gauge ─── */
+.gauge .val { color: #1E1E1E  !important; }
+.gauge .lbl { color: #8A8A8A !important; }
+
+/* ─── Priority rows / index buttons ─── */
+.priority-row { background: #FFFFFF !important; border-color: #E5E5E5 !important; border-radius: 4px !important; }
+.priority-row:hover { border-color: #C8C8C8 !important; background: #FAFAFA !important; }
+.priority-row.selected { border-color: #C72E0B !important; background: #FFF5F2 !important; }
+.priority-name { color: #1E1E1E !important; }
+.priority-why  { color: #5B5B5B !important; }
+.index-btn { background: #FFFFFF !important; border-color: #E5E5E5 !important; border-radius: 4px !important; }
+.index-btn:hover { border-color: #C8C8C8 !important; background: #FAFAFA !important; }
+.index-btn.active { border-color: #C72E0B !important; background: #FFF5F2 !important; }
+.index-btn-name { color: #1E1E1E !important; }
+.index-btn-tag  { color: #8A8A8A !important; }
+.rank { background: #F0F1F3 !important; color: #5B5B5B !important; }
+.rank.top { background: rgba(0,119,204,0.10) !important; color: #0077CC !important; }
+
+/* ─── KPI strip ─── */
+.kpi-strip { background: #E5E5E5 !important; }
+.kpi { background: #FFFFFF !important; }
+.kpi-label { color: #5B5B5B !important; }
+.kpi-sub   { color: #5B5B5B !important; }
+.kpi-value.green  { color: #00936C !important; }
+.kpi-value.accent { color: #C72E0B !important; }
+.kpi-value.yellow { color: #D8A000 !important; }
+.kpi-value.purple { color: #7B5EA7 !important; }
+
+/* ─── Company cards (earnings) ─── */
+.company-card { background: #FFFFFF !important; border-color: #E5E5E5 !important; border-radius: 4px !important; }
+.company-card:hover { border-color: #C72E0B !important; }
+.company-name { color: #1E1E1E !important; }
+.company-ticker { color: #8A8A8A !important; }
+.reaction-up    { background: #E6F7F2 !important; color: #007850 !important; border-color: #A8DFD0 !important; }
+.reaction-down  { background: #FFF0ED !important; color: #BF2A00 !important; border-color: #FFC4B5 !important; }
+.reaction-mixed { background: #FFF8E6 !important; color: #885500 !important; border-color: #FFD870 !important; }
+.metric { background: #F5F6F7 !important; }
+.metric-label { color: #8A8A8A !important; }
+
+/* ─── Filter buttons ─── */
+.filter-btn { background: #F5F6F7 !important; border-color: #E5E5E5 !important; color: #5B5B5B !important; }
+.filter-btn:hover, .filter-btn.active {
+  border-color: #C72E0B !important; color: #C72E0B !important; background: #FFF5F2 !important;
+}
+
+/* ─── Playbook (macro-dashboard) ─── */
+.playbook-card { background: #F9FAFB !important; border-color: #E5E5E5 !important; border-radius: 4px !important; }
+.pb-trigger   { color: #1B3A5C !important; font-weight: 700 !important; }
+.pb-col-label { color: #8A8A8A !important; }
+.pb-col-val   { color: #1E1E1E !important; }
+.conf-label   { color: #8A8A8A !important; }
+.confidence-bar { color: #5B5B5B !important; }
+.conf-pips .pip { background: #E0E0E0 !important; }
+.conf-pips .pip.filled-h { background: #00936C  !important; }
+.conf-pips .pip.filled-m { background: #D8A000  !important; }
+.conf-pips .pip.filled-l { background: #BBBBBB !important; }
+
+/* ─── Importance dots ─── */
+.imp .dot { background: #DDDDDD !important; }
+.dot.filled-red  { background: #E63000   !important; }
+.dot.filled-warn { background: #D8A000 !important; }
+.dot.filled-up   { background: #00936C !important; }
+
+/* ─── Narrative ─── */
+.nar-section-title { color: #C72E0B !important; }
+.nar-text { color: #1E1E1E !important; }
+.nar-list li { color: #1E1E1E !important; }
+.policy-bullets li { color: #1E1E1E !important; }
+
+/* ─── Dashboard hub cards ─── */
+.card.blue .accent-bar  { background: linear-gradient(90deg, #0077CC, #005299) !important; }
+.card.teal .accent-bar  { background: linear-gradient(90deg, #007A90, #005566) !important; }
+.card.amber .accent-bar { background: linear-gradient(90deg, #D8A000, #9A7000) !important; }
+.card.blue  .card-icon  { background: rgba(0,119,204,0.10)  !important; }
+.card.teal  .card-icon  { background: rgba(0,122,144,0.10)  !important; }
+.card.amber .card-icon  { background: rgba(216,160,0,0.10)  !important; }
+.card.blue  .open-label { color: #0077CC  !important; }
+.card.teal  .open-label { color: #007A90  !important; }
+.card.amber .open-label { color: #D8A000 !important; }
+.card.blue  .arrow-icon { background: rgba(0,119,204,0.12) !important; color: #0077CC  !important; }
+.card.teal  .arrow-icon { background: rgba(0,122,144,0.12) !important; color: #007A90  !important; }
+.card.amber .arrow-icon { background: rgba(216,160,0,0.12) !important; color: #D8A000 !important; }
+.card-arrow { border-top-color: #E5E5E5 !important; }
+.footer-note { border-top-color: #E5E5E5 !important; color: #8A8A8A !important; }
+
+/* ─── Footer ─── */
+footer, #footer {
+  color: #8A8A8A !important; border-top-color: #E5E5E5 !important;
+  background: transparent !important;
+}
+
+/* ─── Scrollbar (light) ─── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #F0F1F3; }
+::-webkit-scrollbar-thumb { background: #C8C8C8; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #AAAAAA; }
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="header-badge">Q1 2026 · Earnings Season Update</div>
+      <h1>U.S. Earnings Season <span>Investor Briefing</span></h1>
+      <div class="header-meta">Data as of <span data-live="asOfLong">May 29, 2026</span> (post-close; Q1 season substantially complete) · Source: FactSet, Reuters/LSEG, Company Reports, CNBC, Yahoo Finance, TheStreet</div>
+    </div>
+  </div>
+</div>
+
+<!-- KPI STRIP -->
+<div class="kpi-strip">
+  <div class="kpi">
+    <div class="kpi-label">Season Completion</div>
+    <div class="kpi-value accent" data-live="q1Reported">94%</div>
+    <div class="kpi-sub">S&P 500 companies reported</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">EPS Beat Rate</div>
+    <div class="kpi-value green" data-live="q1BeatRate">84%</div>
+    <div class="kpi-sub">Above estimates</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Revenue Beat Rate</div>
+    <div class="kpi-value green" data-live="q1RevBeatRate">81%</div>
+    <div class="kpi-sub">Above estimates</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Q1 EPS Growth</div>
+    <div class="kpi-value green" data-live="q1EpsGrowth">+28.4%</div>
+    <div class="kpi-sub">Blended (FactSet) · highest since Q4 2021 · vs 13.1% at qtr-end</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Revenue Growth</div>
+    <div class="kpi-value accent" data-live="q1RevGrowth">+11.6%</div>
+    <div class="kpi-sub">Blended rate · highest since Q2 2022</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Fwd 12m P/E</div>
+    <div class="kpi-value yellow"><span data-live="fwdPe">21.1</span>×</div>
+    <div class="kpi-sub">vs 5yr avg 19.9× · 10yr avg 18.9×</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">S&P 500 Net Margin</div>
+    <div class="kpi-value purple" data-live="q1NetMargin">14.8%</div>
+    <div class="kpi-sub">Record in FactSet tracking history</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">10-Yr Treasury Yield</div>
+    <div class="kpi-value yellow" data-live="yld10y">4.45%</div>
+    <div class="kpi-sub"><span data-live="asOfShort">May 29</span> · Equity risk premium remains thin</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="showTab('overview', this)">📊 Overview</div>
+  <div class="tab" onclick="showTab('sectors', this)">🏭 Sector Scorecard</div>
+  <div class="tab" onclick="showTab('mag7', this)">🤖 Magnificent 7</div>
+  <div class="tab" onclick="showTab('valuation', this)">📐 Valuation</div>
+  <div class="tab" onclick="showTab('action', this)">🎯 Action Plan</div>
+  <div class="tab" onclick="showTab('themes', this)">💬 Call Themes</div>
+  <div class="tab" onclick="showTab('strategy', this)">🧭 Strategy</div>
+  <div class="tab" onclick="showTab('weeklyearnings', this)">📅 May 18–22 Analysis</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- ══════════════ OVERVIEW ══════════════ -->
+  <div class="section active" id="tab-overview">
+    <div class="grid-2" style="gap:24px;margin-bottom:24px;">
+      <div>
+        <div class="section-heading">Executive Summary</div>
+        <div class="summary-bullets">
+          <div class="bullet">
+            <div class="bullet-icon">✅</div>
+            <p><strong>Better than expected across the board.</strong> ~<span data-live="q1Reported">94%</span> of S&P 500 companies have reported, with <span data-live="q1BeatRate">84%</span> beating EPS and <span data-live="q1RevBeatRate">81%</span> beating revenue. Blended EPS growth of <span data-live="q1EpsGrowth">+28.4%</span> — the strongest broad earnings pulse since late 2021.</p>
+          </div>
+          <div class="bullet">
+            <div class="bullet-icon">📈</div>
+            <p><strong>Earnings are supporting the rally.</strong> By May 29, the S&P 500 closed at <strong>7,580.06</strong>, while the Nasdaq 100 and Russell 2000 remained strongly positive YTD. The tape is still growth-led, but participation outside mega-cap tech has improved.</p>
+          </div>
+          <div class="bullet">
+            <div class="bullet-icon">🤖</div>
+            <p><strong>AI thesis confirmed by revenue, not just narrative.</strong> Alphabet, Microsoft, Amazon, and NVIDIA all posted powerful cloud/AI-driven growth. NVIDIA's Q1 FY27 data-center revenue reached <strong>$75.2B</strong>, confirming the AI infrastructure cycle remains intact.</p>
+          </div>
+          <div class="bullet">
+            <div class="bullet-icon">💰</div>
+            <p><strong>Corporate profitability improving.</strong> S&P 500 net profit margin <span data-live="q1NetMargin">14.8%</span> — highest in the FactSet tracking history. YoY improvement is roughly +200bps vs Q1 2025. Main pressure point remains <strong>cash intensity</strong> from AI capital spending.</p>
+          </div>
+          <div class="bullet">
+            <div class="bullet-icon">⚠️</div>
+            <p><strong>Valuation is the main constraint.</strong> Forward P/E <span data-live="fwdPe">21.1</span>×, above both 5-year and 10-year averages. With the 10-year now at <span data-live="yld10y">4.45%</span>, the forward earnings-yield cushion is only ~30bp — still an unusually slim margin of safety.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-heading">Season-Wide Beat Rates</div>
+        <div class="card" style="margin-bottom:20px;">
+          <canvas id="beatRateChart" height="200"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-title">Guidance & Revisions</div>
+          <div class="stat-row">
+            <span class="stat-label">Positive Q2 EPS guidance</span>
+            <span class="stat-value" style="color:var(--green)">49 companies</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Negative Q2 EPS guidance</span>
+            <span class="stat-value" style="color:var(--red)">43 companies</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Q2 EPS estimate rise (Mar 31→May 28)</span>
+            <span class="stat-value" style="color:var(--green)">+2.5%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">CY2026 EPS estimate rise (Mar 31→May 28)</span>
+            <span class="stat-value" style="color:var(--green)">+5.3%</span>
+          </div>
+          <div class="insight-box" style="margin-top:12px;">
+            <strong>Market reaction has become stricter.</strong> Companies beating EPS are seeing below-average share-price reward, while misses are punished more than average. The market now demands <strong>better guidance, visible monetization, and durable returns</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Surprises -->
+    <div class="section-heading" style="margin-top:8px;">Key Surprises This Season</div>
+    <div class="surprise-grid">
+      <div class="surprise-card positive">
+        <h4>🟢 Positive Surprises</h4>
+        <div class="surprise-item"><strong>Cisco (+17% on May 14)</strong> — Biggest one-day gain in 20+ years. AI-related orders to reach $9B this year, up from $5B. Shows AI buildout spreading into networking.</div>
+        <div class="surprise-item"><strong>Caterpillar</strong> — EPS $5.54 vs expected $4.62. Revenue up 22% to $17.42B, boosted by AI-related power infrastructure demand.</div>
+        <div class="surprise-item"><strong>Eli Lilly</strong> — Q1 adj. EPS $8.55 vs expected $6.66. Raised 2026 outlook on strong Mounjaro/Zepbound demand. Stock +~10%.</div>
+        <div class="surprise-item"><strong>NVIDIA</strong> — Q1 FY27 revenue $81.6B (+85%), non-GAAP EPS $1.87, data-center revenue $75.2B (+92%), and Q2 revenue guide around $91B; fundamentals beat even as the stock initially sold off.</div>
+      </div>
+      <div class="surprise-card negative">
+        <h4>🔴 Negative / Mixed Surprises</h4>
+        <div class="surprise-item"><strong>Cloudflare (–24%)</strong> — Disappointing Q2 revenue forecast + plan to cut ~20% of workforce.</div>
+        <div class="surprise-item"><strong>Expedia (–9%)</strong> — Middle East conflict cited as demand headwind.</div>
+        <div class="surprise-item"><strong>Meta</strong> — Strong 33% revenue growth, 41% op margin, but stock fell >6% as capex raised to $125-145B (from $115-135B).</div>
+        <div class="surprise-item"><strong>Tesla</strong> — Revenue $22.4B, gross margin 21.1%, but operating margin only 4.2%. Investors skeptical of Robotaxi/Cybercab timeline. Stock fell despite FCF beat.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTORS ══════════════ -->
+  <div class="section" id="tab-sectors">
+    <div class="section-heading">Sector-by-Sector Scorecard</div>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">Source: FactSet Q1 2026 sector scorecards, margin tables, Q2 guidance pre-announcement tables, and sector forward P/E tables.</p>
+
+    <div class="sector-controls">
+      <span style="font-size:12px;color:var(--muted);margin-right:4px;">Filter:</span>
+      <button class="filter-btn active" onclick="filterSectors('all', this)">All Sectors</button>
+      <button class="filter-btn" onclick="filterSectors('strong', this)">Strong</button>
+      <button class="filter-btn" onclick="filterSectors('neutral', this)">Neutral</button>
+      <button class="filter-btn" onclick="filterSectors('weak', this)">Weak</button>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden;">
+      <table class="sector-table" id="sectorTable">
+        <thead>
+          <tr>
+            <th>Sector</th>
+            <th>Q1 EPS Growth</th>
+            <th>Q1 Rev Growth</th>
+            <th>Net Margin</th>
+            <th>vs Prior Year</th>
+            <th>Fwd P/E</th>
+            <th>View</th>
+          </tr>
+        </thead>
+        <tbody id="sectorBody">
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2" style="margin-top:24px;">
+      <div class="card">
+        <div class="card-title">Q1 EPS Growth by Sector</div>
+        <canvas id="sectorEpsChart" height="260"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-title">Forward P/E by Sector</div>
+        <canvas id="sectorPeChart" height="260"></canvas>
+      </div>
+    </div>
+
+    <div class="insight-box" style="margin-top:20px;">
+      <strong>Two key portfolio construction conclusions:</strong><br>
+      1. Technology and Communication Services are winning on <em>reported numbers</em> — strongest growth, strongest margins, clearest AI monetization.<br>
+      2. Health Care, Consumer Staples, and parts of Consumer Discretionary have the least favorable gap between valuation, guidance, and momentum.
+    </div>
+  </div>
+
+  <!-- ══════════════ MAG 7 ══════════════ -->
+  <div class="section" id="tab-mag7">
+    <div class="section-heading">Magnificent Seven & the AI Reality Check</div>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">AI optimism is no longer just narrative — it's showing up in revenue, backlog, and margins. Combined 2026 capex from the top four hyperscalers exceeds $700B.</p>
+    <div class="mag7-grid" id="mag7Grid"></div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="card-title">Revenue Comparison (Q1 2026, $B)</div>
+      <canvas id="mag7Chart" height="180"></canvas>
+    </div>
+  </div>
+
+  <!-- ══════════════ VALUATION ══════════════ -->
+  <div class="section" id="tab-valuation">
+    <div class="section-heading">Valuation Implications</div>
+    <div class="grid-2" style="gap:24px;">
+      <div>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-title">S&P 500 Forward P/E vs Historical Averages</div>
+          <canvas id="peCompareChart" height="200"></canvas>
+          <div class="insight-box" style="margin-top:16px;">
+            <strong>Forward P/E of <span data-live="fwdPe">21.1</span>× is above both the 5-year (19.9×) and 10-year (18.9×) averages.</strong> With the 10-yr yield now at <span data-live="yld10y">4.45%</span>, the equity earnings yield (~4.74%) offers only ~30bp over risk-free bonds — still a very thin cushion. Any further yield rise or earnings deceleration compresses valuation headroom significantly.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Earnings Yield vs Bond Yield</div>
+          <div class="stat-row">
+            <span class="stat-label">S&P 500 Forward Earnings Yield</span>
+            <span class="stat-value" style="color:var(--green)">~4.74%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">U.S. 10-Year Treasury Yield</span>
+            <span class="stat-value" style="color:var(--red)" data-live="yld10y">4.45%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Equity Risk Premium (approx.)</span>
+            <span class="stat-value" style="color:var(--red)">~0.29pp</span>
+          </div>
+          <div style="margin-top:14px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Earnings Yield Cushion Over Bonds</div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:2%;background:var(--red)"></div>
+            </div>
+            <div style="font-size:11px;color:var(--red);margin-top:4px;">⚠️ Thin — 10-yr at <span data-live="yld10y">4.45%</span> leaves ~30bp over forward earnings yield · little room for disappointment</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-title">Sector Forward P/E Comparison</div>
+          <canvas id="sectorPeValChart" height="280"></canvas>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Profitability at Index Level</div>
+          <div class="stat-row">
+            <span class="stat-label">S&P 500 Net Profit Margin (Q1 2026)</span>
+            <span class="stat-value" style="color:var(--green)" data-live="q1NetMargin">14.8%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">S&P 500 Net Profit Margin (Q1 2025)</span>
+            <span class="stat-value" style="color:var(--muted)">12.8%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">YoY Margin Improvement</span>
+            <span class="stat-value" style="color:var(--green)">+200 bps</span>
+          </div>
+          <div class="insight-box">
+            Profitability is improving, but the <strong>composition is shifting</strong> — toward companies with scale, data-center leverage, and pricing power. Cash conversion will look worse until AI buildout slows or monetization accelerates.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ ACTION PLAN — MACRO / INDEX LENS ══════════════ -->
+  <div class="section" id="tab-action">
+    <div class="section-heading">Macro Read &amp; Index Positioning <span class="tag tag-watch">MACRO LENS</span></div>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:8px;">Translates this week's reports into <strong style="color:var(--text);">economy + index signals</strong> — not single-stock trades. Each card pairs the macro read with its index/sector positioning implication.</p>
+    <p style="color:var(--muted);font-size:12px;margin-bottom:20px;">Companies are referenced only as macro proxies (WMT → consumer health, NVDA → AI capex, DE → industrial cycle, etc.). Names below are ETFs, not picks.</p>
+
+    <div class="action-grid">
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">🤖</div>
+        <h4><span class="tag tag-watch">MACRO READ</span> AI Capex Cycle Intact &amp; Broadening</h4>
+        <p><strong style="color:var(--text);">Signal:</strong> NVDA ($81.6B rev, $75.2B data-center, Q2 guide ~$91B) confirms hyperscaler AI capex is still scaling; ADI's record quarter and Q3 guide broadens the cycle to analog/industrial semis. This keeps tech-sector EPS contribution to S&amp;P 500 elevated and supports above-trend earnings growth for the index.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--text);">Index positioning:</strong> Overweight QQQ vs. SPY; SMH/XLK retain leadership case, but watch the capex-vs-margin tension at MSFT/META that could cap multiple expansion at the index level.</p>
+        <div>
+          <span class="tag tag-bull">QQQ / XLK / SMH overweight</span>
+          <span class="tag tag-watch">Capex drag on op-margin</span>
+        </div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(88,166,255,.12);">🛒</div>
+        <h4><span class="tag tag-watch">MACRO READ</span> Consumer: Defensive Resilient, Discretionary Stabilizing</h4>
+        <p><strong style="color:var(--text);">Signal:</strong> WMT (US comps +4.1%, eCom +26%, ads +37%) signals durable household spending at the low end. TGT (+5.6% comps, +4.4% traffic) confirms discretionary stabilization, not a boom. HD/LOW at +0.6% comps mark a housing floor without a reacceleration. Net: <strong style="color:var(--text);">no recession signal, no reacceleration</strong> — supports a soft-landing macro base case.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--text);">Index positioning:</strong> Defensive tilt remains warranted (XLP > XLY in beta-adjusted terms). XRT/XLY tactical only — broad consumer-cyclical chase still premature without housing or labor inflection.</p>
+        <div>
+          <span class="tag tag-bull">Soft-landing base case</span>
+          <span class="tag tag-watch">XLP > XLY tilt</span>
+          <span class="tag tag-watch">Housing floor, not upcycle</span>
+        </div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(123,94,167,.12);">💻</div>
+        <h4><span class="tag tag-watch">MACRO READ</span> Enterprise Software Demand Steady</h4>
+        <p><strong style="color:var(--text);">Signal:</strong> INTU raised FY26 guide ($8.56B rev, non-GAAP EPS $12.80) — SMB software spend healthy. WDAY raised FY27 non-GAAP operating margin guide to 30.5% on $2.542B revenue and reiterated FY27 subscription revenue of $9.925B–$9.950B — enterprise SaaS budgets intact, AI monetization expanding margin. Confirms <strong style="color:var(--text);">corporate IT/labor productivity spend still flowing</strong>; supports services-side PMI strength.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--text);">Index positioning:</strong> IGV/XLK overweight retained; software is now contributing margin expansion to index EPS, not just revenue growth. Watch bookings deceleration as the leading indicator that would flip this.</p>
+        <div>
+          <span class="tag tag-bull">IGV / XLK overweight</span>
+          <span class="tag tag-watch">Bookings = leading indicator</span>
+        </div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(248,81,73,.12);">⚠️</div>
+        <h4><span class="tag tag-watch">MACRO READ</span> Industrial Cycle Bottoming · Rates Cap Multiple</h4>
+        <p><strong style="color:var(--text);">Signal:</strong> DE delivered solid Q2 ($1.773B net income, $6.55 EPS, $13.369B net sales, guidance maintained) but ag/large-equipment demand remains in the trough. Farm income and dealer inventories still need to turn before XLI can lead. Meanwhile the 10Y at <strong style="color:var(--text);"><span data-live="yld10y">4.45%</span> (<span data-live="asOfShort">May 29</span>)</strong> keeps the bond-vs-earnings-yield hurdle tight — index multiple has limited room without a yield drop.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--text);">Index positioning:</strong> Underweight IWM (small caps most rate-sensitive); neutral XLI; keep TLT/IEF as the hedge against any growth scare. Index P/E ceiling is the bond yield, not earnings.</p>
+        <div>
+          <span class="tag tag-bear">IWM underweight</span>
+          <span class="tag tag-watch">10Y caps SPY multiple</span>
+          <span class="tag tag-bull">TLT / IEF as growth hedge</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-heading" style="margin-top:32px;">Macro Signals to Track <span class="tag tag-watch">INDEX-LEVEL</span></div>
+    <p style="color:var(--muted);font-size:12px;margin-bottom:14px;">Each signal feeds a specific index-level decision (SPY weight, sector tilt, hedge sizing). These are what to monitor next, framed at the level a macro/index trader operates.</p>
+    <div class="catalyst-list">
+      <div class="catalyst">
+        <div class="catalyst-icon">📈</div>
+        <div>
+          <h4><span class="tag tag-watch">SIGNAL</span> AI Capex Breadth — SMH/QQQ Ratio</h4>
+          <p><strong>What to watch:</strong> Does AI demand broaden from accelerators (NVDA) into analog (ADI), memory, power, networking? <strong>How to read it:</strong> SMH outperforming QQQ &amp; equal-weight tech (RSPT) beating cap-weighted XLK both indicate a healthy, broad-based AI cycle — supportive of index EPS growth. Narrow leadership (NVDA carrying tech alone) is a late-cycle warning for the index.</p>
+          <span class="tag tag-bull">Broadening = index-bullish</span>
+          <span class="tag tag-watch">Narrow = top-heavy risk</span>
+        </div>
+      </div>
+      <div class="catalyst">
+        <div class="catalyst-icon">🛍️</div>
+        <div>
+          <h4><span class="tag tag-watch">SIGNAL</span> Consumer Health — XLP vs. XLY, XRT Breadth</h4>
+          <p><strong>What to watch:</strong> XLP/XLY ratio for defensive vs. cyclical consumer leadership; XRT breadth (% above 50-DMA) for retail health beyond mega-caps. <strong>How to read it:</strong> WMT/TGT confirm the low-end consumer is intact; XLP outperformance with low XRT breadth would signal a K-shape worsening. Together with credit-card delinquencies and labor data, this drives the recession-vs-soft-landing call.</p>
+          <span class="tag tag-bull">Soft-landing intact for now</span>
+          <span class="tag tag-watch">XRT breadth = early warning</span>
+        </div>
+      </div>
+      <div class="catalyst">
+        <div class="catalyst-icon">💼</div>
+        <div>
+          <h4><span class="tag tag-watch">SIGNAL</span> Corporate Software/IT Spend — IGV Relative Strength</h4>
+          <p><strong>What to watch:</strong> IGV vs. SPY relative strength as a proxy for enterprise IT budgets and AI software monetization. <strong>How to read it:</strong> WDAY/INTU guide raises argue services PMI and corporate capex hold up. A breakdown in IGV relative to SPY would be the earliest crack in the "AI productivity" narrative supporting current index multiples.</p>
+          <span class="tag tag-bull">IGV/SPY = AI productivity proxy</span>
+          <span class="tag tag-watch">RS breakdown = narrative crack</span>
+        </div>
+      </div>
+      <div class="catalyst">
+        <div class="catalyst-icon">📉</div>
+        <div>
+          <h4><span class="tag tag-watch">SIGNAL</span> Rates &amp; Cyclical Cycle — 10Y, IWM, XLI</h4>
+          <p><strong>What to watch:</strong> 10Y Treasury yield (currently <span data-live="yld10y">4.45%</span>, <span data-live="asOfShort">May 29</span>) vs. S&amp;P 500 forward earnings yield; IWM vs. SPY for cyclical / small-cap recovery confirmation; XLI breadth for industrial inflection. <strong>How to read it:</strong> Sustained 10Y move below ~4.3% would expand the index multiple and unlock IWM/XLI leadership. DE-style cyclicals confirming demand bottom would broaden the rally beyond mega-cap tech.</p>
+          <span class="tag tag-bear">10Y near 4.5% caps multiples</span>
+          <span class="tag tag-watch">IWM/SPY = breadth gauge</span>
+          <span class="tag tag-watch">XLI = industrial inflection</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-box" style="margin-top:24px;font-size:12px;">
+      <strong>Macro-trader framing:</strong> Treat earnings as inputs to four macro questions — (1) Is the AI capex cycle still expanding S&amp;P EPS? (2) Is the consumer holding up? (3) Are corporate budgets / services demand intact? (4) Are rates allowing multiple expansion? Each card above answers one of these and translates the read into an index-level tilt, not a stock pick.
+    </div>
+  </div>
+
+
+  <!-- ══════════════ MAY 18–22 WEEKLY EARNINGS ANALYSIS ══════════════ -->
+  <div class="section" id="tab-weeklyearnings">
+
+    <div style="margin-bottom:20px;">
+      <div class="section-heading">Week of May 18–22, 2026 — Macro Read From Earnings</div>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:16px;">Macro-trader lens · 10-name calendar treated as macro signals (consumer, AI capex, software demand, industrial cycle, rates) · Source: company IR pages, SEC filings, Reuters/LSEG, Nasdaq, FRED</p>
+      <div class="ec-snapshot">
+        <div class="ec-snap-item"><div class="ec-snap-v" style="color:var(--accent)">10</div><div class="ec-snap-l">Macro Signals</div></div>
+        <div class="ec-snap-item"><div class="ec-snap-v" style="color:var(--green)">10</div><div class="ec-snap-l">✅ Read In</div></div>
+        <div class="ec-snap-item"><div class="ec-snap-v" style="color:var(--accent)">0</div><div class="ec-snap-l">🕐 Pending</div></div>
+        <div class="ec-snap-item"><div class="ec-snap-v" style="color:var(--green)">7</div><div class="ec-snap-l">🟢 Macro Positive</div></div>
+        <div class="ec-snap-item"><div class="ec-snap-v" style="color:var(--yellow)">2</div><div class="ec-snap-l">⚪ Mixed / Stabilizing</div></div>
+        <div class="ec-snap-item"><div class="ec-snap-v" style="color:var(--red)">1</div><div class="ec-snap-l">🔴 Macro Negative</div></div>
+        <div class="ec-snap-item"><div class="ec-snap-v" style="color:var(--accent)" data-live="yld10y">4.45%</div><div class="ec-snap-l">10Y Hurdle (<span data-live="asOfShort">May 29</span>)</div></div>
+        <div class="ec-snap-item"><div class="ec-snap-v" style="color:var(--purple)">Soft-Landing</div><div class="ec-snap-l">Base-Case Read</div></div>
+      </div>
+    </div>
+
+    <!-- ── RANKING TABLE A — INDEX/SECTOR WEIGHT ── -->
+    <div class="section-heading" style="font-size:15px;margin-bottom:12px;">A. Index / Sector Signal Weight</div>
+    <p style="color:var(--muted);font-size:12px;margin-bottom:12px;">Companies ranked by how much their report moves the macro / index-level read — index EPS contribution, sector aggregate impact, and ETF read-through. Tickers shown as macro proxies, not trade ideas.</p>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:28px;overflow-x:auto;">
+      <table class="rank-table">
+        <thead>
+          <tr>
+            <th style="width:44px;">Rank</th>
+            <th>Proxy</th>
+            <th>Macro Role</th>
+            <th>Sector</th>
+            <th>Mkt Cap · Implied · 1M</th>
+            <th>Macro Read From Report</th>
+            <th>ETF / Index Lens</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="rank-num" style="color:var(--purple);">①</span></td>
+            <td style="font-weight:800;color:var(--accent);">NVDA</td>
+            <td style="font-size:12px;">AI capex cycle</td>
+            <td>Technology</td>
+            <td style="font-size:11px;color:var(--muted);">$5,386B · ±5.3% · +10.8%</td>
+            <td style="font-size:12px;">Clean beat and Q2 guide-up confirm hyperscaler AI capex is still scaling; ~7% S&P 500 weight alone — single largest driver of index EPS upside this print</td>
+            <td><span class="view-badge view-strong">SPY / QQQ / SMH</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--accent);">②</span></td>
+            <td style="font-weight:800;color:var(--accent);">WMT</td>
+            <td style="font-size:12px;">Low-end consumer</td>
+            <td>Consumer Defensive</td>
+            <td style="font-size:11px;color:var(--muted);">$1,070.7B · ±4.1% · +5.5%</td>
+            <td style="font-size:12px;">+4.1% US comps, +26% global eCom, +37% ad rev — household spending intact, no recession signal in real-time retail; supports soft-landing macro base case</td>
+            <td><span class="view-badge view-strong">XLP / XRT / SPY EPS</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--yellow);">③</span></td>
+            <td style="font-weight:800;color:var(--accent);">HD</td>
+            <td style="font-size:12px;">Housing / big-ticket</td>
+            <td>Consumer Cyclical</td>
+            <td style="font-size:11px;color:var(--muted);">$300.4B · ±4.2% · –14.3%</td>
+            <td style="font-size:12px;">+0.6% comps + reaffirmed FY26 = housing demand has stopped getting worse, but no inflection. Read-through to mortgage rates / housing-sensitive sectors stays neutral</td>
+            <td><span class="view-badge view-strong-neutral">XLY / XHB / IWM</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--yellow);">④</span></td>
+            <td style="font-weight:800;color:var(--accent);">ADI</td>
+            <td style="font-size:12px;">Analog/industrial semi cycle</td>
+            <td>Technology</td>
+            <td style="font-size:11px;color:var(--muted);">$204.2B · ±6.2% · +9.5%</td>
+            <td style="font-size:12px;">Record Q2 + strong Q3 guide signals the semi cycle is broadening beyond AI accelerators — bullish for industrial / auto / comms end-markets; supports broader tech earnings</td>
+            <td><span class="view-badge view-strong-neutral">SMH / XLK / XLI breadth</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--orange);">⑤</span></td>
+            <td style="font-weight:800;color:var(--accent);">LOW</td>
+            <td style="font-size:12px;">Housing confirm</td>
+            <td>Consumer Cyclical</td>
+            <td style="font-size:11px;color:var(--muted);">$122.4B · ±4.5% · –13.8%</td>
+            <td style="font-size:12px;">+0.6% comps and FY26 affirmed — second confirmation that home-improvement is bottoming, not inflecting. Housing remains a drag on cyclical leadership rotation</td>
+            <td><span class="view-badge view-neutral-pos">XHB / XLY</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--muted);">⑥</span></td>
+            <td style="font-weight:800;color:var(--accent);">TJX</td>
+            <td style="font-size:12px;">Value-seeking consumer</td>
+            <td>Consumer Cyclical</td>
+            <td style="font-size:11px;color:var(--muted);">$167.1B · ±3.1% · –5.5%</td>
+            <td style="font-size:12px;">Off-price strength = mid/low-income consumer trading down. Useful K-shape gauge — bullish for off-price, neutral-to-bearish for full-price discretionary</td>
+            <td><span class="view-badge view-neutral">XRT / K-shape gauge</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--muted);">⑦</span></td>
+            <td style="font-weight:800;color:var(--accent);">DE</td>
+            <td style="font-size:12px;">Industrial / ag cycle</td>
+            <td>Industrials</td>
+            <td style="font-size:11px;color:var(--muted);">$151.2B · ±4.7% · –6.0%</td>
+            <td style="font-size:12px;">EPS beat ($6.55 vs $5.81) and revenue beat ($13.37B vs $11.6B), but stock fell 7.5% due to 14% drop in Production &amp; Precision Ag, confirming farm cycle trough. Bearish read for industrial rotation.</td>
+            <td><span class="view-badge view-weak">XLI / IWM / DBA</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--muted);">⑧</span></td>
+            <td style="font-weight:800;color:var(--accent);">INTU</td>
+            <td style="font-size:12px;">SMB / tax-season spend</td>
+            <td>Technology</td>
+            <td style="font-size:11px;color:var(--muted);">$111.7B · ±7.5% · –1.0%</td>
+            <td style="font-size:12px;">Strong Q3 + FY26 raise = SMB software spend healthy; restructuring shows margin discipline. Supportive of services-side PMI and tech-sector earnings durability</td>
+            <td><span class="view-badge view-neutral">IGV / Services PMI</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--muted);">⑨</span></td>
+            <td style="font-weight:800;color:var(--accent);">TGT</td>
+            <td style="font-size:12px;">Mid-income discretionary</td>
+            <td>Consumer Defensive</td>
+            <td style="font-size:11px;color:var(--muted);">$57.0B · ±6.8% · –3.5%</td>
+            <td style="font-size:12px;">+5.6% comps and +4.4% traffic = discretionary demand recovering at the margin. Confirms WMT signal — broader consumer floor in place, supports soft-landing read</td>
+            <td><span class="view-badge view-neutral">XRT / XLY breadth</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--muted);">⑩</span></td>
+            <td style="font-weight:800;color:var(--accent);">WDAY</td>
+            <td style="font-size:12px;">Enterprise SaaS / HR tech</td>
+            <td>Technology</td>
+            <td style="font-size:11px;color:var(--muted);">$34.3B · ±9.3% · +1.1%</td>
+            <td style="font-size:12px;">EPS beat ($2.66 vs $2.56) and revenue beat ($2.542B, +13.5%). Raised FY27 non-GAAP margin guidance to 30.5%. Stock surged 9.5% after-hours, confirming software resilience.</td>
+            <td><span class="view-badge view-strong">IGV / Corp capex proxy</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── RANKING TABLE B — MACRO SIGNAL DECOMPOSITION ── -->
+    <div class="section-heading" style="font-size:15px;margin-bottom:12px;">B. Macro Signal Decomposition</div>
+    <p style="color:var(--muted);font-size:12px;margin-bottom:12px;">Each report mapped to the macro narrative it informs (AI capex, consumer, housing, software demand, industrial cycle), the direction of the signal, and the index-level positioning implication.</p>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:32px;overflow-x:auto;">
+      <table class="rank-table">
+        <thead>
+          <tr>
+            <th style="width:44px;">#</th>
+            <th>Proxy</th>
+            <th>Macro Signal Informed</th>
+            <th>Signal Direction</th>
+            <th>Index / Sector Implication</th>
+            <th>Narrative Shift</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="rank-num" style="color:var(--purple);">①</span></td>
+            <td style="font-weight:800;color:var(--accent);">NVDA</td>
+            <td style="font-size:12px;">AI infrastructure / hyperscaler capex cycle</td>
+            <td style="font-size:12px;color:var(--green);font-weight:600;">↑ Positive</td>
+            <td style="font-size:12px;">Supports QQQ/SMH leadership; sustains above-trend S&P 500 EPS growth via tech contribution</td>
+            <td><span class="view-badge view-strong">AI capex cycle intact</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--accent);">②</span></td>
+            <td style="font-weight:800;color:var(--accent);">WMT</td>
+            <td style="font-size:12px;">Low-end consumer demand / household spending</td>
+            <td style="font-size:12px;color:var(--green);font-weight:600;">↑ Positive</td>
+            <td style="font-size:12px;">No recession signal in real-time retail; supports soft-landing base case → constructive for SPY EPS path</td>
+            <td><span class="view-badge view-strong">Soft-landing confirmed</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--yellow);">③</span></td>
+            <td style="font-weight:800;color:var(--accent);">HD</td>
+            <td style="font-size:12px;">Housing / big-ticket discretionary</td>
+            <td style="font-size:12px;color:var(--yellow);font-weight:600;">→ Stabilizing</td>
+            <td style="font-size:12px;">Housing demand has stopped getting worse but hasn't inflected; argues XHB/IWM lag continues until rates fall</td>
+            <td><span class="view-badge view-strong-neutral">Housing floor, not upcycle</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--yellow);">④</span></td>
+            <td style="font-weight:800;color:var(--accent);">ADI</td>
+            <td style="font-size:12px;">Analog/industrial semi cycle broadening</td>
+            <td style="font-size:12px;color:var(--green);font-weight:600;">↑ Positive</td>
+            <td style="font-size:12px;">Semi recovery broadening beyond AI → bullish SMH breadth; supportive read for industrial / auto / comms end-markets</td>
+            <td><span class="view-badge view-strong-neutral">Semi cycle broadening</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--orange);">⑤</span></td>
+            <td style="font-weight:800;color:var(--accent);">LOW</td>
+            <td style="font-size:12px;">Housing demand confirm</td>
+            <td style="font-size:12px;color:var(--yellow);font-weight:600;">→ Stabilizing</td>
+            <td style="font-size:12px;">Second confirmation of housing bottom — no inflection; cyclical rotation case still on hold</td>
+            <td><span class="view-badge view-strong-neutral">Housing bottom confirmed</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--muted);">⑥</span></td>
+            <td style="font-weight:800;color:var(--accent);">TJX</td>
+            <td style="font-size:12px;">K-shape / trade-down dynamics</td>
+            <td style="font-size:12px;color:var(--yellow);font-weight:600;">→ Trade-down ongoing</td>
+            <td style="font-size:12px;">Off-price strength = mid/low-income trading down; supports XLP-over-XLY tilt at the index level</td>
+            <td><span class="view-badge view-neutral">K-shape persists</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--muted);">⑦</span></td>
+            <td style="font-weight:800;color:var(--accent);">DE</td>
+            <td style="font-size:12px;">Industrial / ag cycle inflection</td>
+            <td style="font-size:12px;color:var(--red);font-weight:600;">↓ Negative (Market Reaction)</td>
+            <td style="font-size:12px;">Trough ag demand + 7.5% drop confirms cyclical leadership rotation (QQQ → XLI/IWM) remains premature</td>
+            <td><span class="view-badge view-weak">Ag segment trough / sell-off</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--muted);">⑧</span></td>
+            <td style="font-weight:800;color:var(--accent);">INTU</td>
+            <td style="font-size:12px;">SMB software spend / services PMI proxy</td>
+            <td style="font-size:12px;color:var(--green);font-weight:600;">↑ Positive</td>
+            <td style="font-size:12px;">Corporate / SMB IT budgets intact → supports services PMI strength and IGV/XLK earnings durability</td>
+            <td><span class="view-badge view-neutral">Corporate IT spend intact</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--muted);">⑨</span></td>
+            <td style="font-weight:800;color:var(--accent);">TGT</td>
+            <td style="font-size:12px;">Mid-income discretionary confirm</td>
+            <td style="font-size:12px;color:var(--green);font-weight:600;">↑ Positive</td>
+            <td style="font-size:12px;">Discretionary demand recovering at the margin; broader consumer floor in place — confirms WMT signal</td>
+            <td><span class="view-badge view-neutral-pos">Discretionary stabilizing</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-num" style="color:var(--muted);">⑩</span></td>
+            <td style="font-weight:800;color:var(--accent);">WDAY</td>
+            <td style="font-size:12px;">Enterprise SaaS demand / AI monetization</td>
+            <td style="font-size:12px;color:var(--green);font-weight:600;">↑ Positive</td>
+            <td style="font-size:12px;">Enterprise IT budgets durable; AI monetization expanding margins → reinforces tech-sector EPS contribution to index</td>
+            <td><span class="view-badge view-strong">Post-earnings breakout</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── COMPANY CARDS ── -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+      <div class="section-heading" style="font-size:15px;margin-bottom:0;">Company-Level Analysis</div>
+      <span style="font-size:12px;color:var(--muted);">Click any row to expand ↓</span>
+    </div>
+    <div class="ec-filter-bar">
+      <button class="ec-filter-btn active" onclick="filterEarningsCards('all',this)">All (10)</button>
+      <button class="ec-filter-btn" onclick="filterEarningsCards('reported',this)">✅ Reported (10)</button>
+      <button class="ec-filter-btn" onclick="filterEarningsCards('upcoming',this)">🕐 Pending (0)</button>
+      <button class="ec-filter-btn" onclick="filterEarningsCards('bull',this)">🟢 Bull Bias</button>
+      <button class="ec-filter-btn" onclick="filterEarningsCards('bear',this)">🔴 Bear Bias</button>
+      <button class="ec-filter-btn" onclick="filterEarningsCards('neutral',this)">⚪ Neutral</button>
+    </div>
+    <div id="earningsCardsGrid" style="display:flex;flex-direction:column;gap:8px;margin-bottom:36px;"></div>
+
+    <!-- ── WEEKLY MACRO SYNTHESIS ── -->
+    <div class="section-heading" style="font-size:15px;margin-bottom:14px;">Weekly Macro Synthesis</div>
+    <div class="card" style="margin-bottom:24px;">
+      <p style="font-size:13px;color:var(--muted);line-height:1.8;">
+        The week's prints add up to a <strong style="color:var(--text);">soft-landing-confirming macro tape:</strong> AI capex still scaling, consumer intact, software demand durable, cyclicals bottoming but not inflecting, rates still capping the multiple.
+        <br><br>
+        <strong style="color:var(--text);">AI capex (NVDA + ADI)</strong> — NVDA's $81.6B revenue, $75.2B data-center, and ~$91B Q2 guide confirm hyperscaler AI capex remains in expansion mode; ADI broadens the signal into analog/industrial semis. Net: tech sector contribution to S&amp;P EPS stays elevated, keeping QQQ/SMH leadership intact.
+        <br><br>
+        <strong style="color:var(--text);">Consumer (WMT, TGT, HD, LOW, TJX)</strong> — WMT's US comps +4.1%, eCom +26%, ad rev +37% signals durable low-end household spending — no recession in real-time retail data. TGT (+5.6% comps, +4.4% traffic) confirms discretionary stabilization. HD/LOW at +0.6% comps mark a housing floor without inflection. TJX strength confirms K-shape / trade-down dynamics persist. Net: <strong style="color:var(--text);">soft-landing base case strengthened</strong>, XLP-over-XLY tilt warranted, XHB/IWM lag continues until rates fall.
+        <br><br>
+        <strong style="color:var(--text);">Software / corporate IT (INTU, WDAY)</strong> — INTU raised FY26 guide; WDAY reported Q1 FY27 Non-GAAP EPS of $2.66 (vs. $2.56 est.) and revenue of $2.542B (+13.5% YoY), reiterating its FY27 subscription revenue guide while raising non-GAAP operating margin guidance to 30.5%. WDAY surged ~9.5% in after-hours. Translation: enterprise + SMB IT budgets are intact and margin expansion is accelerating. Bullish for services PMI and IGV/XLK index-level earnings durability.
+        <br><br>
+        <strong style="color:var(--text);">Industrial / rates (DE, 10Y at 4.45%)</strong> — DE reported Q2 FY26 GAAP EPS of $6.55 (vs. $5.81 est.) on revenues of $13.37B (vs. $11.6B est.), but the stock fell 7.5% as Production &amp; Precision Ag segment sales fell 14% YoY, signaling a clear ag-cycle trough. The 10Y at 4.45% (May 29) caps index multiples, meaning cyclical rotation (QQQ → XLI/IWM) remains premature.
+        <br><br>
+        <strong style="color:var(--text);">Gaming / Consumer Tech (TTWO)</strong> — TTWO beat bookings guidance ($1.58B vs. $1.50B est.) and confirmed Grand Theft Auto VI release date for November 19, 2026, while projecting ~20% bookings growth in FY27. The stock rose ~7% after-hours on relief that release window has not slipped. Net: positive read-through for broader gaming and interactive media (EA, SONY).
+        <br><br>
+        <strong style="color:var(--text);">Index-level read:</strong> stay constructive on SPY/QQQ via earnings strength, maintain defensive/growth software tilt (XLP, IGV/XLK), keep TLT/IEF as hedge for any growth scare, underweight IWM and XHB until rates decline.
+      </p>
+    </div>
+
+    <!-- ── INDEX-LEVEL POSITIONING CHECKLIST ── -->
+    <div class="section-heading" style="font-size:15px;margin-bottom:16px;">⚡ Index-Level Positioning Checklist</div>
+    <p style="color:var(--muted);font-size:12px;margin-bottom:14px;">Each item is an index/ETF-level call derived from the week's macro signals — what to overweight, underweight, or hedge. No single-stock trades.</p>
+    <div class="action-grid">
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(188,140,255,.12);">📈</div>
+        <h4>SPY / QQQ — Stay Constructive</h4>
+        <p>AI capex (NVDA, ADI) + durable consumer (WMT, TGT) + intact software (INTU, WDAY) keep S&amp;P 500 EPS growth on track. Earnings strength supports above-trend index path. Reduce only if rates back up materially or breadth narrows.</p>
+        <div><span class="tag tag-bull">SPY / QQQ overweight</span><span class="tag tag-watch">Re-check on 10Y break above 4.8%</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">🛡️</div>
+        <h4>XLP &gt; XLY — Defensive Tilt</h4>
+        <p>TJX strength + WMT's low-end resilience + housing stabilization without inflection = K-shape persists. Defensive consumer (XLP) deserves overweight versus full-price discretionary (XLY). No recession signal, but no broad cyclical reacceleration either.</p>
+        <div><span class="tag tag-bull">XLP overweight</span><span class="tag tag-watch">XLY tactical only</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(88,166,255,.12);">💻</div>
+        <h4>IGV / XLK — Maintain Tech Overweight</h4>
+        <p>WDAY's margin guide raise + INTU's FY26 raise confirm enterprise / SMB IT spend is durable and AI monetization is now expanding margins. Software now contributes both revenue growth and margin expansion to index EPS. Leading indicator to monitor: bookings deceleration.</p>
+        <div><span class="tag tag-bull">IGV / XLK overweight</span><span class="tag tag-watch">Bookings = early warning</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(123,94,167,.12);">🔌</div>
+        <h4>SMH — Watch Breadth</h4>
+        <p>NVDA + ADI together support a broader SMH bull case. Confirmation comes from SMH outperforming QQQ and RSPT (equal-weight tech) beating XLK. Narrow leadership (NVDA alone) is a late-cycle warning, not a buy signal.</p>
+        <div><span class="tag tag-bull">SMH constructive on broadening</span><span class="tag tag-bear">Narrow = top-heavy risk</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(248,81,73,.12);">📉</div>
+        <h4>IWM / XHB — Underweight</h4>
+        <p>10Y at 4.45% caps small-cap and housing multiples; DE/HD/LOW confirm cyclical/housing demand has bottomed but not inflected. Stay underweight IWM and XHB; wait for a 10Y break below ~4.3% before rotating into rate-sensitive sectors.</p>
+        <div><span class="tag tag-bear">IWM / XHB underweight</span><span class="tag tag-watch">10Y &lt; 4.3% would flip this</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(210,153,34,.12);">🛟</div>
+        <h4>TLT / IEF — Growth-Scare Hedge</h4>
+        <p>With multiple expansion gated by yields and industrial cycle still bottoming, keep duration exposure (TLT/IEF) as the hedge against any growth scare. A reflexive rally in bonds on weak data would simultaneously help SPY multiple and IWM/XHB rotation case.</p>
+        <div><span class="tag tag-bull">Duration as hedge</span><span class="tag tag-watch">Asymmetric on growth disappointment</span></div>
+      </div>
+    </div>
+
+    <div class="insight-box" style="margin-top:20px;font-size:12px;">
+      <strong>Disclaimer:</strong> This is research and analysis only, not personalized financial advice. Sources: company IR releases for NVIDIA, Walmart, Lowe's, Target, Analog Devices, Intuit, Home Depot; Nasdaq and Reuters/LSEG calendar context; SEC filings where available. Consult a qualified financial advisor before making investment decisions.
+    </div>
+
+  </div><!-- /tab-weeklyearnings -->
+
+  <!-- ══════════════ CALL THEMES ══════════════ -->
+  <div class="section" id="tab-themes">
+    <div class="section-heading">Key Themes From Earnings Calls</div>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:8px;">What management teams emphasized this season, distilled to one read per theme with a directional sentiment. Net effect across themes is <strong style="color:var(--text);">favorable-to-neutral for markets</strong> — AI/cloud demand the standout positive; consumer, housing and labor the cautionary notes.</p>
+    <p style="color:var(--muted);font-size:12px;margin-bottom:18px;">
+      <span class="tag tag-bull">🟢 Positive</span>
+      <span class="tag tag-watch">⚪ Mixed / Neutral</span>
+      <span class="tag tag-bear">🔴 Negative</span>
+      &nbsp;·&nbsp; Source: Q1 2026 earnings-season report, season-to-date (<span data-live="q1Reported">94%</span> reported, late May 2026)
+    </p>
+
+    <div class="action-grid">
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">🤖</div>
+        <h4><span class="tag tag-bull">POSITIVE</span> AI &amp; Related Capex</h4>
+        <p>Most-cited theme of the season. Semis-to-servers-to-software reported massive AI-driven demand; NVDA's guide implied a large data-center capex leap, CAT cited an "AI data-center boom" for power equipment, Oracle guiding toward ~$90B revenue by 2027.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">☁️</div>
+        <h4><span class="tag tag-bull">POSITIVE</span> Cloud Spending</h4>
+        <p>Robust across providers: Azure +40%, Google Cloud +63%, AWS +28%. No broad complaints of enterprise IT cuts — calls emphasized ongoing digital transformation.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">🏗️</div>
+        <h4><span class="tag tag-bull">POSITIVE</span> Data-Center / Backbone Capex</h4>
+        <p>Spend on servers, networking and industrial gear rising. Broadcom sold $8.4B of AI chips (+106%); data-center REITs raised outlooks. Sustained IT infrastructure investment.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(210,153,34,.12);">🛒</div>
+        <h4><span class="tag tag-watch">NEUTRAL → NEG.</span> Consumer Spending</h4>
+        <p>Mixed signals. Several retailers note trade-down and energy-cost sensitivity (WMT flagged ~$175M fuel impact). Homebuilders beat but warned of margin give-back via incentives. Demand intact but pressured by inflation.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(139,148,158,.12);">🏦</div>
+        <h4><span class="tag tag-watch">NEUTRAL</span> Credit Quality / Loan Growth</h4>
+        <p>Banks say credit remains solid; no widespread loss warnings. Modest loan growth as high rates slow refinancing. Credit still a tailwind for banks without material risk.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">📣</div>
+        <h4><span class="tag tag-bull">POSITIVE</span> Advertising Demand</h4>
+        <p>Online ad markets strong. Meta: impressions +19%, price +12%. Alphabet total revenue +22% on core ad strength. Digital ad demand held up despite budget concerns.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">💻</div>
+        <h4><span class="tag tag-bull">POSITIVE</span> Enterprise Software / IT</h4>
+        <p>Many SaaS names noted accelerated deals; AI/automation boosting software spend (Oracle, IBM optimistic). Few warnings of corporate IT pullbacks.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">⚙️</div>
+        <h4><span class="tag tag-bull">POSITIVE</span> Industrial Demand</h4>
+        <p>CAT and BA emphasized firm backlogs; construction and power segments at historically high orders tied to infrastructure and datacenters. Machinery producers report solid global demand.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(248,81,73,.12);">🏠</div>
+        <h4><span class="tag tag-bear">NEGATIVE</span> Housing / Real Estate</h4>
+        <p>High mortgage rates slowing starts. D.R. Horton expects lower margins next quarter on incentives; apartment REITs note rising vacancies. Industrial/logistics REITs healthier, but housing broadly under strain.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(210,153,34,.12);">🛢️</div>
+        <h4><span class="tag tag-watch">MIXED</span> Energy Demand</h4>
+        <p>Producers cite high demand and prices, but results mixed (Exxon profit fell despite oil &gt;$90). Utilities note higher fuel costs but have rate-hike pricing power. Supply disruptions add volatility.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(210,153,34,.12);">🚢</div>
+        <h4><span class="tag tag-watch">MIXED → NEUT.</span> Tariffs / Trade / Supply Chains</h4>
+        <p>A few names (CAT, DOW) flagged higher tariff and shipping costs; some improvements noted. CEOs broadly feel supply chains easing — few inventory issues — but supplier price inflation persists.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(248,81,73,.12);">👷</div>
+        <h4><span class="tag tag-watch">MIXED → NEG.</span> Labor Costs</h4>
+        <p>Wage inflation persists (mid-to-high single digits); tech firms restructuring to manage staffing costs. One of the main cost pressures cited — a modest margin headwind ahead.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">🏷️</div>
+        <h4><span class="tag tag-bull">POSITIVE</span> Pricing Power</h4>
+        <p>Many companies still able to raise prices without losing customers. Staples and pharma benefited; airlines/autos passed fuel and material costs through. Helped offset cost inflation.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">💸</div>
+        <h4><span class="tag tag-bull">POSITIVE</span> Capital Returns / Buybacks</h4>
+        <p>Hefty buybacks announced post-earnings (Apple $100B, Nvidia $25B, etc.), signaling management confidence and boosting EPS.</p>
+      </div>
+    </div>
+
+    <div class="insight-box" style="margin-top:20px;">
+      <strong>Net read:</strong> The dominance of AI / cloud / data-center demand is the strong positive thread; pricing power, ads, software, industrials and buybacks reinforce it. The cautionary cluster — consumer, housing, labor — is real but contained, consistent with a soft-landing rather than a downturn.
+    </div>
+  </div><!-- /tab-themes -->
+
+  <!-- ══════════════ STRATEGY ══════════════ -->
+  <div class="section" id="tab-strategy">
+    <div class="section-heading">ETF &amp; Sector Strategy <span class="tag tag-watch">MACRO LENS</span></div>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">Index/ETF positioning implied by the season's results — leadership in AI/cloud, cyclicals firming, defensives and rate-sensitives lagging. Ratings are relative tilts, not single-stock calls.</p>
+
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:28px;overflow-x:auto;">
+      <table class="sector-table">
+        <thead>
+          <tr><th>ETF</th><th>Exposure</th><th>Rating</th><th>Rationale</th></tr>
+        </thead>
+        <tbody>
+          <tr><td style="font-weight:700;color:var(--accent);">QQQ</td><td>Nasdaq 100</td><td><span class="view-badge view-strong">Overweight</span></td><td style="font-size:12px;">Most exposed to AI/cloud winners (AAPL, MSFT, NVDA, AMZN). Clear beneficiary if momentum holds.</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">XLK</td><td>Technology</td><td><span class="view-badge view-strong">Overweight</span></td><td style="font-size:12px;">Pure play on the strongest sector — highest EPS growth and beat rates; current market leader.</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">XLC</td><td>Comm. Services</td><td><span class="view-badge view-strong">Overweight</span></td><td style="font-size:12px;">Digital-ad + cloud strength (GOOGL, META). Growth catalysts intact.</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">XLF</td><td>Financials</td><td><span class="view-badge view-strong">Overweight</span></td><td style="font-size:12px;">Solid bank results on higher rates and trading; cheap vs market; rising net interest margins.</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">XLI</td><td>Industrials</td><td><span class="view-badge view-strong">Overweight</span></td><td style="font-size:12px;">AI capex, infrastructure and manufacturing rebound; strong backlogs (CAT, BA).</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">XLB</td><td>Materials</td><td><span class="view-badge view-strong">Overweight</span></td><td style="font-size:12px;">Tight supply lifting chemicals/metals pricing (DOW guide up). Upside if supply stays tight.</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">SPY / VOO / IVV</td><td>S&amp;P 500</td><td><span class="view-badge view-strong-neutral">Neutral – Mod. OW</span></td><td style="font-size:12px;">Fairly priced but earnings solid; cap-weight driven by mega-cap tech. Overweight only if leadership persists.</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">XLY</td><td>Consumer Disc.</td><td><span class="view-badge view-neutral">Neutral</span></td><td style="font-size:12px;">E-commerce strong; brick-and-mortar cautious; rates pinch. Await clearer consumer trend.</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">XLV</td><td>Health Care</td><td><span class="view-badge view-neutral">Neutral</span></td><td style="font-size:12px;">Defensive, modest growth; pipeline offset by patent cliffs; valuations full.</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">XLP</td><td>Staples</td><td><span class="view-badge view-neutral">Neutral</span></td><td style="font-size:12px;">Steady demand, low growth, input-cost margin squeeze. Defensive ballast, not a leader.</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">XLE</td><td>Energy</td><td><span class="view-badge view-neutral">Neutral</span></td><td style="font-size:12px;">Mixed: high oil aids top line but disruptions limit output; profits fell at majors. Market-weight.</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">XLU</td><td>Utilities</td><td><span class="view-badge view-weak">Underweight</span></td><td style="font-size:12px;">No growth, rate-sensitive, lacks catalysts.</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">XLRE</td><td>Real Estate</td><td><span class="view-badge view-weak">Underweight</span></td><td style="font-size:12px;">High cap rates + financing costs; office/residential weak.</td></tr>
+          <tr><td style="font-weight:700;color:var(--accent);">RSP</td><td>S&amp;P Equal Weight</td><td><span class="view-badge view-weak">Underweight</span></td><td style="font-size:12px;">Less tech, more cyclicals/defensives — lags cap-weight until leadership broadens.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCENARIOS -->
+    <div class="section-heading" style="font-size:16px;margin-bottom:12px;">Bullish · Neutral · Bearish Scenarios</div>
+    <div class="scenario-grid" style="margin-bottom:28px;">
+      <div class="scenario-box scenario-bull">
+        <div class="scenario-title">🟢 Bullish</div>
+        <p>Guidance keeps rising (2026 EPS &gt;20%) and beats broaden beyond tech into mid-caps. Inflation eases → Fed cuts sooner; long rates fall or stabilize. AI revenues (cloud, software, chips) ramp as expected; consumer rebounds modestly. Valuations stay justified and the market extends its run.</p>
+      </div>
+      <div class="scenario-box scenario-base">
+        <div class="scenario-title">⚪ Neutral / Base</div>
+        <p>Most results and guidance already priced in. Strong earnings keep prices elevated but further gains stall. Mixed guidance keeps investors cautious; growth slows to trend. High valuations cap upside; leadership stays narrow (tech/AI). Stocks drift sideways in a high range.</p>
+      </div>
+      <div class="scenario-box scenario-bear">
+        <div class="scenario-title">🔴 Bearish</div>
+        <p>Analysts cut 2026 estimates as forward weakness emerges; guidance softens. Inflation re-accelerates → Fed higher-for-longer, yields spike. Margins compress; "sell the news" on AI hype. A shock (geopolitics, China, credit) hits. P/E multiples contract and SPX gives back gains.</p>
+      </div>
+    </div>
+
+    <!-- TOP 5 TAKEAWAYS -->
+    <div class="section-heading" style="font-size:16px;margin-bottom:12px;">Top 5 Market-Moving Takeaways</div>
+    <div class="action-grid" style="margin-bottom:28px;">
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">①</div>
+        <h4>Earnings Surprises Far Exceed Norms</h4>
+        <p>84% beat EPS and blended growth ~28.4% vs ~13% expected at quarter-end — one of the strongest quarters in ~20 years. Demonstrates healthy earnings momentum across most sectors.</p>
+        <div><span class="tag tag-bull">SPX: Bullish</span><span class="tag tag-watch">Test: upcoming misses</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(248,81,73,.12);">②</div>
+        <h4>Tech/AI Dominance — Narrow Leadership</h4>
+        <p>GOOGL, AMZN and META alone drove the bulk of the aggregate growth. Top-heavy index: if the giants stumble, the whole index suffers. XLK/XLC benefit; RSP and defensives lose.</p>
+        <div><span class="tag tag-bear">SPX: Neutral/Bearish</span><span class="tag tag-watch">Test: non-tech breadth</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">③</div>
+        <h4>Historic Margin Strength</h4>
+        <p>Net profit margin ~14.8% — the best in FactSet's tracking history. Pricing power, scale, and efficiency offsetting inflation; EPS outpacing revenue underpins the beats.</p>
+        <div><span class="tag tag-bull">SPX: Bullish</span><span class="tag tag-watch">Test: input/wage spike</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(63,185,80,.12);">④</div>
+        <h4>Upward Guidance &amp; Revisions</h4>
+        <p>Q2 outlooks remain mixed but estimates moved higher; analysts lifted the Q2 EPS estimate by ~2.5% and the CY2026 EPS estimate by ~5.3% from March 31 to May 28. Upward revisions signal confidence — most raises remain concentrated in tech, industrials, and staples.</p>
+        <div><span class="tag tag-bull">SPX: Bullish</span><span class="tag tag-watch">Test: Q2 guidance cuts</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:rgba(248,81,73,.12);">⑤</div>
+        <h4>Valuations Are Stretched</h4>
+        <p>~21.1× forward EPS, above long-term norms. Earnings yield (~4.7%) barely exceeds the 10-yr — a thin equity risk premium. Little upside cushion; bulls need continued acceleration.</p>
+        <div><span class="tag tag-bear">SPX: Neutral/Bearish</span><span class="tag tag-watch">Test: rates rise / growth slips</span></div>
+      </div>
+    </div>
+
+    <!-- FINAL VIEW -->
+    <div class="section-heading" style="font-size:16px;margin-bottom:12px;">Final Investment View</div>
+    <div class="grid-2" style="gap:20px;">
+      <div class="card">
+        <div class="card-title">Season Scorecard</div>
+        <div class="stat-row"><span class="stat-label">Earnings Quality</span><span class="stat-value" style="color:var(--green)">Strong</span></div>
+        <div class="stat-row"><span class="stat-label">Revenue Quality</span><span class="stat-value" style="color:var(--yellow)">Mixed</span></div>
+        <div class="stat-row"><span class="stat-label">Margin Trend</span><span class="stat-value" style="color:var(--green)">Expanding</span></div>
+        <div class="stat-row"><span class="stat-label">Guidance Trend</span><span class="stat-value" style="color:var(--yellow)">Mixed</span></div>
+        <div class="stat-row"><span class="stat-label">Market Reaction</span><span class="stat-value" style="color:var(--green)">Neutral / Positive</span></div>
+        <div class="stat-row"><span class="stat-label">SPX Outlook</span><span class="stat-value" style="color:var(--accent)">Neutral / Bullish</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Strategy Summary</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;">Q1 earnings confirmed healthy corporate results but reiterated a tech-led advance. <strong style="color:var(--text);">Overweight</strong> technology and industrial cyclicals; <strong style="color:var(--text);">neutral</strong> on broad cap-weight (SPX ETFs) and discretionary; <strong style="color:var(--text);">underweight</strong> defensives (utilities/REITs) that haven't shown growth.</p>
+        <div class="insight-box" style="margin-top:14px;">
+          <strong>Watch:</strong> whether earnings revisions stay positive and whether rates stabilize. Strong fundamentals and AI optimism support the rally short-term; longer-term, SPX needs mid-teens EPS growth just to justify current multiples. Favor current leaders (AI/cloud) while monitoring for fading momentum.
+        </div>
+      </div>
+    </div>
+  </div><!-- /tab-strategy -->
+
+</div><!-- /main -->
+
+<script>
+// ── DATA ──────────────────────────────────────────────
+const sectorData = [
+  { name: 'Information Technology', eps: 53.4, rev: 29.8, margin: 30.0, priorMargin: 25.4, pe: 24.6, view: 'strong', viewLabel: 'Strong' },
+  { name: 'Communication Services', eps: 48.9, rev: 15.1, margin: 20.7, priorMargin: 16.0, pe: 21.6, view: 'strong', viewLabel: 'Strong' },
+  { name: 'Materials', eps: 42.5, rev: 9.2, margin: 10.7, priorMargin: 8.2, pe: 18.0, view: 'neutral-pos', viewLabel: 'Neutral to Positive' },
+  { name: 'Consumer Discretionary', eps: 40.4, rev: 9.6, margin: 11.0, priorMargin: 8.7, pe: 26.9, view: 'neutral', viewLabel: 'Neutral' },
+  { name: 'Financials', eps: 21.8, rev: 10.9, margin: 20.4, priorMargin: 18.6, pe: 14.6, view: 'strong-neutral', viewLabel: 'Strong to Neutral' },
+  { name: 'Industrials', eps: 20.9, rev: 8.1, margin: 11.3, priorMargin: 10.2, pe: 25.3, view: 'neutral', viewLabel: 'Neutral' },
+  { name: 'Utilities', eps: 17.7, rev: 14.3, margin: 15.3, priorMargin: 14.6, pe: 18.2, view: 'neutral-pos', viewLabel: 'Neutral to Positive' },
+  { name: 'Real Estate', eps: 7.6, rev: 11.0, margin: 33.5, priorMargin: 35.1, pe: 18.6, view: 'neutral', viewLabel: 'Neutral' },
+  { name: 'Consumer Staples', eps: 6.1, rev: 7.0, margin: 6.1, priorMargin: 6.2, pe: 22.5, view: 'neutral-weak', viewLabel: 'Neutral to Weak' },
+  { name: 'Energy', eps: 0.6, rev: 4.1, margin: 7.8, priorMargin: 8.1, pe: 14.4, view: 'neutral-pos', viewLabel: 'Neutral to Tactically Positive' },
+  { name: 'Health Care', eps: -3.1, rev: 7.0, margin: 7.9, priorMargin: 8.7, pe: 16.6, view: 'weak', viewLabel: 'Weak' },
+];
+
+const mag7Data = [
+  {
+    name: 'Microsoft', ticker: 'MSFT', reaction: 'mixed', reactionLabel: 'Muted / Mixed',
+    revenue: '$82.9B', revenueGrowth: '+18%',
+    keyMetrics: [
+      { label: 'Azure & Cloud Growth', value: '+40%', up: true },
+      { label: 'AI Annual Run Rate', value: '$37B+', up: true },
+      { label: 'Commercial RPO', value: '$627B', up: true },
+      { label: '2026 Capex Plan', value: '$190B', up: false },
+    ],
+    note: 'Clear AI monetization at scale, but gross margin fell YoY from AI infrastructure costs. Stock muted — investors liked demand, worried about spend intensity.',
+    aiLabel: 'AI Leader'
+  },
+  {
+    name: 'Alphabet', ticker: 'GOOGL', reaction: 'up', reactionLabel: 'Positive',
+    revenue: '$109.9B', revenueGrowth: '+22%',
+    keyMetrics: [
+      { label: 'Google Cloud Growth', value: '+63%', up: true },
+      { label: 'Cloud Op. Income', value: '$6.6B', up: true },
+      { label: 'GenAI Revenue', value: '+~800%', up: true },
+      { label: '2026 Capex Plan', value: '$180-190B', up: false },
+    ],
+    note: '"Cleanest quarter of the season." Investors could already see strong revenue and margin conversion from spending — unlike Meta and Microsoft.',
+    aiLabel: 'AI Leader'
+  },
+  {
+    name: 'Amazon', ticker: 'AMZN', reaction: 'up', reactionLabel: 'Positive',
+    revenue: '$181.5B', revenueGrowth: '+17%',
+    keyMetrics: [
+      { label: 'AWS Revenue Growth', value: '+28%', up: true },
+      { label: 'AWS Op. Income', value: '$14.2B', up: true },
+      { label: 'Ad Revenue Growth', value: '+24%', up: true },
+      { label: '2026 AI Target', value: '~$200B', up: false },
+    ],
+    note: 'Investors could see both near-term demand and credible medium-term payoff from AI infrastructure. Q2 guidance solid at $194-199B net sales.',
+    aiLabel: 'AI Leader'
+  },
+  {
+    name: 'Meta', ticker: 'META', reaction: 'down', reactionLabel: '–6% post-print',
+    revenue: '$56.3B', revenueGrowth: '+33%',
+    keyMetrics: [
+      { label: 'Ad Impressions', value: '+19%', up: true },
+      { label: 'Avg Ad Price', value: '+12%', up: true },
+      { label: 'Operating Margin', value: '41%', up: true },
+      { label: '2026 Capex Range', value: '$125-145B', up: false },
+    ],
+    note: 'Clearest "good earnings, harder question." Ad monetization is real, but shareholders want visibility on how today\'s infrastructure spending translates to per-share earnings.',
+    aiLabel: 'AI Investing'
+  },
+  {
+    name: 'Apple', ticker: 'AAPL', reaction: 'up', reactionLabel: 'Positive',
+    revenue: '$111.2B', revenueGrowth: '+17%',
+    keyMetrics: [
+      { label: 'EPS Growth', value: '+22%', up: true },
+      { label: 'Gross Margin', value: '49.27%', up: true },
+      { label: 'Services Revenue', value: '$30.98B', up: true },
+      { label: 'Q2 Sales Guide', value: '+14-17%', up: true },
+    ],
+    note: 'Strong quarter but less direct as AI monetization story. Upside partly from hardware cycle and China rebound. Warned of higher memory costs ahead. New $100B buyback.',
+    aiLabel: 'AI Adjacent'
+  },
+  {
+    name: 'Tesla', ticker: 'TSLA', reaction: 'down', reactionLabel: 'Fell Despite FCF Beat',
+    revenue: '$22.4B', revenueGrowth: 'N/A',
+    keyMetrics: [
+      { label: 'Total Gross Margin', value: '21.1%', up: true },
+      { label: 'Auto Gross Margin', value: '19.2%', up: true },
+      { label: 'Operating Margin', value: '4.2%', up: false },
+      { label: 'FCF', value: 'Beat Est.', up: true },
+    ],
+    note: 'Weakest Magnificent 7 read-through. Outlook leans heavily on future Robotaxi/Cybercab/Optimus monetization. Core vehicle business still faces competition.',
+    aiLabel: 'Future Bet'
+  },
+  {
+    name: 'Nvidia', ticker: 'NVDA', reaction: 'mixed', reactionLabel: 'Beat / Muted Reaction',
+    revenue: '$81.6B', revenueGrowth: '+85%',
+    keyMetrics: [
+      { label: 'Data Center Revenue', value: '$75.2B', up: true },
+      { label: 'Data Center Growth', value: '+92%', up: true },
+      { label: 'Non-GAAP EPS', value: '$1.87', up: true },
+      { label: 'Q2 FY27 Guide', value: '~$91B', up: true },
+    ],
+    note: 'Q1 FY27 confirmed AI infrastructure demand: revenue $81.6B, data-center $75.2B, GAAP/non-GAAP gross margin 74.9%/75.0%, and Q2 guide around $91B. Initial stock reaction was muted-to-negative because expectations were already very high.',
+    aiLabel: 'AI Leader'
+  },
+];
+
+// ── CHARTS ────────────────────────────────────────────
+const chartDefaults = {
+  responsive: true,
+  plugins: { legend: { labels: { color: '#8b949e', font: { size: 11 } } } },
+};
+
+// Beat Rate Doughnut
+function initBeatRateChart() {
+  new Chart(document.getElementById('beatRateChart'), {
+    type: 'bar',
+    data: {
+      labels: ['EPS Beat Rate', 'Revenue Beat Rate', 'Season Completion'],
+      datasets: [{
+        data: [84, 81, 94],
+        backgroundColor: ['rgba(63,185,80,0.7)', 'rgba(88,166,255,0.7)', 'rgba(188,140,255,0.7)'],
+        borderColor: ['#3fb950', '#58a6ff', '#bc8cff'],
+        borderWidth: 1, borderRadius: 6,
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      indexAxis: 'y',
+      scales: {
+        x: { max: 100, grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', callback: v => v + '%' } },
+        y: { grid: { display: false }, ticks: { color: '#8b949e' } }
+      },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + ctx.raw + '%' } } }
+    }
+  });
+}
+
+// Sector EPS Bar
+let sectorEpsChart, sectorPeChart;
+function initSectorCharts() {
+  const sorted = [...sectorData].sort((a,b) => b.eps - a.eps);
+  const labels = sorted.map(s => s.name.replace('Information ','IT\n').replace('Communication ','Comm\n').replace('Consumer ','Cons\n'));
+  const epsVals = sorted.map(s => s.eps);
+  const peVals = sorted.map(s => s.pe);
+  const epsColors = epsVals.map(v => v < 0 ? 'rgba(248,81,73,0.7)' : 'rgba(63,185,80,0.7)');
+  const epsBorders = epsVals.map(v => v < 0 ? '#f85149' : '#3fb950');
+
+  sectorEpsChart = new Chart(document.getElementById('sectorEpsChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ label: 'Q1 EPS Growth %', data: epsVals, backgroundColor: epsColors, borderColor: epsBorders, borderWidth: 1, borderRadius: 4 }]
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#8b949e', font: { size: 10 } } },
+        y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', callback: v => v + '%' } }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  sectorPeChart = new Chart(document.getElementById('sectorPeChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Forward P/E',
+        data: peVals,
+        backgroundColor: peVals.map(v => v > 24 ? 'rgba(248,81,73,0.65)' : v > 20 ? 'rgba(210,153,34,0.65)' : 'rgba(88,166,255,0.65)'),
+        borderColor: peVals.map(v => v > 24 ? '#f85149' : v > 20 ? '#d29922' : '#58a6ff'),
+        borderWidth: 1, borderRadius: 4
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#8b949e', font: { size: 10 } } },
+        y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', callback: v => v + 'x' } }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+}
+
+// Mag 7 Revenue Bar
+function initMag7Chart() {
+  const revenues = [82.9, 109.9, 181.5, 56.3, 111.2, 22.4, 81.6];
+  const names = ['Microsoft', 'Alphabet', 'Amazon', 'Meta', 'Apple', 'Tesla', 'Nvidia'];
+  const colors = ['rgba(88,166,255,0.7)', 'rgba(63,185,80,0.7)', 'rgba(255,166,87,0.7)', 'rgba(248,81,73,0.7)', 'rgba(188,140,255,0.7)', 'rgba(210,153,34,0.7)', 'rgba(63,185,80,0.85)'];
+
+  new Chart(document.getElementById('mag7Chart'), {
+    type: 'bar',
+    data: {
+      labels: names,
+      datasets: [{ label: 'Q1 Revenue ($B)', data: revenues, backgroundColor: colors, borderWidth: 0, borderRadius: 6 }]
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#8b949e' } },
+        y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', callback: v => '$' + v + 'B' } }
+      },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' $' + ctx.raw + 'B' } } }
+    }
+  });
+}
+
+// P/E Compare
+function initPeCompareChart() {
+  new Chart(document.getElementById('peCompareChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Current\nFwd P/E', '5-Year\nAverage', '10-Year\nAverage'],
+      datasets: [{
+        data: [21.1, 19.9, 18.9],
+        backgroundColor: ['rgba(210,153,34,0.7)', 'rgba(88,166,255,0.5)', 'rgba(88,166,255,0.35)'],
+        borderColor: ['#d29922', '#58a6ff', '#58a6ff'],
+        borderWidth: 1, borderRadius: 6
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#8b949e' } },
+        y: { min: 16, grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', callback: v => v + 'x' } }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+}
+
+// Sector valuation chart
+function initSectorPeValChart() {
+  const sorted = [...sectorData].sort((a,b) => b.pe - a.pe);
+  new Chart(document.getElementById('sectorPeValChart'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(s => s.name.split(' ').slice(0,2).join(' ')),
+      datasets: [{
+        label: 'Forward P/E',
+        data: sorted.map(s => s.pe),
+        backgroundColor: sorted.map(s => s.pe > 24 ? 'rgba(248,81,73,0.65)' : s.pe > 20 ? 'rgba(210,153,34,0.65)' : 'rgba(63,185,80,0.65)'),
+        borderRadius: 4, borderWidth: 0
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      indexAxis: 'y',
+      scales: {
+        x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', callback: v => v + 'x' } },
+        y: { grid: { display: false }, ticks: { color: '#8b949e', font: { size: 11 } } }
+      },
+      plugins: {
+        legend: { display: false },
+        annotation: {},
+        tooltip: { callbacks: { label: ctx => ' ' + ctx.raw + 'x forward P/E' } }
+      }
+    }
+  });
+}
+
+// ── RENDER SECTOR TABLE ────────────────────────────────
+function viewClass(view) {
+  const map = { strong: 'view-strong', 'strong-neutral': 'view-strong-neutral', neutral: 'view-neutral', 'neutral-pos': 'view-neutral-pos', 'neutral-weak': 'view-neutral-weak', weak: 'view-weak' };
+  return map[view] || 'view-neutral';
+}
+
+function renderSectorTable(filter = 'all') {
+  const tbody = document.getElementById('sectorBody');
+  const filtered = filter === 'all' ? sectorData :
+    filter === 'strong' ? sectorData.filter(s => s.view === 'strong' || s.view === 'strong-neutral') :
+    filter === 'neutral' ? sectorData.filter(s => s.view.includes('neutral')) :
+    sectorData.filter(s => s.view === 'weak' || s.view === 'neutral-weak');
+
+  tbody.innerHTML = filtered.map(s => {
+    const marginDiff = (s.margin - s.priorMargin).toFixed(1);
+    const diffClass = marginDiff > 0 ? 'eps-up' : 'eps-down';
+    const diffSign = marginDiff > 0 ? '+' : '';
+    const maxPe = 30;
+    const barWidth = Math.round((s.pe / maxPe) * 120);
+    return `
+      <tr>
+        <td style="font-weight:600;">${s.name}</td>
+        <td class="${s.eps < 0 ? 'eps-down' : 'eps-up'}">${s.eps > 0 ? '+' : ''}${s.eps}%</td>
+        <td style="color:var(--accent)">+${s.rev}%</td>
+        <td>${s.margin}%</td>
+        <td class="${diffClass}">${diffSign}${marginDiff}pp</td>
+        <td>
+          <div class="pe-bar-wrap">
+            <div class="pe-bar" style="width:${barWidth}px;opacity:.8;background:${s.pe > 24 ? 'var(--red)' : s.pe > 20 ? 'var(--yellow)' : 'var(--accent)'}"></div>
+            <span style="font-size:12px;">${s.pe}×</span>
+          </div>
+        </td>
+        <td><span class="view-badge ${viewClass(s.view)}">${s.viewLabel}</span></td>
+      </tr>`;
+  }).join('');
+}
+
+// ── RENDER MAG 7 ──────────────────────────────────────
+function renderMag7() {
+  const grid = document.getElementById('mag7Grid');
+  grid.innerHTML = mag7Data.map(c => {
+    const reactionClass = c.reaction === 'up' ? 'reaction-up' : c.reaction === 'down' ? 'reaction-down' : 'reaction-mixed';
+    const reactionArrow = c.reaction === 'up' ? '↑' : c.reaction === 'down' ? '↓' : '→';
+    const metricsHtml = c.keyMetrics.map(m => `
+      <div class="metric">
+        <div class="metric-label">${m.label}</div>
+        <div class="metric-value ${m.up ? 'up' : 'down'}">${m.value}</div>
+      </div>`).join('');
+    return `
+      <div class="company-card">
+        <div class="company-header">
+          <div>
+            <div class="company-name">${c.name} <span class="ai-chip">${c.aiLabel}</span></div>
+            <div class="company-ticker">${c.ticker} · Q1 Revenue: ${c.revenue} (${c.revenueGrowth})</div>
+          </div>
+          <div class="company-reaction ${reactionClass}">${reactionArrow} ${c.reactionLabel}</div>
+        </div>
+        <div class="company-metrics">${metricsHtml}</div>
+        <div class="company-note">${c.note}</div>
+      </div>`;
+  }).join('');
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────
+let chartsInitialized = {};
+function showTab(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  el.classList.add('active');
+
+  if (!chartsInitialized[id]) {
+    chartsInitialized[id] = true;
+    if (id === 'sectors') { initSectorCharts(); }
+    if (id === 'mag7') { initMag7Chart(); }
+    if (id === 'valuation') { initPeCompareChart(); initSectorPeValChart(); }
+  }
+}
+
+// ── SECTOR FILTER ─────────────────────────────────────
+function filterSectors(filter, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSectorTable(filter);
+}
+
+// ── WEEKLY EARNINGS DATA (source: company IR, SEC filings, Reuters/LSEG, Nasdaq) ──
+const earningsWeekData = [
+  // Market caps, implied moves, and price performance are retained from the prior sourced brief unless otherwise noted.
+  {
+    ticker: 'NVDA', name: 'NVIDIA Corporation', sector: 'Technology · Semiconductors',
+    indexMembership: 'S&P 500 · Nasdaq-100 · Dow · $5,386B mkt cap',
+    status: 'reported', timing: 'Wed May 20 · After Close — ✅ REPORTED Q1 FY2027',
+    expectations: {
+      epsEst: 'Non-GAAP EPS $1.87; GAAP EPS $2.39', epsYoY: 'Beat consensus; non-GAAP EPS +140% YoY',
+      revEst: 'Revenue $81.6B actual', revYoY: '+85% YoY; above ~$78-79B consensus',
+      keyKPI: 'Data-center revenue $75.2B (+92% YoY); GAAP/non-GAAP gross margin 74.9%/75.0%; Q2 revenue guide ~$91B +/-2%; no China data-center compute revenue assumed in outlook'
+    },
+    setup: {
+      perf1m: '+10.8% (stretched into print)', perf3m: '+19.1%',
+      impliedMove: '±5.3% (vs avg post-earnings 1-day move 3.2%)',
+      valuation: 'P/E 45.5× — premium; elevated positioning across AI names'
+    },
+    debate: [
+      'Data-center demand remains extremely strong; the next read is whether the Q2 guide pulls more orders across memory, networking, power, and cooling suppliers',
+      'China exclusion is now explicit in the outlook, so upside/downside depends on non-China demand and supply availability',
+      'Gross margin held near 75%; margin durability remains the key quality check as Blackwell and rack-scale systems ramp'
+    ],
+    scenarios: {
+      bull: 'Actual: clean beat + Q2 guide-up keeps AI infrastructure leadership intact; strongest read-through to AI compute, networking, memory, and power/cooling',
+      base: 'Stock-specific digestion is still possible because positioning was crowded and expectations were near-perfect',
+      bear: 'Main residual risk is valuation compression or margin pressure, not immediate demand weakness'
+    },
+    bias: 'bull', biasLabel: 'Bullish post-print — fundamentals beat, but add selectively after muted reaction',
+    postWatch: 'Add AI beta only where order visibility and margin quality confirm the NVDA read-through. Trim lower-quality sympathy moves if the market fades the guide-up.'
+  },
+  {
+    ticker: 'WMT', name: 'Walmart Inc.', sector: 'Consumer Defensive · Discount Stores',
+    indexMembership: 'S&P 500 · Dow · $1,070.7B mkt cap',
+    status: 'reported', timing: 'Thu May 21 · Before Open — ✅ REPORTED Q1 FY2027',
+    expectations: {
+      epsEst: 'Adjusted EPS $0.66; GAAP EPS $0.67', epsYoY: 'Slight EPS beat / in line with consensus',
+      revEst: 'Revenue $177.8B actual', revYoY: '+7.3% YoY; above ~$174-175B consensus',
+      keyKPI: 'Walmart U.S. comps +4.1%; global eCommerce +26%; advertising +37%; Q2 adjusted EPS guide $0.72-$0.74; FY27 outlook reiterated'
+    },
+    setup: {
+      perf1m: '+5.5%', perf3m: '+8.1%',
+      impliedMove: '±4.1% (vs avg post-earnings 1-day move 3.2%)',
+      valuation: 'P/E 49.2× — premium; ad/membership flywheel optionality cited for multiple'
+    },
+    debate: [
+      'Comparable sales quality remains supportive: U.S. comps +4.1% and digital contribution stayed strong',
+      'E-commerce and advertising remain the margin-mix story, with global eCommerce +26% and advertising +37%',
+      'Q2 EPS guide was not a blowout, so the stock can still digest despite strong headline revenue'
+    ],
+    scenarios: {
+      bull: 'Actual: revenue beat + resilient comps confirms quality consumer demand; positive read-through to grocery, value retail, advertising, and eCommerce',
+      base: 'Guidance was reiterated rather than raised, so stock-specific digestion is possible after a strong run',
+      bear: 'If market focuses on Q2 EPS guide, multiple compression can offset solid fundamentals'
+    },
+    bias: 'neutral', biasLabel: 'Neutral-to-bullish post-print — quality confirmed, valuation still demanding',
+    postWatch: 'Hold/add on durable traffic, eCommerce, and ad growth. Avoid chasing if the stock de-rates on merely reiterated FY27 guidance.'
+  },
+  {
+    ticker: 'HD', name: 'The Home Depot, Inc.', sector: 'Consumer Cyclical · Home Improvement',
+    indexMembership: 'S&P 500 · Dow · $300.4B mkt cap',
+    status: 'reported', timing: 'Tue May 19 · Before Open — ✅ REPORTED Q1 FY2027',
+    expectations: {
+      epsEst: 'EPS $3.43 actual (consensus $3.40)', epsYoY: 'Beat consensus estimates',
+      revEst: 'Sales $41.8B actual (consensus $41.6B)', revYoY: 'In line with expectations',
+      keyKPI: 'Comps +0.6% actual; US comps +0.4%; FY26 guidance reaffirmed: total sales +2.5–4.5%, comp sales flat to +2.0% (source: HD IR)'
+    },
+    setup: {
+      perf1m: '–14.3% (depressed into print)', perf3m: '–20.5%',
+      impliedMove: '±4.2% (vs avg post-earnings 1-day move 2.9%)',
+      valuation: 'P/E 21.2× — reasonable; housing cycle uncertainty caps the multiple'
+    },
+    debate: [
+      'Housing turnover and big-ticket project demand: guidance reaffirmed but not raised — management sees no near-term housing acceleration',
+      'Pro vs. DIY mix: ticket growth (+) but transactions fell (–); LOW has now confirmed a similar stabilization picture',
+      'Whether FY26 guidance reaffirm proves conservative is now a follow-through question rather than a pre-print catalyst'
+    ],
+    scenarios: {
+      bull: '(Pre-print) Beat + guidance raise would have sent XHB higher — guidance was reaffirmed, not raised',
+      base: '✅ ACTUAL: Sales $41.8B, comps +0.6%, US comps +0.4%, FY26 guidance reaffirmed — stabilization confirmed, not inflection',
+      bear: '(Avoided) No guidance cut; housing renovation cycle stable but not re-accelerating'
+    },
+    bias: 'neutral', biasLabel: 'Neutral post-print — LOW confirmed stabilization, not acceleration',
+    postWatch: 'Use HD and LOW together as evidence of a floor in home improvement. Add housing/DIY only if big-ticket and Pro demand improve.'
+  },
+  {
+    ticker: 'TGT', name: 'Target Corporation', sector: 'Consumer Defensive · Discount Stores',
+    indexMembership: 'S&P 500 · $57.0B mkt cap',
+    status: 'reported', timing: 'Wed May 20 · Before Open — ✅ REPORTED Q1 FY2026',
+    expectations: {
+      epsEst: 'GAAP & adjusted EPS $1.71', epsYoY: '+32% vs prior-year adjusted EPS',
+      revEst: 'Net sales $25.4B actual', revYoY: '+6.7% YoY; above expectations',
+      keyKPI: 'Comparable sales +5.6%; traffic +4.4%; digital comps +8.9%; gross margin 29.0%; FY26 net sales and EPS expectations raised'
+    },
+    setup: {
+      perf1m: '–3.5%', perf3m: '+8.6%',
+      impliedMove: '±6.8% (vs avg post-earnings 1-day move 5.3%) — binary event',
+      valuation: 'P/E 15.5× — compressed vs. history; turnaround discount'
+    },
+    debate: [
+      'Traffic recovery arrived: +4.4% traffic and +5.6% comps are a material improvement in the turnaround story',
+      'Broad category and digital strength improve confidence, but the next test is whether margin gains persist beyond one quarter',
+      'Guidance moved higher, so the risk shifts from pre-print binary risk to execution consistency'
+    ],
+    scenarios: {
+      bull: 'Actual: stronger-than-expected sales, comps, traffic, and guidance upgrade improve the retail turnaround narrative',
+      base: 'Stock can digest after a relief move; next quarter must confirm traffic and margin durability',
+      bear: 'If margin progress fades, the market may treat Q1 as a one-quarter relief print rather than a true turn'
+    },
+    bias: 'bull', biasLabel: 'Tactically bullish post-print — turnaround credibility improved',
+    postWatch: 'Use pullbacks selectively if traffic and gross margin continue to improve. Do not overstay if Q2 shows the Q1 sales strength was promotional.'
+  },
+  {
+    ticker: 'LOW', name: "Lowe's Companies, Inc.", sector: 'Consumer Cyclical · Home Improvement',
+    indexMembership: 'S&P 500 · $122.4B mkt cap',
+    status: 'reported', timing: 'Wed May 20 · Before Open — ✅ REPORTED Q1 FY2026',
+    expectations: {
+      epsEst: 'Diluted EPS $2.90; adjusted EPS $3.03', epsYoY: 'Adjusted EPS +3.8% YoY',
+      revEst: 'Sales $23.1B actual', revYoY: 'Above prior-year $20.9B',
+      keyKPI: 'Comparable sales +0.6%; online sales +15.5%; strength in appliances, home services, and Pro; FY26 outlook affirmed'
+    },
+    setup: {
+      perf1m: '–13.8% (depressed into print)', perf3m: '–21.5%',
+      impliedMove: '±4.5% (vs avg post-earnings 1-day move 2.9%)',
+      valuation: 'P/E 18.4× — slight discount to HD; more upside if Pro ramp validates'
+    },
+    debate: [
+      'LOW confirmed the HD stabilization read: comps +0.6% and FY26 guidance affirmed rather than cut',
+      'Pro, appliances, online, and home services remain the healthiest demand pockets',
+      'Housing macro is still challenging, so this is stabilization rather than a confirmed big-ticket upcycle'
+    ],
+    scenarios: {
+      bull: 'Actual: adjusted EPS beat, sales slightly above consensus, comps positive, and FY26 outlook affirmed',
+      base: 'Stabilization confirmed but not enough to call a housing upcycle; stock-specific digestion likely',
+      bear: 'If big-ticket demand weakens again, the market may fade the home-improvement relief trade'
+    },
+    bias: 'neutral', biasLabel: 'Neutral post-print — stabilization confirmed, not re-acceleration',
+    postWatch: 'Add XHB only on follow-through in big-ticket and Pro demand. Treat LOW/HD as confirmation of a floor, not yet a breakout.'
+  },
+  {
+    ticker: 'ADI', name: 'Analog Devices, Inc.', sector: 'Technology · Semiconductors',
+    indexMembership: 'S&P 500 · Nasdaq-100 · $204.2B mkt cap',
+    status: 'reported', timing: 'Wed May 20 · Before Open — ✅ REPORTED Q2 FY2026',
+    expectations: {
+      epsEst: 'GAAP EPS $2.40; adjusted EPS $3.09', epsYoY: 'Adjusted EPS +67% YoY',
+      revEst: 'Revenue $3.62B actual', revYoY: '+37% YoY',
+      keyKPI: 'Record demand; growth across all end markets led by Industrial and Communications; Q3 revenue outlook $3.9B +/- $100M; adjusted EPS outlook $3.30 +/- $0.15'
+    },
+    setup: {
+      perf1m: '+9.5% (stretched into print)', perf3m: '+20.9%',
+      impliedMove: '±6.2% (vs avg post-earnings 1-day move 4.7%)',
+      valuation: 'P/E 76.3× — elevated on recovery earnings; normalizes significantly on trough-to-peak'
+    },
+    debate: [
+      'Record bookings across Industrial, Automotive, and Communications point to a healthier analog cycle',
+      'Q3 guide implies continued sequential growth; watch whether backlog strength holds beyond the initial restock',
+      'Adjusted margin leverage was strong, but China and broad industrial demand remain the macro swing factors'
+    ],
+    scenarios: {
+      bull: 'Actual: beat + strong guide improves the analog semi-cycle view; positive read-through to TXN, NXPI, MCHP, ON, and MRVL',
+      base: 'Stock-specific digestion possible after a strong run, but the sector signal is constructive',
+      bear: 'If bookings fade or industrial demand slows, the recovery narrative could cool next quarter'
+    },
+    bias: 'bull', biasLabel: 'Bullish post-print — analog cycle recovery confirmed for now',
+    postWatch: 'Add analog semis selectively if orders, backlog, and pricing continue to improve. ADI + NVDA supports a broader SMH bull case.'
+  },
+  {
+    ticker: 'INTU', name: 'Intuit Inc.', sector: 'Technology · Application Software',
+    indexMembership: 'S&P 500 · Nasdaq-100 · $111.7B mkt cap',
+    status: 'reported', timing: 'Wed May 20 · After Close — ✅ REPORTED Q3 FY2026',
+    expectations: {
+      epsEst: 'GAAP EPS $11.09; non-GAAP EPS $12.80', epsYoY: 'Non-GAAP EPS +10% YoY',
+      revEst: 'Revenue $8.56B actual', revYoY: '+10% YoY',
+      keyKPI: 'Consumer revenue +8%; TurboTax +7%; Credit Karma +15%; Global Business Solutions +15%; FY26 revenue and non-GAAP guidance raised; workforce reduction announced'
+    },
+    setup: {
+      perf1m: '–1.0%', perf3m: '+5.1%',
+      impliedMove: '±7.5% (vs avg post-earnings 1-day move 5.2%) — high expected move',
+      valuation: 'P/E 26.1× — reasonable for quality software compounder with durable SMB moat'
+    },
+    debate: [
+      'Tax-season monetization was strong enough to support raised guidance, though unit/share details still matter',
+      'Credit Karma recovery is improving, with revenue +15% driven by personal loans, auto insurance, and home loans',
+      'Workforce reduction adds an execution watch item: margin expansion is positive only if product velocity and SMB demand remain durable'
+    ],
+    scenarios: {
+      bull: 'Actual: strong Q3 + raised FY26 guidance improves software/fintech quality read-through',
+      base: 'Stock-specific digestion possible because restructuring adds questions around execution and growth investment',
+      bear: 'If tax-season upside is viewed as one-time or restructuring disrupts product velocity, multiple support weakens'
+    },
+    bias: 'neutral', biasLabel: 'Neutral-to-positive post-print — guide raised, restructuring watch remains',
+    postWatch: 'Add software exposure only if SMB and Credit Karma strength looks durable. Trim if restructuring becomes the dominant story.'
+  },
+  {
+    ticker: 'DE', name: 'Deere & Company', sector: 'Industrials · Agricultural Machinery',
+    indexMembership: 'S&P 500 · $151.2B mkt cap',
+    status: 'reported', timing: 'Thu May 21 · Morning — ✅ REPORTED Q2 FY2026',
+    expectations: {
+      epsEst: 'Consensus $5.81 (Actual $6.55)', epsYoY: 'Beat consensus; GAAP net income $1.773B',
+      revEst: 'Consensus $11.6B (Actual $13.37B)', revYoY: '+5% YoY; Equipment Operations sales $11.78B',
+      keyKPI: 'Production & Precision Ag sales -14%, Small Ag & Turf +16%, Construction & Forestry +29%; margins supported by $272M IEEPA tariff recovery'
+    },
+    setup: {
+      perf1m: '–6.0%', perf3m: '–15.6%',
+      impliedMove: '±4.7% (Actual post-earnings 1-day move –7.5%)',
+      valuation: 'P/E 31.6× — elevated for a cyclical at trough; needs confirmed cycle turn to justify'
+    },
+    debate: [
+      'Farm income and dealer inventories: are large ag equipment orders stabilizing or still declining from the 2023–24 cycle peak?',
+      'Tariff/cost pressure: impact on input costs and customer pushback on pricing given farm income headwinds',
+      'Construction/forestry: can non-farm demand provide a meaningful offset to the large equipment weakness?'
+    ],
+    scenarios: {
+      bull: 'Actual: EPS beat ($6.55 vs $5.81) and revenue beat ($13.37B), but stock fell 7.5% due to double-digit decline in Production & Precision Ag segment and ag sector demand trough.',
+      base: 'In-line + mixed guidance: stock-specific digestion; industrial cycle view unchanged; avoid chasing XLI',
+      bear: 'Miss + cautious guide: cyclical confidence weakens; broad industrial chase (XLI) to be avoided if inventories remain elevated'
+    },
+    bias: 'bear', biasLabel: 'Bearish post-print — stock fell 7.5% on large ag weakness despite EPS beat',
+    postWatch: 'Avoid broad industrial chase (XLI) as large ag demand remains in the trough. Maintain underweight in cyclical industrials.'
+  },
+  {
+    ticker: 'WDAY', name: 'Workday, Inc.', sector: 'Technology · Application Software',
+    indexMembership: 'S&P 500 · Nasdaq-100 · $34.3B mkt cap',
+    status: 'reported', timing: 'Thu May 21 · After Close — ✅ REPORTED Q1 FY2027',
+    expectations: {
+      epsEst: 'Consensus $2.56 (Actual $2.66)', epsYoY: 'Beat consensus; non-GAAP diluted EPS +4% over estimates',
+      revEst: 'Consensus $2.50B (Actual $2.542B)', revYoY: '+13.5% YoY; subscription revenue $2.354B (+14.3% YoY)',
+      keyKPI: 'Subscription revenue outlook of $9.925B–$9.950B reiterated; FY27 non-GAAP operating margin guidance raised to 30.5%; enterprise SaaS budgets intact'
+    },
+    setup: {
+      perf1m: '+1.1%', perf3m: '–7.6%',
+      impliedMove: '±9.3% (Actual post-earnings after-hours move +9.5%)',
+      valuation: 'P/E 49.9× — elevated; consistent subscription acceleration required to sustain'
+    },
+    debate: [
+      'Enterprise SaaS demand: are subscription bookings accelerating or are enterprises cautious given macro uncertainty and budget scrutiny?',
+      'AI product monetization: is Workday AI generating incremental revenue and retention, or is it a feature cost center?',
+      'Margin discipline: can WDAY maintain/expand margins without sacrificing growth investment — the central tension in the story'
+    ],
+    scenarios: {
+      bull: 'Actual: Beat on EPS and revenue, reiterated FY27 subscription revenue guide, and raised operating margin outlook to 30.5%. Stock jumped ~9.5% in after-hours.',
+      base: 'In-line + mixed guidance: stock-specific digestion; software sector neutral; wait for booking acceleration',
+      bear: 'Miss + guide requires margin sacrifice: stock –8 to –12%; enterprise SaaS de-rated; IGV under pressure broadly'
+    },
+    bias: 'bull', biasLabel: 'Bullish post-print — guidance raise and bookings beat confirmed enterprise SaaS strength',
+    postWatch: 'Hold/add software exposure (IGV) on pullbacks as AI monetization and margin expansion expand EPS contribution.'
+  },
+  {
+    ticker: 'TTWO', name: 'Take-Two Interactive Software', sector: 'Communication Services · Gaming',
+    indexMembership: 'S&P 500 · Nasdaq-100 · $44.2B mkt cap',
+    status: 'reported', timing: 'Thu May 21 · After Close — ✅ REPORTED Q4 FY2026',
+    expectations: {
+      epsEst: 'Consensus $0.58 (Actual Adjusted EPS $0.80)', epsYoY: 'Beat consensus by $0.22; GAAP net revenue $1.68B',
+      revEst: 'Consensus $1.50B (Actual bookings $1.58B)', revYoY: 'Bookings exceeded company guidance range',
+      keyKPI: 'Grand Theft Auto VI release date confirmed for November 19, 2026; FY27 net bookings projected at $8.0B to $8.2B (~20% growth)'
+    },
+    setup: {
+      perf1m: '+9.7% (stretched into print)', perf3m: '+18.1%',
+      impliedMove: '±7.7% (Actual post-earnings after-hours move +7.0%)',
+      valuation: 'P/E –10.6× (negative earnings); forward value entirely dependent on GTA VI release'
+    },
+    debate: [
+      'GTA VI timing: any delay signal or ambiguity in the release window is the single largest negative catalyst — entire bull thesis depends on it',
+      'Forward bookings guide: mobile trends and pre-release bookings matter far more than backward-looking EPS this quarter',
+      'Cost discipline: long development cycle has elevated costs; investors want visibility on post-release operating leverage'
+    ],
+    scenarios: {
+      bull: 'Actual: Bookings beat + GTA VI confirmed for Nov 19, 2026. Stock rose ~7% after-hours on relief that release window has not slipped.',
+      base: 'In-line + GTA VI timeline reaffirmed: stock-specific digestion; gaming sector neutral; hold if already long',
+      bear: 'Miss or GTA VI delay signal: stock –10 to –15%; gaming sector sold; peers hit on contagion'
+    },
+    bias: 'bull', biasLabel: 'Bullish post-print — GTA VI release date confirmation removes key timeline overhang',
+    postWatch: 'Maintain positions; GTA VI release date confirmation is positive for TTWO and the broader gaming sector (EA, SONY).'
+  }
+];
+
+let earningsFilter = 'all';
+
+function filterEarningsCards(filter, btn) {
+  earningsFilter = filter;
+  document.querySelectorAll('.ec-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderEarningsCards();
+}
+
+function toggleEarningsCard(ticker) {
+  const body = document.getElementById('ecbody-' + ticker);
+  const chevron = document.getElementById('ecchev-' + ticker);
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (isOpen) {
+    chevron.classList.remove('open');
+  } else {
+    chevron.classList.add('open');
+  }
+}
+
+function setScenarioTab(ticker, scenario, btn) {
+  ['bull','base','bear'].forEach(s => {
+    const el = document.getElementById('ecsc-' + ticker + '-' + s);
+    if (el) el.style.display = (s === scenario) ? 'block' : 'none';
+  });
+  const tabs = btn.closest('.ec-scenario-tabs');
+  if (tabs) tabs.querySelectorAll('.ec-stab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function renderEarningsCards() {
+  const grid = document.getElementById('earningsCardsGrid');
+  if (!grid) return;
+
+  const filtered = earningsWeekData.filter(c => {
+    if (earningsFilter === 'reported') return c.status === 'reported';
+    if (earningsFilter === 'upcoming') return c.status === 'upcoming';
+    if (earningsFilter === 'bull') return c.bias === 'bull';
+    if (earningsFilter === 'bear') return c.bias === 'bear';
+    if (earningsFilter === 'neutral') return c.bias === 'neutral';
+    return true;
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div style="padding:28px;text-align:center;color:var(--muted);font-size:13px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">No companies match this filter.</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(c => {
+    const isReported = c.status === 'reported';
+    const biasClass = c.bias === 'bull' ? 'bias-bull' : c.bias === 'bear' ? 'bias-bear' : 'bias-neutral';
+    const biasEmoji = c.bias === 'bull' ? '🟢' : c.bias === 'bear' ? '🔴' : '⚪';
+    const debateHtml = c.debate.map(d => `<li>${d}</li>`).join('');
+    const perf1mColor = c.setup.perf1m.startsWith('+') ? 'var(--green)' : 'var(--red)';
+    const impliedShort = c.setup.impliedMove.split(' ')[0];
+    const valShort = c.setup.valuation.split('—')[0].trim();
+
+    return `
+    <div class="ec-card ${isReported ? 'ec-reported' : 'ec-upcoming'}" id="eccard-${c.ticker}">
+
+      <div class="ec-header" onclick="toggleEarningsCard('${c.ticker}')">
+        <div class="ec-header-left">
+          <div class="ec-ticker-wrap">
+            <div class="ec-ticker">${c.ticker}</div>
+            <div class="ec-name">${c.name}</div>
+          </div>
+          <div class="ec-badges">
+            <span class="timing-pill ${isReported ? 'timing-reported' : 'timing-upcoming'}">${isReported ? '✅ Reported' : '🕐 Pending'}</span>
+            <span class="bias-badge ${biasClass}">${biasEmoji} ${c.bias.charAt(0).toUpperCase()+c.bias.slice(1)}</span>
+          </div>
+        </div>
+        <div class="ec-header-right">
+          <div class="ec-mini-stat">
+            <div class="ec-mini-label">Implied</div>
+            <div class="ec-mini-value" style="color:var(--yellow)">${impliedShort}</div>
+          </div>
+          <div class="ec-mini-stat">
+            <div class="ec-mini-label">1-Month</div>
+            <div class="ec-mini-value" style="color:${perf1mColor}">${c.setup.perf1m.split(' ')[0]}</div>
+          </div>
+          <div class="ec-mini-stat">
+            <div class="ec-mini-label">EPS Est.</div>
+            <div class="ec-mini-value">${c.expectations.epsEst}</div>
+          </div>
+          <div class="ec-chevron" id="ecchev-${c.ticker}">▶</div>
+        </div>
+      </div>
+
+      <div class="ec-body" id="ecbody-${c.ticker}" style="display:none;">
+        <div class="ec-timing-line">${c.timing} &nbsp;·&nbsp; ${c.indexMembership}</div>
+
+        <div class="ec-grid-2">
+          <div>
+            <div class="ec-section-label">Expectations &amp; Setup</div>
+            <div class="ec-metrics-row">
+              <div class="ec-metric"><div class="ec-metric-l">EPS Est.</div><div class="ec-metric-v">${c.expectations.epsEst}</div></div>
+              <div class="ec-metric"><div class="ec-metric-l">Rev Est.</div><div class="ec-metric-v">${c.expectations.revEst}</div></div>
+              <div class="ec-metric"><div class="ec-metric-l">3-Month</div><div class="ec-metric-v">${c.setup.perf3m}</div></div>
+              <div class="ec-metric"><div class="ec-metric-l">Valuation</div><div class="ec-metric-v" style="font-size:11px;">${valShort}</div></div>
+            </div>
+            <div class="ec-kpi-box"><strong>Key Watch:</strong> ${c.expectations.keyKPI}</div>
+          </div>
+          <div>
+            <div class="ec-section-label">Key Market Debate</div>
+            <ul class="debate-list">${debateHtml}</ul>
+          </div>
+        </div>
+
+        <div class="ec-section-label" style="margin-top:18px;">Scenario Analysis</div>
+        <div class="ec-scenario-tabs">
+          <button class="ec-stab active" data-s="bull" onclick="setScenarioTab('${c.ticker}','bull',this)">🟢 Bull</button>
+          <button class="ec-stab" data-s="base" onclick="setScenarioTab('${c.ticker}','base',this)">🔵 Base</button>
+          <button class="ec-stab" data-s="bear" onclick="setScenarioTab('${c.ticker}','bear',this)">🔴 Bear</button>
+        </div>
+        <div class="ec-scenario-content" id="ecsc-${c.ticker}-bull" style="display:block;">${c.scenarios.bull}</div>
+        <div class="ec-scenario-content" id="ecsc-${c.ticker}-base" style="display:none;">${c.scenarios.base}</div>
+        <div class="ec-scenario-content" id="ecsc-${c.ticker}-bear" style="display:none;">${c.scenarios.bear}</div>
+
+        <div class="bias-row" style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+          <span class="bias-label">Action Bias:</span>
+          <span class="bias-badge ${biasClass}">${c.biasLabel}</span>
+          <span style="font-size:12px;color:var(--muted);margin-left:4px;flex:1;">Post-print: ${c.postWatch}</span>
+        </div>
+      </div>
+
+    </div>`;
+  }).join('');
+}
+
+// ── INIT ──────────────────────────────────────────────
+renderSectorTable();
+renderMag7();
+renderEarningsCards();
+initBeatRateChart();
+</script>
+<script src="../assets/js/live_data.js"></script>
+</body>
+</html>

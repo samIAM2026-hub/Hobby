@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>钓鱼 & 露营清单 · 维多利亚 Canoe Cove · 6月8-9日</title>
+<style>
+  :root {
+    --bg-1: #f0f7ff;
+    --bg-2: #e3eefc;
+    --surface: #ffffff;
+    --surface-2: #f5f9ff;
+    --surface-3: #eaf2fb;
+    --accent: #2a7ade;
+    --accent-2: #14b8a6;
+    --accent-soft: #d8ebff;
+    --ok: #16a34a;
+    --warn: #f59e0b;
+    --text: #1a2940;
+    --text-soft: #3a4a66;
+    --muted: #6b7a93;
+    --border: #d4e2f4;
+    --shadow: 0 2px 8px rgba(42, 122, 222, 0.08);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  header {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: var(--shadow);
+  }
+  h1 { margin: 0; font-size: 22px; font-weight: 600; color: var(--text); }
+  .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .summary {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: var(--surface-2);
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    min-width: 120px;
+  }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 18px; font-weight: 600; margin-top: 2px; color: var(--accent); }
+  .progress-bar {
+    height: 6px;
+    background: var(--surface-3);
+    border-radius: 3px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width 0.3s ease;
+  }
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .tab {
+    flex: 1;
+    padding: 12px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-soft);
+    text-align: center;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+  }
+  .tab:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  .tab.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 14px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-icon { font-size: 18px; }
+  .card-count { font-size: 11px; color: var(--muted); }
+  .item {
+    display: flex;
+    align-items: center;
+    padding: 6px 4px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.15s;
+    color: var(--text-soft);
+  }
+  .item:hover { background: var(--surface-3); }
+  .item input[type="checkbox"] {
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .item.checked label {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+  .item label {
+    flex: 1;
+    cursor: pointer;
+    user-select: none;
+  }
+  .item .qty {
+    font-size: 11px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    font-weight: 500;
+  }
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .btn {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.15s;
+    box-shadow: var(--shadow);
+  }
+  .btn:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: white; }
+  .btn-primary:hover { background: #1f6dcc; color: white; }
+  .priority-high { border-left: 3px solid var(--warn); padding-left: 8px; }
+  .note {
+    background: #fff8e1;
+    border-left: 3px solid var(--warn);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--text-soft);
+  }
+  .note strong { color: var(--text); }
+  .ferry-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 13px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .ferry-table th {
+    background: var(--surface-3);
+    color: var(--accent);
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  .ferry-table td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-soft);
+  }
+  .ferry-table tr:last-child td { border-bottom: none; }
+  .ferry-table tr:hover { background: var(--surface-2); }
+  .ferry-table td.saver { color: var(--ok); font-weight: 600; }
+  .ferry-table tr.booked {
+    background: #e8f7ec !important;
+    font-weight: 600;
+  }
+  .ferry-table tr.booked td { color: #15803d; }
+  .ferry-table tr.booked td:first-child { color: #15803d; }
+  @media print {
+    body { background: white; color: black; }
+    .tab-content { display: block !important; page-break-after: always; }
+    .tabs, .controls { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div>
+      <h1>🎣 钓鱼 & ⛺ 露营清单</h1>
+      <div class="subtitle">维多利亚 Canoe Cove · 2026年6月8-9日 · 四人成行</div>
+    </div>
+    <div class="summary">
+      <div class="stat">
+        <div class="stat-label">总进度</div>
+        <div class="stat-value" id="total-progress">0%</div>
+        <div class="progress-bar"><div class="progress-fill" id="total-bar" style="width:0%"></div></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">已勾选</div>
+        <div class="stat-value" id="checked-count">0 / 0</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="ferry">⛴️ 渡轮时刻</div>
+    <div class="tab" data-tab="weather">🌤️ 天气预报</div>
+    <div class="tab" data-tab="campground">🏨 住宿信息</div>
+    <div class="tab" data-tab="fishing">🎣 钓鱼清单</div>
+    <div class="tab" data-tab="camping">⛺ 露营清单</div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-primary" onclick="checkAll()">✓ 全选当前</button>
+    <button class="btn" onclick="uncheckAll()">○ 全部清空</button>
+    <button class="btn" onclick="resetAll()">↻ 重置全部</button>
+    <button class="btn" onclick="window.print()">🖨️ 打印</button>
+  </div>
+
+  <!-- 酒店信息 -->
+  <div class="tab-content" id="campground">
+
+    <div class="card" style="margin-bottom:16px; border-left:4px solid var(--muted);">
+      <div class="card-header">
+        <div class="card-title"><span class="card-icon">🏨</span>住宿 · 酒店待定</div>
+        <div class="card-count" style="color:var(--muted); font-weight:600;">待补充</div>
+      </div>
+      <div class="note" style="margin:0;">
+        营地信息已移除。酒店预订确认后将在此填入酒店名称、地址、Check-In / Check-Out 时间及预订号。
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 钓鱼清单 -->
+  <div class="tab-content" id="fishing">
+    <div class="note">
+      <strong>💡 天气提示：</strong>6/8 ★★★★☆(4/5) · 6/9 ★★★☆☆(3/5) · 凉爽海洋型春季,气温 12-18°C,有阵雨(6/9 概率约 60%)。最佳钓鱼时间:两日均为黎明至上午(风弱海面平静);⚠️ 午后西/西南风增至 10-20kt、起浪,小船需近岸避风,出海前查海洋预报。
+    </div>
+    <div class="grid" id="fishing-grid"></div>
+  </div>
+
+  <!-- 露营清单 -->
+  <div class="tab-content" id="camping">
+    <div class="note">
+      <strong>💡 露营提示：</strong>气温12-16°C,夜间较凉,需保暖睡袋。带雨具以防天气变化。BC省露营营地通常有水但需自带食物烹饪用具。
+    </div>
+    <div class="grid" id="camping-grid"></div>
+  </div>
+
+  <!-- 渡轮时刻 -->
+  <div class="tab-content active" id="ferry">
+
+    <!-- 已确认订单 -->
+    <div class="card" style="margin-bottom:16px; border-left:4px solid var(--ok);">
+      <div class="card-header">
+        <div class="card-title"><span class="card-icon">✅</span>已确认订单 · BC Ferries</div>
+        <div class="card-count" style="color:var(--ok); font-weight:600;">已预订</div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+
+        <div style="background:var(--surface-2); padding:14px; border-radius:8px;">
+          <div style="font-weight:600; color:var(--accent); margin-bottom:8px;">🛫 去程</div>
+          <div style="font-size:14px; margin-bottom:4px;"><strong>6月8日 (周一)</strong></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin:10px 0;">
+            <div>
+              <div style="font-size:20px; font-weight:700; color:var(--text);">11:00 AM</div>
+              <div style="font-size:12px; color:var(--muted);">Vancouver (Tsawwassen)</div>
+            </div>
+            <div style="text-align:center; color:var(--muted); font-size:12px;">
+              <div>1h 35m</div>
+              <div style="font-size:18px; color:var(--accent);">→</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:20px; font-weight:700; color:var(--text);">12:35 PM</div>
+              <div style="font-size:12px; color:var(--muted);">Victoria (Swartz Bay)</div>
+            </div>
+          </div>
+          <div style="font-size:12px; color:var(--muted);">票价类型: <strong style="color:var(--accent-2);">Prepaid</strong></div>
+        </div>
+
+        <div style="background:var(--surface-2); padding:14px; border-radius:8px;">
+          <div style="font-weight:600; color:var(--accent); margin-bottom:8px;">🛬 返程</div>
+          <div style="font-size:14px; margin-bottom:4px;"><strong>6月9日 (周二)</strong></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin:10px 0;">
+            <div>
+              <div style="font-size:20px; font-weight:700; color:var(--text);">5:00 PM</div>
+              <div style="font-size:12px; color:var(--muted);">Victoria (Swartz Bay)</div>
+            </div>
+            <div style="text-align:center; color:var(--muted); font-size:12px;">
+              <div>1h 35m</div>
+              <div style="font-size:18px; color:var(--accent);">→</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:20px; font-weight:700; color:var(--text);">6:35 PM</div>
+              <div style="font-size:12px; color:var(--muted);">Vancouver (Tsawwassen)</div>
+            </div>
+          </div>
+          <div style="font-size:12px; color:var(--muted);">票价类型: <strong style="color:var(--ok);">Saver</strong></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>⛴️ BC Ferries：</strong>Tsawwassen ↔ Swartz Bay,航程约 1 小时 35 分。仅显示已确认班次。
+    </div>
+  </div>
+
+  <!-- 天气预报 -->
+  <div class="tab-content" id="weather">
+    <div class="note" style="background:#fff7e6; border-left:3px solid var(--warn,#d9920a);">
+      <strong>🌦️ 总评 · 凉爽海洋型春季天气 · 可钓但需防雨防风</strong><br>
+      <strong>6/8 (周日)</strong>:★★★★☆ 4/5 · 白天最高约 18°C,夜间约 12°C · 晴时多云,降雨概率低(20–30%) · 上午风弱、海面平静,午后西风 10–20kt 增强、起浪。
+      <strong>6/9 (周一)</strong>:★★★☆☆ 3/5 · 最高约 16°C,最低约 13°C · 云多、阵雨概率高(约 60%,1–3mm) · 仍可钓但更湿,需全套雨具。<br>
+      <span style="font-size:11px; color:var(--muted);">维多利亚 / Canoe Cove · Haro Strait / Juan de Fuca 海域 · 出海前务必查看 Environment Canada 海洋预报与潮汐/洋流表</span>
+    </div>
+
+    <!-- 综合评级 -->
+    <div class="card" style="margin-bottom:14px; border-left:3px solid var(--accent);">
+      <div class="card-header">
+        <div class="card-title"><span class="card-icon">📊</span>两日综合对比</div>
+        <div class="card-count" style="color:var(--accent); font-weight:600;">清晨为最佳窗口</div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div style="background:var(--surface-2); padding:12px; border-radius:8px; border-left:3px solid var(--ok);">
+          <div style="font-weight:700; color:var(--text); margin-bottom:6px;">6/8 周日 · ★★★★☆ (4/5)</div>
+          <div style="font-size:12px; color:var(--text-soft); line-height:1.7;">
+            🌡️ 12–18°C · 💨 上午弱风 → 午后西/西南 10–20kt<br>
+            🌊 上午海面平静 → 午后短周期涌浪起伏(小船注意)<br>
+            ⛅ 晴时多云 · ☔ 阵雨概率 20–30%(多数时段干燥)<br>
+            🎣 最佳:清晨至上午(风弱面静)
+          </div>
+        </div>
+        <div style="background:var(--surface-2); padding:12px; border-radius:8px; border-left:3px solid var(--warn,#d9920a);">
+          <div style="font-weight:700; color:var(--text); margin-bottom:6px;">6/9 周一 · ★★★☆☆ (3/5)</div>
+          <div style="font-size:12px; color:var(--text-soft); line-height:1.7;">
+            🌡️ 13–16°C · 💨 西/西南 10–20kt,Juan de Fuca 阵风更强<br>
+            🌊 海况较糙,午后浪涌增大<br>
+            🌧️ 云多 · 阵雨概率约 60%(全天 1–3mm)<br>
+            🎣 仍可钓但更湿 · 早–中午为最佳折中
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6月8日 逐小时表 -->
+    <h3 style="margin:20px 0 10px; font-size:15px;">📅 6月8日 (周日) · 逐小时(基于地面+海洋预报趋势)</h3>
+    <div style="overflow-x:auto;">
+    <table class="ferry-table" style="font-size:12px;">
+      <thead>
+        <tr>
+          <th>时间</th><th>气温/露点</th><th>风速/阵风</th><th>风向</th><th>气压</th><th>云量</th><th>降雨</th><th>海浪</th><th>涌浪</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>05:00</td><td>12°/10°</td><td>4/7kt</td><td>西</td><td>1016</td><td>多云</td><td>—</td><td>1ft</td><td>0ft</td></tr>
+        <tr class="booked"><td>06:00 🎣</td><td>12°/10°</td><td>4/8kt</td><td>西</td><td>1016</td><td>晴间多云</td><td>—</td><td>1ft</td><td>0ft</td></tr>
+        <tr class="booked"><td>07:00 🎣</td><td>13°/10°</td><td>5/9kt</td><td>西</td><td>1015</td><td>晴间多云</td><td>—</td><td>1ft</td><td>0ft</td></tr>
+        <tr class="booked"><td>08:00 ⭐</td><td>14°/10°</td><td>6/10kt</td><td>西</td><td>1015</td><td>晴间多云</td><td>—</td><td>2ft</td><td>0ft</td></tr>
+        <tr class="booked"><td>09:00 ⭐</td><td>15°/11°</td><td>7/12kt</td><td>西</td><td>1015</td><td>晴间多云</td><td>—</td><td>2ft</td><td>0ft</td></tr>
+        <tr class="booked"><td>10:00 ⭐</td><td>16°/11°</td><td>9/14kt</td><td>西</td><td>1014</td><td>多云</td><td>20%</td><td>3ft</td><td>1ft</td></tr>
+        <tr class="booked"><td>11:00 ⭐</td><td>17°/11°</td><td>11/16kt</td><td>西</td><td>1014</td><td>多云</td><td>20%</td><td>3ft</td><td>1ft</td></tr>
+        <tr><td>12:00</td><td>17°/11°</td><td>13/18kt</td><td>西</td><td>1013</td><td>多云</td><td>20%</td><td>4ft</td><td>1ft</td></tr>
+        <tr><td>13:00 ⚠️</td><td>18°/11°</td><td>14/20kt</td><td>西</td><td>1013</td><td>晴间多云</td><td>—</td><td>4ft</td><td>1ft</td></tr>
+        <tr><td>14:00 ⚠️</td><td>18°/11°</td><td>15/20kt</td><td>西南</td><td>1012</td><td>多云</td><td>30% <1mm</td><td>4ft</td><td>1ft</td></tr>
+        <tr><td>15:00 ⚠️</td><td>18°/11°</td><td>14/19kt</td><td>西南</td><td>1012</td><td>多云</td><td>30% <1mm</td><td>4ft</td><td>1ft</td></tr>
+        <tr><td>16:00 ⚠️</td><td>17°/11°</td><td>13/18kt</td><td>西南</td><td>1012</td><td>多云</td><td>20%</td><td>3ft</td><td>1ft</td></tr>
+        <tr><td>17:00</td><td>17°/12°</td><td>11/16kt</td><td>西南</td><td>1012</td><td>晴间多云</td><td>—</td><td>3ft</td><td>1ft</td></tr>
+        <tr><td>18:00</td><td>16°/12°</td><td>9/14kt</td><td>西南</td><td>1013</td><td>晴间多云</td><td>—</td><td>2ft</td><td>0ft</td></tr>
+        <tr><td>19:00</td><td>15°/12°</td><td>7/12kt</td><td>西</td><td>1013</td><td>晴间多云</td><td>—</td><td>2ft</td><td>0ft</td></tr>
+        <tr><td>20:00</td><td>14°/12°</td><td>5/10kt</td><td>西</td><td>1013</td><td>多云</td><td>—</td><td>1ft</td><td>0ft</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div style="font-size:11px; color:var(--muted); margin-top:4px;">🎣 清晨钓鱼时段 · ⭐ 最佳窗口(风弱面静) · ⚠️ 午后西风增强、起浪</div>
+
+    <div class="grid" style="margin-top:14px;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="card-icon">🌊</span>6/8 潮汐 / 洋流</div>
+          <div class="card-count" style="color:var(--muted);">待查</div>
+        </div>
+        <div class="item"><label>请查 DFO 潮汐表(Sidney / Swartz Bay 站)确认当日具体高低潮时刻</label></div>
+        <div class="item priority-high"><label>Haro Strait 洋流强,风与流相逆时浪明显加大</label></div>
+        <div class="item"><label>建议按高低潮转换前后安排垂钓时段</label></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="card-icon">🎯</span>6/8 钓鱼适宜度分析</div>
+          <div class="card-count" style="color:var(--ok); font-weight:600;">★★★★☆ 4/5</div>
+        </div>
+        <div class="item priority-high"><label><strong>清晨 06–10:</strong> ⭐⭐⭐⭐ 风弱面静,首选</label></div>
+        <div class="item"><label><strong>上午 10–12:</strong> ⭐⭐⭐ 西风开始增强</label></div>
+        <div class="item"><label><strong>午后 13–16:</strong> ⚠️ 10–20kt 西风,小船宜近岸避风</label></div>
+        <div class="item"><label>✓ 降雨概率低,多数时段干燥</label></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="card-icon">🧥</span>6/8 装备提示</div>
+        </div>
+        <div class="item priority-high"><label>分层穿衣:底层 + 保暖中层 + 防风外壳</label></div>
+        <div class="item"><label>带雨具以防零星阵雨</label></div>
+        <div class="item"><label>海上比陆地体感更凉,高速航行戴帽/手套</label></div>
+        <div class="item"><label>午后前回到避风水域更稳妥</label></div>
+      </div>
+    </div>
+
+    <!-- 6月9日 逐小时表 -->
+    <h3 style="margin:24px 0 10px; font-size:15px;">📅 6月9日 (周一) · 逐小时(基于地面+海洋预报趋势)</h3>
+    <div style="overflow-x:auto;">
+    <table class="ferry-table" style="font-size:12px;">
+      <thead>
+        <tr>
+          <th>时间</th><th>气温/露点</th><th>风速/阵风</th><th>风向</th><th>气压</th><th>云量</th><th>降雨</th><th>海浪</th><th>涌浪</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>05:00</td><td>13°/12°</td><td>5/9kt</td><td>西南</td><td>1012</td><td>阴</td><td>60%</td><td>1ft</td><td>0ft</td></tr>
+        <tr class="booked"><td>06:00 🎣</td><td>13°/12°</td><td>6/10kt</td><td>西南</td><td>1012</td><td>阴 有雨</td><td>~1mm</td><td>1ft</td><td>0ft</td></tr>
+        <tr class="booked"><td>07:00 🎣</td><td>13°/12°</td><td>7/11kt</td><td>西南</td><td>1011</td><td>阴 有雨</td><td>~1mm</td><td>2ft</td><td>1ft</td></tr>
+        <tr class="booked"><td>08:00 ⭐</td><td>14°/12°</td><td>8/13kt</td><td>西南</td><td>1011</td><td>多云 有雨</td><td>~1mm</td><td>2ft</td><td>1ft</td></tr>
+        <tr class="booked"><td>09:00 ⭐</td><td>14°/12°</td><td>9/14kt</td><td>西</td><td>1011</td><td>多云</td><td>阵雨</td><td>3ft</td><td>1ft</td></tr>
+        <tr class="booked"><td>10:00 ⭐</td><td>15°/12°</td><td>11/16kt</td><td>西</td><td>1010</td><td>多云</td><td>阵雨</td><td>3ft</td><td>1ft</td></tr>
+        <tr><td>11:00</td><td>15°/12°</td><td>12/18kt</td><td>西</td><td>1010</td><td>阴 有雨</td><td>1-2mm</td><td>4ft</td><td>1ft</td></tr>
+        <tr><td>12:00 ⚠️</td><td>16°/12°</td><td>14/19kt</td><td>西</td><td>1010</td><td>阴 有雨</td><td>1-2mm</td><td>4ft</td><td>1ft</td></tr>
+        <tr><td>13:00 ⚠️</td><td>16°/12°</td><td>15/20kt</td><td>西</td><td>1009</td><td>阴 有雨</td><td>1-2mm</td><td>5ft</td><td>1ft</td></tr>
+        <tr><td>14:00 ⚠️</td><td>16°/12°</td><td>15/21kt</td><td>西南</td><td>1009</td><td>阴</td><td>阵雨</td><td>5ft</td><td>1ft</td></tr>
+        <tr><td>15:00 ⚠️</td><td>15°/12°</td><td>14/20kt</td><td>西南</td><td>1009</td><td>阴</td><td>阵雨</td><td>5ft</td><td>1ft</td></tr>
+        <tr><td>16:00 ⚠️</td><td>15°/12°</td><td>12/18kt</td><td>西南</td><td>1010</td><td>阴</td><td>阵雨</td><td>4ft</td><td>1ft</td></tr>
+        <tr><td>17:00</td><td>14°/12°</td><td>10/16kt</td><td>西南</td><td>1010</td><td>阴</td><td><1mm</td><td>3ft</td><td>1ft</td></tr>
+        <tr><td>18:00</td><td>14°/12°</td><td>8/14kt</td><td>西南</td><td>1010</td><td>多云</td><td>—</td><td>3ft</td><td>1ft</td></tr>
+        <tr><td>19:00</td><td>13°/12°</td><td>7/12kt</td><td>西</td><td>1011</td><td>多云</td><td>—</td><td>2ft</td><td>0ft</td></tr>
+        <tr><td>20:00</td><td>13°/12°</td><td>6/10kt</td><td>西</td><td>1011</td><td>阴</td><td>—</td><td>2ft</td><td>0ft</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div style="font-size:11px; color:var(--muted); margin-top:4px;">🎣 清晨钓鱼时段 · ⭐ 相对最佳窗口 · ⚠️ 午后风雨叠加、海况转糙</div>
+
+    <div class="grid" style="margin-top:14px;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="card-icon">🌊</span>6/9 潮汐 / 洋流</div>
+          <div class="card-count" style="color:var(--muted);">待查</div>
+        </div>
+        <div class="item"><label>出发当天上午务必查 Juan de Fuca East Entrance / Haro Strait 海洋预报更新</label></div>
+        <div class="item priority-high"><label>6 月偶有强西风内灌日,海况更糙,留意大风/烈风警告</label></div>
+        <div class="item"><label>查 DFO 潮汐表确认具体高低潮时刻</label></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="card-icon">🎯</span>6/9 钓鱼适宜度分析</div>
+          <div class="card-count" style="color:var(--warn,#d9920a); font-weight:600;">★★★☆☆ 3/5</div>
+        </div>
+        <div class="item priority-high"><label><strong>清晨 06–10:</strong> ⭐⭐⭐ 雨较小、风较弱的最佳折中</label></div>
+        <div class="item"><label><strong>上午–午后 11–16:</strong> ⚠️ 阵雨 + 西风 10–20kt</label></div>
+        <div class="item"><label>若雨带正午到来,早–中午体感与咬口最佳</label></div>
+        <div class="item"><label>仍可钓,但需全套防水、所有物品装防水袋</label></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="card-icon">🧥</span>6/9 装备提示</div>
+        </div>
+        <div class="item priority-high"><label>全套防水(雨衣 + 雨裤),手机/电子设备防水</label></div>
+        <div class="item"><label>防水袋、备用毛巾、保温杯热饮</label></div>
+        <div class="item"><label>保暖帽与手套,应对凉湿环境</label></div>
+        <div class="item"><label>密切关注当日早晨海洋预报更新</label></div>
+      </div>
+    </div>
+
+    <!-- 海况与安全 -->
+    <div class="card" style="margin-top:14px;">
+      <div class="card-header">
+        <div class="card-title"><span class="card-icon">⚓</span>海况与安全(Canoe Cove / Haro / Juan de Fuca)</div>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:8px;">
+        <div class="item priority-high"><label>🌊 <strong>海况:</strong> 10–20kt 西风下短周期碎浪,比陆地预报看上去更大</label></div>
+        <div class="item priority-high"><label>🌀 <strong>潮流:</strong> Haro Strait 流强,风与流相逆时浪叠加,按潮汐/洋流表安排时段</label></div>
+        <div class="item priority-high"><label>🛟 <strong>安全:</strong> 出发前夜与当日早晨查 Haro Strait、Juan de Fuca East Entrance、Strait of Georgia(Nanaimo 以南)预报</label></div>
+        <div class="item"><label>🎣 <strong>时机:</strong> 两日均以黎明–上午为主钓时段,午后风/雨增强时灵活收线</label></div>
+        <div class="item"><label>🧥 <strong>着装:</strong> 底层+保暖中层+防风/防水外壳,帽与手套</label></div>
+        <div class="item"><label>🎒 <strong>装备:</strong> 防水袋、备用毛巾、热饮保温杯,电子设备防水</label></div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:20px;font-size:11px;">
+      数据来源:Environment Canada(<a href="https://weather.gc.ca/marine/forecast_e.html?mapID=03&siteID=07003" target="_blank" style="color:var(--accent);">Haro Strait / Juan de Fuca 海洋预报</a>)、AccuWeather、The Weather Network、WeatherSpark · 逐小时为基于地面与海洋预报趋势的估算,出海前请以 Environment Canada 当日更新为准。
+    </div>
+  </div>
+
+</div>
+
+<script>
+const fishingData = [
+  {
+    title: "钓具装备", icon: "🎣",
+    items: [
+      { name: "钓竿", qty: "每人1支", priority: true },
+      { name: "渔轮(卷线器)", qty: "每人1个", priority: true },
+      { name: "钓鱼线(主线)", qty: "备用1卷" },
+      { name: "鱼钩", qty: "多种尺寸" },
+      { name: "铅坠/沉子", qty: "多种重量" },
+      { name: "浮漂", qty: "若干" },
+      { name: "假饵/路亚", qty: "海水专用" },
+      { name: "鱼饵(虾、鲱鱼)", qty: "现场或店购" },
+      { name: "钓鱼工具箱", qty: "1个" },
+      { name: "剪线钳/夹子", qty: "1把" },
+      { name: "去钩器", qty: "1把" },
+      { name: "尺子(测鱼)", qty: "1把" },
+      { name: "鱼护/鱼桶", qty: "1个" },
+      { name: "毛巾/抹布", qty: "2-3条" }
+    ]
+  },
+  {
+    title: "证件 & 许可", icon: "📋",
+    items: [
+      { name: "BC省海钓许可证(成人)", qty: "4张", priority: true },
+      { name: "三文鱼附加许可", qty: "如钓三文鱼" },
+      { name: "身份证件/驾照", qty: "每人1份", priority: true },
+      { name: "钓鱼法规手册", qty: "电子版即可" }
+    ]
+  },
+  {
+    title: "安全装备", icon: "🦺",
+    items: [
+      { name: "救生衣(每人1件)", qty: "4件", priority: true },
+      { name: "急救包", qty: "1套", priority: true },
+      { name: "防晒霜 SPF50+", qty: "1瓶" },
+      { name: "太阳镜(偏光)", qty: "每人1副" },
+      { name: "帽子/遮阳帽", qty: "每人1顶" },
+      { name: "手电筒/头灯", qty: "2个" },
+      { name: "哨子", qty: "每人1个" },
+      { name: "手机防水袋", qty: "2个" }
+    ]
+  },
+  {
+    title: "服装(水温14°C 偏冷)", icon: "🧥",
+    items: [
+      { name: "保暖外套/抓绒", qty: "每人1件", priority: true },
+      { name: "防水外套", qty: "每人1件" },
+      { name: "防滑鞋/胶鞋", qty: "每人1双", priority: true },
+      { name: "速干长裤", qty: "每人1条" },
+      { name: "保暖内衣层", qty: "每人1套" },
+      { name: "手套(防水)", qty: "每人1副" },
+      { name: "备用袜子", qty: "每人2双" }
+    ]
+  },
+  {
+    title: "食物 & 饮料", icon: "🍱",
+    items: [
+      { name: "饮用水", qty: "至少6升" },
+      { name: "三明治/便当", qty: "4人午餐" },
+      { name: "零食(坚果、能量棒、肉干)", qty: "充足" },
+      { name: "热水保温杯", qty: "每人1个" },
+      { name: "热茶/咖啡", qty: "1-2壶" },
+      { name: "啤酒/饮料", qty: "适量" },
+      { name: "水果(苹果、橙子)", qty: "若干" }
+    ]
+  },
+  {
+    title: "其他", icon: "📦",
+    items: [
+      { name: "冰箱/保鲜箱(装鱼)", qty: "1个", priority: true },
+      { name: "冰袋", qty: "2-3个" },
+      { name: "垃圾袋", qty: "若干" },
+      { name: "塑料密封袋", qty: "若干" },
+      { name: "相机/手机", qty: "拍照留念" },
+      { name: "充电宝", qty: "1个" },
+      { name: "湿巾", qty: "1包" }
+    ]
+  }
+];
+
+const campingData = [
+  {
+    title: "帐篷 & 睡眠", icon: "⛺",
+    items: [
+      { name: "帐篷(6人帐 或 2人帐×2)", qty: "成人空间宽松", priority: true },
+      { name: "防潮垫/地布", qty: "1-2张", priority: true },
+      { name: "睡袋(舒适温度5°C)", qty: "每人1个", priority: true },
+      { name: "充气床垫/睡垫", qty: "每人1张" },
+      { name: "枕头/充气枕", qty: "每人1个" },
+      { name: "营钉/营绳", qty: "1套" },
+      { name: "橡皮锤", qty: "1把" },
+      { name: "天幕/防雨布", qty: "1张" }
+    ]
+  },
+  {
+    title: "厨房 & 炊具", icon: "🍳",
+    items: [
+      { name: "便携燃气炉(双头更好)", qty: "1个", priority: true },
+      { name: "燃气罐", qty: "3-4个", priority: true },
+      { name: "炒锅/平底锅", qty: "1个" },
+      { name: "汤锅", qty: "1个" },
+      { name: "餐具(碗、筷、勺)", qty: "4人份" },
+      { name: "杯子(保温杯)", qty: "每人1个" },
+      { name: "菜刀 & 砧板", qty: "1套" },
+      { name: "打火机/防风火柴", qty: "2个" },
+      { name: "洗碗液 & 海绵", qty: "1套" },
+      { name: "铝箔纸/保鲜膜", qty: "1卷" },
+      { name: "厨房纸巾", qty: "2卷" },
+      { name: "开瓶器 / 开罐器", qty: "1个" }
+    ]
+  },
+  {
+    title: "食物", icon: "🍖",
+    items: [
+      { name: "早餐(面包、麦片、鸡蛋)", qty: "4人×2天", priority: true },
+      { name: "午餐食材", qty: "4人×2天" },
+      { name: "晚餐食材(肉类、蔬菜)", qty: "4人×2天" },
+      { name: "米/面/方便面", qty: "充足" },
+      { name: "调味料(盐、酱油、油、辣椒)", qty: "小瓶" },
+      { name: "饮用水", qty: "至少20升", priority: true },
+      { name: "零食 & 水果", qty: "充足" },
+      { name: "啤酒 / 红酒", qty: "适量(成人聚会)" },
+      { name: "饮料(果汁、汽水、苏打水)", qty: "若干" },
+      { name: "烧烤用具 & 木炭", qty: "可选" }
+    ]
+  },
+  {
+    title: "服装", icon: "👕",
+    items: [
+      { name: "保暖外套", qty: "每人1件", priority: true },
+      { name: "防水外套/雨衣", qty: "每人1件" },
+      { name: "长袖T恤", qty: "每人2件" },
+      { name: "长裤", qty: "每人2条" },
+      { name: "睡衣(保暖)", qty: "每人1套" },
+      { name: "袜子", qty: "每人3双" },
+      { name: "内衣裤", qty: "每人2套" },
+      { name: "徒步鞋", qty: "每人1双" },
+      { name: "拖鞋/凉鞋", qty: "每人1双" },
+      { name: "帽子(保暖 & 遮阳)", qty: "每人各1顶" }
+    ]
+  },
+  {
+    title: "卫生用品", icon: "🧼",
+    items: [
+      { name: "牙刷 & 牙膏", qty: "每人1套", priority: true },
+      { name: "毛巾 & 浴巾", qty: "每人1套" },
+      { name: "洗发水 & 沐浴露", qty: "小瓶" },
+      { name: "卫生纸", qty: "1卷" },
+      { name: "湿巾", qty: "2包" },
+      { name: "免洗洗手液", qty: "1瓶" },
+      { name: "驱蚊液", qty: "1瓶" },
+      { name: "防晒霜 SPF50+", qty: "1瓶" },
+      { name: "唇膏 & 润肤露", qty: "1套" }
+    ]
+  },
+  {
+    title: "工具 & 灯具", icon: "🔦",
+    items: [
+      { name: "头灯(每人)", qty: "4个", priority: true },
+      { name: "营地灯", qty: "1-2个" },
+      { name: "备用电池", qty: "充足" },
+      { name: "多功能刀", qty: "1把" },
+      { name: "胶带(强力)", qty: "1卷" },
+      { name: "绳子/伞绳", qty: "1卷" },
+      { name: "垃圾袋(大号)", qty: "若干" },
+      { name: "充电宝", qty: "2个" },
+      { name: "延长线/插座", qty: "1个" }
+    ]
+  },
+  {
+    title: "急救 & 安全", icon: "🚑",
+    items: [
+      { name: "急救包(完整)", qty: "1套", priority: true },
+      { name: "常用药(感冒、肠胃)", qty: "1套" },
+      { name: "个人处方药", qty: "按需" },
+      { name: "创可贴 & 绷带", qty: "充足" },
+      { name: "消毒湿巾/酒精", qty: "1瓶" },
+      { name: "蚊虫叮咬药膏", qty: "1管" },
+      { name: "止痛药/退烧药", qty: "1盒" },
+      { name: "灭火器/防火毯", qty: "1个" }
+    ]
+  },
+  {
+    title: "娱乐 & 其他", icon: "🎲",
+    items: [
+      { name: "扑克牌 / 桌游", qty: "1-2套" },
+      { name: "蓝牙音箱", qty: "1个" },
+      { name: "相机", qty: "1台" },
+      { name: "望远镜", qty: "1个" },
+      { name: "折叠椅", qty: "4把", priority: true },
+      { name: "折叠桌", qty: "1张" },
+      { name: "野餐垫", qty: "1张" },
+      { name: "现金 & 信用卡", qty: "随身", priority: true },
+      { name: "营地预订确认单", qty: "电子+纸质", priority: true }
+    ]
+  }
+];
+
+const STORAGE_KEY = "fishing_camping_checklist_v1";
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch { return {}; }
+}
+function saveState(state) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+}
+let state = loadState();
+
+function renderCards(data, gridId, prefix) {
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = "";
+  data.forEach((cat, ci) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    const total = cat.items.length;
+    let checked = 0;
+    const itemsHtml = cat.items.map((it, ii) => {
+      const key = `${prefix}_${ci}_${ii}`;
+      const isChecked = state[key] === true;
+      if (isChecked) checked++;
+      return `
+        <div class="item ${isChecked ? 'checked' : ''} ${it.priority ? 'priority-high' : ''}" data-key="${key}">
+          <input type="checkbox" ${isChecked ? 'checked' : ''}>
+          <label>${it.name}</label>
+          <span class="qty">${it.qty}</span>
+        </div>
+      `;
+    }).join("");
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="card-title"><span class="card-icon">${cat.icon}</span>${cat.title}</div>
+        <div class="card-count"><span class="cc-done">${checked}</span>/<span class="cc-total">${total}</span></div>
+      </div>
+      ${itemsHtml}
+    `;
+    grid.appendChild(card);
+  });
+  attachHandlers(grid);
+  updateProgress();
+}
+
+function attachHandlers(grid) {
+  grid.querySelectorAll(".item").forEach(el => {
+    el.addEventListener("click", e => {
+      if (e.target.tagName === "INPUT") return;
+      const cb = el.querySelector("input[type=checkbox]");
+      cb.checked = !cb.checked;
+      cb.dispatchEvent(new Event("change"));
+    });
+    el.querySelector("input[type=checkbox]").addEventListener("change", e => {
+      const key = el.dataset.key;
+      state[key] = e.target.checked;
+      saveState(state);
+      el.classList.toggle("checked", e.target.checked);
+      updateCardCount(el);
+      updateProgress();
+    });
+  });
+}
+
+function updateCardCount(itemEl) {
+  const card = itemEl.closest(".card");
+  const checked = card.querySelectorAll("input[type=checkbox]:checked").length;
+  card.querySelector(".cc-done").textContent = checked;
+}
+
+function updateProgress() {
+  const allBoxes = document.querySelectorAll(".item input[type=checkbox]");
+  const checked = document.querySelectorAll(".item input[type=checkbox]:checked");
+  const total = allBoxes.length;
+  const done = checked.length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById("total-progress").textContent = pct + "%";
+  document.getElementById("total-bar").style.width = pct + "%";
+  document.getElementById("checked-count").textContent = `${done} / ${total}`;
+}
+
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab).classList.add("active");
+  });
+});
+
+function getActiveGrid() {
+  const active = document.querySelector(".tab-content.active");
+  return active.querySelector(".grid");
+}
+function checkAll() {
+  getActiveGrid().querySelectorAll("input[type=checkbox]").forEach(cb => {
+    if (!cb.checked) { cb.checked = true; cb.dispatchEvent(new Event("change")); }
+  });
+}
+function uncheckAll() {
+  getActiveGrid().querySelectorAll("input[type=checkbox]").forEach(cb => {
+    if (cb.checked) { cb.checked = false; cb.dispatchEvent(new Event("change")); }
+  });
+}
+function resetAll() {
+  if (!confirm("确定要清空所有勾选吗?")) return;
+  state = {};
+  saveState(state);
+  renderCards(fishingData, "fishing-grid", "f");
+  renderCards(campingData, "camping-grid", "c");
+}
+
+renderCards(fishingData, "fishing-grid", "f");
+renderCards(campingData, "camping-grid", "c");
+</script>
+</body>
+</html>

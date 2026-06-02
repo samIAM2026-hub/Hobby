@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Value Line《精选与观点》交互浏览器 · 2026年6月5日</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F6F7; --bg2:#FFFFFF; --bg3:#F0F1F3; --border:#E5E5E5; --border2:#C8C8C8;
+    --text:#1E1E1E; --text2:#5B5B5B; --text3:#8A8A8A;
+    --accent:#002B5B; --accent2:#0077CC;
+    --red:#C8102E; --green:#00936C; --amber:#D8A000; --purple:#7B5EA7; --teal:#007A90;
+    --q1:#E8F5EC; --q1b:#1B7340;
+    --q2:#F1F7EA; --q2b:#5E8A2C;
+    --q3:#FFF7E0; --q3b:#A07C00;
+    --q4:#FCEBE6; --q4b:#A52414;
+    --buy:#0E7C4A; --buybg:#E6F4EC; --hold:#A07C00; --holdbg:#FFF6DD; --sell:#B11226; --sellbg:#FBE7EA;
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.62;min-height:100vh}
+
+  /* HEADER */
+  .header{background:var(--accent);color:#fff;padding:30px 40px 26px;border-bottom:4px solid var(--red)}
+  .header-inner{max-width:1300px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:18px}
+  .badge{display:inline-block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.28);border-radius:3px;padding:3px 10px;font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+  .header h1{font-size:24px;font-weight:700;letter-spacing:-.4px}
+  .header p{color:#cdd6e0;font-size:13px;margin-top:6px;max-width:720px}
+  .header-meta{font-size:12px;color:#cdd6e0;text-align:right;line-height:1.7}
+  .header-meta strong{color:#fff;font-weight:600}
+  .header-meta .manual-btn{margin-top:10px;display:inline-block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:11px;font-weight:600;padding:6px 13px;border-radius:4px;cursor:pointer;letter-spacing:.3px}
+  .header-meta .manual-btn:hover{background:rgba(255,255,255,.26)}
+
+  /* STICKY NAV */
+  .nav{position:sticky;top:0;z-index:50;background:#001a37;border-bottom:1px solid #013;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+  .nav-inner{max-width:1300px;margin:0 auto;display:flex;gap:2px;padding:0 32px;overflow-x:auto}
+  .nav a{color:#aebfd2;font-size:12.5px;font-weight:600;padding:13px 15px;text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;letter-spacing:.2px}
+  .nav a:hover{color:#fff}
+  .nav a.active{color:#fff;border-bottom-color:var(--red)}
+
+  /* LAYOUT */
+  main{max-width:1240px;margin:0 auto;padding:26px 44px 90px}
+  section{margin-bottom:56px;scroll-margin-top:60px}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--accent);flex-wrap:wrap;gap:8px}
+  .section-head h2{font-size:21px;font-weight:700;color:var(--accent);letter-spacing:-.3px}
+  .section-head .sub{font-size:12.5px;color:var(--text3)}
+  .section-head .secnum{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;margin-right:10px;vertical-align:-3px}
+
+  /* SCANNABLE READ BLOCK */
+  .read{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:0 5px 5px 0;padding:15px 19px 17px;margin-bottom:20px}
+  .read-tldr{display:flex;gap:11px;align-items:flex-start;padding-bottom:13px;margin-bottom:13px;border-bottom:1px dashed var(--border)}
+  .read-tldr .tldr-tag{flex:none;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:4px 9px;border-radius:3px;letter-spacing:.5px;text-transform:uppercase;margin-top:1px}
+  .read-tldr .tldr-text{font-size:14.5px;font-weight:600;color:var(--text);line-height:1.45}
+  .read-points{display:grid;grid-template-columns:repeat(2,1fr);gap:11px 22px}
+  .read-points.cols-3{grid-template-columns:repeat(3,1fr)}
+  .read-point{display:flex;gap:11px;align-items:flex-start;font-size:13px;color:var(--text2);line-height:1.5}
+  .read-point .num{flex:none;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .read-point .pt-body strong{color:var(--text);font-weight:700;display:block;font-size:13px;margin-bottom:2px}
+  .chip{font-size:11px;padding:2px 8px;border-radius:11px;background:var(--bg3);color:var(--text2);font-weight:600;display:inline-flex;align-items:center;gap:4px}
+  .chip.up{color:var(--green)} .chip.up::before{content:'▲';font-size:9px}
+  .chip.down{color:var(--red)} .chip.down::before{content:'▼';font-size:9px}
+  @media(max-width:920px){.read-points,.read-points.cols-3{grid-template-columns:1fr}}
+
+  /* TILES */
+  .tile-grid{display:grid;gap:14px}
+  .tg-4{grid-template-columns:repeat(4,1fr)} .tg-5{grid-template-columns:repeat(5,1fr)} .tg-3{grid-template-columns:repeat(3,1fr)}
+  .tile{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px 18px;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  .tile-label{font-size:11.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+  .tile-value{font-size:28px;font-weight:700;color:var(--text);margin:6px 0 3px;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
+  .tile-sub{font-size:12.5px;color:var(--text2);line-height:1.45}
+  .tile-note{font-size:11.5px;color:var(--text3);margin-top:9px;padding-top:9px;border-top:1px dashed var(--border);line-height:1.45}
+  .tile-note strong{color:var(--text)}
+  .tile.up{border-top:3px solid var(--green)} .tile.down{border-top:3px solid var(--red)} .tile.neu{border-top:3px solid var(--amber)}
+  @media(max-width:1000px){.tg-4,.tg-5{grid-template-columns:repeat(2,1fr)} .tg-3{grid-template-columns:1fr}}
+
+  /* KPI SUMMARY BAND */
+  .kpiband-wrap{background:linear-gradient(180deg,#04386f 0%,#002B5B 100%);border-bottom:1px solid #013}
+  .kpiband{max-width:1240px;margin:0 auto;padding:18px 44px 20px;display:flex;gap:14px;flex-wrap:wrap;align-items:stretch}
+  .regime{flex:none;min-width:188px;display:flex;flex-direction:column;justify-content:center;gap:4px;padding-right:18px;border-right:1px solid rgba(255,255,255,.18)}
+  .regime .rg-label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#9fb6cf;font-weight:700}
+  .regime .rg-val{font-size:18px;font-weight:700;color:#fff;line-height:1.2;letter-spacing:-.3px}
+  .regime .rg-sub{font-size:11.5px;color:#bcd0e6}
+  .kpi{flex:1 1 0;min-width:120px;display:flex;flex-direction:column;gap:2px;justify-content:center}
+  .kpi .k-label{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#9fb6cf;font-weight:700}
+  .kpi .k-val{font-size:19px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+  .kpi .k-sub{font-size:11px;color:#bcd0e6;font-variant-numeric:tabular-nums}
+  .kpi .k-sub.up{color:#6ee7a8} .kpi .k-sub.down{color:#ffa39e}
+  @media(max-width:900px){.kpiband{padding:16px 20px}.regime{border-right:none;border-bottom:1px solid rgba(255,255,255,.18);padding-bottom:12px;width:100%;flex:1 1 100%}.kpi{flex:1 1 40%}}
+
+  /* TABS */
+  .tabs{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:14px}
+  .tab{padding:8px 15px;font-size:12.5px;font-weight:600;color:var(--text2);background:var(--bg3);border:1px solid var(--border);border-radius:5px;cursor:pointer;user-select:none}
+  .tab:hover{background:#E6E8EB}
+  .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .tab .tcount{font-size:10px;opacity:.7;margin-left:5px;font-weight:700}
+  .pane{display:none} .pane.active{display:block}
+  .pane-desc{font-size:13px;color:var(--text2);background:#F3F7FB;border:1px solid #DCE7F1;border-left:3px solid var(--accent2);border-radius:0 6px 6px 0;padding:13px 17px;margin-bottom:15px;line-height:1.55}
+  .pane-desc strong{color:var(--text)}
+
+  /* CONTROLS */
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:13px}
+  .controls input[type=text]{padding:9px 13px;border:1px solid var(--border2);border-radius:6px;font-size:13.5px;font-family:var(--font);min-width:240px}
+  .controls input[type=text]:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(0,119,204,.12)}
+  .controls select{padding:9px 12px;border:1px solid var(--border2);border-radius:6px;font-size:13px;background:var(--bg2);font-family:var(--font)}
+  .controls .count{font-size:12.5px;color:var(--text3);margin-left:auto;font-weight:600}
+
+  /* DATA TABLE */
+  table.dt{width:100%;border-collapse:collapse;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:13.5px;font-variant-numeric:tabular-nums;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  table.dt th{background:var(--bg3);text-align:right;padding:12px 14px;font-weight:700;color:var(--accent);border-bottom:2px solid var(--border2);cursor:pointer;user-select:none;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;position:sticky;top:46px;z-index:8}
+  table.dt th:first-child,table.dt th.l{text-align:left}
+  table.dt th:hover{background:#E3E7EC}
+  table.dt th.sort-asc,table.dt th.sort-desc{color:var(--red)}
+  table.dt th.sort-asc::after{content:' ▲';color:var(--red);font-size:9px}
+  table.dt th.sort-desc::after{content:' ▼';color:var(--red);font-size:9px}
+  table.dt td{padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+  table.dt td.l{text-align:left}
+  table.dt tbody tr:nth-child(even) td{background:#FAFBFC}
+  table.dt tbody tr:hover td{background:#EEF4FB}
+  table.dt tbody tr:last-child td{border-bottom:none}
+  table.dt tr.grp td{background:#E7ECF2 !important;color:var(--accent);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:7px 14px}
+  table.dt tr.grp td .gcount{color:var(--text3);font-weight:600;margin-left:6px}
+  table.dt td.alpha{font-variant-numeric:tabular-nums;min-width:74px}
+  td.alpha .alrow{display:flex;gap:8px;justify-content:space-between;align-items:center;font-size:12.5px;line-height:1.55}
+  td.alpha .allbl{color:var(--text3);font-weight:700;font-size:9.5px;letter-spacing:.3px}
+  td.alpha .muted{color:var(--text3)}
+  table.dt .tkr{font-weight:700;color:var(--accent)}
+  table.dt .co{color:var(--text);font-weight:500}
+  table.dt .ind{color:var(--text2);font-size:12.5px}
+  .rec{display:inline-block;min-width:42px;text-align:center;padding:2px 8px;border-radius:11px;font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.3px}
+  .rec.buy{background:var(--buybg);color:var(--buy)} .rec.hold{background:var(--holdbg);color:var(--hold)} .rec.sell{background:var(--sellbg);color:var(--sell)}
+  .pill{display:inline-block;min-width:26px;text-align:center;padding:2px 7px;border-radius:11px;font-weight:700;font-size:11px}
+  .pill.r1{background:var(--q1);color:var(--q1b)} .pill.r2{background:var(--q2);color:var(--q2b)}
+  .pill.r3{background:var(--q3);color:var(--q3b)} .pill.r4{background:var(--q4);color:var(--q4b)} .pill.r5{background:var(--q4);color:var(--q4b)}
+  .gain{color:var(--green);font-weight:700} .loss{color:var(--red);font-weight:700}
+  .miniind{position:relative;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;min-width:54px;display:inline-block;vertical-align:middle}
+  .miniind > span{position:absolute;top:0;bottom:0;border-radius:4px}
+
+  /* BAR LIST (industry perf) */
+  .barlist{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  .barrow{display:grid;grid-template-columns:210px 1fr 64px;gap:14px;align-items:center;padding:11px 18px;font-size:13.5px}
+  .barrow+.barrow{border-top:1px solid var(--border)}
+  .barrow .bn{font-weight:600;color:var(--text)}
+  .bartrack{height:20px;background:var(--bg3);border-radius:4px;position:relative;overflow:hidden}
+  .barfill{position:absolute;top:0;bottom:0;border-radius:4px}
+  .barfill.pos{background:var(--green);left:50%} .barfill.neg{background:var(--red);right:50%}
+  .barmid{position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--border2)}
+  .barval{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;font-size:14px}
+  .barval.pos{color:var(--green)} .barval.neg{color:var(--red)}
+  .split2{display:grid;grid-template-columns:1fr 1fr;gap:20px} @media(max-width:1000px){.split2{grid-template-columns:1fr}}
+  .panel h3{font-size:14.5px;font-weight:700;color:var(--accent);margin-bottom:11px}
+
+  /* YIELD CURVE / SVG */
+  .vizcard{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:18px 20px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  .vizcard h3{font-size:14.5px;font-weight:700;color:var(--accent);margin-bottom:4px}
+  .vizcard .vh{font-size:12.5px;color:var(--text2);margin-bottom:14px;line-height:1.5}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--text2);margin-top:10px}
+  .legend .lg{display:inline-flex;align-items:center;gap:6px}
+  .legend .sw{width:13px;height:3px;border-radius:2px;display:inline-block}
+
+  /* DONUT */
+  .alloc{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+  .alloc .donut{flex:none}
+  .alloc-legend{display:flex;flex-direction:column;gap:9px;font-size:13px}
+  .alloc-legend .al{display:flex;align-items:center;gap:9px}
+  .alloc-legend .sw{width:14px;height:14px;border-radius:3px}
+  .alloc-legend .alv{font-weight:700;font-variant-numeric:tabular-nums;min-width:42px}
+  .alloc-legend .alc{font-size:11px;font-weight:700;margin-left:4px}
+  .alloc-legend .alc.up{color:var(--green)} .alloc-legend .alc.down{color:var(--red)} .alloc-legend .alc.flat{color:var(--text3)}
+
+  /* RATE TABLE */
+  table.rt{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums;background:var(--bg2)}
+  table.rt th{background:var(--bg3);padding:10px 13px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--accent);font-weight:700;border-bottom:2px solid var(--border2);text-align:right}
+  table.rt th:first-child{text-align:left}
+  table.rt td{padding:8px 13px;border-bottom:1px solid var(--border);text-align:right}
+  table.rt td:first-child{text-align:left;color:var(--text2)}
+  table.rt tbody tr:hover td{background:#FAFBFC}
+  table.rt tr.grp td{background:#EAEEF3;font-weight:700;color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+  table.rt tr.grp:hover td{background:#EAEEF3}
+  table.rt .d{font-size:11.5px;font-weight:700} .d.up{color:var(--green)} .d.down{color:var(--red)} .d.flat{color:var(--text3)}
+
+  /* MONITOR TABLE */
+  table.mon{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums;background:var(--bg2);border:1px solid var(--border);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  table.mon th{background:var(--bg3);padding:11px 13px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--accent);font-weight:700;border-bottom:2px solid var(--border2);text-align:right;position:sticky;top:46px;z-index:8}
+  table.mon th:first-child{text-align:left}
+  table.mon td{padding:10px 13px;border-bottom:1px solid var(--border);text-align:right}
+  table.mon td:first-child{text-align:left;color:var(--text);font-weight:600}
+  table.mon tbody tr:nth-child(even) td{background:#FAFBFC}
+  table.mon tbody tr:hover td{background:#EEF4FB}
+  table.mon tbody tr:last-child td{border-bottom:none}
+  table.mon .pos-ctx{position:relative;min-width:130px}
+  .rangebar{height:9px;background:var(--bg3);border-radius:5px;position:relative;margin-top:3px}
+  .rangebar .fill{position:absolute;top:0;bottom:0;background:#cfe0ee;border-radius:5px}
+  .rangebar .now{position:absolute;top:-2px;width:3px;height:13px;background:var(--red);border-radius:1px}
+
+  /* COLLAPSIBLE DETAILS */
+  details.collapse{background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  details.collapse>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:700;color:var(--accent);font-size:14px;background:var(--bg2)}
+  details.collapse>summary::-webkit-details-marker{display:none}
+  details.collapse>summary:hover{background:#FAFBFC}
+  details.collapse>summary .sm-sub{font-weight:500;color:var(--text3);font-size:12px;margin-left:auto;margin-right:10px}
+  details.collapse>summary .chev{transition:transform .2s;color:var(--text3);font-size:13px}
+  details.collapse[open]>summary{border-bottom:1px solid var(--border)}
+  details.collapse[open]>summary .chev{transform:rotate(90deg)}
+  details.collapse .collapse-body{padding:16px 18px}
+  details.collapse .collapse-body .vh{margin-bottom:12px}
+
+  /* FOOTER */
+  footer{max-width:1300px;margin:0 auto;padding:24px 40px 50px;font-size:11px;color:var(--text3);line-height:1.6;border-top:1px solid var(--border)}
+  footer strong{color:var(--text2)}
+
+  /* MODAL */
+  .modal-bg{position:fixed;inset:0;background:rgba(0,10,25,.55);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+  .modal-bg.show{display:flex}
+  .modal{background:var(--bg2);max-width:780px;width:100%;border-radius:8px;padding:30px 34px 34px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+  .modal h2{font-size:20px;color:var(--accent);margin-bottom:4px}
+  .modal .msub{font-size:12.5px;color:var(--text3);margin-bottom:18px}
+  .modal h3{font-size:13.5px;color:var(--accent);margin:18px 0 6px;border-bottom:1px solid var(--border);padding-bottom:4px}
+  .modal p{font-size:13px;color:var(--text2);margin-bottom:8px}
+  .modal ul{margin:0 0 8px 18px;font-size:13px;color:var(--text2)}
+  .modal li{margin-bottom:5px}
+  .modal .close{float:right;cursor:pointer;font-size:22px;color:var(--text3);line-height:1;margin-top:-4px}
+  .modal .close:hover{color:var(--red)}
+  .modal kbd{background:var(--bg3);border:1px solid var(--border2);border-radius:3px;padding:1px 6px;font-size:11px;font-family:var(--font);font-weight:600;color:var(--text)}
+</style>
+</head>
+<body>
+<!-- ============ HEADER ============ -->
+<header class="header">
+  <div class="header-inner">
+    <div>
+      <span class="badge">Value Line · 《精选与观点》</span>
+      <h1>《精选与观点》交互浏览器</h1>
+      <p>对 2026 年 6 月 5 日刊(第 LXXXI 卷第 44 期,Issue 5,第 1661&ndash;1672 页)的交互式解读。涵盖五个模型组合、三套选股筛选、利率、资产配置模型、市场监测、行业轮动与内部人交易 &mdash; 以纯指数(宏观)视角呈现。价格截至发刊时 2026/5/26。</p>
+    </div>
+    <div class="header-meta">
+      <div><strong>期号:</strong> 2026年6月5日</div>
+      <div><strong>截稿日:</strong> 2026/5/26</div>
+      <div><strong>新任美联储主席:</strong> Kevin Warsh</div>
+      <div style="margin-top:10px"><a href="../index.html" style="color:#cdd6e0;font-size:11px;text-decoration:none">&larr; 返回主页</a> &nbsp;<a href="selection_opinion_explorer_jun5_2026.html" style="color:#cdd6e0;font-size:11px;text-decoration:none">EN</a> &nbsp;<span class="manual-btn" onclick="openManual()">▤ 使用说明</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ STICKY NAV ============ -->
+<nav class="nav">
+  <div class="nav-inner" id="navInner">
+    <a href="#view" class="active">观点</a>
+    <a href="#indices">指数</a>
+    <a href="#portfolios">模型组合</a>
+    <a href="#screens">选股筛选</a>
+    <a href="#rates">利率与美联储</a>
+    <a href="#monitor">市场监测</a>
+    <a href="#industry">行业轮动</a>
+    <a href="#insiders">内部人交易</a>
+  </div>
+</nav>
+
+<!-- ============ KPI SUMMARY BAND ============ -->
+<div class="kpiband-wrap">
+  <div class="kpiband">
+    <div class="regime">
+      <span class="rg-label">市场格局</span>
+      <span class="rg-val">鹰派按兵不动</span>
+      <span class="rg-sub">估值偏高 · 长端处于周期高位</span>
+    </div>
+    <div class="kpi"><span class="k-label">标普500</span><span class="k-val">7,519</span><span class="k-sub up">周 +2.3% · 年 +29.6%</span></div>
+    <div class="kpi"><span class="k-label">30年美债</span><span class="k-val">5.07%</span><span class="k-sub">2007年以来最高</span></div>
+    <div class="kpi"><span class="k-label">联邦基金利率</span><span class="k-val">3.50–3.75</span><span class="k-sub down">较一年前 −75bp</span></div>
+    <div class="kpi"><span class="k-label">VL 中位 P/E</span><span class="k-val">17.7</span><span class="k-sub">13周 17.4–19.3</span></div>
+    <div class="kpi"><span class="k-label">配置 股/债/现</span><span class="k-val">65/10/25</span><span class="k-sub up">股票 60→65%</span></div>
+    <div class="kpi"><span class="k-label">广度 新高/新低</span><span class="k-val">168 / 32</span><span class="k-sub up">创新高 vs 创新低</span></div>
+  </div>
+</div>
+
+<main>
+
+<!-- ============ THE VIEW ============ -->
+<section id="view">
+  <div class="section-head">
+    <h2><span class="secnum">1</span>Value Line 观点</h2>
+    <div class="sub">经济与股市评论 · 第1661页</div>
+  </div>
+  <div class="read">
+    <div class="read-tldr">
+      <span class="tldr-tag">摘要</span>
+      <span class="tldr-text">新任美联储主席 Warsh 接手的是<em>再度加速</em>的通胀,以及伊朗战争带来的油价冲击。美联储 6 月 17 日按兵不动,但 4 月纪要显示多数官员已对年底前<strong>加息</strong>持开放态度。债市已在替美联储收紧 —— 30 年期收益率触及 2007 年以来最高。指数处于纪录高位、估值偏贵,VL 建议持有分散、高质量的组合。</span>
+    </div>
+    <div class="read-points cols-3">
+      <div class="read-point"><span class="num">1</span><div class="pt-body"><strong>掌门更替</strong>通胀再加速之际,Kevin Warsh 接替 Jerome Powell(后者仍留任理事会)。</div></div>
+      <div class="read-point"><span class="num">2</span><div class="pt-body"><strong>油价与通胀</strong>伊朗战争推高原油,同时压迫 CPI 与 PPI;预计 4 月 PCE 进一步走高。</div></div>
+      <div class="read-point"><span class="num">3</span><div class="pt-body"><strong>偏鹰</strong>FOMC 在 6 月 17 日会议按兵不动,但纪要透露对 2026 年晚些时候<em>加息</em>持开放态度。</div></div>
+      <div class="read-point"><span class="num">4</span><div class="pt-body"><strong>债市在做收紧的活</strong>美债收益率逼近多年高位;30 年期为 2007 年(金融危机前)以来最高。</div></div>
+      <div class="read-point"><span class="num">5</span><div class="pt-body"><strong>盈利强劲(暂时)</strong>标普500 一季度利润增长约 28%;能否持续取决于伊朗能否和解使油价回落。</div></div>
+      <div class="read-point"><span class="num">6</span><div class="pt-body"><strong>AI 抵消</strong>AI 带来的生产率提升,预计将长期帮助抑制通胀与成本。</div></div>
+    </div>
+  </div>
+  <div class="read" style="border-left-color:var(--accent)">
+    <div class="read-tldr" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+      <span class="tldr-tag" style="background:var(--accent)">宏观解读</span>
+      <span class="tldr-text" style="font-weight:500;font-size:13.5px">对纯指数组合而言,可操作的信号是"格局"而非个股:鹰派按兵不动、且有现实加息风险的美联储,30 年期收益率 5.1%(周期高位),债券收益率如今仅比平均盈利收益率低约 0.3%。这种压缩在纪录高位的估值(道指 22.6&times; 预期盈利)下,削薄了股权风险溢价的缓冲。VL 自己的配置模型仍偏风险偏好(股票 65%)&mdash; 需要围绕"高估值的盘面 vs 偏紧的美联储"这一张力来确定仓位。</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INDICES ============ -->
+<section id="indices">
+  <div class="section-head">
+    <h2><span class="secnum">2</span>股市指数收盘</h2>
+    <div class="sub">截至发刊时 · 5/19 → 2026/5/26 · 可排序</div>
+  </div>
+  <div class="controls">
+    <span class="count" id="idxCount"></span>
+  </div>
+  <table class="dt" id="idxTable">
+    <thead><tr>
+      <th class="l" data-k="name" data-t="s">指数</th>
+      <th data-k="prev" data-t="n">5/19/26</th>
+      <th data-k="last" data-t="n">5/26/26</th>
+      <th data-k="w" data-t="n">周涨跌%</th>
+      <th data-k="y" data-t="n">12个月%</th>
+      <th class="l" data-k="w" data-t="n">12个月图示</th>
+    </tr></thead>
+    <tbody id="idxBody"></tbody>
+  </table>
+</section>
+
+<!-- ============ MODEL PORTFOLIOS ============ -->
+<section id="portfolios">
+  <div class="section-head">
+    <h2><span class="secnum">3</span>模型组合</h2>
+    <div class="sub">五本编辑管理的模型组合 · 持仓 + 统计 · 第1662&ndash;1666页</div>
+  </div>
+
+  <!-- selection-skill commentary (from the Alpha vs SPX column) -->
+  <div class="read">
+    <div class="read-tldr">
+      <span class="tldr-tag">选股能力</span>
+      <span class="tldr-text">真正的选股 α(相对标普500,YTD <strong>+10.3%</strong>)只在 <strong>组合 I</strong> 与 <strong>组合 V</strong> 出现。<strong>III</strong> 看似亮眼,但靠的是长期重仓的历史红利 —— 其当年 α 约为零;<strong>IV</strong> 结构性为负。五本组合<strong>自买入以来的 α 中位数仅 +1.4pp</strong>:半数持仓并未真正跑赢指数,超额由少数 AI/半导体赢家驱动。</span>
+    </div>
+    <div class="read-points">
+      <div class="read-point"><span class="num">1</span><div class="pt-body"><strong>I · 进取 — 最强,真 α</strong>当年 α 平均 <strong>+28.6pp</strong>,<strong>74%</strong> 跑赢标普;自买入 α +43.6pp。但 α 高度集中于 AI/算力 —— 属高 β 风格押注,而非广度。 <span class="chip up">DELL</span> <span class="chip up">MRVL</span> <span class="chip up">AMD</span> <span class="chip up">NVDA</span></div></div>
+      <div class="read-point"><span class="num">2</span><div class="pt-body"><strong>V · 质量成长 — 最干净</strong>当年 α +9.0pp,自买入胜率最高(<strong>70%</strong>),且无极端单一押注 —— 筛选以分散方式创造价值。 <span class="chip up">FTNT</span> <span class="chip up">ASML</span> <span class="chip up">DELL</span></div></div>
+      <div class="read-point"><span class="num">3</span><div class="pt-body"><strong>II · 收益+成长 — 偏薄</strong>当年 α 温和(+5.5pp),但自买入 α 中位仅 <strong>+1.8pp</strong> —— 由少数赢家而非全组合带动。 <span class="chip up">AVGO</span> <span class="chip up">LRCX</span> <span class="chip up">EOG</span></div></div>
+      <div class="read-point"><span class="num">4</span><div class="pt-body"><strong>III · 长期 — 历史而非当下</strong>当年 α ≈ 0(中位 +0.4pp)。+33pp 的自买入 α 是被持有期拉长的历史复利,<em>并非</em>当下的选股能力。 <span class="chip up">NFLX</span> <span class="chip up">AAPL</span> <span class="chip up">META</span></div></div>
+      <div class="read-point"><span class="num">5</span><div class="pt-body"><strong>IV · 高股息 — 选股为负</strong>自买入仅 <strong>20%</strong> 跑赢标普(中位 −12.7pp)。低 β 的天性在 +10% 的牛市里落后 —— 这本组合是收益/防御,而非超额。 <span class="chip down">MDT</span> <span class="chip down">USB</span> <span class="chip down">PSA</span></div></div>
+      <div class="read-point"><span class="num">6</span><div class="pt-body"><strong>注意</strong>自买入 α 混合了择时与持有期(长持自然累积大 α);标普基准采用月末水平、截至 5/26。AAPL(2012)与 UTHR(6月)无可用基准 → &ldquo;—&rdquo;。</div></div>
+    </div>
+  </div>
+  <div class="read" style="border-left-color:var(--accent)">
+    <div class="read-tldr" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+      <span class="tldr-tag" style="background:var(--accent)">宏观解读</span>
+      <span class="tldr-text" style="font-weight:500;font-size:13.5px">从指数视角看,编辑组合的超额几乎全部来自单一的 <strong>AI 资本开支暴露</strong>,而非分散的广度。一旦该主题降温,组合 I/II 的 α 会迅速收敛;相较之下,组合 IV 的落后是<em>风格</em>结果(低 β、高股息),而非选股失误。领跑者(<span class="chip up">DELL</span> <span class="chip up">MRVL</span> <span class="chip up">LRCX</span> <span class="chip up">NVDA</span>)与落后者(<span class="chip down">ISRG</span> <span class="chip down">TMO</span> <span class="chip down">MDT</span>)正是本页其他部分驱动行业广度的同一批名字。</span>
+    </div>
+  </div>
+
+  <!-- portfolio statistics tiles -->
+  <div class="tile-grid tg-5" id="pfStats" style="margin-bottom:18px"></div>
+
+  <div class="tabs" id="pfTabs">
+    <div class="tab active" data-pf="I">I · 进取<span class="tcount">20</span></div>
+    <div class="tab" data-pf="II">II · 收益+成长<span class="tcount">20</span></div>
+    <div class="tab" data-pf="III">III · 长期<span class="tcount">20</span></div>
+    <div class="tab" data-pf="IV">IV · 高股息<span class="tcount">20</span></div>
+    <div class="tab" data-pf="V">V · 质量成长<span class="tcount">21</span></div>
+  </div>
+  <div class="pane-desc" id="pfDesc"></div>
+  <div class="controls">
+    <input type="text" id="pfSearch" placeholder="筛选 代码 / 公司 / 行业…">
+    <select id="pfRec"><option value="">全部评级</option><option value="Buy">买入</option><option value="Hold">持有</option><option value="Sell">卖出</option></select>
+    <label style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--text2);font-weight:600;cursor:pointer"><input type="checkbox" id="pfGroup" checked> 按板块分组</label>
+    <span class="count" id="pfCount"></span>
+  </div>
+  <table class="dt" id="pfTable">
+    <thead id="pfHead"></thead>
+    <tbody id="pfBody"></tbody>
+  </table>
+</section>
+
+<!-- ============ SCREENS ============ -->
+<section id="screens">
+  <div class="section-head">
+    <h2><span class="secnum">4</span>选股筛选浏览器</h2>
+    <div class="sub">VL 发布的三套选股筛选 · 可排序 · 第1667&ndash;1669页</div>
+  </div>
+  <div class="tabs" id="scTabs">
+    <div class="tab active" data-sc="roe">低风险 · 高ROE<span class="tcount">13</span></div>
+    <div class="tab" data-sc="inc">收益 · 总回报<span class="tcount">14</span></div>
+    <div class="tab" data-sc="grw">成长 · 低风险<span class="tcount">13</span></div>
+  </div>
+  <div class="pane-desc" id="scDesc"></div>
+  <div class="controls">
+    <input type="text" id="scSearch" placeholder="筛选 代码 / 公司 / 行业…">
+    <span class="count" id="scCount"></span>
+  </div>
+  <table class="dt" id="scTable">
+    <thead id="scHead"></thead>
+    <tbody id="scBody"></tbody>
+  </table>
+</section>
+
+<!-- ============ RATES & FED ============ -->
+<section id="rates">
+  <div class="section-head">
+    <h2><span class="secnum">5</span>利率、收益率与美联储</h2>
+    <div class="sub">精选收益率、收益率曲线、准备金与资产配置模型 · 第1670 / 1671页</div>
+  </div>
+
+  <div class="tile-grid tg-4" id="rateTiles" style="margin-bottom:20px"></div>
+
+  <div class="split2" style="margin-bottom:20px">
+    <div class="vizcard">
+      <h3>美国国债收益率曲线</h3>
+      <div class="vh">近期(5/22/26)对比 3 个月前与一年前 —— 随美联储降息,短端回落,而长端上行,曲线大幅陡峭化。</div>
+      <div id="curve"></div>
+      <div class="legend">
+        <span class="lg"><span class="sw" style="background:var(--accent)"></span>近期 5/22/26</span>
+        <span class="lg"><span class="sw" style="background:var(--accent2)"></span>3个月前 2/23/26</span>
+        <span class="lg"><span class="sw" style="background:var(--text3)"></span>一年前 5/23/25</span>
+      </div>
+    </div>
+    <div class="vizcard">
+      <h3>Value Line 资产配置模型</h3>
+      <div class="vh">仅由经济与金融因子统计驱动 · 当前为 2/9/26(对比此前 9/1/25&ndash;2/8/25)。</div>
+      <div class="alloc">
+        <div class="donut" id="allocDonut"></div>
+        <div class="alloc-legend" id="allocLegend"></div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:14px;line-height:1.5">模型转向<strong style="color:var(--green)">风险偏好</strong>:股票 60%→65%,现金 30%→25%,债券维持 10% 不变。*债券 = 投资级公司债与美国国债。</div>
+    </div>
+  </div>
+
+  <details class="collapse" open>
+    <summary>精选收益率 <span class="sm-sub">市场利率 · 国债 · 股票收益率 · 海外10年期</span><span class="chev">▶</span></summary>
+    <div class="collapse-body">
+      <div class="vh" style="font-size:12.5px;color:var(--text2);margin-bottom:12px">近期(5/22/26)对比 3 个月前与 1 年前。末列为相对一年前的变动 Δ。</div>
+      <table class="rt" id="yieldTable"><tbody id="yieldBody"></tbody></table>
+    </div>
+  </details>
+
+  <details class="collapse">
+    <summary>美联储数据 <span class="sm-sub">银行准备金与货币供应</span><span class="chev">▶</span></summary>
+    <div class="collapse-body">
+      <div class="vh" style="font-size:12.5px;color:var(--text2);margin-bottom:12px">一个月期间;准备金未经季调,货币供应经季调。</div>
+      <table class="rt" id="fedTable"><tbody id="fedBody"></tbody></table>
+    </div>
+  </details>
+</section>
+
+<!-- ============ MARKET MONITOR ============ -->
+<section id="monitor">
+  <div class="section-head">
+    <h2><span class="secnum">6</span>市场监测</h2>
+    <div class="sub">估值与收益率对比 13周 / 50周区间,并标注周期锚点 · 第1671页</div>
+  </div>
+  <div class="pane-desc"><strong>读条方法:</strong>阴影带为 50 周区间;深蓝标记为当前(5/26)读数。周期锚点:上一个市场顶部记为 2026-5-26(即当下),上一个底部为 2020-3-23。多项指标处于或接近其高位。</div>
+  <table class="mon" id="monTable">
+    <thead><tr>
+      <th>估值 / 收益率</th><th>5/26</th><th>5/19</th><th>13周区间</th><th>50周区间</th><th>顶部 5/26/26</th><th>底部 3/23/20</th><th class="l">50周内位置</th>
+    </tr></thead>
+    <tbody id="monBody"></tbody>
+  </table>
+</section>
+
+<!-- ============ INDUSTRY ROTATION ============ -->
+<section id="industry">
+  <div class="section-head">
+    <h2><span class="secnum">7</span>行业价格表现</h2>
+    <div class="sub">表现最佳 / 最差行业 · 截至 2026/5/26 的最近六周 · 第1671页</div>
+  </div>
+  <div class="pane-desc">同期 VL 算术平均指数上涨 <strong style="color:var(--green)">+3.8%</strong>。领涨榜是一张 <strong>AI 资本开支</strong>的盘面:计算机/外设、半导体与网络安全领先;电力与数字基础设施搭乘数据中心用电主题。落后榜则是利率敏感与防御性周期:有线电视、零售建材、贵金属、IT 服务。</div>
+  <div class="split2">
+    <div class="panel">
+      <h3>★ 表现最佳的 7 个行业</h3>
+      <div class="barlist" id="indBest"></div>
+    </div>
+    <div class="panel">
+      <h3>▽ 表现最差的 7 个行业</h3>
+      <div class="barlist" id="indWorst"></div>
+    </div>
+  </div>
+  <details class="collapse" style="margin-top:20px">
+    <summary>财务实力评级变动 <span class="sm-sub">7 项中 6 项为上调 —— 一个低调的广度正面信号</span><span class="chev">▶</span></summary>
+    <div class="collapse-body">
+      <table class="rt" id="fsrTable"><thead><tr><th>公司</th><th>原</th><th>新</th><th>变动</th><th>R&amp;R 页</th></tr></thead><tbody id="fsrBody"></tbody></table>
+    </div>
+  </details>
+</section>
+
+<!-- ============ INSIDERS ============ -->
+<section id="insiders">
+  <div class="section-head">
+    <h2><span class="secnum">8</span>重要内部人交易</h2>
+    <div class="sub">美股大额交易 · 第1670页</div>
+  </div>
+  <div class="panel" style="margin-bottom:24px">
+    <h3 style="color:var(--green);font-size:14.5px;font-weight:700;margin-bottom:11px">▲ 值得关注的买入</h3>
+    <table class="dt"><thead><tr><th class="l">公司</th><th class="l">内部人</th><th>日期</th><th>交易股数</th><th>交易后持股</th><th>近期价格</th></tr></thead><tbody id="buyBody"></tbody></table>
+  </div>
+  <div class="panel">
+    <h3 style="color:var(--red);font-size:14.5px;font-weight:700;margin-bottom:11px">▼ 值得关注的卖出</h3>
+    <table class="dt"><thead><tr><th class="l">公司</th><th class="l">内部人</th><th>日期</th><th>交易股数</th><th>交易后持股</th><th>近期价格</th></tr></thead><tbody id="sellBody"></tbody></table>
+  </div>
+</section>
+</main>
+
+<footer>
+  <strong>来源。</strong> Value Line《精选与观点》,2026年6月5日(第 LXXXI 卷第 44 期,Issue 5,第1661&ndash;1672页),© 2026 Value Line, Inc. 所有数据均转录自已发布刊物;除另有说明外,价格截至发刊时 2026/5/26(收益率 5/22/26;准备金期间截至 4/26;配置模型为 2/9/26)。<br><br>
+  <strong>免责声明。</strong> 本浏览器为个人学习目的对 Value Line 已发布数据进行重新组织。它不构成投资建议、不构成推荐,且不含价格目标。评级、筛选与组合成分均为 Value Line 所有;任何宏观框架仅为面向纯指数读者的解读性背景。在依赖任何数据前,请对照原始刊物核实。仅供个人、非商业用途。
+</footer>
+
+<!-- MANUAL MODAL -->
+<div class="modal-bg" id="manualBg" onclick="if(event.target===this)closeManual()">
+  <div class="modal">
+    <span class="close" onclick="closeManual()">&times;</span>
+    <h2>使用说明</h2>
+    <div class="msub">Value Line《精选与观点》交互浏览器 · 2026年6月5日刊</div>
+    <p>这是对某一周 Value Line《<em>精选与观点</em>》刊物的交互式解读。所有内容均转录自印刷页面,并整理为八个可滚动板块(可通过顶部固定栏跳转)。</p>
+    <h3>板块</h3>
+    <ul>
+      <li><strong>观点</strong> —— VL 的宏观/市场评论,浓缩为摘要 + 六条编号要点,外加一段纯指数视角的宏观解读。</li>
+      <li><strong>指数</strong> —— 收盘均值,含 1 周与 12 个月涨跌;点击任意列头即可排序。</li>
+      <li><strong>模型组合</strong> —— 五本编辑组合(I–V)。用标签切换组合;统计磁贴随之更新。可按文本或评级筛选;任意列可排序。</li>
+      <li><strong>选股筛选</strong> —— VL 发布的三套选股(高 ROE、收益总回报、成长低风险)。各筛选有各自的列。</li>
+      <li><strong>利率与美联储</strong> —— 利率磁贴、交互式收益率曲线图(3 个日期)、资产配置环形图,以及精选收益率与美联储数据表。</li>
+      <li><strong>市场监测</strong> —— 估值/收益率量表,用条形显示当下在 50 周区间内的位置,并对照周期顶/底锚点。</li>
+      <li><strong>行业轮动</strong> —— 六周内表现最佳/最差的 7 个行业 + 财务实力评级变动。</li>
+      <li><strong>内部人交易</strong> —— 值得关注的公开市场买入与卖出。</li>
+    </ul>
+    <h3>交互提示</h3>
+    <ul>
+      <li>点击<strong>列头</strong>排序;再次点击反向。</li>
+      <li>在组合 / 筛选中使用<strong>搜索框</strong>实时过滤行。</li>
+      <li>将鼠标悬停在<strong>收益率曲线圆点</strong>上可看各期限精确收益率。</li>
+      <li>按 <kbd>Esc</kbd> 关闭本对话框。</li>
+    </ul>
+    <h3>阅读定位</h3>
+    <p>本页面以宏观、纯指数视角构建:个股表格是广度与轮动的证据(谁在领先、估值多贵、谁在买入),而非操作清单。值得据以确定仓位的信号是"格局" —— 鹰派按兵不动、且有现实加息风险的美联储、处于周期高位的长端,以及纪录高位的估值倍数。</p>
+  </div>
+</div>
+
+<script>
+/* ============================ DATA ============================ */
+const INDICES = [
+  {name:"道琼斯工业平均指数", prev:49363.88, last:50461.68, w:2.2, y:21.3},
+  {name:"标准普尔500", prev:7353.61, last:7519.12, w:2.3, y:29.6},
+  {name:"纽约证交所综合指数", prev:22797.67, last:23295.50, w:2.2, y:19.3},
+  {name:"纳斯达克综合指数", prev:25870.71, last:26656.18, w:3.0, y:42.3},
+  {name:"纳斯达克100", prev:28818.84, last:30001.32, w:4.1, y:43.4},
+  {name:"Value Line(几何)", prev:639.08, last:664.18, w:3.9, y:15.9},
+  {name:"Value Line(算术)", prev:12896.44, last:13420.89, w:4.1, y:25.4},
+  {name:"伦敦(富时100)", prev:10330.55, last:10491.39, w:1.6, y:20.3},
+  {name:"东京(日经)", prev:60550.59, last:64996.09, w:7.3, y:74.9},
+  {name:"罗素2000", prev:2747.07, last:2920.54, w:6.3, y:43.2}
+];
+
+const PF_DESC = {
+  I:"<strong>组合 I — 未来一年高于平均的价格升值。</strong> 面向更进取的投资者。要求 Timeliness 1–3、财务实力 ≥ B+、18 个月升值潜力高于中位;若 Timeliness 跌破 3 则自动剔除。编辑:Anthony J. Glennon。本周无交易 —— 英伟达 EPS +131%,DELL/MRVL 临财报评为持有。",
+  II:"<strong>组合 II — 收益兼具价格升值潜力。</strong> 面向更保守的投资者。要求 18 个月升值潜力达到或高于中位、有分红,且 Safety ≤ 3。编辑:Charles Moran。礼来因 GLP-1 强劲受关注;HPE 即将公布财报。",
+  III:"<strong>组合 III — 长期价格成长潜力。</strong> 面向 3–5 年视野。要求 3–5 年预期升值高于中位。编辑:James A. Flood。本周 Mag-7 跑输其余 493 只;Enterprise Products 与 Plains GP 因美国油气上涨;雪佛龙下跌两位数。",
+  IV:"<strong>组合 IV — 高于平均的股息率。</strong> 面向当期收益。要求股息率比 VL 全样本中位高 ≥ 1%,且财务实力 ≥ B+。编辑:Adam Rosner。公用事业(Duke、AEP)与管道(EPD、MPLX、WES)受益于数据中心用电需求。无交易。",
+  V:"<strong>组合 V — 兼具有利风险特征的成长。</strong>(原“质量成长”。)要求 Timeliness 与 Safety ≥ 3、财务实力 ≥ B++、3–5 年销售增速 ≥7% / EPS 增速 ≥9%。编辑:Thomas Mulle CFA。本周:<em>新增</em> United Therapeutics(UTHR),<em>卖出</em> Intuitive Surgical(ISRG)。戴尔因数据中心建设 +25%。"
+};
+
+// Portfolios I & II & V share base columns; III & IV have specialty columns.
+const PF = {
+  I: [
+    ["AMD","Advanced Micro Dev.","Semiconductor",467.51,1,83.6,"Hold",114.74,"5/19/25",300.00],
+    ["GOOG","Alphabet Inc.","Internet",379.38,2,35.1,"Buy",176.63,"6/10/24",265.00],
+    ["AMZN","Amazon.com","E-Commerce",266.32,2,35.0,"Buy",188.39,"10/28/24",190.00],
+    ["AR","Antero Resources","Natural Gas (Div.)",36.75,2,8.4,"Buy",44.23,"3/30/26",30.00],
+    ["ANET","Arista Networks","Telecom. Equipment",154.03,2,45.3,"Buy",126.25,"4/6/26",105.00],
+    ["BP","BP PLC ADR","Petroleum (Integrated)",44.36,3,9.9,"Buy",42.65,"5/26/26",35.00],
+    ["DELL","Dell Technologies","Computers/Peripherals",295.19,1,22.9,"Hold",114.82,"12/30/24",185.00],
+    ["ETN","Eaton Corp. plc","Diversified Co.",391.35,2,29.2,"Buy",403.36,"4/13/26",290.00],
+    ["P","Everpure, Inc.","Computers/Peripherals",87.20,3,36.3,"Buy",88.35,"5/26/26",55.00],
+    ["GS","Goldman Sachs","Investment Banking",996.73,1,16.8,"Buy",503.98,"4/14/25",700.00],
+    ["JLL","Jones Lang LaSalle","Industrial Services",291.69,2,12.8,"Buy",353.47,"4/20/26",260.00],
+    ["MRVL","Marvell Technology","Semiconductor",196.33,1,58.4,"Hold",75.53,"9/22/25",125.00],
+    ["META","Meta Platforms","Internet",610.26,3,18.8,"Buy",531.48,"4/14/25",485.00],
+    ["MSFT","Microsoft Corp.","Computer Software",418.57,2,23.9,"Buy",442.94,"7/22/24",320.00],
+    ["NVT","nVent Electric plc","Electrical Equipment",164.66,2,40.2,"Buy",141.71,"4/27/26",115.00],
+    ["NVDA","NVIDIA Corp.","Semiconductor",215.33,2,26.1,"Buy",140.52,"10/28/24",145.00],
+    ["PBR","Petroleo Brasileiro ADR","Petroleum (Integrated)",19.90,2,4.7,"Buy",11.59,"12/29/25",13.00],
+    ["SANM","Sanmina Corp.","Electronics",246.44,1,24.0,"Buy",153.30,"1/5/26",150.00],
+    ["FTI","TechnipFMC plc","Oilfield Svcs/Equip.",70.99,2,24.1,"Buy",34.44,"6/30/25",55.00],
+    ["VST","Vistra Corp.","Power",156.27,3,17.5,"Buy",160.85,"5/4/26",110.00]
+  ],
+  II: [
+    ["APH","Amphenol Corp.","Electrical Equipment",132.06,0.8,3,2,"Buy",65.59,"3/31/25",104.00],
+    ["AVGO","Broadcom Inc.","Semiconductor",414.14,0.6,2,3,"Buy",168.55,"11/4/24",258.00],
+    ["CVS","CVS Health","Medical Services",93.26,3.1,2,3,"Buy",66.81,"6/23/25",57.00],
+    ["LNG","Cheniere Energy Inc.","Oil/Gas Distribution",240.85,0.9,2,3,"Buy",272.85,"5/4/26",215.00],
+    ["COST","Costco Wholesale","Retail Store",1028.24,0.6,3,1,"Buy",910.94,"10/6/25",774.00],
+    ["DKS","Dick's Sporting Goods","Retail (Hardlines)",231.24,2.1,3,3,"Buy",230.62,"4/20/26",174.00],
+    ["EOG","EOG Resources","Natural Gas (Div.)",141.22,3.0,2,3,"Buy",107.64,"4/14/25",112.00],
+    ["ETN","Eaton Corp. plc","Diversified Co.",391.35,1.1,2,2,"Buy",343.75,"9/2/25",288.00],
+    ["ET","Energy Transfer LP","Pipeline MLPs",20.07,6.7,3,3,"Buy",12.51,"5/15/23",15.00],
+    ["FCX","Freep't-McMoRan Inc.","Metals & Mining (Div.)",61.99,1.0,3,3,"Buy",43.79,"7/28/25",44.00],
+    ["GS","Goldman Sachs","Investment Banking",996.73,1.8,1,2,"Buy",866.05,"4/6/26",620.00],
+    ["HPE","Hewlett Packard Ent.","Computers/Peripherals",37.58,1.5,3,3,"Buy",33.00,"5/18/26",25.00],
+    ["HII","Huntington Ingalls","Aerospace/Defense",320.63,1.8,3,3,"Buy",320.95,"5/26/26",260.00],
+    ["KMI","Kinder Morgan Inc.","Oil/Gas Distribution",33.79,3.5,3,3,"Buy",18.36,"4/8/24",27.00],
+    ["LRCX","Lam Research","Semiconductor Equip",305.35,0.3,1,3,"Buy",74.17,"11/4/24",186.00],
+    ["LLY","Lilly (Eli)","Drug",1065.00,0.6,2,2,"Buy",832.44,"11/11/24",729.00],
+    ["META","Meta Platforms","Internet",610.26,0.4,3,3,"Hold",578.16,"10/28/24",483.00],
+    ["MSFT","Microsoft Corp.","Computer Software",418.57,0.9,2,1,"Buy",426.59,"10/28/24",275.00],
+    ["SAIC","Science Applications","Industrial Services",100.01,1.5,1,3,"Buy",92.49,"3/2/26",78.00],
+    ["TMO","Thermo Fisher Sci.","Med Supp Non-Invasive",448.28,0.4,2,2,"Buy",516.44,"2/23/26",382.00]
+  ],
+  III: [
+    ["GOOG","Alphabet Inc.","Internet",379.38,14.0,35.1,20,"Buy",168.34,"10/28/24",200.00],
+    ["MO","Altria Group","Tobacco",73.90,4.5,13.1,0,"Buy",42.20,"12/18/23",45.00],
+    ["AMZN","Amazon.com","E-Commerce",266.32,17.0,35.0,75,"Buy",182.12,"4/14/25",155.00],
+    ["AMCR","Amcor plc","Packaging & Container",38.38,7.0,12.5,55,"Hold",49.45,"1/27/25",35.00],
+    ["AAPL","Apple Inc.","Computers/Peripherals",308.82,11.0,35.1,30,"Buy",20.05,"5/21/12",185.00],
+    ["BRKB","Berkshire Hathaway 'B'","Insurance (Prop/Cas.)",486.38,9.5,21.0,65,"Buy",480.17,"3/2/26",360.00],
+    ["CVX","Chevron Corp.","Petroleum (Integrated)",191.43,6.5,20.2,40,"Hold",150.88,"10/21/24",120.00],
+    ["EPD","Enterprise Products","Pipeline MLPs",39.63,7.5,13.7,40,"Buy",32.55,"5/19/25",24.00],
+    ["ES","Eversource Energy","Electric Utility (East)",70.00,4.5,14.4,45,"Buy",58.50,"2/3/25",44.00],
+    ["FSLR","First Solar, Inc.","Power",257.85,24.0,15.2,45,"Buy",128.82,"3/24/25",115.00],
+    ["MCD","McDonald's Corp.","Restaurant",282.27,8.5,21.3,65,"Buy",292.17,"6/30/25",219.00],
+    ["META","Meta Platforms","Internet",610.26,16.0,18.8,105,"Buy",152.87,"6/19/17",425.00],
+    ["MSFT","Microsoft Corp.","Computer Software",418.57,12.0,23.9,80,"Buy",426.59,"10/28/24",315.00],
+    ["NFLX","Netflix, Inc.","Entertainment",88.60,18.5,28.1,105,"Buy",18.65,"5/16/22",70.00],
+    ["NEM","Newmont Corp.","Precious Metals",107.64,23.5,12.2,95,"Buy",39.46,"8/14/23",85.00],
+    ["NVDA","NVIDIA Corp.","Semiconductor",215.33,29.0,26.1,65,"Buy",110.71,"4/14/25",136.00],
+    ["PAGP","Plains GP Hldgs. L.P.","Pipeline MLPs",25.95,16.5,21.6,25,"Buy",17.84,"11/4/24",14.00],
+    ["RIO","Rio Tinto plc","Metals & Mining (Div.)",104.23,3.5,15.1,-25,"Buy",69.37,"3/14/22",52.00],
+    ["RGLD","Royal Gold","Precious Metals",220.29,21.0,18.8,150,"Hold",140.88,"2/3/25",150.00],
+    ["TRN","Trinity Inds.","Railroad",32.72,8.5,14.2,60,"Buy",27.65,"8/11/25",21.00]
+  ],
+  IV: [
+    ["T","AT&T Inc.","Telecom. Services",25.26,3,4.9,1.5,"Buy",24.25,"2/3/25",23.00],
+    ["MO","Altria Group","Tobacco",73.90,1,5.7,6.0,"Buy",60.49,"6/23/25",52.00],
+    ["AEP","Amer. Elec. Power","Electric Util. (Central)",131.59,1,2.9,3.5,"Buy",99.11,"10/28/24",102.00],
+    ["AMGN","Amgen","Biotechnology",339.30,2,3.0,5.5,"Buy",274.81,"1/21/25",280.00],
+    ["BMY","Bristol-Myers Squibb","Drug",59.46,2,4.2,2.5,"Buy",51.34,"4/14/25",45.00],
+    ["CVX","Chevron Corp.","Petroleum (Integrated)",191.43,1,3.8,4.5,"Buy",156.60,"7/29/24",164.00],
+    ["CSCO","Cisco Systems","Telecom. Equipment",120.41,1,1.4,3.0,"Buy",49.41,"3/15/21",85.00],
+    ["DRI","Darden Restaurants","Restaurant",203.51,3,3.0,7.0,"Buy",162.20,"10/28/24",156.00],
+    ["DUK","Duke Energy","Electric Utility (East)",125.67,1,3.4,4.0,"Hold",108.56,"12/23/24",101.00],
+    ["EPD","Enterprise Products","Pipeline MLPs",39.63,1,5.8,6.5,"Buy",33.64,"2/24/25",30.00],
+    ["JNJ","Johnson & Johnson","Drug",234.34,1,2.2,6.0,"Buy",149.24,"7/15/24",188.00],
+    ["MPLX","MPLX LP","Pipeline MLPs",56.47,2,7.7,7.5,"Buy",50.97,"9/2/25",47.00],
+    ["MDT","Medtronic plc","Med Supp Invasive",78.60,1,3.6,3.5,"Buy",92.46,"1/27/25",69.00],
+    ["ORI","Old Republic","Insurance (Prop/Cas.)",39.35,2,3.2,6.0,"Buy",37.12,"7/14/25",30.00],
+    ["PNC","PNC Financial Serv.","Bank",219.23,3,3.3,8.5,"Buy",197.28,"2/10/25",162.00],
+    ["PKG","Packaging Corp.","Packaging & Container",215.91,2,2.3,5.5,"Buy",131.34,"11/21/22",168.00],
+    ["PEP","PepsiCo, Inc.","Beverage",150.57,1,4.0,4.5,"Hold",161.53,"3/9/26",120.00],
+    ["PSA","Public Storage","R.E.I.T.",305.25,2,3.9,null,"Buy",269.30,"12/4/23",220.00],
+    ["USB","U.S. Bancorp","Bank",54.83,2,3.9,6.5,"Buy",47.12,"3/6/23",40.00],
+    ["WES","Western Midstream","Pipeline MLPs",46.01,3,8.3,7.0,"Hold",38.70,"6/30/25",33.00]
+  ],
+  V: [
+    ["GOOG","Alphabet Inc.","Internet",379.38,0.2,"Hold",176.62,"6/27/25",225.00],
+    ["AMZN","Amazon.com","E-Commerce",266.32,null,"Buy",139.57,"8/4/23",155.00],
+    ["ASML","ASML Holdings","Semicond. Equip.",1632.90,0.4,"Buy",730.33,"3/17/25",985.00],
+    ["BALL","Ball Corp.","Packaging & Container",56.51,1.4,"Buy",55.62,"1/9/26",43.00],
+    ["BP","BP PLC ADR","Petroleum (Integrated)",44.36,4.4,"Hold",35.90,"12/8/25",31.00],
+    ["AVGO","Broadcom Inc.","Semiconductor",414.14,0.6,"Buy",352.13,"12/29/25",232.00],
+    ["CACI","CACI Int'l","Industrial Services",501.35,null,"Buy",610.17,"2/27/26",454.00],
+    ["DELL","Dell Technologies","Computers/Peripherals",295.19,0.9,"Buy",157.67,"3/23/26",118.00],
+    ["DD","DuPont de Nemours","Chemical (Basic)",48.12,1.6,"Buy",33.56,"11/2/25",32.00],
+    ["ETN","Eaton Corp. plc","Diversified Co.",391.35,1.0,"Buy",381.56,"11/3/25",267.00],
+    ["ERIE","Erie Indemnity","Insurance (Prop/Cas.)",224.23,2.8,"Buy",217.09,"5/11/26",172.00],
+    ["FTNT","Fortinet Inc.","Cyber Security",133.93,null,"Buy",76.51,"8/8/25",61.00],
+    ["GD","Gen'l Dynamics","Aerospace/Defense",342.89,1.8,"Buy",278.45,"5/30/25",259.00],
+    ["GS","Goldman Sachs","Investment Banking",996.73,1.9,"Hold",709.57,"8/1/25",610.00],
+    ["IHG","InterCont'l Hotels Grp","Hotel/Gaming",153.09,1.1,"Buy",124.05,"10/20/25",100.00],
+    ["ISRG","Intuitive Surgical","Med Supp Invasive",438.10,null,"Sell",495.27,"3/31/25",358.00],
+    ["TROW","Price (T. Rowe) Group","Asset Management",103.39,5.1,"Buy",87.22,"3/16/26",65.00],
+    ["RSG","Republic Services","Environmental",208.93,1.1,"Hold",228.27,"9/29/25",165.00],
+    ["TXT","Textron, Inc.","Diversified Co.",91.83,0.1,"Buy",71.02,"5/2/25",66.00],
+    ["UTHR","United Therapeutics","Biotechnology",568.43,null,"Buy",568.43,"6/1/26",425.00],
+    ["WAB","Wabtec Corp.","Railroad",256.41,0.5,"Buy",199.32,"5/23/25",177.00]
+  ]
+};
+
+const PF_STATS = {
+  I:{rev:"20%",eps:"24%",ev:"19×",pe:"25×",roe:"21%",mc:"$169.4B",dy:"0.6%"},
+  II:{rev:"13%",eps:"20%",ev:"15×",pe:"29×",roe:"21%",mc:"$136.2B",dy:"0.9%"},
+  III:{rev:"9%",eps:"20%",ev:"12×",pe:"22×",roe:"22%",mc:"$191.6B",dy:"3.2%"},
+  IV:{rev:"5%",eps:"9%",ev:"12×",pe:"19×",roe:"23%",mc:"$93.0B",dy:"3.7%"},
+  V:{rev:"6%",eps:"11%",ev:"15×",pe:"22×",roe:"18%",mc:"$34.5B",dy:"1.2%"}
+};
+
+const SC_DESC = {
+  roe:"<strong>高净资产收益率的低风险股票。</strong> 以 Safety ≥ 2 为起点,按 5 年平均 ROE(净利润 ÷ 普通股+优先股权益)排序。各列显示 5 年均值、最新实际年度、本年度预估、Safety,以及相对 P/E(市场 = 1.00)。展示前 13 名。13 只中有 10 只较市场倍数高 ≥15% —— 投资者为安全性 + 盈利能力支付溢价。",
+  inc:"<strong>具有可观总回报潜力的收益型股票。</strong> Safety ≥ 2、当期股息率 ≥ 3.0%(约比 2.0% 的 VL 中位高 100bp)、3–5 年升值 ≥ 55%、预期 3–5 年年化总回报 ≥ 15%。覆盖多个行业 —— 值得进一步研究。",
+  grw:"<strong>低风险的成长股。</strong> 过去 5 年及未来 3–5 年预期 EPS 增速 ≥10%;3–5 年升值 ≥ 55%;Safety ≥ 2,且财务实力 ≥ B++、价格稳定性 ≥ 85。在纪录高位的基准下,有四只多元金融服务名字入选。"
+};
+
+const SCREENS = {
+  roe: [
+    ["ADP","Automatic Data Proc.",225.31,76.6,65.9,57.0,1,1.11,1631],
+    ["LLY","Lilly (Eli)",1065.00,73.6,82.0,81.5,2,1.73,1617],
+    ["SHW","Sherwin-Williams",309.08,73.6,62.2,61.5,2,1.44,1150],
+    ["GWW","Grainger (W.W.)",1247.79,57.1,50.9,49.5,2,1.62,1308],
+    ["CAT","Caterpillar Inc.",879.89,47.0,42.2,46.5,2,2.18,145],
+    ["TJX","TJX Companies",158.27,46.1,58.0,45.0,2,1.73,2151],
+    ["UNP","Union Pacific",265.88,44.9,37.6,33.0,1,1.20,351],
+    ["KO","Coca-Cola",81.48,44.8,40.3,40.0,1,1.42,1961],
+    ["HSY","Hershey Co.",194.78,44.7,27.7,35.0,2,1.34,1915],
+    ["SPGI","S&P Global",417.60,43.5,17.4,18.0,2,1.19,433],
+    ["PAYX","Paychex, Inc.",97.00,42.3,40.1,45.5,2,0.98,1637],
+    ["LECO","Lincoln Elec Hldgs.",263.43,41.9,37.6,32.5,2,1.45,1726],
+    ["BJ","BJ's Wholesale Club",86.64,41.2,26.3,24.5,3,1.03,2137]
+  ],
+  inc: [
+    ["ACN","Accenture Plc",179.24,2,3.6,1.8,125,24,2597],
+    ["DOX","Amdocs Ltd.",62.66,1,3.4,2.0,105,22,2598],
+    ["CNA","CNA Fin'l",44.05,2,4.4,2.7,85,20,757],
+    ["CAJPY","Canon Inc. ADR",26.49,2,4.0,2.4,110,23,1324],
+    ["CMCSA","Comcast Corp.",25.21,2,5.2,2.9,130,26,1977],
+    ["IMBBY","Imperial Brands PLC",37.90,2,5.8,3.9,80,19,1977],
+    ["INFY","Infosys Ltd. ADR",12.67,2,4.1,2.5,135,27,2605],
+    ["MDT","Medtronic plc",78.60,1,3.6,2.3,90,20,180],
+    ["ORI","Old Republic",39.35,2,3.2,2.3,65,16,769],
+    ["PAYX","Paychex, Inc.",97.00,2,4.5,3.6,55,15,1637],
+    ["REYN","Reynolds Consumer",21.79,2,4.2,2.3,120,24,1200],
+    ["SON","Sonoco Products",49.37,2,4.4,2.1,115,23,1187],
+    ["TM","Toyota Motor ADR",189.08,2,3.0,2.4,65,15,112],
+    ["USB","U.S. Bancorp",54.83,2,3.9,3.3,60,15,624]
+  ],
+  grw: [
+    ["WRB","Berkley (W.R.)",2,55,27.0,11.5,95,"A","Insurance (Prop/Cas.)",755],
+    ["DTEGY","Deutsche Telekom ADR",2,75,16.0,10.5,95,"B++","Telecom. Services",923],
+    ["IMBBY","Imperial Brands PLC",2,80,11.5,10.0,95,"A","Tobacco",1977],
+    ["LHX","L3Harris Technologies",2,60,13.5,15.5,85,"A","Aerospace/Defense",721],
+    ["L","Loews Corp.",1,80,31.5,14.0,100,"A","Financial Svcs. (Div.)",2529],
+    ["MMC","Marsh & McLennan",1,75,17.0,10.0,100,"A","Financial Svcs. (Div.)",2531],
+    ["MA","Mastercard Inc.",1,75,14.0,13.0,90,"A+","Financial Svcs. (Div.)",2532],
+    ["MSFT","Microsoft Corp.",1,80,19.5,12.0,85,"A++","Computer Software",2572],
+    ["STN.TO","Stantec Inc.",1,90,17.0,10.0,95,"A","Engineering & Const",1013],
+    ["TMUS","T-Mobile US",2,100,19.5,16.5,90,"A","Telecom. Services",937],
+    ["VRSK","Verisk Analytics",2,145,13.0,10.5,85,"B++","Information Services",436],
+    ["V","Visa Inc.",1,55,14.0,12.0,90,"A++","Financial Svcs. (Div.)",2544],
+    ["WSP.TO","WSP Global Inc",2,115,23.0,14.0,90,"A","Engineering & Const",1016]
+  ]
+};
+
+// Yield curve: tenor -> [recent, 3mo, 1yr]
+const CURVE = [
+  ["3mo",0.25,3.68,3.69,4.35],["6mo",0.5,3.79,3.62,4.35],["1y",1,3.86,3.50,4.14],
+  ["5y",5,4.27,3.59,4.04],["10y",10,4.56,4.03,4.43],["30y",30,5.07,4.70,4.94]
+];
+
+const RATE_TILES = [
+  {l:"联邦基金目标利率",v:"3.50–3.75%",sub:"3个月前: 3.50–3.75% · 一年前: 4.25–4.50%",cls:"down",note:"过去一年累计宽松 <strong>约75bp</strong>。"},
+  {l:"30年期国债",v:"5.07%",sub:"3个月前 4.70% · 一年前 4.94%",cls:"up",note:"触及 <strong>2007年以来最高</strong> —— 债市在替美联储收紧。"},
+  {l:"10年期国债",v:"4.56%",sub:"3个月前 4.03% · 一年前 4.43%",cls:"up",note:"三个月内上行 <strong>53bp</strong> —— 长端在重新定价。"},
+  {l:"最优惠利率",v:"6.75%",sub:"3个月前 6.75% · 一年前 7.50%",cls:"down",note:"跟随联邦基金利率;同比下行 75bp。"}
+];
+
+const YIELDS = [
+  ["grp","应税市场利率"],
+  ["联邦基金","3.50-3.75","3.50-3.75","4.25-4.50"],
+  ["最优惠利率","6.75","6.75","7.50"],
+  ["30天商业票据 (A1/P1)","3.65","3.67","4.30"],
+  ["纽约联储 SOFR","3.55","3.66","4.26"],
+  ["grp","美国国债"],
+  ["3个月","3.68","3.69","4.35"],
+  ["6个月","3.79","3.62","4.35"],
+  ["1年","3.86","3.50","4.14"],
+  ["5年","4.27","3.59","4.04"],
+  ["10年","4.56","4.03","4.43"],
+  ["10年(抗通胀TIPS)","2.16","1.77","2.11"],
+  ["30年","5.07","4.70","4.94"],
+  ["grp","普通股(股息率)"],
+  ["VL 股票(中位)","2.00","2.00","2.30"],
+  ["道指(12个月预期)","1.60","1.60","1.90"],
+  ["VL 公用事业","3.40","3.10","3.50"],
+  ["grp","海外国债(10年期)"],
+  ["加拿大","3.46","3.19","3.26"],
+  ["中国","1.75","1.79","1.70"],
+  ["德国","2.98","2.71","2.53"],
+  ["日本","2.73","2.10","1.50"],
+  ["英国","4.88","4.30","4.67"]
+];
+
+const FED = [
+  ["grp","银行准备金(十亿美元, 未季调)· 4/26 vs 3/26"],
+  ["准备金总额","3018.0","3016.1","+1.9"],
+  ["借入准备金","5.8","5.1","+0.7"],
+  ["非借入准备金","3012.2","3011.0","+1.2"],
+  ["grp","货币供应(十亿美元, 季调)· 4/26 vs 3/26"],
+  ["M1","19531.8","19436.4","+95.4"],
+  ["M2","22804.5","22686.4","+118.1"],
+  ["grp","货币供应增速(年化)"],
+  ["M1 — 3个月 / 6个月","1.8%","2.9%",""],
+  ["M2 — 3个月 / 6个月","1.7%","2.5%",""]
+];
+
+const ALLOC = [
+  {l:"普通股",v:65,prev:60,c:"var(--accent)"},
+  {l:"现金",v:25,prev:30,c:"var(--amber)"},
+  {l:"债券*",v:10,prev:10,c:"var(--teal)"}
+];
+
+// Monitor: [label, last(5/26), prev(5/19), lo13,hi13, lo50,hi50, top, bottom]
+const MONITOR = [
+  ["VL 股票中位 P/E",17.7,17.4,17.4,19.3,17.4,19.5,17.7,11.0],
+  ["道指 P/E(12个月预期)",22.6,22.1,21.9,23.0,20.1,24.6,22.6,14.1],
+  ["VL 股票中位股息率(%)",2.0,2.1,2.0,2.2,2.0,2.3,2.0,3.7],
+  ["道指股息率(12个月预期)(%)",1.6,1.6,1.6,1.7,1.6,1.9,1.6,3.0],
+  ["最优惠利率(%)",6.8,6.8,6.8,6.8,6.8,7.5,6.8,3.3],
+  ["联邦基金利率(%)",3.6,3.6,3.6,3.6,3.6,4.3,3.6,0.2],
+  ["91天国库券(%)",3.7,3.7,3.7,3.7,3.6,4.4,3.7,0.0],
+  ["债券收益率 − 平均盈利收益率(%)",-0.3,-0.4,-0.4,0.1,-0.4,0.2,-0.3,-5.5],
+  ["空头兴趣 / 日均成交(5周)",13.4,13.6,10.9,14.2,7.9,14.7,13.4,9.0],
+  ["CBOE 认沽/认购成交量",0.84,0.80,0.77,1.02,0.67,1.41,0.84,1.05]
+];
+
+const IND_BEST = [["计算机/外设",49.9],["半导体",48.0],["网络安全",36.1],["电力",18.8],["数字基础设施",18.3],["人力资源",18.1],["电子",15.6]];
+const IND_WORST = [["有线电视",-26.9],["零售建材",-12.7],["贵金属",-12.2],["IT 服务",-9.8],["纸品/林产品",-9.0],["建材",-8.5],["零售(耐用品)",-7.6]];
+
+const FSR = [
+  ["A10 Network","B","B+","up",946],
+  ["AECOM","B+","B++","up",995],
+  ["Api Group","B+","B++","up",994],
+  ["Ericsson ADR","B++","A","up",953],
+  ["Granite Construction","B+","B++","up",1003],
+  ["PHINIA Inc.","B+","B++","up",981],
+  ["Sterling Infrastructure","B+","B++","up",1014]
+];
+
+const BUYS = [
+  ["Charter Communic.","M. Ramos, Dir.","5/15/26","9,929","19,309","145.15"],
+  ["HF Sinclair","F. Myers, CEO","5/18/26","15,000","177,053","69.91"],
+  ["KBR, Inc.","C.A. Sabater, Dir.","5/19/26","14,500","35,705","33.46"],
+  ["MP Materials","M.S. Rosenthal, COO","5/20/26","17,000","1,333,673","64.46"],
+  ["MSCI Inc.","H.A. Fernandez, Chair.","5/15/26","4,000","1,731,961","588.55"],
+  ["Norwegian Cruise Line","J.Z. Cohen, Dir.","5/20/26","30,000","38,912","16.30"]
+];
+const SELLS = [
+  ["Astera Labs Inc","J. Mohan, Dir.","5/18/26","95,444","1,357,295","306.88"],
+  ["Astera Labs Inc","S. Gajendra, CEO","5/18/26","95,444","1,435,857","306.88"],
+  ["CME Group","T.A. Duffy, Chair.","5/15/26","35,000","55,630","291.23"],
+  ["Monolithic Power Sys.","M. Hsing, CEO","5/18/26","40,000","848,263","1589.81"],
+  ["Monolithic Power Sys.","M. Sciammas, EVP","5/15/26","12,000","166,644","1589.81"],
+  ["Taiwan Semic. ADR","T. Chuang, VP","5/19/26","200,000","2,495,165","404.52"]
+];
+
+/* ============================ HELPERS ============================ */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const num = v => Number(String(v).replace(/[^0-9.\-]/g,""));
+const fmtN = (v,d=2) => v==null?"—":Number(v).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
+const recClass = r => r==="Buy"?"buy":r==="Sell"?"sell":"hold";
+const sign = v => (v>0?"+":"")+v.toFixed(1)+"%";
+function pctBar(v,maxAbs){ // returns {w,cls} for a centered +/- bar
+  const pct = Math.min(Math.abs(v)/maxAbs*50,50);
+  return {w:pct, cls:v>=0?"pos":"neg"};
+}
+
+/* ============================ INDICES ============================ */
+function renderIdx(rows){
+  const maxY = 75;
+  $("#idxBody").innerHTML = rows.map(r=>{
+    const b = pctBar(r.y,maxY);
+    const bar = `<span class="miniind"><span class="${b.cls==='pos'?'':''}" style="${b.cls==='pos'?'left:50%;background:var(--green)':'right:50%;background:var(--red)'};width:${b.w}%"></span><span style="left:50%;width:1px;background:var(--border2);top:-1px;bottom:-1px;border-radius:0"></span></span>`;
+    return `<tr>
+      <td class="l co">${r.name}</td>
+      <td>${fmtN(r.prev)}</td>
+      <td>${fmtN(r.last)}</td>
+      <td class="${r.w>=0?'gain':'loss'}">${sign(r.w)}</td>
+      <td class="${r.y>=0?'gain':'loss'}">${sign(r.y)}</td>
+      <td class="l">${bar}</td>
+    </tr>`;
+  }).join("");
+  $("#idxCount").textContent = rows.length+" 个指数 · 按12个月回报排序";
+}
+
+/* ============================ PORTFOLIOS ============================ */
+// 2025 year-end closing prices (split-adjusted, NOT dividend-adjusted), 12/31/2025.
+// Source: stockanalysis.com EOD. YTD% is computed live as Recent ÷ this − 1,
+// so if you refresh the "Recent" price the YTD% updates automatically.
+const YE2025 = {
+  AMD:214.16, GOOG:313.80, AMZN:230.82, AR:34.46, ANET:131.03, BP:34.73, DELL:125.88,
+  ETN:318.51, GS:879, JLL:336.47, MRVL:84.98, META:660.09, MSFT:483.62, NVT:101.97,
+  NVDA:186.50, PBR:11.85, SANM:150.07, FTI:44.56, VST:161.33,
+  APH:135.14, AVGO:346.10, CVS:79.36, LNG:194.39, COST:862.34, DKS:197.97, EOG:105.01,
+  ET:16.49, FCX:50.79, HPE:24.02, HII:340.07, KMI:27.49, LRCX:171.18, LLY:1074.68,
+  SAIC:100.66, TMO:579.45,
+  MO:57.66, AMCR:41.70, AAPL:271.86, BRKB:502.65, CVX:152.41, EPD:32.06, ES:67.33,
+  FSLR:261.23, MCD:305.63, NFLX:93.76, NEM:99.85, PAGP:19.14, RIO:80.03, RGLD:222.29, TRN:26.44,
+  T:24.84, AEP:115.31, AMGN:327.31, BMY:53.94, CSCO:77.03, DRI:184.02, DUK:117.21, JNJ:206.95,
+  MPLX:53.37, MDT:96.06, ORI:45.64, PNC:208.73, PKG:206.23, PEP:143.52, PSA:259.50, USB:53.36, WES:39.50,
+  ASML:1069.86, BALL:52.97, CACI:532.81, DD:40.20, ERIE:286.65, FTNT:79.41, GD:336.66, IHG:140.83,
+  ISRG:566.36, TROW:102.38, RSG:211.93, TXT:87.17, UTHR:487.25, WAB:213.45
+};
+const ytdPct = (tkr,price) => (YE2025[tkr]!=null && price!=null) ? (price/YE2025[tkr]-1)*100 : null;
+
+// Screen-only tickers: 2025 year-end closes, merged into YE2025 so YTD% reuses the same logic.
+Object.assign(YE2025, {
+  ADP:257.23, SHW:324.03, GWW:1009.05, CAT:572.87, TJX:153.61, UNP:231.32, KO:69.91, HSY:181.98,
+  SPGI:522.59, PAYX:112.18, LECO:239.64, BJ:90.03, ACN:268.30, DOX:80.51, CNA:47.74, CMCSA:28.01,
+  INFY:17.82, REYN:22.92, SON:43.64, TM:214.06, WRB:70.12, LHX:293.57, L:105.31, MMC:185.52,
+  MA:570.88, TMUS:203.04, VRSK:223.69, V:350.71
+});
+// Growth screen has no "Recent" price in the issue, so add the 5/22/2026 close (same as-of date as the rest of the issue).
+const GRW_RECENT = {
+  WRB:67.54, LHX:311.98, L:108.87, MMC:164.11, MA:498.54, MSFT:418.57, TMUS:191.47, VRSK:171.11, V:328.88
+};
+
+/* ===== ALPHA vs S&P 500 =====
+   Benchmark = the S&P 500 index. YTD alpha = holding YTD% − SPX YTD%.
+   P/L alpha  = holding P/L% − SPX return from the month-end of its purchase month to 5/26/26.
+   SPX 12/31/25 close 6819.20, SPX 5/26/26 close 7519.12 (= SPX_END). */
+const SPX_END = 7519.12;
+const SPX_YE_2025 = 6819.20;
+const SPX_YTD = (SPX_END/SPX_YE_2025 - 1)*100;   // ≈ +10.3%
+const SPX_ME = {  // month-end S&P 500 index closes; 2026-05 set to 5/26 so current-month buys read ~0
+  "2017-06":2418.00,"2021-03":3963.30,"2022-03":4516.40,"2022-05":4129.30,"2022-11":4076.80,
+  "2023-03":4093.90,"2023-05":4178.50,"2023-08":4503.50,"2023-12":4753.10,
+  "2024-04":5019.80,"2024-06":5442.20,"2024-07":5508.10,"2024-10":5686.40,"2024-11":6025.50,"2024-12":5860.80,
+  "2025-01":6018.20,"2025-02":5941.80,"2025-03":5593.90,"2025-04":5545.40,"2025-05":5893.90,"2025-06":6178.50,
+  "2025-07":6320.80,"2025-08":6450.50,"2025-09":6661.80,"2025-10":6820.60,"2025-11":6833.90,"2025-12":6819.20,
+  "2026-01":6919.70,"2026-02":6859.90,"2026-03":6503.40,"2026-04":7186.60,"2026-05":7519.12
+};
+function spxSinceBuy(pd){ // pd like "5/19/25"
+  if(!pd) return null;
+  const m=String(pd).split("/"); if(m.length<3) return null;
+  const key="20"+m[2].padStart(2,"0")+"-"+String(+m[0]).padStart(2,"0");
+  const s=SPX_ME[key];
+  return s!=null ? (SPX_END/s-1)*100 : null;
+}
+function alphaCell(r){
+  const line=(val,lbl)=>`<div class="alrow"><span class="allbl">${lbl}</span>${val==null?'<span class="muted">—</span>':`<span class="${val>=0?'gain':'loss'}">${(val>0?"+":"")+val.toFixed(1)}</span>`}</div>`;
+  let h=line(r.aYtd,"YTD");
+  if('aPl' in r) h+=line(r.aPl,"P/L");
+  return `<td class="l alpha">${h}</td>`;
+}
+const ALPHA_NOTE='<div style="margin-top:8px;font-size:11.5px;color:var(--text3)">↳ <strong>Alpha(α)</strong> = 同期内 个股收益 − 标普500 指数收益。<strong>YTD</strong> 对比标普 YTD <strong>+10.3%</strong>;<strong>P/L</strong> 对比标普自买入当月至 5/26/26 的收益(AAPL 2012 年买入早于可得标普数据 → —)。</div>';
+const ALPHA_NOTE_SC='<div style="margin-top:8px;font-size:11.5px;color:var(--text3)">↳ <strong>Alpha(α)</strong> = YTD% − 标普500 YTD(<strong>+10.3%</strong>)。</div>';
+
+// Map granular Value Line industries -> broad (GICS-style) sectors for grouping.
+const SECTOR = {
+  "Semiconductor":"信息技术","Semiconductor Equip":"信息技术","Semicond. Equip.":"信息技术",
+  "Computers/Peripherals":"信息技术","Computer Software":"信息技术","Telecom. Equipment":"信息技术",
+  "Electronics":"信息技术","Cyber Security":"信息技术",
+  "Electrical Equipment":"工业","Diversified Co.":"工业","Industrial Services":"工业",
+  "Aerospace/Defense":"工业","Railroad":"工业","Environmental":"工业",
+  "Internet":"通信服务","Entertainment":"通信服务","Telecom. Services":"通信服务",
+  "E-Commerce":"非必需消费","Retail (Hardlines)":"非必需消费","Restaurant":"非必需消费","Hotel/Gaming":"非必需消费",
+  "Retail Store":"必需消费","Tobacco":"必需消费","Beverage":"必需消费",
+  "Natural Gas (Div.)":"能源","Petroleum (Integrated)":"能源","Oilfield Svcs/Equip.":"能源","Oil/Gas Distribution":"能源","Pipeline MLPs":"能源",
+  "Investment Banking":"金融","Insurance (Prop/Cas.)":"金融","Bank":"金融","Asset Management":"金融",
+  "Medical Services":"医疗保健","Drug":"医疗保健","Med Supp Non-Invasive":"医疗保健","Med Supp Invasive":"医疗保健","Biotechnology":"医疗保健",
+  "Power":"公用事业","Electric Utility (East)":"公用事业","Electric Util. (Central)":"公用事业",
+  "Metals & Mining (Div.)":"材料","Precious Metals":"材料","Packaging & Container":"材料","Chemical (Basic)":"材料",
+  "R.E.I.T.":"房地产"
+};
+const sectorOf = ind => SECTOR[ind] || "其他";
+
+const PF_COLS = {
+  base:[["tkr","代码","s"],["co","公司","s"],["ind","行业","s"],["price","最新价","n"],["ytd","年初至今%","n"],["pl","盈亏%","n"],["alpha","Alpha(相对标普)","n"],["tl","及时性","n"],["pe","市盈率","n"],["rec","评级","s"],["pp","买入价","n"],["pd","日期","s"],["sl","止损","n"]],
+  II:[["tkr","代码","s"],["co","公司","s"],["ind","行业","s"],["price","最新价","n"],["ytd","年初至今%","n"],["pl","盈亏%","n"],["alpha","Alpha(相对标普)","n"],["dy","股息率%","n"],["tl","及时性","n"],["sf","安全性","n"],["rec","评级","s"],["pp","买入价","n"],["pd","日期","s"],["sl","止损","n"]],
+  III:[["tkr","代码","s"],["co","公司","s"],["ind","行业","s"],["price","最新价","n"],["ytd","年初至今%","n"],["pl","盈亏%","n"],["alpha","Alpha(相对标普)","n"],["gr","EPS增速%","n"],["pe","市盈率","n"],["ap","3-5年升值%","n"],["rec","评级","s"],["pp","买入价","n"],["pd","日期","s"],["sl","止损","n"]],
+  IV:[["tkr","代码","s"],["co","公司","s"],["ind","行业","s"],["price","最新价","n"],["ytd","年初至今%","n"],["pl","盈亏%","n"],["alpha","Alpha(相对标普)","n"],["sf","安全性","n"],["dy","股息率%","n"],["dg","股息增速%","n"],["rec","评级","s"],["pp","买入价","n"],["pd","日期","s"],["sl","止损","n"]],
+  V:[["tkr","代码","s"],["co","公司","s"],["ind","行业","s"],["price","最新价","n"],["ytd","年初至今%","n"],["pl","盈亏%","n"],["alpha","Alpha(相对标普)","n"],["dy","股息率%","n"],["rec","评级","s"],["pp","买入价","n"],["pd","日期","s"],["sl","止损","n"]]
+};
+function pfRowObjs(pf){
+  return PF[pf].map(a=>{
+    let o;
+    if(pf==="I") o={tkr:a[0],co:a[1],ind:a[2],price:a[3],tl:a[4],pe:a[5],rec:a[6],pp:a[7],pd:a[8],sl:a[9]};
+    else if(pf==="V") o={tkr:a[0],co:a[1],ind:a[2],price:a[3],dy:a[4],rec:a[5],pp:a[6],pd:a[7],sl:a[8]};
+    else if(pf==="II") o={tkr:a[0],co:a[1],ind:a[2],price:a[3],dy:a[4],tl:a[5],sf:a[6],rec:a[7],pp:a[8],pd:a[9],sl:a[10]};
+    else if(pf==="III") o={tkr:a[0],co:a[1],ind:a[2],price:a[3],gr:a[4],pe:a[5],ap:a[6],rec:a[7],pp:a[8],pd:a[9],sl:a[10]};
+    else o={tkr:a[0],co:a[1],ind:a[2],price:a[3],sf:a[4],dy:a[5],dg:a[6],rec:a[7],pp:a[8],pd:a[9],sl:a[10]};
+    o.ytd=ytdPct(o.tkr,o.price);
+    o.pl=(o.price!=null && o.pp) ? (o.price/o.pp-1)*100 : null;
+    o.aYtd=o.ytd!=null ? o.ytd-SPX_YTD : null;
+    const sret=spxSinceBuy(o.pd);
+    o.aPl=(o.pl!=null && sret!=null) ? o.pl-sret : null;
+    o.alpha=o.aYtd; // numeric sort key for the Alpha column
+    return o;
+  });
+}
+let pfState={pf:"I",sortK:null,sortDir:1};
+function cols(pf){ return pf==="I"?PF_COLS.base:PF_COLS[pf]; }
+function cellPF(k,v,r){
+  if(k==="alpha") return alphaCell(r);
+  if(k==="tkr") return `<td class="l tkr">${v}</td>`;
+  if(k==="co") return `<td class="l co">${v}</td>`;
+  if(k==="ind") return `<td class="l ind">${v}</td>`;
+  if(k==="rec") return `<td class="l"><span class="rec ${recClass(v)}">${({Buy:"买入",Hold:"持有",Sell:"卖出"}[v]||v)}</span></td>`;
+  if(k==="tl"||k==="sf") return `<td><span class="pill r${v}">${v}</span></td>`;
+  if(k==="pd") return `<td>${v}</td>`;
+  if(k==="dy") return `<td>${v==null?"—":v.toFixed(1)}</td>`;
+  if(k==="gr"||k==="dg") return `<td>${v==null?"—":v.toFixed(1)}</td>`;
+  if(k==="ap") return `<td class="${v>=0?'gain':'loss'}">${v==null?"—":(v>0?"+":"")+v}</td>`;
+  if(k==="ytd"||k==="pl") return `<td class="${v==null?'':v>=0?'gain':'loss'}">${v==null?"—":(v>0?"+":"")+v.toFixed(1)+"%"}</td>`;
+  if(k==="pe") return `<td>${v==null?"—":v.toFixed(1)}</td>`;
+  return `<td>${v==null?"—":fmtN(v)}</td>`;
+}
+function renderPF(){
+  const pf=pfState.pf;
+  const cdef=cols(pf);
+  $("#pfDesc").innerHTML=PF_DESC[pf]+ALPHA_NOTE;
+  $("#pfHead").innerHTML="<tr>"+cdef.map(c=>`<th class="${['tkr','co','ind','rec','alpha'].includes(c[0])?'l':''}" data-k="${c[0]}" data-t="${c[2]}">${c[1]}</th>`).join("")+"</tr>";
+  let rows=pfRowObjs(pf);
+  const q=$("#pfSearch").value.toLowerCase().trim();
+  const recF=$("#pfRec").value;
+  if(q) rows=rows.filter(r=>(r.tkr+" "+r.co+" "+r.ind).toLowerCase().includes(q));
+  if(recF) rows=rows.filter(r=>r.rec===recF);
+  if(pfState.sortK){
+    const k=pfState.sortK, t=cdef.find(c=>c[0]===k)[2];
+    rows.sort((a,b)=>{let x=a[k],y=b[k]; if(t==="n"){x=x==null?-1e9:x;y=y==null?-1e9:y;return (x-y)*pfState.sortDir;} return String(x).localeCompare(String(y))*pfState.sortDir;});
+  }
+  const rowHTML=r=>"<tr>"+cdef.map(c=>cellPF(c[0],r[c[0]],r)).join("")+"</tr>";
+  const grouped=$("#pfGroup")?$("#pfGroup").checked:false;
+  if(grouped){
+    const colspan=cdef.length;
+    const groups={};
+    rows.forEach(r=>{const s=sectorOf(r.ind);(groups[s]=groups[s]||[]).push(r);});
+    const order=Object.keys(groups).sort((a,b)=>groups[b].length-groups[a].length||a.localeCompare(b));
+    $("#pfBody").innerHTML=order.map(s=>
+      `<tr class="grp"><td colspan="${colspan}">${s}<span class="gcount">${groups[s].length} 只</span></td></tr>`
+      +groups[s].map(rowHTML).join("")
+    ).join("");
+  }else{
+    $("#pfBody").innerHTML=rows.map(rowHTML).join("");
+  }
+  $("#pfCount").textContent=rows.length+" 只持仓";
+  bindSort("#pfTable",(k)=>{pfState.sortDir=(pfState.sortK===k)?-pfState.sortDir:1;pfState.sortK=k;renderPF();},pfState);
+}
+function renderPFStats(){
+  const order=["I","II","III","IV","V"];
+  const names={I:"进取",II:"收益+成长",III:"长期",IV:"高股息",V:"质量成长"};
+  $("#pfStats").innerHTML=order.map(p=>{
+    const s=PF_STATS[p];
+    return `<div class="tile" style="cursor:pointer" data-pfstat="${p}">
+      <div class="tile-label">组合 ${p} · ${names[p]}</div>
+      <div class="tile-value" style="font-size:21px">${s.pe} <span style="font-size:12px;color:var(--text3);font-weight:600">市盈率</span></div>
+      <div class="tile-sub">EPS增速 <strong>${s.eps}</strong> · ROE <strong>${s.roe}</strong> · 股息率 <strong>${s.dy}</strong></div>
+      <div class="tile-note">中位市值 <strong>${s.mc}</strong> · 营收增速 ${s.rev} · EV/EBITDA ${s.ev}</div>
+    </div>`;
+  }).join("");
+  $$("#pfStats [data-pfstat]").forEach(t=>t.addEventListener("click",()=>selectPF(t.dataset.pfstat)));
+}
+function selectPF(pf){
+  pfState.pf=pf;pfState.sortK=null;pfState.sortDir=1;
+  $$("#pfTabs .tab").forEach(t=>t.classList.toggle("active",t.dataset.pf===pf));
+  renderPF();
+}
+
+/* ============================ SCREENS ============================ */
+let scState={sc:"roe",sortK:null,sortDir:1};
+const SC_COLS={
+  roe:[["tkr","代码","s"],["co","公司","s"],["price","最新价","n"],["ytd","年初至今%","n"],["alpha","Alpha(相对标普)","n"],["avg5","5年ROE%","n"],["last","最新年度%","n"],["cur","本年预估%","n"],["sf","安全性","n"],["rpe","相对市盈率","n"],["pg","R&R页","n"]],
+  inc:[["tkr","代码","s"],["co","公司","s"],["price","最新价","n"],["ytd","年初至今%","n"],["alpha","Alpha(相对标普)","n"],["sf","安全性","n"],["cy","当期股息率%","n"],["ey","3-5年预期股息率%","n"],["ap","升值%","n"],["tr","总回报%","n"],["pg","R&R页","n"]],
+  grw:[["tkr","代码","s"],["co","公司","s"],["price","最新价","n"],["ytd","年初至今%","n"],["alpha","Alpha(相对标普)","n"],["ind","行业","s"],["sf","安全性","n"],["ap","升值%","n"],["g5","过去5年EPS%","n"],["gn","未来3-5年%","n"],["ps","价格稳定","n"],["fs","财务实力","s"],["pg","R&R页","n"]]
+};
+function scRowObjs(sc){
+  return SCREENS[sc].map(a=>{
+    let o;
+    if(sc==="roe") o={tkr:a[0],co:a[1],price:a[2],avg5:a[3],last:a[4],cur:a[5],sf:a[6],rpe:a[7],pg:a[8]};
+    else if(sc==="inc") o={tkr:a[0],co:a[1],price:a[2],sf:a[3],cy:a[4],ey:a[5],ap:a[6],tr:a[7],pg:a[8]};
+    else {o={tkr:a[0],co:a[1],sf:a[2],ap:a[3],g5:a[4],gn:a[5],ps:a[6],fs:a[7],ind:a[8],pg:a[9]}; o.price=GRW_RECENT[o.tkr]!=null?GRW_RECENT[o.tkr]:null;}
+    o.ytd=ytdPct(o.tkr,o.price);
+    o.aYtd=o.ytd!=null ? o.ytd-SPX_YTD : null;
+    o.alpha=o.aYtd; // numeric sort key
+    return o;
+  });
+}
+function cellSC(k,v,r){
+  if(k==="alpha") return alphaCell(r);
+  if(k==="tkr") return `<td class="l tkr">${v}</td>`;
+  if(k==="co") return `<td class="l co">${v}</td>`;
+  if(k==="ind") return `<td class="l ind">${v}</td>`;
+  if(k==="fs") return `<td class="l"><span class="chip">${v}</span></td>`;
+  if(k==="sf") return `<td><span class="pill r${v}">${v}</span></td>`;
+  if(k==="rpe"){const cls=v>=1.15?"loss":v<1?"gain":"";return `<td class="${cls}">${v.toFixed(2)}×</td>`;}
+  if(k==="price") return `<td>${v==null?"—":fmtN(v)}</td>`;
+  if(k==="ytd") return `<td class="${v==null?'':v>=0?'gain':'loss'}">${v==null?"—":(v>0?"+":"")+v.toFixed(1)+"%"}</td>`;
+  if(k==="avg5"||k==="last"||k==="cur") return `<td>${v.toFixed(1)}</td>`;
+  if(k==="ap"||k==="tr"||k==="cy"||k==="ey"||k==="g5"||k==="gn") return `<td>${typeof v==='number'?(Number.isInteger(v)?v:v.toFixed(1)):v}</td>`;
+  return `<td>${v}</td>`;
+}
+function renderSC(){
+  const sc=scState.sc, cdef=SC_COLS[sc];
+  $("#scDesc").innerHTML=SC_DESC[sc]+ALPHA_NOTE_SC;
+  $("#scHead").innerHTML="<tr>"+cdef.map(c=>`<th class="${['tkr','co','ind','fs','alpha'].includes(c[0])?'l':''}" data-k="${c[0]}" data-t="${c[2]}">${c[1]}</th>`).join("")+"</tr>";
+  let rows=scRowObjs(sc);
+  const q=$("#scSearch").value.toLowerCase().trim();
+  if(q) rows=rows.filter(r=>(r.tkr+" "+r.co+" "+(r.ind||"")).toLowerCase().includes(q));
+  if(scState.sortK){
+    const k=scState.sortK,t=cdef.find(c=>c[0]===k)[2];
+    rows.sort((a,b)=>{let x=a[k],y=b[k];if(t==="n")return (num(x)-num(y))*scState.sortDir;return String(x).localeCompare(String(y))*scState.sortDir;});
+  }
+  $("#scBody").innerHTML=rows.map(r=>"<tr>"+cdef.map(c=>cellSC(c[0],r[c[0]],r)).join("")+"</tr>").join("");
+  $("#scCount").textContent=rows.length+" 只股票";
+  bindSort("#scTable",(k)=>{scState.sortDir=(scState.sortK===k)?-scState.sortDir:1;scState.sortK=k;renderSC();},scState);
+}
+function selectSC(sc){
+  scState.sc=sc;scState.sortK=null;scState.sortDir=1;
+  $$("#scTabs .tab").forEach(t=>t.classList.toggle("active",t.dataset.sc===sc));
+  renderSC();
+}
+
+/* generic sort header binding */
+function bindSort(tableSel,cb,state){
+  $$(tableSel+" thead th").forEach(th=>{
+    th.classList.remove("sort-asc","sort-desc");
+    if(state.sortK===th.dataset.k) th.classList.add(state.sortDir>0?"sort-asc":"sort-desc");
+    th.onclick=()=>cb(th.dataset.k);
+  });
+}
+
+/* ============================ YIELD CURVE ============================ */
+function renderCurve(){
+  const W=460,H=230,padL=38,padR=14,padT=14,padB=30;
+  const xs=CURVE.map(c=>Math.log(c[1]));
+  const xmin=Math.min(...xs),xmax=Math.max(...xs);
+  const ymin=1.2,ymax=5.3;
+  const X=x=>padL+(Math.log(x)-xmin)/(xmax-xmin)*(W-padL-padR);
+  const Y=y=>H-padB-(y-ymin)/(ymax-ymin)*(H-padT-padB);
+  const series=[[3,"var(--text3)",1.6],[2,"var(--accent2)",1.8],[1,"var(--accent)",2.2]]; // idx into [tenor,x,recent(1),3mo(2),1yr(3)]
+  let g=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="overflow:visible">`;
+  // gridlines
+  for(let v=2;v<=5;v++){g+=`<line x1="${padL}" y1="${Y(v)}" x2="${W-padR}" y2="${Y(v)}" stroke="#eee"/><text x="${padL-6}" y="${Y(v)+3}" font-size="9" fill="var(--text3)" text-anchor="end">${v}%</text>`;}
+  CURVE.forEach(c=>{g+=`<text x="${X(c[1])}" y="${H-padB+15}" font-size="9.5" fill="var(--text2)" text-anchor="middle">${c[0]}</text>`;});
+  series.forEach(([idx,color,wdt])=>{
+    const pts=CURVE.map(c=>[X(c[1]),Y(c[1+idx])]);
+    g+=`<polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="${color}" stroke-width="${wdt}"/>`;
+    pts.forEach((p,i)=>{g+=`<circle cx="${p[0]}" cy="${p[1]}" r="3.4" fill="${color}"><title>${CURVE[i][0]}: ${CURVE[i][1+idx]}%</title></circle>`;});
+  });
+  g+=`</svg>`;
+  $("#curve").innerHTML=g;
+}
+
+/* ============================ ALLOC DONUT ============================ */
+function renderAlloc(){
+  const sz=150,r=58,cx=sz/2,cy=sz/2,C=2*Math.PI*r;
+  let off=0,segs="";
+  ALLOC.forEach(a=>{
+    const len=a.v/100*C;
+    segs+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${a.c}" stroke-width="22" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}" transform="rotate(-90 ${cx} ${cy})"><title>${a.l}: ${a.v}%</title></circle>`;
+    off+=len;
+  });
+  $("#allocDonut").innerHTML=`<svg viewBox="0 0 ${sz} ${sz}" width="150" height="150">${segs}<text x="${cx}" y="${cy-2}" text-anchor="middle" font-size="22" font-weight="700" fill="var(--text)">65%</text><text x="${cx}" y="${cy+15}" text-anchor="middle" font-size="9.5" fill="var(--text3)">股票</text></svg>`;
+  $("#allocLegend").innerHTML=ALLOC.map(a=>{
+    const d=a.v-a.prev; const dc=d>0?"up":d<0?"down":"flat"; const ds=d>0?`+${d}`:d<0?`${d}`:"±0";
+    return `<div class="al"><span class="sw" style="background:${a.c}"></span><span class="alv">${a.v}%</span><span>${a.l}</span><span class="alc ${dc}">${ds}pp(较此前)</span></div>`;
+  }).join("");
+}
+
+/* ============================ YIELD / FED TABLES ============================ */
+function renderRateTiles(){
+  $("#rateTiles").innerHTML=RATE_TILES.map(t=>`<div class="tile ${t.cls}"><div class="tile-label">${t.l}</div><div class="tile-value">${t.v}</div><div class="tile-sub">${t.sub}</div><div class="tile-note">${t.note}</div></div>`).join("");
+}
+function dCell(rec,prior){
+  const a=num(rec),b=num(prior); if(isNaN(a)||isNaN(b)) return "";
+  const d=a-b; const c=d>0.001?"up":d<-0.001?"down":"flat"; const s=(d>0?"+":"")+d.toFixed(2);
+  return `<span class="d ${c}">${s}</span>`;
+}
+function renderYieldTable(){
+  $("#yieldBody").innerHTML=YIELDS.map(r=>{
+    if(r[0]==="grp") return `<tr class="grp"><td colspan="4">${r[1]}</td></tr>`;
+    return `<tr><td>${r[0]}</td><td><strong>${r[1]}</strong></td><td>${r[2]}</td><td>${r[3]} ${dCell(r[1],r[3])}</td></tr>`;
+  }).join("");
+  // header
+  $("#yieldTable").insertAdjacentHTML("afterbegin","<thead><tr><th>收益率</th><th>近期 5/22</th><th>3个月前 2/23</th><th>一年前 5/23 · Δ年</th></tr></thead>");
+}
+function renderFedTable(){
+  $("#fedBody").innerHTML=FED.map(r=>{
+    if(r[0]==="grp") return `<tr class="grp"><td colspan="4">${r[1]}</td></tr>`;
+    return `<tr><td>${r[0]}</td><td><strong>${r[1]}</strong></td><td>${r[2]}</td><td>${r[3]}</td></tr>`;
+  }).join("");
+  $("#fedTable").insertAdjacentHTML("afterbegin","<thead><tr><th>项目</th><th>近期</th><th>此前</th><th>变动</th></tr></thead>");
+}
+
+/* ============================ MONITOR ============================ */
+function renderMonitor(){
+  $("#monBody").innerHTML=MONITOR.map(r=>{
+    const [lbl,last,prev,lo13,hi13,lo50,hi50,top,bot]=r;
+    const span=hi50-lo50;
+    const fillL=((Math.min(lo13,hi13)-lo50)/span)*100;
+    const fillW=(Math.abs(hi13-lo13)/span)*100;
+    const nowP=((last-lo50)/span)*100;
+    const bar=`<div class="rangebar"><div class="fill" style="left:${Math.max(0,fillL)}%;width:${Math.min(100,fillW)}%"></div><div class="now" style="left:calc(${Math.max(0,Math.min(100,nowP))}% - 1px)"></div></div>`;
+    return `<tr>
+      <td>${lbl}</td>
+      <td><strong>${last}</strong></td>
+      <td>${prev}</td>
+      <td>${lo13} – ${hi13}</td>
+      <td>${lo50} – ${hi50}</td>
+      <td>${top}</td>
+      <td>${bot}</td>
+      <td class="pos-ctx l">${bar}</td>
+    </tr>`;
+  }).join("");
+}
+
+/* ============================ INDUSTRY BARS ============================ */
+function renderIndBars(){
+  const maxAbs=50;
+  const row=(name,v)=>{
+    const b=pctBar(v,maxAbs);
+    const fill=b.cls==="pos"?`<div class="barfill pos" style="width:${b.w}%"></div>`:`<div class="barfill neg" style="width:${b.w}%"></div>`;
+    return `<div class="barrow"><div class="bn">${name}</div><div class="bartrack"><div class="barmid"></div>${fill}</div><div class="barval ${b.cls}">${(v>0?"+":"")+v.toFixed(1)}%</div></div>`;
+  };
+  $("#indBest").innerHTML=IND_BEST.map(d=>row(d[0],d[1])).join("");
+  $("#indWorst").innerHTML=IND_WORST.map(d=>row(d[0],d[1])).join("");
+}
+function renderFSR(){
+  $("#fsrBody").innerHTML=FSR.map(r=>`<tr><td style="text-align:left;color:var(--text)">${r[0]}</td><td>${r[1]}</td><td><strong>${r[2]}</strong></td><td><span class="chip ${r[3]}">上调</span></td><td>${r[4]}</td></tr>`).join("");
+}
+
+/* ============================ INSIDERS ============================ */
+function renderInsiders(){
+  const row=a=>`<tr><td class="l co">${a[0]}</td><td class="l ind">${a[1]}</td><td>${a[2]}</td><td>${a[3]}</td><td>${a[4]}</td><td>${a[5]}</td></tr>`;
+  $("#buyBody").innerHTML=BUYS.map(row).join("");
+  $("#sellBody").innerHTML=SELLS.map(row).join("");
+}
+
+/* ============================ NAV / MODAL ============================ */
+function setupNav(){
+  const links=$$(".nav a"), secs=links.map(l=>document.querySelector(l.getAttribute("href")));
+  const obs=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(e.isIntersecting){const id="#"+e.target.id;links.forEach(l=>l.classList.toggle("active",l.getAttribute("href")===id));}});
+  },{rootMargin:"-55px 0px -75% 0px",threshold:0});
+  secs.forEach(s=>s&&obs.observe(s));
+}
+function openManual(){$("#manualBg").classList.add("show");}
+function closeManual(){$("#manualBg").classList.remove("show");}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeManual();});
+
+/* ============================ INIT ============================ */
+// indices: default sort by 12-mo desc
+let idxRows=[...INDICES].sort((a,b)=>b.y-a.y);
+let idxSort={k:"y",dir:-1};
+function initIdxSort(){
+  $$("#idxTable thead th").forEach(th=>{
+    th.onclick=()=>{
+      const k=th.dataset.k,t=th.dataset.t;
+      idxSort.dir=(idxSort.k===k)?-idxSort.dir:1; idxSort.k=k;
+      idxRows.sort((a,b)=> t==="n"?(a[k]-b[k])*idxSort.dir : String(a[k]).localeCompare(String(b[k]))*idxSort.dir);
+      $$("#idxTable thead th").forEach(h=>h.classList.remove("sort-asc","sort-desc"));
+      th.classList.add(idxSort.dir>0?"sort-asc":"sort-desc");
+      renderIdx(idxRows);
+    };
+  });
+}
+
+renderIdx(idxRows); initIdxSort();
+renderPFStats(); renderPF();
+renderSC();
+renderRateTiles(); renderCurve(); renderAlloc(); renderYieldTable(); renderFedTable();
+renderMonitor();
+renderIndBars(); renderFSR();
+renderInsiders();
+setupNav();
+
+$$("#pfTabs .tab").forEach(t=>t.addEventListener("click",()=>selectPF(t.dataset.pf)));
+$$("#scTabs .tab").forEach(t=>t.addEventListener("click",()=>selectSC(t.dataset.sc)));
+$("#pfSearch").addEventListener("input",renderPF);
+$("#pfRec").addEventListener("change",renderPF);
+$("#pfGroup").addEventListener("change",renderPF);
+$("#scSearch").addEventListener("input",renderSC);
+</script>
+</body>
+</html>

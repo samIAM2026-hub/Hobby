@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>温哥华出发 · 南极旅行攻略</title>
+<style>
+  :root{
+    --ice:#e8f4fb; --ice2:#cfe9f7; --deep:#0a3d62; --deep2:#0c5278;
+    --teal:#1287a8; --sky:#48b4d8; --aqua:#7ed3e8;
+    --sun:#f6a623; --coral:#ff6b6b; --green:#2bae66; --purple:#6c5ce7;
+    --ink:#14323f; --muted:#5b7585; --line:#d6e6f0; --card:#ffffff;
+    --shadow:0 10px 30px rgba(10,61,98,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+    color:var(--ink); background:var(--ice);
+    line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; min-height:78vh; display:flex; flex-direction:column;
+    justify-content:center; align-items:center; text-align:center; padding:80px 20px 60px;
+    background:linear-gradient(180deg,#0a3d62 0%,#0c5278 45%,#1287a8 100%);
+    color:#fff; overflow:hidden;
+  }
+  .hero .berg{position:absolute;bottom:-2px;left:0;width:100%;opacity:.95}
+  .hero .snow{position:absolute;inset:0;pointer-events:none}
+  .snow span{position:absolute;top:-10px;color:#fff;opacity:.7;animation:fall linear infinite}
+  @keyframes fall{to{transform:translateY(110vh) translateX(20px);opacity:0}}
+  .badge{display:inline-block;padding:7px 18px;border:1px solid rgba(255,255,255,.45);
+    border-radius:30px;font-size:14px;letter-spacing:2px;margin-bottom:22px;backdrop-filter:blur(4px)}
+  .hero h1{font-size:clamp(34px,6vw,64px);font-weight:800;letter-spacing:1px;line-height:1.15;
+    text-shadow:0 4px 20px rgba(0,0,0,.25)}
+  .hero .route{font-size:clamp(15px,2.5vw,22px);margin-top:18px;opacity:.92;font-weight:300}
+  .hero .route b{font-weight:600;color:var(--aqua)}
+  .scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+    font-size:13px;opacity:.85;animation:bob 1.8s ease-in-out infinite;z-index:3}
+  @keyframes bob{50%{transform:translateX(-50%) translateY(8px)}}
+  /* ---------- QUICK STATS ---------- */
+  .stats{max-width:1080px;margin:-50px auto 0;padding:0 18px;position:relative;z-index:5;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .stat{background:var(--card);border-radius:18px;padding:22px 16px;text-align:center;
+    box-shadow:var(--shadow);border:1px solid var(--line);transition:.25s}
+  .stat:hover{transform:translateY(-6px)}
+  .stat .ic{font-size:30px}
+  .stat .num{font-size:26px;font-weight:800;color:var(--deep);margin-top:6px}
+  .stat .lbl{font-size:13px;color:var(--muted);margin-top:2px}
+  /* ---------- NAV ---------- */
+  nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);margin-top:46px}
+  .nav-in{max-width:1080px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;padding:10px 14px}
+  .nav-in a{flex:0 0 auto;padding:8px 15px;border-radius:30px;text-decoration:none;color:var(--muted);
+    font-size:14px;font-weight:600;white-space:nowrap;transition:.2s}
+  .nav-in a:hover{background:var(--ice2);color:var(--deep)}
+  /* ---------- SECTIONS ---------- */
+  section.block{max-width:1080px;margin:0 auto;padding:64px 18px}
+  .sec-h{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .sec-h .ic{font-size:30px}
+  .sec-h h2{font-size:clamp(24px,4vw,34px);font-weight:800;color:var(--deep)}
+  .sec-sub{color:var(--muted);margin-bottom:30px;font-size:15px}
+  /* ---------- ROUTE TABS ---------- */
+  .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+  .tab{flex:1;min-width:200px;cursor:pointer;border:2px solid var(--line);background:#fff;
+    border-radius:16px;padding:16px 18px;transition:.25s}
+  .tab:hover{border-color:var(--sky)}
+  .tab.active{border-color:var(--teal);background:linear-gradient(135deg,#fff,var(--ice));box-shadow:var(--shadow)}
+  .tab .tag{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:1px}
+  .tab .tt{font-size:16px;font-weight:700;margin:4px 0 2px}
+  .tab .meta{font-size:13px;color:var(--muted)}
+  .route-panel{display:none;animation:fade .4s}
+  .route-panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+  .map-line{display:flex;align-items:center;flex-wrap:wrap;gap:6px;background:#fff;border:1px solid var(--line);
+    border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .stop{display:flex;flex-direction:column;align-items:center;gap:4px;flex:0 0 auto;text-align:center}
+  .stop .dot{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:20px;
+    background:var(--ice2);color:var(--deep)}
+  .stop small{font-size:12px;color:var(--muted);max-width:80px}
+  .arrow{color:var(--sky);font-size:20px;flex:0 0 auto}
+  .pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .pc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}
+  .pc h4{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+  .pc.pro h4{color:var(--green)} .pc.con h4{color:var(--coral)}
+  .pc ul{list-style:none} .pc li{padding:5px 0 5px 22px;position:relative;font-size:14px}
+  .pc.pro li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:700}
+  .pc.con li::before{content:"!";position:absolute;left:0;color:var(--coral);font-weight:700}
+  .fit{margin-top:16px;background:var(--ice);border-radius:12px;padding:14px 16px;font-size:14px}
+  .fit b{color:var(--deep)}
+  @media(max-width:680px){.pros-cons{grid-template-columns:1fr}}
+  /* ---------- MONTHS ---------- */
+  .month-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+  .mbtn{cursor:pointer;border:2px solid var(--line);background:#fff;border-radius:12px;padding:12px 16px;
+    text-align:center;flex:1;min-width:90px;transition:.2s}
+  .mbtn .m{font-size:18px;font-weight:800;color:var(--deep)}
+  .mbtn .s{font-size:11px;color:var(--muted)}
+  .mbtn:hover{border-color:var(--sky)}
+  .mbtn.active{border-color:var(--sun);background:linear-gradient(135deg,#fff,#fff6e8)}
+  .month-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:var(--shadow)}
+  .month-card h3{font-size:22px;color:var(--deep);margin-bottom:4px}
+  .month-card .vibe{display:inline-block;font-size:13px;font-weight:700;color:#fff;background:var(--teal);
+    padding:3px 12px;border-radius:20px;margin-bottom:14px}
+  .ratings{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+  .rate label{font-size:13px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:4px}
+  .bar{height:9px;background:var(--ice2);border-radius:6px;overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:6px;transition:width .6s;
+    background:linear-gradient(90deg,var(--sky),var(--teal))}
+  .month-card p{font-size:14.5px;color:var(--ink)}
+  @media(max-width:680px){.ratings{grid-template-columns:1fr}}
+  /* ---------- CRUISE CARDS ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+  .ccard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;transition:.25s;position:relative;overflow:hidden}
+  .ccard:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+  .ccard .top{font-size:30px}
+  .ccard h4{font-size:17px;margin:8px 0 4px;color:var(--deep)}
+  .ccard .price{font-size:14px;font-weight:700;color:var(--teal)}
+  .ccard p{font-size:13.5px;color:var(--muted);margin-top:8px}
+  .ccard .ppl{position:absolute;top:16px;right:16px;font-size:12px;background:var(--ice);padding:3px 9px;border-radius:20px;color:var(--deep);font-weight:600}
+  /* ---------- BUDGET ---------- */
+  .style-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .sbtn{cursor:pointer;border:2px solid var(--line);background:#fff;border-radius:30px;padding:10px 20px;
+    font-weight:700;font-size:14px;color:var(--muted);transition:.2s}
+  .sbtn:hover{border-color:var(--sky)}
+  .sbtn.active{border-color:var(--teal);background:var(--teal);color:#fff}
+  .budget-wrap{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);font-size:14.5px}
+  th{color:var(--muted);font-weight:600;font-size:13px}
+  td.amt{text-align:right;font-weight:600;color:var(--deep);font-variant-numeric:tabular-nums}
+  tr.total td{border-bottom:none;border-top:2px solid var(--deep);font-size:17px;font-weight:800;padding-top:16px}
+  tr.total td.amt{color:var(--teal)}
+  .usd{font-size:13px;color:var(--muted);font-weight:500}
+  /* ---------- ITINERARY ---------- */
+  .itin{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
+  .icard{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .icard .hd{padding:20px;color:#fff}
+  .icard.c1 .hd{background:linear-gradient(135deg,var(--teal),var(--deep2))}
+  .icard.c2 .hd{background:linear-gradient(135deg,var(--purple),#8e7cff)}
+  .icard.c3 .hd{background:linear-gradient(135deg,var(--sun),var(--coral))}
+  .icard .hd .days{font-size:13px;opacity:.9}
+  .icard .hd h4{font-size:19px;margin:4px 0}
+  .icard .hd .bud{font-size:14px;font-weight:700;margin-top:6px}
+  .icard .bd{padding:18px 20px;flex:1}
+  .icard .bd .who{font-size:13px;color:var(--muted);margin-bottom:12px}
+  .tl{list-style:none;position:relative;padding-left:18px}
+  .tl::before{content:"";position:absolute;left:5px;top:4px;bottom:4px;width:2px;background:var(--ice2)}
+  .tl li{position:relative;font-size:13.5px;padding:4px 0}
+  .tl li::before{content:"";position:absolute;left:-16px;top:11px;width:9px;height:9px;border-radius:50%;background:var(--teal)}
+  /* ---------- PACKING ---------- */
+  .pack-wrap{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow)}
+  .pack-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+  .pack-prog{font-size:14px;color:var(--muted)}
+  .pack-prog b{color:var(--teal);font-size:18px}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px 22px}
+  .pgrid .cat{grid-column:1/-1;font-weight:800;color:var(--deep);margin-top:14px;font-size:15px;display:flex;align-items:center;gap:7px}
+  .pitem{display:flex;align-items:flex-start;gap:10px;padding:7px 0;cursor:pointer;font-size:14px}
+  .pitem input{margin-top:4px;width:17px;height:17px;accent-color:var(--teal);cursor:pointer;flex:0 0 auto}
+  .pitem.done span{text-decoration:line-through;color:var(--muted)}
+  .pitem .pv{font-size:11px;color:var(--green);background:#e8f7ee;padding:1px 7px;border-radius:10px;margin-left:4px;white-space:nowrap}
+  /* ---------- RISK ACCORDION ---------- */
+  .acc{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden}
+  .acc summary{padding:16px 20px;cursor:pointer;font-weight:700;color:var(--deep);font-size:15.5px;
+    display:flex;align-items:center;gap:10px;list-style:none}
+  .acc summary::-webkit-details-marker{display:none}
+  .acc summary .chev{margin-left:auto;transition:.3s;color:var(--sky)}
+  .acc[open] summary .chev{transform:rotate(180deg)}
+  .acc .body{padding:0 20px 18px 50px;font-size:14.5px;color:var(--ink)}
+  .lvl{font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;color:#fff}
+  .lvl.high{background:var(--coral)} .lvl.mid{background:var(--sun)} .lvl.low{background:var(--green)}
+  /* ---------- FINAL ---------- */
+  .final{background:linear-gradient(135deg,var(--deep),var(--teal));color:#fff;border-radius:24px;padding:42px 32px;box-shadow:var(--shadow)}
+  .final h2{color:#fff;font-size:28px;margin-bottom:8px}
+  .final .grid5{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-top:24px}
+  .fkey{background:rgba(255,255,255,.12);border-radius:14px;padding:18px;border:1px solid rgba(255,255,255,.18)}
+  .fkey .k{font-size:13px;opacity:.8;letter-spacing:1px}
+  .fkey .v{font-size:17px;font-weight:800;margin-top:5px}
+  footer{text-align:center;padding:34px 18px 60px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="snow" id="snow"></div>
+  <div class="badge">VANCOUVER → ANTARCTICA · 2026</div>
+  <h1>温哥华出发 · 南极旅行攻略 🐧</h1>
+  <div class="route">✈️ <b>温哥华</b> → 南美中转 → 乌斯怀亚 / 蓬塔阿雷纳斯 → 🚢 <b>南极半岛</b></div>
+  <svg class="berg" viewBox="0 0 1440 120" preserveAspectRatio="none"><path fill="#e8f4fb" d="M0,80 L120,60 L260,90 L420,50 L560,85 L720,55 L880,88 L1040,58 L1200,84 L1340,62 L1440,80 L1440,120 L0,120 Z"></path></svg>
+  <div class="scroll-hint">向下滚动探索 ↓</div>
+</header>
+
+<div class="stats">
+  <div class="stat"><div class="ic">🗓️</div><div class="num">12–16天</div><div class="lbl">建议总行程</div></div>
+  <div class="stat"><div class="ic">💰</div><div class="num">≈3万</div><div class="lbl">中端CAD/人</div></div>
+  <div class="stat"><div class="ic">🐧</div><div class="num">1月</div><div class="lbl">综合最佳月</div></div>
+  <div class="stat"><div class="ic">🛂</div><div class="num">免签</div><div class="lbl">加拿大护照</div></div>
+</div>
+
+<nav>
+  <div class="nav-in">
+    <a href="#routes">🧭 路线</a>
+    <a href="#months">📅 最佳月份</a>
+    <a href="#ship">🚢 船舶冰级</a>
+    <a href="#cruise">🏷️ 品牌</a>
+    <a href="#choose">🎯 选船</a>
+    <a href="#budget">💵 预算</a>
+    <a href="#itin">🗺️ 行程模板</a>
+    <a href="#sights">🧊 登陆点</a>
+    <a href="#acts">🛶 活动</a>
+    <a href="#pack">🎒 装备清单</a>
+    <a href="#risk">⚠️ 风险健康</a>
+    <a href="#visa">🛂 中国护照免签</a>
+    <a href="#final">⭐ 最终建议</a>
+  </div>
+</nav>
+
+<!-- ROUTES -->
+<section class="block" id="routes">
+  <div class="sec-h"><span class="ic">🧭</span><h2>三条主要路线</h2></div>
+  <p class="sec-sub">点击切换，对比经典邮轮、飞越德雷克与深度野生动物三种玩法。</p>
+
+  <div class="tabs">
+    <div class="tab active" data-r="A">
+      <div class="tag">路线 A · 经典</div>
+      <div class="tt">布宜诺斯艾利斯 → 乌斯怀亚</div>
+      <div class="meta">穿越德雷克海峡 · 14–16天</div>
+    </div>
+    <div class="tab" data-r="B">
+      <div class="tag">路线 B · Fly-Cruise</div>
+      <div class="tt">圣地亚哥 → 蓬塔阿雷纳斯</div>
+      <div class="meta">飞越德雷克 · 9–12天</div>
+    </div>
+    <div class="tab" data-r="C">
+      <div class="tag">路线 C · 深度</div>
+      <div class="tt">含南乔治亚 + 福克兰</div>
+      <div class="meta">野生动物摄影 · 17–24天</div>
+    </div>
+  </div>
+
+  <div class="route-panel active" data-r="A">
+    <div class="map-line">
+      <div class="stop"><div class="dot">🏠</div><small>温哥华</small></div><span class="arrow">✈️</span>
+      <div class="stop"><div class="dot">🇦🇷</div><small>布宜诺斯艾利斯·过夜</small></div><span class="arrow">✈️</span>
+      <div class="stop"><div class="dot">🛬</div><small>乌斯怀亚登船</small></div><span class="arrow">🚢</span>
+      <div class="stop"><div class="dot">🌊</div><small>德雷克海峡 48h</small></div><span class="arrow">🚢</span>
+      <div class="stop"><div class="dot">🐧</div><small>南极半岛</small></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pc pro"><h4>✓ 优点</h4><ul>
+        <li>路线成熟可靠，航班选择多</li>
+        <li>经典传统航线，邮轮类型最丰富</li>
+        <li>可顺道游布宜诺斯艾利斯（探戈、城市观光）</li>
+        <li>价格相对更经济</li></ul></div>
+      <div class="pc con"><h4>! 缺点</h4><ul>
+        <li>需穿越德雷克海峡，波涛可能很大</li>
+        <li>来回飞行 + 海上航行较耗时</li>
+        <li>天气可能导致航程改动</li>
+        <li>部分旅客会晕船</li></ul></div>
+    </div>
+    <div class="fit">👥 <b>适合人群：</b>体力较好、希望体验经典南极航程、可忍受大海颠簸并追求较经济价格的游客。</div>
+    <div class="fit" style="background:#fff6e8;border:1px solid var(--sun)">⚠️ <b>布宜诺斯艾利斯跨机场转移陷阱：</b>洲际航班多降落较远的 <b>EZE 国际机场</b>，飞乌斯怀亚的国内航班则常从市区的 <b>AEP 机场</b>起飞，两地相距约 35 公里。理想 30–40 分钟车程，但遇早晚高峰可拖至 1.5 小时以上，再加提取行李、入境、重新托运。<b>同城转机务必预留 ≥3.5–4 小时</b>，更稳妥的做法是<b>提前 1–2 天抵达</b>，顺便倒时差、降低深静脉血栓风险。</div>
+  </div>
+
+  <div class="route-panel" data-r="B">
+    <div class="map-line">
+      <div class="stop"><div class="dot">🏠</div><small>温哥华</small></div><span class="arrow">✈️</span>
+      <div class="stop"><div class="dot">🇨🇱</div><small>圣地亚哥·过夜</small></div><span class="arrow">✈️</span>
+      <div class="stop"><div class="dot">🛬</div><small>蓬塔阿雷纳斯</small></div><span class="arrow">✈️</span>
+      <div class="stop"><div class="dot">🛩️</div><small>飞越德雷克 2h</small></div><span class="arrow">🚢</span>
+      <div class="stop"><div class="dot">🐧</div><small>金斯乔治岛登船</small></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pc pro"><h4>✓ 优点</h4><ul>
+        <li>省去约2天海上颠簸，几乎不晕船</li>
+        <li>2小时飞越德雷克，行程更紧凑</li>
+        <li>更适合年长者与家庭出游</li>
+        <li>整体体验更轻松舒适</li></ul></div>
+      <div class="pc con"><h4>! 缺点</h4><ul>
+        <li>整体成本高出同线路船趟约10–20%</li>
+        <li>单程飞机约 USD 800–1500</li>
+        <li>蓬塔阿雷纳斯天气差时航班易滞留</li>
+        <li>需预留1–2天缓冲应对航班延误</li></ul></div>
+    </div>
+    <div class="fit">👥 <b>适合人群：</b>晕船严重或时间紧张者，尤其是年长者和家庭；预算充足、愿意花钱换舒适的旅客。</div>
+  </div>
+
+  <div class="route-panel" data-r="C">
+    <div class="map-line">
+      <div class="stop"><div class="dot">🏠</div><small>温哥华</small></div><span class="arrow">✈️</span>
+      <div class="stop"><div class="dot">🇨🇱</div><small>圣地亚哥</small></div><span class="arrow">🚢</span>
+      <div class="stop"><div class="dot">🦅</div><small>福克兰群岛</small></div><span class="arrow">🚢</span>
+      <div class="stop"><div class="dot">👑</div><small>南乔治亚·国王企鹅</small></div><span class="arrow">🚢</span>
+      <div class="stop"><div class="dot">🐋</div><small>南极半岛</small></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pc pro"><h4>✓ 优点</h4><ul>
+        <li>南乔治亚百万计国王企鹅，极致野生动物体验</li>
+        <li>福克兰群岛海鸟、信天翁丰富</li>
+        <li>历史遗迹 + 生态多样性</li>
+        <li>摄影爱好者的天堂</li></ul></div>
+      <div class="pc con"><h4>! 缺点</h4><ul>
+        <li>耗时最长（17–24天），体力消耗大</li>
+        <li>成本极高（CAD 45,000–60,000+）</li>
+        <li>海上天候风险累积</li>
+        <li>首次赴南极可能过于冗长</li></ul></div>
+    </div>
+    <div class="fit">👥 <b>适合人群：</b>资深极地摄影师、野生动物迷、有较长假期和高预算的深度探险者。不推荐带儿童或行动不便者。</div>
+  </div>
+</section>
+
+<!-- MONTHS -->
+<section class="block" id="months" style="background:linear-gradient(180deg,#fff,var(--ice));border-radius:30px;">
+  <div class="sec-h"><span class="ic">📅</span><h2>最佳旅行月份</h2></div>
+  <p class="sec-sub">南极旅游季 11月–次年3月。点击月份查看天气、动物与价格的综合评分。</p>
+
+  <div class="month-row" id="monthRow"></div>
+  <div class="month-card" id="monthCard"></div>
+</section>
+
+<!-- SHIP CLASS -->
+<section class="block" id="ship">
+  <div class="sec-h"><span class="ic">🚢</span><h2>船舶分级与抗冰能力</h2></div>
+  <p class="sec-sub">载客量决定你每天真正的上岸时间，冰级决定航线自由度。看懂这两张表，选船不踩坑。</p>
+
+  <h3 style="font-size:18px;color:var(--deep);margin:6px 0 10px">① IAATO 载客分类（一次登陆点最多 100 人）</h3>
+  <div class="budget-wrap" style="margin-bottom:24px">
+    <table>
+      <thead><tr><th>类别</th><th>载客量</th><th>登陆权限与体验</th></tr></thead>
+      <tbody>
+        <tr><td><b>C1 传统探险船</b></td><td class="amt" style="text-align:left">13–200 人</td><td>绝大多数地点可登陆。&lt;100 人可全员同时上岸（零等待）；200 人需分两批轮换。</td></tr>
+        <tr><td><b>C2 中型探险船</b></td><td class="amt" style="text-align:left">201–500 人</td><td>可登陆但限制多、分批次频繁，每人每天离船时间被压缩。</td></tr>
+        <tr><td><b>CR 大型巡游</b></td><td class="amt" style="text-align:left">500+ 人</td><td><b>绝对禁止登陆</b>，仅能海上观景驶过。</td></tr>
+        <tr><td><b>YA 帆船/游艇</b></td><td class="amt" style="text-align:left">≤12 人</td><td>灵活度极高，但受天气海况影响极大。</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="fit" style="margin-bottom:24px">💡 许多新船把载客量定在 <b>约 130 人</b>：扣除约 30 名参加皮划艇/潜水（不计入登陆名额）的乘客，剩下 100 人恰好可一次性全员登陆，效率最大化。</div>
+
+  <h3 style="font-size:18px;color:var(--deep);margin:6px 0 10px">② 极地冰级 Polar Class（数字越小越强）</h3>
+  <div class="budget-wrap" style="margin-bottom:18px">
+    <table>
+      <thead><tr><th>冰级</th><th>传统等级</th><th>适航能力</th></tr></thead>
+      <tbody>
+        <tr><td><b>PC2</b></td><td>—</td><td>全年适航中等厚度多年冰。<b>庞洛夏古号</b>是全球唯一 PC2 客运破冰船。</td></tr>
+        <tr><td><b>PC5</b></td><td>—</td><td>全年适航含旧冰的一年冰区，初夏即可深入威德尔海（如 Nat Geo Endurance/Resolution）。</td></tr>
+        <tr><td><b>PC6</b></td><td>1A Super</td><td>夏秋季适航，<b>多数常规探险船</b>（Silver Endeavour、Seaventure 等），遇密集浮冰需绕行。</td></tr>
+        <tr><td><b>PC7</b></td><td>1A</td><td>夏秋季适航薄一年冰，入门级抗冰。</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="fit">🌊 <b>X-Bow 倒置船艏：</b>向下倾斜的尖船艏直接"穿透"波浪而非砸向水面，大幅缓解纵摇、降低晕船与噪音，恶劣海况下还能保速省油。Aurora 的 Greg Mortimer、Sylvia Earle、Douglas Mawson 均采用，把德雷克海峡的颠簸变成平稳观景。</div>
+</section>
+
+<!-- CRUISE -->
+<section class="block" id="cruise" style="background:linear-gradient(180deg,#fff,var(--ice));border-radius:30px;">
+  <div class="sec-h"><span class="ic">🏷️</span><h2>主流运营商品牌矩阵</h2></div>
+  <p class="sec-sub">按运营哲学分三类：硬核探险派、超奢华派、高性价比与公民科学派。</p>
+
+  <h3 style="font-size:18px;color:var(--deep);margin:6px 0 12px">🧗 探险专业型 · 效率与硬核</h3>
+  <div class="grid" style="margin-bottom:22px">
+    <div class="ccard"><div class="top">🚁</div><h4>Quark 夸克</h4><div class="price">高端探险 · 行业先驱</div><p>旗舰 Ultramarine <b>独家两架双引擎直升机</b>，拓展空中冰盖降落。控制百人单批登陆，赠防寒冲锋衣、租靴。</p></div>
+    <div class="ccard"><div class="top">🏕️</div><h4>Oceanwide 海洋宽阔</h4><div class="price">"大本营"纯探险</div><p>Hondius/Ortelius/Plancius。免费露营、雪鞋徒步、皮划艇、初级登山。年轻体力派首选，威德尔海南行纪录保持者。</p></div>
+    <div class="ccard"><div class="top">🌀</div><h4>Aurora 极光</h4><div class="price">X-Bow 实战派 · ~130人</div><p>Greg Mortimer/Sylvia Earle/Douglas Mawson。减摇舒适 + 高阶活动（潜水、高阶皮划艇），航线随冰况灵活。</p></div>
+  </div>
+
+  <h3 style="font-size:18px;color:var(--deep);margin:6px 0 12px">💎 超奢华探险型 · 极致享受</h3>
+  <div class="grid" style="margin-bottom:22px">
+    <div class="ccard"><div class="top">🥂</div><h4>Silversea 银海</h4><div class="price">全包 · 白手套管家</div><p>Silver Endeavour/Cloud/Wind。无限香槟鱼子酱、含全部小费、智利直飞包机，彻底消除隐形消费与晕船。</p></div>
+    <div class="ccard"><div class="top">🇫🇷</div><h4>Ponant 庞洛</h4><div class="price">法式优雅 · 含 PC2 夏古号</div><p>游艇式船型 + 米其林餐饮。夏古号 LNG 混动破冰，深入极厚冰层开辟新航路。</p></div>
+    <div class="ccard"><div class="top">🚁🤿</div><h4>Scenic 星凝</h4><div class="price">六星 · 海陆空三维</div><p>Scenic Eclipse I/II 各配 <b>两架直升机 + 一艘潜水艇</b>，潜入数百米深海，且不占登陆名额。</p></div>
+    <div class="ccard"><div class="top">🍽️</div><h4>Seabourn</h4><div class="price">豪华邮轮系探险线</div><p>风格介于 Silversea 与 Ponant 之间：舒适、餐饮、服务强，同时提供 Zodiac、登陆与探险队讲解。比 Quark 舒适，探险氛围略弱。</p></div>
+    <div class="ccard"><div class="top">🧭</div><h4>Viking Expeditions</h4><div class="price">成熟标准化 · 北美友好</div><p>流程清晰、设施稳定、不确定性少，对北美客人友好。船偏大，登陆节奏不如 100–130 人小船灵活。适合年龄稍大、求稳的首次旅客。</p></div>
+  </div>
+
+  <h3 style="font-size:18px;color:var(--deep);margin:6px 0 12px">🔬 高性价比与公民科学型</h3>
+  <div class="grid">
+    <div class="ccard"><span class="ppl">~500人</span><div class="top">🛳️</div><h4>HX 海达路德</h4><div class="price">混动大船 · 单价最低</div><p>Roald Amundsen/Fridtjof Nansen。大型观景酒廊、无边泳池、科学中心。登陆频次受限，但平稳、科普强、预算友好。</p></div>
+    <div class="ccard"><div class="top">🧪</div><h4>Polar Latitudes / Albatros (PLX)</h4><div class="price">高性价比 · 科研氛围</div><p>Seaventure/Ocean Victory，设公民科学实验室，可参与浮游生物采样、云观测并上传全球气候数据库。</p></div>
+    <div class="ccard"><span class="ppl">148人</span><div class="top">📸</div><h4>Lindblad / Nat Geo</h4><div class="price">USD 15k–25k</div><p>与国家地理合作，1966 年起开展南极旅行的老牌先驱。自然学家、摄影师、地质/气候专家随队，教育与摄影深度突出，适合带孩子学习。</p></div>
+    <div class="ccard"><span class="ppl">+飞机</span><div class="top">🛩️</div><h4>Antarctica21</h4><div class="price">Fly-Cruise 鼻祖</div><p>从智利蓬塔阿雷纳斯飞越德雷克抵乔治王岛再登船，省去 4 天颠簸。应急预案成熟（改签、巴塔哥尼亚陆地观光、退款保障）。</p></div>
+    <div class="ccard"><div class="top">🎒</div><h4>G Adventures / Intrepid</h4><div class="price">相对亲民</div><p>偏 adventure travel，价格低于顶级奢华。船与服务朴素，体验取决于租用船只。适合年轻、预算敏感、独行旅客。</p></div>
+  </div>
+</section>
+
+<!-- CHOOSE -->
+<section class="block" id="choose">
+  <div class="sec-h"><span class="ic">🎯</span><h2>按需求选船</h2></div>
+  <p class="sec-sub">南极看重的不是品牌名，而是船小（100–200 人登陆更优）、航线长度、配置（冰级/直升机/皮划艇）与你要探险还是享受。下面按需求分层。</p>
+  <div class="grid">
+    <div class="ccard"><div class="top">🥇</div><h4>第一次去 · 最稳妥</h4><div class="price">Aurora · Quark · Lindblad · Silversea</div><p>Aurora/Quark 偏探险、Silversea 偏舒适、Lindblad 偏自然教育与摄影。平衡度高。</p></div>
+    <div class="ccard"><div class="top">🧗</div><h4>最强探险体验</h4><div class="price">Quark · Oceanwide · Aurora · Lindblad</div><p>Quark 商业最成熟，Oceanwide 最硬核，Aurora 船最新，Lindblad 讲解最强。</p></div>
+    <div class="ccard"><div class="top">💎</div><h4>最舒服最奢华</h4><div class="price">Silversea · Scenic · Ponant · Seabourn</div><p>Silversea 经典豪华全包；Scenic 六星+直升机潜艇；Ponant 法式高端；Seabourn 豪华邮轮系探险。</p></div>
+    <div class="ccard"><div class="top">🤢</div><h4>怕晕船 / 时间有限</h4><div class="price">Antarctica21 Fly-Cruise</div><p>飞越德雷克省 4 天，或看 Silversea/Quark/Aurora 是否有 fly-cruise 产品。</p></div>
+    <div class="ccard"><div class="top">👨‍👩‍👧</div><h4>带家人 / 孩子</h4><div class="price">Silversea · Lindblad · Aurora · Ponant</div><p>Silversea 舒适、Lindblad 教育强、Aurora 小船体验好、Ponant 服务精致。注意活动对年龄/体能有要求。</p></div>
+    <div class="ccard"><span class="ppl">温哥华出发首选</span><div class="top">⭐</div><h4>重点比较这 4 艘</h4><div class="price">实战短名单</div><p>Aurora <b>Greg Mortimer / Sylvia Earle</b>、Quark <b>Ultramarine</b>、Silversea <b>Silver Endeavour</b>、Ponant <b>Le Commandant Charcot</b>。</p></div>
+  </div>
+
+  <h3 style="font-size:18px;color:var(--deep);margin:24px 0 10px">💰 价格大致分层</h3>
+  <div class="budget-wrap">
+    <table>
+      <thead><tr><th>类型</th><th>代表公司</th><th>预算感觉</th></tr></thead>
+      <tbody>
+        <tr><td>高性价比探险</td><td>G Adventures · Intrepid · 部分 HX</td><td class="amt" style="text-align:left">相对较低</td></tr>
+        <tr><td>硬核专业探险</td><td>Oceanwide · Quark · Aurora</td><td class="amt" style="text-align:left">中高</td></tr>
+        <tr><td>教育摄影深度</td><td>Lindblad / National Geographic</td><td class="amt" style="text-align:left">高</td></tr>
+        <tr><td>奢华探险</td><td>Silversea · Ponant · Seabourn</td><td class="amt" style="text-align:left">很高</td></tr>
+        <tr><td>超奢华特殊体验</td><td>Scenic · Ponant 夏古号</td><td class="amt" style="text-align:left">顶级</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="fit" style="margin-top:16px">📌 别只算船票：还有温哥华往返南美机票、布宜诺斯艾利斯/圣地亚哥转机、Ushuaia/Punta Arenas 酒店、保险、装备、活动附加费、小费、单房差。</div>
+</section>
+
+<!-- BUDGET -->
+<section class="block" id="budget" style="background:linear-gradient(180deg,#fff,var(--ice));border-radius:30px;">
+  <div class="sec-h"><span class="ic">💵</span><h2>预算估算</h2></div>
+  <p class="sec-sub">从温哥华出发，2026价格参考（1 CAD ≈ 0.70 USD）。点击切换旅行风格查看明细。</p>
+
+  <div class="style-row" id="styleRow"></div>
+  <div class="budget-wrap">
+    <table>
+      <thead><tr><th>费用项</th><th style="text-align:right">金额 (CAD / 人)</th></tr></thead>
+      <tbody id="budgetBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ITINERARY -->
+<section class="block" id="itin">
+  <div class="sec-h"><span class="ic">🗺️</span><h2>推荐行程模板</h2></div>
+  <p class="sec-sub">三套现成方案，按时间、预算与体力选择。</p>
+  <div class="itin">
+    <div class="icard c1">
+      <div class="hd"><div class="days">🗓️ 约13天</div><h4>① 南极经典初体验</h4><div class="bud">💰 CAD 25,000–35,000</div></div>
+      <div class="bd">
+        <div class="who">👤 首次赴南极、身体健康、可适应海上航行者</div>
+        <ul class="tl">
+          <li>Day 1–2 温哥华飞往布宜诺斯艾利斯</li>
+          <li>Day 3 抵乌斯怀亚登船</li>
+          <li>Day 4–5 穿越德雷克海峡</li>
+          <li>Day 6–12 南极半岛登陆观光</li>
+          <li>Day 13–14 返航回温哥华</li>
+        </ul>
+      </div>
+    </div>
+    <div class="icard c2">
+      <div class="hd"><div class="days">🗓️ 约11天</div><h4>② Fly-Cruise 快捷</h4><div class="bud">💰 CAD 30,000–40,000</div></div>
+      <div class="bd">
+        <div class="who">👤 怕晕船、时间紧张、年长者或家庭出游</div>
+        <ul class="tl">
+          <li>Day 1–3 飞行 + 圣地亚哥/蓬塔阿雷纳斯过夜</li>
+          <li>Day 4 飞越德雷克抵南极</li>
+          <li>Day 5–13 小型探险船航程</li>
+          <li>Day 14 飞返（天气好可同日转机）</li>
+          <li>⚠️ 预留"备用日"应对滞留</li>
+        </ul>
+      </div>
+    </div>
+    <div class="icard c3">
+      <div class="hd"><div class="days">🗓️ 约21天</div><h4>③ 南极+南乔治亚深度</h4><div class="bud">💰 CAD 45,000–60,000</div></div>
+      <div class="bd">
+        <div class="who">👤 资深极地摄影师、野生动物迷、高预算者</div>
+        <ul class="tl">
+          <li>温哥华→圣地亚哥→乌斯怀亚登船</li>
+          <li>福克兰群岛巡航</li>
+          <li>南乔治亚岛深度游（国王企鹅）</li>
+          <li>南极半岛 + 金斯乔治岛飞回</li>
+          <li>🐋 11月底–1月企鹅繁殖 / 2月观鲸</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIGHTS -->
+<section class="block" id="sights">
+  <div class="sec-h"><span class="ic">🧊</span><h2>标志性登陆点</h2></div>
+  <p class="sec-sub">浮冰与天气决定每日实际路线（"行程表仅是美好愿望"），但以下地标是经典航线的视觉核心。点击展开了解。</p>
+
+  <details class="acc" open><summary><span class="lvl mid">冰与火</span> 欺骗岛 Deception Island <span class="chev">▾</span></summary>
+    <div class="body">罕见的可驶入内部的活火山破火山口。穿过狭窄的"海神之风"入口即抵平静的<b>捕鲸者湾</b>，黑色火山灰沙滩上散落 20 世纪初挪威捕鲸站的锈蚀遗迹。浅层地热升腾白色蒸汽，但海水仍接近冰点，<b>并非温泉</b>。外侧百利角是数以万计帽带企鹅的聚居地。</div></details>
+
+  <details class="acc"><summary><span class="lvl low">摄影圣地</span> 雷麦瑞海峡 Lemaire Channel <span class="chev">▾</span></summary>
+    <div class="body">人称"柯达海峡"。全长约 11 公里、最窄处仅约 1600 米的深水航道，两侧近乎垂直的玄武岩崖壁与悬冰川倒映在镜面般的海面上。常被巨型平顶冰山阻塞，能顺利穿越即是一种幸运。</div></details>
+
+  <details class="acc"><summary><span class="lvl low">大陆登陆</span> 天堂湾 Paradise Bay <span class="chev">▾</span></summary>
+    <div class="body">被巨大潮汐冰川环绕，是冲锋舟巡游最经典的水域之一，幽蓝冰雕令人屏息。更是多数游轮实现<b>南极大陆实质性登陆</b>的核心节点。磷虾丰富，金图企鹅跳水、豹海豹潜伏、座头鲸出没的高频幸运区。</div></details>
+
+  <details class="acc"><summary><span class="lvl mid">人文</span> 洛克罗伊港 Port Lockroy <span class="chev">▾</span></summary>
+    <div class="body">二战"塔巴林行动"秘密基地，今由英国南极遗产信托修复为博物馆，设有<b>全球最南端邮局</b>，可寄明信片盖南极邮戳（收入全额用于历史建筑维护）。建筑已被金图企鹅群落包围，参观须与企鹅保持 5 米以上距离。</div></details>
+
+  <details class="acc"><summary><span class="lvl mid">冰川崩塌</span> 尼克港 Neko Harbour <span class="chev">▾</span></summary>
+    <div class="body">大陆登陆点，登陆海滩后方矗立着极不稳定的活动冰川，<b>崩塌（calving）频繁且可引发微型海啸</b>。务必远离水线、勿背对大海。可沿红绿旗安全线攀至高处俯瞰冰川裂隙与约 250 对金图企鹅的繁殖营地。</div></details>
+
+  <details class="acc"><summary><span class="lvl low">古火山</span> 布朗断崖 Brown Bluff <span class="chev">▾</span></summary>
+    <div class="body">南极湾边缘、700 多米高的锈褐色平顶火山遗迹，崖下乱石滩聚集数以万计的<b>阿德利企鹅</b>及数百只金图企鹅，是纪录片级的拍摄素材。罕见的雪海燕在崖缝筑巢，观鸟者的宝地。</div></details>
+
+  <details class="acc"><summary><span class="lvl low">徒步</span> 丹科岛 Danco Island <span class="chev">▾</span></summary>
+    <div class="body">埃雷拉水道中的冰雪小岛，留有英国南极调查局"基地 O"的遗迹，如今斜坡被庞大金图企鹅群落接管。可在陡峭雪坡上完成一次极地徒步，俯瞰水道全景。</div></details>
+
+  <details class="acc"><summary><span class="lvl low">帽带企鹅</span> 半月岛 Half Moon Island <span class="chev">▾</span></summary>
+    <div class="body">完美新月形岛屿，是帽带企鹅（斑纹企鹅）重要繁育地——头下黑纹宛如警用头盔。白雪与黑色火山岩交界处可近距离观察喧闹企鹅群，背景是远方深蓝冰川。</div></details>
+
+  <details class="acc"><summary><span class="lvl low">企鹅高速路</span> 库佛维尔岛 Cuverville Island <span class="chev">▾</span></summary>
+    <div class="body">拥有南极半岛已知最大的金图企鹅栖息地。斜坡被踩出纵横交错的"企鹅高速公路"，数千只企鹅排队上下通勤，蔚为壮观。</div></details>
+
+  <details class="acc"><summary><span class="lvl low">三企鹅同框</span> 彼得曼岛 Petermann Island <span class="chev">▾</span></summary>
+    <div class="body">勒梅尔海峡以南、仅 2 公里长的低岛，是半岛上<b>唯一能同时看到金图、阿德利、帽带三种企鹅毗邻筑巢</b>的特殊生态混合区，绝佳的生态演化观测点。</div></details>
+
+  <details class="acc"><summary><span class="lvl mid">鲸鱼狂热</span> 杰拉许海峡 / 威尔米娜湾 <span class="chev">▾</span></summary>
+    <div class="body">寒流上涌滋养海量磷虾，化作南大洋最大的鲸鱼食堂。杰拉许海峡是长须鲸、小须鲸、虎鲸的高频巡弋区；威尔米娜湾因座头鲸密集被戏称"鲸鱼狂热湾"，海面常同时喷出数十道水柱，配上幽蓝巨型冰山宛如外星幻境。</div></details>
+
+  <details class="acc"><summary><span class="lvl high">史诗圣殿</span> 格里特维肯 · 南乔治亚岛 <span class="chev">▾</span></summary>
+    <div class="body">南乔治亚岛的历史心脏，保留最完整的废弃捕鲸站，也是探险家<b>沙克尔顿爵士长眠之地</b>。1916 年"坚忍号"被浮冰挤碎后，他率队完成 1300 公里救生艇航行并徒步翻越冰川抵此求援，成就极地生存史最高奇迹。登陆者多到墓前敬一杯威士忌。锈蚀厂房如今被海豹与企鹅重新占领，自然战胜工业的诗意轮回。<br><br>📍 南乔治亚是"南大洋的塞伦盖蒂"——圣安德鲁斯湾数十万只王企鹅密布，南象海豹的领地争夺主战场（见路线 C 三岛大环线）。</div></details>
+</section>
+
+<!-- ACTIVITIES -->
+<section class="block" id="acts" style="background:linear-gradient(180deg,#fff,var(--ice));border-radius:30px;">
+  <div class="sec-h"><span class="ic">🛶</span><h2>极地特色活动</h2></div>
+  <p class="sec-sub">由专业向导主导，让你从多维度深入冰冷的三维生态空间。</p>
+  <div class="grid">
+    <div class="ccard"><div class="top">🛥️</div><h4>冲锋舟巡游 Zodiac</h4><div class="price">几乎每日 · 含在船票</div><p>重型充气快艇，多气室设计安全冗余高。可贴近蓝冰裂缝、关机静听冰川轰鸣与鲸鱼喷气，并直接抢滩登陆无码头的荒野海滩。极低视点带来强烈的冰海立体感。</p></div>
+    <div class="ccard"><span class="ppl">需预订</span><div class="top">🚣</div><h4>极地皮划艇 Kayaking</h4><div class="price">高额外费用 · 名额稀缺</div><p>追求极致静谧的硬核选项，常需提前数月预订，对风力、洋流、海冰能见度要求苛刻。需穿湿衣、专属向导与救援快艇全程护航，亲手划桨穿梭于冰雕之间。</p></div>
+    <div class="ccard"><div class="top">🥶</div><h4>极地跳水 Polar Plunge</h4><div class="price">自愿 · 仪式感拉满</div><p>从母船侧门或冲锋舟跃入 0℃ 上下的海水。强制安全束带、随船医生监督、救援快艇待命。出水即有热毛巾与热巧克力，附赠纪念证书——社交圈最具谈资的终极壮举。</p></div>
+    <div class="ccard"><span class="ppl">需预订</span><div class="top">⛺</div><h4>极地露营 Ice Camping</h4><div class="price">约 USD 165–400</div><p>极昼余辉下离船上岸，挖防风雪坑、钻进极地睡袋与冰原相拥而眠。无光污染、无噪音，伴着冰川崩塌的低鸣获得极致孤独感。名额极少，须订船票时锁定。</p></div>
+    <div class="ccard"><div class="top">🚁</div><h4>直升机观光 Helicopter</h4><div class="price">含于奢华游轮</div><p>Scenic、Quark Ultramarine 等旗舰配备。空中俯瞰冰川峡湾纹理，并将游客投放至冲锋舟无法抵达的内陆冰盖腹地。不计入登陆名额。</p></div>
+    <div class="ccard"><div class="top">🤿</div><h4>极地深潜器 Submarine</h4><div class="price">含于奢华游轮</div><p>Scenic Eclipse 定制潜艇下潜数百米，探秘色彩斑斓的极地深海底层——巨型海绵、海星与隐秘底栖生态，纪录片难得一见。</p></div>
+    <div class="ccard"><div class="top">🔬</div><h4>公民科学 Citizen Science</h4><div class="price">通常免费包含</div><p>参与真实科研：浮游生物打捞、云层观测、数据上传全球气候数据库。HX、PLX 等尤其侧重，提升旅行的学术深度。</p></div>
+  </div>
+  <div class="fit" style="margin-top:18px">🌱 <b>极地环保科技：</b>前沿船队正加速脱碳——Aurora 的 Sylvia Earle 实测 HVO 生物燃料（较重油减排温室气体/硫氧化物达 90%）；HX 与庞洛用 LNG 混动 + 大电池在敏感水域纯电静音航行；<b>虚拟锚泊（动态定位）</b>无需抛锚即可定位，避免铁锚摧毁数百年海绵礁；洗衣排水加装微塑料滤网拦截 99% 纤维碎屑。</div>
+</section>
+
+<!-- PACKING -->
+<section class="block" id="pack" style="background:linear-gradient(180deg,#fff,var(--ice));border-radius:30px;">
+  <div class="sec-h"><span class="ic">🎒</span><h2>装备清单</h2></div>
+  <p class="sec-sub">勾选打包进度。标 <span class="pv">船上提供</span> 的多可借用，无需自带。</p>
+  <div class="pack-wrap">
+    <div class="pack-head">
+      <div class="pack-prog">已打包 <b id="packCount">0</b> / <span id="packTotal">0</span> 件</div>
+      <button id="packReset" style="border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 16px;cursor:pointer;color:var(--muted);font-size:13px">重置</button>
+    </div>
+    <div class="pgrid" id="packGrid"></div>
+  </div>
+</section>
+
+<!-- RISK -->
+<section class="block" id="risk">
+  <div class="sec-h"><span class="ic">⚠️</span><h2>健康、安全与风险</h2></div>
+  <p class="sec-sub">展开了解每项风险及应对建议。</p>
+
+  <details class="acc" open><summary><span class="lvl high">高</span> 德雷克海峡晕船 <span class="chev">▾</span></summary>
+    <div class="body">世界著名的狂风巨浪地带，任意月份都可能遇到"德雷克海摇"，航行约48小时可能十分颠簸。建议提前服用晕船药/贴片，选择船舱中下层靠近船身的舱位减震。</div></details>
+
+  <details class="acc"><summary><span class="lvl mid">中</span> 天气取消登陆 <span class="chev">▾</span></summary>
+    <div class="body">南极天气多变，阵风暴风雪会随时调整航线与登陆次序。每日晨会后依据气象判断能否登陆。保持灵活心态，备好船上看风景或听讲座。</div></details>
+
+  <details class="acc"><summary><span class="lvl mid">中</span> Fly-Cruise 航班风险 <span class="chev">▾</span></summary>
+    <div class="body">飞越德雷克需在蓬塔阿雷纳斯等待，遇浓雾/高风雪极易延误或取消。行程末尾务必留缓冲，不要紧贴后续计划。</div></details>
+
+  <details class="acc"><summary><span class="lvl high">高</span> 医疗与撤离成本 <span class="chev">▾</span></summary>
+    <div class="body">邮轮仅有基本医疗室。冰上直升机撤离每小时 USD 1万以上，紧急撤离总费用可达数万美元。<b>强制购买含极地医疗撤离（≥USD 10万）的保险</b>，慢性病须备足药品并稳定监测。</div></details>
+
+  <details class="acc"><summary><span class="lvl low">低</span> 年龄与同行人 <span class="chev">▾</span></summary>
+    <div class="body">健康成人(18–70岁)均可参与，需能独立上下Zodiac、行走冰雪。65岁以上建议先体检。儿童一般8岁起（个别3岁），但<b>不推荐8岁以下</b>。老人身体健康即可，无绝对年龄限制。</div></details>
+
+  <details class="acc"><summary><span class="lvl low">低</span> 签证与入境（2025–26 重大利好）<span class="chev">▾</span></summary>
+    <div class="body">加拿大护照赴阿根廷、智利<b>免签</b>。经美国转机需有效美签或 ESTA。南极本身无需签证。<br><br>
+    <b>持中国护照者（含加拿大 PR）现已大幅放宽 —— 见下方专节"中国护照免签新政"。</b></div></details>
+</section>
+
+<!-- VISA NEW POLICY -->
+<section class="block" id="visa">
+  <div class="sec-h"><span class="ic">🛂</span><h2>中国护照免签新政（2025–2026）</h2></div>
+  <p class="sec-sub">针对从北美出发、持中国护照的旅客，阿根廷与智利近期密集出台颠覆性免签政策，南美签证壁垒已基本瓦解。</p>
+
+  <div class="grid">
+    <div class="ccard"><span class="ppl">🇦🇷 乌斯怀亚线</span><div class="top">🎫</div><h4>持美签即免签</h4><div class="price">第 316/2025 号决议</div><p>2025-07-22 生效：持<b>有效期内美国 B1/B2 签证</b>的中国大陆公民赴阿根廷旅游/商务<b>完全免签</b>，并废除原 AVE 电子授权流程。凭护照 + 美签直接通关，每次停留最多 30 天，延误可依法申请延期。</p></div>
+    <div class="ccard"><span class="ppl">🇦🇷 乌斯怀亚线</span><div class="top">🍁</div><h4>绿卡 / 枫叶卡免签</h4><div class="price">2026-01-14 起生效</div><p>持<b>美国绿卡</b>或<b>加拿大 PR（枫叶卡）</b>的中国籍旅客，凭中国护照 + 居留卡原件即可作为"标准游客"免签入境阿根廷（常规 30 天，部分口岸可至 90 天），无需任何事前签证或 AVE。</p></div>
+    <div class="ccard"><span class="ppl">🇨🇱 蓬塔阿雷纳斯线</span><div class="top">✅</div><h4>智利单方面免签</h4><div class="price">最长 90 天</div><p>持<b>有效期 6 个月以上的美国签证</b>（B1/B2、F1、H1B 等）<b>或加拿大签证</b>的中国公民可免签入境智利，停留最长 90 天。经圣地亚哥转机赴蓬塔阿雷纳斯登船手续顺畅如国内旅行。</p></div>
+  </div>
+  <div class="fit" style="margin-top:18px">💡 <b>结论：</b>持有效美签，或手握加拿大/美国永久居留权的中国籍旅客，现可放心预订温哥华经北美中转飞往布宜诺斯艾利斯或圣地亚哥的机票，把精力完全聚焦在体能、装备与摄影器材准备上。<b>出行前请再次核实最新法规原文，政策细节以边检解释为准。</b></div>
+</section>
+
+<!-- FINAL -->
+<section class="block" id="final">
+  <div class="final">
+    <h2>⭐ 最终建议</h2>
+    <p style="opacity:.92;max-width:700px">第一次去南极且预算允许，推荐 <b>Fly-Cruise 飞越德雷克</b> 路线，最大限度减少海上颠簸；预算有限则选经典乌斯怀亚航线。最佳出发为 <b>1月中旬</b>。</p>
+    <div class="grid5">
+      <div class="fkey"><div class="k">🧭 路线</div><div class="v">Fly-Cruise 优先</div></div>
+      <div class="fkey"><div class="k">📅 月份</div><div class="v">1月中旬</div></div>
+      <div class="fkey"><div class="k">🗓️ 天数</div><div class="v">至少12天</div></div>
+      <div class="fkey"><div class="k">💰 预算</div><div class="v">≈30,000 CAD</div></div>
+      <div class="fkey"><div class="k">🛡️ 保险</div><div class="v">含极地撤离</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  本页面基于 travel.md 攻略整理 · 信息含 IAATO 规则与加拿大政府旅行建议 · 实际请按航线与汇率核实<br>
+  🐧 祝启程南极之旅精彩难忘
+</footer>
+
+<script>
+/* snow */
+(function(){const s=document.getElementById('snow');for(let i=0;i<28;i++){const f=document.createElement('span');f.textContent='❄';f.style.left=Math.random()*100+'%';f.style.fontSize=(8+Math.random()*14)+'px';f.style.animationDuration=(6+Math.random()*9)+'s';f.style.animationDelay=(Math.random()*8)+'s';s.appendChild(f);}})();
+
+/* route tabs */
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  const r=t.dataset.r;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.r===r));
+  document.querySelectorAll('.route-panel').forEach(p=>p.classList.toggle('active',p.dataset.r===r));
+}));
+
+/* months data */
+const months=[
+  {m:'11月',s:'初季',vibe:'最原始 · 冰山最多',weather:35,wildlife:45,whale:25,price:80,
+   txt:'刚入夏，气温常在冰点以下，冰层刚消退，部分登陆点仍被冰封。景观最原始、降雪多、游客少。企鹅正筑巢求偶，但蛋未孵化；鲸鱼仍在迁徙途中。价格较淡，可遇折扣，但天气更冷更风大、登陆受限。'},
+  {m:'12月',s:'旺季始',vibe:'白昼20h+ · 动物渐活跃',weather:70,wildlife:70,whale:60,price:45,
+   txt:'向盛夏过渡，白昼可达20小时以上，气温回升。企鹅鸟蛋孵化前夕，海豹活跃，鲸鱼开始大量抵达觅食。气候较稳、风浪减弱，适合初次游客。圣诞旺季客人多、价格上涨。'},
+  {m:'1月',s:'全能王',vibe:'综合最佳 · 最易登陆',weather:95,wildlife:95,whale:75,price:25,
+   txt:'公认"全能之王"。24小时极昼、气温最高、天气最稳、全年最易登陆。企鹅宝宝满地乱窜，亲鸟喂养场面丰富；鲸鱼继续增加，水域平静适合皮划艇。缺点是旺季高峰、价格最高、航线满员。'},
+  {m:'2月',s:'观鲸月',vibe:'观鲸最佳 · 光线柔和',weather:75,wildlife:80,whale:95,price:50,
+   txt:'南极夏末，天气仍温暖。磷虾量大增，座头鲸、露脊鲸、抹香鲸在冰边活动，<b>观鲸最佳</b>。企鹅幼鸟换羽，光线柔和适合摄影。冰雪融化多、登陆点泥泞，气温略降。价格略有下降，摄影高性价比月。'},
+  {m:'3月',s:'季末',vibe:'性价比最高 · 鲸群最多',weather:55,wildlife:60,whale:90,price:90,
+   txt:'持续观鲸好时机，鲸群接近最高。企鹅幼崽成长为幼年企鹅。极昼结束、白天缩短(12–16h)，部分老船降价，<b>价格最有优势</b>。但秋季临近天气转冷，晚期登陆点寒冷多风浪。预算有限且能容忍较差气象者首选。'}
+];
+const mRow=document.getElementById('monthRow'),mCard=document.getElementById('monthCard');
+months.forEach((mo,i)=>{const b=document.createElement('div');b.className='mbtn'+(i===2?' active':'');
+  b.innerHTML=`<div class="m">${mo.m}</div><div class="s">${mo.s}</div>`;
+  b.addEventListener('click',()=>{document.querySelectorAll('.mbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderMonth(i);});
+  mRow.appendChild(b);});
+function bar(label,val){return `<div class="rate"><label><span>${label}</span><span>${val}%</span></label><div class="bar"><i style="width:${val}%"></i></div></div>`;}
+function renderMonth(i){const mo=months[i];
+  mCard.innerHTML=`<h3>${mo.m} · ${mo.s}</h3><span class="vibe">${mo.vibe}</span>
+  <div class="ratings">${bar('🌤️ 天气稳定',mo.weather)}${bar('🐧 陆地动物',mo.wildlife)}${bar('🐋 观鲸',mo.whale)}${bar('💸 性价比',mo.price)}</div>
+  <p>${mo.txt}</p>`;
+  // re-trigger bar animation
+  mCard.querySelectorAll('.bar i').forEach(el=>{const w=el.style.width;el.style.width='0';requestAnimationFrame(()=>requestAnimationFrame(()=>el.style.width=w));});
+}
+renderMonth(2);
+
+/* budget */
+const styles=['基础型','中端舒适型','高端豪华型','南极+南乔治亚深度型'];
+const budget=[
+  {item:'✈️ 国际机票 (YVR–SCL/EZE)',v:[1200,1300,1300,1300]},
+  {item:'🛫 国内机票 (南美段)',v:[500,500,500,800]},
+  {item:'🚢 邮轮费用',v:[14000,25000,40000,35000]},
+  {item:'🏨 酒店住宿 (南美)',v:[300,500,800,600]},
+  {item:'🛡️ 旅行保险',v:[500,800,1200,1000]},
+  {item:'🧥 极地装备',v:[300,300,300,300]},
+  {item:'💵 小费',v:[350,400,450,500]},
+  {item:'🧰 备用预算 (~10%)',v:[1100,2200,4100,3400]}
+];
+const totals=[18250,30000,49650,43600],usd=[13000,21000,35000,31000];
+const sRow=document.getElementById('styleRow'),bBody=document.getElementById('budgetBody');
+styles.forEach((st,i)=>{const b=document.createElement('div');b.className='sbtn'+(i===1?' active':'');b.textContent=st;
+  b.addEventListener('click',()=>{document.querySelectorAll('.sbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderBudget(i);});
+  sRow.appendChild(b);});
+function fmt(n){return n.toLocaleString('en-US');}
+function renderBudget(i){let rows='';
+  budget.forEach(r=>{rows+=`<tr><td>${r.item}</td><td class="amt">$${fmt(r.v[i])}</td></tr>`;});
+  rows+=`<tr class="total"><td>合计 (近似)</td><td class="amt">CAD $${fmt(totals[i])} <span class="usd">≈ USD $${fmt(usd[i])}</span></td></tr>`;
+  bBody.innerHTML=rows;
+}
+renderBudget(1);
+
+/* packing */
+const packing=[
+  {cat:'🧥 保暖防水',items:[['防水硬壳外套',1],['保暖中层(羽绒/抓绒)',0],['羊毛/合成内衣(多套)',0],['防水冲锋裤',0],['厚羊毛袜(多双)',0]]},
+  {cat:'🧤 配件',items:[['防寒手套×2 + 薄手套',0],['保暖帽(遮耳)',0],['抓绒围脖',0],['偏光墨镜',0],['SPF50+ 防晒霜/唇膏',0]]},
+  {cat:'📸 摄影电子',items:[['长焦镜头 70-200/100-400',0],['备用电池 + 大容量存储卡',0],['防水相机包',0],['充电器 + 移动电源',0],['220V欧式转换插头',0]]},
+  {cat:'💊 药品健康',items:[['晕船药/贴片',0],['感冒/止泻/过敏药',0],['创可贴',0],['保温水瓶',0],['湿纸巾/消毒液',0]]},
+  {cat:'👢 船上提供',items:[['防水橡胶登船靴',1],['三合一派克大衣',1]]}
+];
+const pGrid=document.getElementById('packGrid');let total=0;
+packing.forEach((g,gi)=>{const h=document.createElement('div');h.className='cat';h.textContent=g.cat;pGrid.appendChild(h);
+  g.items.forEach((it,ii)=>{total++;const lab=document.createElement('label');lab.className='pitem';
+    lab.innerHTML=`<input type="checkbox" data-k="${gi}-${ii}"><span>${it[0]}${it[1]?' <span class="pv">船上提供</span>':''}</span>`;
+    pGrid.appendChild(lab);});
+});
+document.getElementById('packTotal').textContent=total;
+function upd(){const n=document.querySelectorAll('#packGrid input:checked').length;
+  document.getElementById('packCount').textContent=n;}
+pGrid.addEventListener('change',e=>{e.target.closest('.pitem').classList.toggle('done',e.target.checked);upd();});
+document.getElementById('packReset').addEventListener('click',()=>{
+  pGrid.querySelectorAll('input').forEach(c=>{c.checked=false;c.closest('.pitem').classList.remove('done');});upd();});
+</script>
+</body>
+</html>

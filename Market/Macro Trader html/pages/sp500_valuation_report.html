@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S&P 500 Macro Valuation · ERP Red Flag · May 29 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F6F7;
+    --bg2: #FFFFFF;
+    --bg3: #F0F1F3;
+    --border: #E5E5E5;
+    --text: #1E1E1E;
+    --muted: #5B5B5B;
+    --navy: #1B3A5C;
+    --navy-dark: #122A45;
+    --red: #C72E0B;
+    --red-light: #E63000;
+    --green: #00936C;
+    --yellow: #D8A000;
+    --orange: #E07B2D;
+    --purple: #7B5EA7;
+    --blue: #2A6CB8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; line-height: 1.55; }
+  body::before { content:''; display:block; height:3px; background:var(--red); position:fixed; top:0; left:0; right:0; z-index:9999; }
+  body { padding-top: 3px; }
+
+  /* ── HEADER ── */
+  .header { background: var(--navy); color:#fff; padding: 28px 40px 24px; box-shadow: 0 2px 6px rgba(0,0,0,.18); }
+  .header-top { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; }
+  .header-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(199,46,11,.22); border:1px solid rgba(255,200,180,.4); border-radius:4px; padding:4px 12px; font-size:11px; color:#FFE0D6; text-transform:uppercase; letter-spacing:.6px; font-weight:600; margin-bottom:10px; }
+  .header-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:#FFB196; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
+  h1 { font-size: 26px; font-weight: 700; letter-spacing:-0.4px; color:#fff; }
+  h1 .accent { color: #FFB196; }
+  .header-meta { color: rgba(255,255,255,.72); font-size:12px; margin-top:6px; }
+  .header-actions { display:flex; gap:8px; align-items:center; }
+  .btn-ghost { background: rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25); color:#fff; padding:7px 14px; border-radius:4px; font-size:12px; cursor:pointer; font-weight:500; transition:background .15s; font-family:inherit; }
+  .btn-ghost:hover { background: rgba(255,255,255,.2); }
+
+  /* ── KPI STRIP ── */
+  .kpi-strip { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px,1fr)); gap:1px; background:var(--border); border-top:1px solid var(--border); }
+  .kpi { background:var(--bg2); padding:18px 22px; }
+  .kpi-label { font-size:10px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin-bottom:6px; font-weight:600; }
+  .kpi-value { font-size:26px; font-weight:700; line-height:1; }
+  .kpi-value.red { color: var(--red); }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.yellow { color: var(--yellow); }
+  .kpi-value.navy { color: var(--navy); }
+  .kpi-sub { font-size:11px; color:var(--muted); margin-top:6px; }
+
+  /* ── TABS ── */
+  .tabs { display:flex; gap:0; border-bottom:1px solid var(--border); padding:0 40px; background:var(--bg2); overflow-x:auto; position:sticky; top:0; z-index:50; box-shadow:0 1px 0 var(--border); }
+  .tab { padding:14px 18px; font-size:13px; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:3px solid transparent; white-space:nowrap; transition:color .15s, border-color .15s; background:none; border-left:none; border-top:none; border-right:none; font-family:inherit; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--red); border-bottom-color: var(--red); }
+
+  /* ── MAIN ── */
+  .main { padding: 30px 40px 60px; max-width:1400px; margin: 0 auto; }
+  .section { display:none; }
+  .section.active { display:block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:translateY(0)} }
+
+  .section-heading { font-size:20px; font-weight:700; margin-bottom:6px; color:var(--text); }
+  .section-sub { font-size:13px; color:var(--muted); margin-bottom:24px; max-width: 900px; }
+
+  /* ── CARDS ── */
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .card { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:22px; }
+  .card-title { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.7px; margin-bottom:14px; }
+  .card h3 { font-size:15px; font-weight:700; margin-bottom:10px; }
+  .card.alert { border-top:3px solid var(--red); }
+  .card.good { border-top:3px solid var(--green); }
+  .card.warn { border-top:3px solid var(--yellow); }
+
+  /* ── TABLE ── */
+  table.dt { width:100%; border-collapse:collapse; }
+  table.dt th { padding:10px 12px; text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); border-bottom:1px solid var(--border); font-weight:700; }
+  table.dt td { padding:12px; border-bottom:1px solid var(--border); font-size:13px; vertical-align:middle; }
+  table.dt tr:last-child td { border-bottom:none; }
+  table.dt td.metric-name { font-weight:600; }
+  table.dt td.right { text-align:right; }
+  table.dt td.num { text-align:right; font-variant-numeric: tabular-nums; }
+  .pill { display:inline-block; padding:3px 9px; border-radius:4px; font-size:11px; font-weight:600; }
+  .pill-bad { background:rgba(199,46,11,.12); color:var(--red); border:1px solid rgba(199,46,11,.28); }
+  .pill-warn { background:rgba(216,160,0,.13); color:var(--yellow); border:1px solid rgba(216,160,0,.3); }
+  .pill-ok { background:rgba(0,147,108,.12); color:var(--green); border:1px solid rgba(0,147,108,.3); }
+  .pill-neutral { background:rgba(91,91,91,.12); color:var(--muted); border:1px solid rgba(91,91,91,.25); }
+  .pill-navy { background:rgba(27,58,92,.12); color:var(--navy); border:1px solid rgba(27,58,92,.3); }
+
+  /* ── INSIGHT BOX ── */
+  .insight { background:#FAFBFC; border:1px solid var(--border); border-left:3px solid var(--red); border-radius:6px; padding:14px 16px; font-size:13px; color:var(--muted); line-height:1.6; margin-top:14px; }
+  .insight.green { border-left-color:var(--green); }
+  .insight.navy { border-left-color:var(--navy); }
+  .insight strong { color: var(--text); }
+
+  /* ── PERCENTILE BAR ── */
+  .pct-row { padding:12px 0; border-bottom:1px solid var(--border); }
+  .pct-row:last-child { border-bottom:none; }
+  .pct-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; font-size:13px; }
+  .pct-head strong { font-weight:700; }
+  .pct-track { height:8px; background:var(--bg3); border-radius:4px; overflow:hidden; position:relative; }
+  .pct-fill { height:100%; border-radius:4px; transition:width .8s ease; background: linear-gradient(90deg, var(--green) 0%, var(--yellow) 50%, var(--red) 90%, var(--red) 100%); }
+  .pct-fill.solid-red { background: var(--red); }
+  .pct-meta { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-top:5px; }
+
+  /* ── PEAK COMPARISON ── */
+  .peak-bar { display:grid; grid-template-columns: 90px 1fr 70px; gap:12px; align-items:center; padding:10px 0; }
+  .peak-label { font-size:12px; font-weight:600; }
+  .peak-label .yr { color:var(--muted); font-weight:500; font-size:11px; display:block; }
+  .peak-track { background:var(--bg3); height:24px; border-radius:4px; position:relative; overflow:hidden; }
+  .peak-fill { height:100%; border-radius:4px; transition:width 1s ease; }
+  .peak-fill.current { background: var(--red); }
+  .peak-fill.dot2000 { background: var(--navy); }
+  .peak-fill.peak2021 { background: var(--orange); }
+  .peak-fill.peak1929 { background: var(--muted); }
+  .peak-val { font-size:13px; font-weight:700; text-align:right; font-variant-numeric: tabular-nums; }
+
+  /* ── ERP CALCULATOR ── */
+  .calc-row { display:grid; grid-template-columns: 180px 1fr 70px; gap:14px; align-items:center; padding:10px 0; }
+  .calc-label { font-size:12px; color:var(--muted); font-weight:500; }
+  .calc-slider { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:3px; background:var(--bg3); outline:none; }
+  .calc-slider::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:var(--red); cursor:pointer; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+  .calc-slider::-moz-range-thumb { width:16px; height:16px; border-radius:50%; background:var(--red); cursor:pointer; border:2px solid #fff; }
+  .calc-output { font-size:13px; font-weight:700; font-variant-numeric:tabular-nums; text-align:right; }
+  .calc-result { background:var(--bg3); border-radius:6px; padding:14px 16px; margin-top:14px; display:flex; justify-content:space-between; align-items:center; }
+  .calc-result-label { font-size:12px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+  .calc-result-val { font-size:24px; font-weight:800; font-variant-numeric:tabular-nums; }
+  .calc-reset { background:none; border:1px solid var(--border); color:var(--muted); padding:5px 12px; border-radius:4px; font-size:11px; cursor:pointer; font-family:inherit; }
+  .calc-reset:hover { border-color:var(--red); color:var(--red); }
+
+  /* ── SCENARIO ── */
+  .scenario-tabs { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .scen-btn { padding:7px 16px; border-radius:4px; border:1px solid var(--border); background:var(--bg2); color:var(--muted); font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .15s; }
+  .scen-btn:hover { border-color:var(--navy); color:var(--navy); }
+  .scen-btn.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .scen-btn.bull.active { background:var(--green); border-color:var(--green); }
+  .scen-btn.bear.active { background:var(--red); border-color:var(--red); }
+
+  /* ── ALLOCATION ── */
+  .alloc-toggle { display:inline-flex; background:var(--bg3); border-radius:6px; padding:3px; gap:0; margin-bottom:16px; }
+  .alloc-toggle button { padding:6px 14px; background:none; border:none; color:var(--muted); font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; border-radius:4px; transition: all .15s; }
+  .alloc-toggle button.active { background:var(--navy); color:#fff; }
+  .alloc-row { display:grid; grid-template-columns: 1fr 110px 130px; gap:14px; align-items:center; padding:14px 0; border-bottom:1px solid var(--border); }
+  .alloc-row:last-child { border-bottom:none; }
+  .alloc-name { font-weight:600; font-size:13px; }
+  .alloc-desc { font-size:11px; color:var(--muted); margin-top:3px; line-height:1.45; }
+  .alloc-bar-wrap { height:18px; background:var(--bg3); border-radius:4px; position:relative; overflow:hidden; }
+  .alloc-bar { height:100%; transition:width .6s ease; }
+  .alloc-bar.UW { background: var(--red); }
+  .alloc-bar.N { background: var(--muted); }
+  .alloc-bar.OW { background: var(--green); }
+  .alloc-stance { font-size:11px; font-weight:700; text-align:center; padding:4px 8px; border-radius:4px; }
+
+  /* ── CHART CONTAINER ── */
+  .chart-wrap { position:relative; height:340px; margin-top:10px; }
+  .chart-wrap.tall { height:380px; }
+  .chart-wrap.short { height:260px; }
+
+  /* ── ERP DIAGRAM ── */
+  .erp-diagram { display:flex; flex-direction:column; align-items:center; gap:0; padding:18px 0 6px; }
+  .erp-node { background:var(--bg2); border:2px solid var(--border); border-radius:8px; padding:12px 18px; min-width:240px; text-align:center; font-size:12px; line-height:1.5; }
+  .erp-node strong { display:block; color:var(--text); font-weight:700; font-size:13px; margin-bottom:2px; }
+  .erp-node .v { color:var(--muted); font-size:11px; }
+  .erp-row { display:flex; gap:18px; }
+  .erp-arrow { width:2px; height:24px; background:var(--muted); position:relative; }
+  .erp-arrow::after { content:''; position:absolute; bottom:-1px; left:-3px; width:0; height:0; border-left:4px solid transparent; border-right:4px solid transparent; border-top:6px solid var(--muted); }
+  .erp-arrow.red { background:var(--red); }
+  .erp-arrow.red::after { border-top-color:var(--red); }
+  .erp-arrow-label { font-size:10px; color:var(--red); text-transform:uppercase; letter-spacing:.5px; font-weight:700; margin: 4px 0; }
+  .erp-node.calc { border-color:var(--red); background: rgba(199,46,11,.04); }
+  .erp-node.outcome { border-color:var(--navy); background: var(--navy); color:#fff; }
+  .erp-node.outcome strong, .erp-node.outcome .v { color:#fff; }
+  .erp-node.outcome .v { opacity:.85; }
+
+  /* ── RISK MATRIX ── */
+  .risk-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; }
+  .risk-card { border:1px solid var(--border); border-radius:8px; padding:18px; background:var(--bg2); position:relative; cursor:pointer; transition:border-color .15s; }
+  .risk-card:hover { border-color: var(--red); }
+  .risk-card h4 { font-size:14px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+  .risk-sev { font-size:10px; padding:2px 8px; border-radius:3px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; }
+  .risk-sev.high { background:rgba(199,46,11,.14); color:var(--red); }
+  .risk-sev.med { background:rgba(216,160,0,.14); color:var(--yellow); }
+  .risk-card p { font-size:12px; color:var(--muted); line-height:1.6; }
+
+  /* ── SENSITIVITY HEATMAP ── */
+  .heatmap { display:grid; gap:2px; margin-top:10px; }
+  .heat-row { display:grid; grid-template-columns: 80px repeat(5, 1fr); gap:2px; }
+  .heat-cell { padding:10px 6px; text-align:center; font-size:11px; font-weight:600; font-variant-numeric:tabular-nums; border-radius:2px; }
+  .heat-cell.header { background:var(--navy); color:#fff; font-size:10px; text-transform:uppercase; letter-spacing:.5px; }
+  .heat-cell.rowhead { background:var(--bg3); color:var(--text); }
+
+  /* ── MODAL ── */
+  .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1000; align-items:flex-start; justify-content:center; padding:50px 20px; overflow-y:auto; }
+  .modal-bg.open { display:flex; }
+  .modal { background:#fff; border-radius:10px; max-width:720px; width:100%; padding:32px 36px; box-shadow:0 10px 40px rgba(0,0,0,.25); }
+  .modal h2 { font-size:20px; font-weight:700; margin-bottom:8px; color:var(--navy); }
+  .modal h3 { font-size:13px; text-transform:uppercase; letter-spacing:.6px; color:var(--red); margin: 18px 0 8px; font-weight:700; }
+  .modal p, .modal li { font-size:13px; color:var(--text); line-height:1.65; margin-bottom:8px; }
+  .modal ul { padding-left:22px; }
+  .modal-close { position:absolute; top:18px; right:18px; background:none; border:none; font-size:24px; cursor:pointer; color:var(--muted); font-family:inherit; }
+  .modal-wrap { position:relative; }
+
+  /* ── BULLETS / SUMMARY ── */
+  .bullets { display:flex; flex-direction:column; gap:12px; }
+  .bullet { display:flex; align-items:flex-start; gap:14px; padding:14px 16px; background:var(--bg3); border-radius:8px; border-left:3px solid var(--navy); }
+  .bullet.red { border-left-color: var(--red); }
+  .bullet.yellow { border-left-color: var(--yellow); }
+  .bullet.green { border-left-color: var(--green); }
+  .bullet-num { font-weight:800; color:var(--navy); font-size:14px; flex-shrink:0; min-width:18px; }
+  .bullet-num.red { color: var(--red); }
+  .bullet-num.yellow { color: var(--yellow); }
+  .bullet-num.green { color: var(--green); }
+  .bullet p { font-size:13px; color:var(--text); line-height:1.6; }
+  .bullet p strong { font-weight:700; }
+
+  /* ── DRIVER CARDS ── */
+  .driver { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:22px; display:flex; flex-direction:column; gap:8px; }
+  .driver-icon { width:38px; height:38px; border-radius:8px; background:rgba(27,58,92,.08); color:var(--navy); display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800; }
+  .driver h3 { font-size:15px; font-weight:700; margin-bottom:4px; }
+  .driver p { font-size:13px; color:var(--muted); line-height:1.6; }
+  .driver-list { padding-left:18px; margin-top:8px; }
+  .driver-list li { font-size:12px; color:var(--muted); margin-bottom:5px; line-height:1.55; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width:980px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns:1fr; }
+    .risk-grid { grid-template-columns:1fr; }
+    .header, .main, .tabs { padding-left:20px; padding-right:20px; }
+    .alloc-row { grid-template-columns:1fr; gap:6px; }
+    .heat-row { grid-template-columns: 60px repeat(5, 1fr); }
+  }
+  @media (max-width:680px) {
+    h1 { font-size:21px; }
+    .kpi-value { font-size:21px; }
+    .calc-row { grid-template-columns:1fr; gap:6px; }
+    .peak-bar { grid-template-columns:80px 1fr 60px; }
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width:6px; height:6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius:3px; }
+
+  /* footer */
+  .footnote { font-size:11px; color:var(--muted); margin-top:30px; padding-top:18px; border-top:1px solid var(--border); line-height:1.55; }
+</style>
+</head>
+<body>
+
+<!-- ─────────────────── HEADER ─────────────────── -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="header-badge">Investment Committee Report</div>
+      <h1>S&P 500 Macroeconomic Valuation <span class="accent">— The ERP Red Flag</span></h1>
+      <div class="header-meta">As of <span data-live="asOfLong">May 29, 2026</span> · Macro Quantitative Research Team</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-ghost" onclick="openManual()">User Manual</button>
+      <button class="btn-ghost" onclick="window.print()">Print / PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────── KPI STRIP ─────────────────── -->
+<div class="kpi-strip">
+  <div class="kpi">
+    <div class="kpi-label">S&P 500 Index</div>
+    <div class="kpi-value navy">7,580.06</div>
+    <div class="kpi-sub">All-time high zone</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Shiller P/E (CAPE)</div>
+    <div class="kpi-value red" data-live="shillerCape">42.66</div>
+    <div class="kpi-sub">99%+ percentile all-time</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Trailing P/E</div>
+    <div class="kpi-value red">25.76</div>
+    <div class="kpi-sub">+1.9% vs 10Y avg</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Forward P/E (FactSet)</div>
+    <div class="kpi-value yellow" data-live="fwdPeFactSet">21.07</div>
+    <div class="kpi-sub">EPS <span data-live="fwdEps">$359.81</span> · above 5Y/10Y avg</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Trailing ERP</div>
+    <div class="kpi-value red">-0.57%</div>
+    <div class="kpi-sub">Negative — first since 2000</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Shiller ERP</div>
+    <div class="kpi-value red">-2.11%</div>
+    <div class="kpi-sub">Z-score: -1.80σ</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">10Y Treasury</div>
+    <div class="kpi-value navy" data-live="yld10y">4.45%</div>
+    <div class="kpi-sub">Higher-for-longer</div>
+  </div>
+</div>
+
+<!-- ─────────────────── TABS ─────────────────── -->
+<div class="tabs" role="tablist">
+  <button class="tab active" data-tab="overview">Overview</button>
+  <button class="tab" data-tab="valuation">Valuation</button>
+  <button class="tab" data-tab="erp">ERP Red Flag</button>
+  <button class="tab" data-tab="drivers">Macro Drivers</button>
+  <button class="tab" data-tab="risks">Risks &amp; Sensitivity</button>
+  <button class="tab" data-tab="allocation">Allocation</button>
+</div>
+
+<div class="main">
+
+<!-- ═════════════════ OVERVIEW ═════════════════ -->
+<div class="section active" id="overview">
+  <div class="section-heading">Executive Summary</div>
+  <p class="section-sub">A comprehensive macroeconomic assessment of S&amp;P 500 valuation against historical benchmarks, statistical deviations, and the prevailing interest-rate environment. The defining signal: the Equity Risk Premium has gone <strong>negative</strong> — first sustained negative print since the Dot-com bubble.</p>
+
+  <div class="grid-2">
+    <div class="card alert">
+      <div class="card-title">Core Findings</div>
+      <div class="bullets">
+        <div class="bullet red">
+          <div class="bullet-num red">1</div>
+          <div><p><strong>Extreme cycle-smoothed valuation.</strong> Shiller CAPE at <strong><span data-live="shillerCape">42.66</span></strong> sits in the 99%+ all-time percentile — above the 1929 peak (32.56) and the 2021 post-pandemic peak (38.58); only the 2000 Dot-com peak (44.19) was higher.</p></div>
+        </div>
+        <div class="bullet red">
+          <div class="bullet-num red">2</div>
+          <div><p><strong>ERP inversion is the red flag.</strong> Trailing ERP at <strong>-0.57%</strong>, Shiller ERP at <strong>-2.11%</strong>. Equity earnings yields (3.88% / 2.34%) fail to compensate for risk over the <span data-live="yld10y">4.45%</span> risk-free 10Y yield.</p></div>
+        </div>
+        <div class="bullet yellow">
+          <div class="bullet-num yellow">3</div>
+          <div><p><strong>Historical parallel = 2000.</strong> Negative ERP has not been sustained since the Dot-com bubble. Then it preceded a ~50% S&amp;P drawdown over 2½ years.</p></div>
+        </div>
+        <div class="bullet navy">
+          <div class="bullet-num">4</div>
+          <div><p><strong>Concentration risk.</strong> The expansion is heavily driven by the Magnificent 7 and AI enthusiasm — masking broader vulnerabilities (sticky inflation, higher-for-longer rates, slowing leading indicators).</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Headline Conclusion</div>
+      <div class="chart-wrap short">
+        <canvas id="headlineChart"></canvas>
+      </div>
+      <div class="insight">
+        <strong>Reading:</strong> On a forward-looking risk-adjusted basis, broad equities currently underperform risk-free bonds <em>in expectation</em>. Either equities must repricing lower, bond yields must fall, or earnings must surprise to the upside materially — typically only one of those resolves cleanly.
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-top:18px">
+    <div class="card warn">
+      <div class="card-title">What's Stretched</div>
+      <h3>Multiples</h3>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">CAPE +2.68σ above 10Y mean. Trailing P/E is near its 10Y average, while forward P/E remains above its 5Y and 10Y averages — assuming robust EPS growth into 2027.</p>
+    </div>
+    <div class="card alert">
+      <div class="card-title">What's Broken</div>
+      <h3>Risk Pricing</h3>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">ERP is negative on both trailing and Shiller bases. Z-scores of -1.41 / -1.80. Historical mean ERP is positive 3–5%; investors are accepting <em>discount</em> for equity risk.</p>
+    </div>
+    <div class="card good">
+      <div class="card-title">What's Attractive</div>
+      <h3>Fixed Income</h3>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">10Y at <span data-live="yld10y">4.45%</span>, short-end higher. Risk-free yields exceed both trailing (3.88%) and Shiller (2.34%) S&amp;P earnings yields. Best risk-adjusted bond setup in 20 years.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════ VALUATION ═════════════════ -->
+<div class="section" id="valuation">
+  <div class="section-heading">Valuation Analysis</div>
+  <p class="section-sub">Comparing current multiples to long-term historical averages, medians, and percentile distributions. Z-scores measure standard deviations above the 10-year mean.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Key Valuation Multiples</div>
+      <table class="dt">
+        <thead><tr><th>Metric</th><th class="right">Current</th><th class="right">10Y Avg</th><th class="right">10Y Median</th><th class="right">Z-score</th></tr></thead>
+        <tbody>
+          <tr><td class="metric-name">Trailing P/E</td><td class="num">25.76</td><td class="num">25.27</td><td class="num">23.99</td><td class="num"><span class="pill pill-neutral">+0.13σ</span></td></tr>
+          <tr><td class="metric-name">Forward P/E (FactSet/Yardeni)</td><td class="num" data-live="fwdPeFactSet">21.07</td><td class="num">18.90</td><td class="num">18.00</td><td class="num"><span class="pill pill-warn">Above avg</span></td></tr>
+          <tr><td class="metric-name">Shiller CAPE</td><td class="num" data-live="shillerCape">42.66</td><td class="num">32.19</td><td class="num">31.10</td><td class="num"><span class="pill pill-bad">+2.68σ</span></td></tr>
+          <tr><td class="metric-name">Index Level</td><td class="num">7,580.06</td><td class="num" colspan="3" style="color:var(--muted)">All-time high zone</td></tr>
+        </tbody>
+      </table>
+      <div class="insight">
+        <strong>Trailing P/E</strong> now sits only +1.94% above its 10Y average as actual earnings have caught up. <strong>Shiller CAPE</strong> at +32.53% above mean is the more durable warning: it smooths a decade of earnings and is harder to wave away as a margin/cycle effect.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Historical Percentile Distribution</div>
+      <div class="pct-row">
+        <div class="pct-head"><span>Shiller P/E (CAPE)</span><strong>99%+ all-time · extreme since 1990</strong></div>
+        <div class="pct-track"><div class="pct-fill solid-red" style="width:99.3%"></div></div>
+        <div class="pct-meta"><span>0%</span><span>50%</span><span>100%</span></div>
+      </div>
+      <div class="pct-row">
+        <div class="pct-head"><span>Trailing P/E</span><strong>Near 10Y average · earnings catch-up</strong></div>
+        <div class="pct-track"><div class="pct-fill" style="width:63%"></div></div>
+        <div class="pct-meta"><span>0%</span><span>50%</span><span>100%</span></div>
+      </div>
+      <div class="pct-row">
+        <div class="pct-head"><span>Forward P/E</span><strong>Above 5Y and 10Y averages</strong></div>
+        <div class="pct-track"><div class="pct-fill" style="width:82%"></div></div>
+        <div class="pct-meta"><span>0%</span><span>50%</span><span>100%</span></div>
+      </div>
+      <div class="insight">
+        CAPE remains in <strong>rarified historical territory</strong>, while forward valuation is still elevated versus recent averages. The trailing multiple has improved, but the rate-adjusted signal remains unfavorable.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card-title">Comparison to Historic Market Peaks · Shiller CAPE</div>
+    <div class="peak-bar">
+      <div class="peak-label">2000 Peak <span class="yr">Dot-com</span></div>
+      <div class="peak-track"><div class="peak-fill dot2000" style="width:100%"></div></div>
+      <div class="peak-val">44.19</div>
+    </div>
+    <div class="peak-bar">
+      <div class="peak-label">Today <span class="yr">May 29 2026</span></div>
+      <div class="peak-track"><div class="peak-fill current" style="width:96.5%"></div></div>
+      <div class="peak-val">42.66</div>
+    </div>
+    <div class="peak-bar">
+      <div class="peak-label">2021 Peak <span class="yr">Pandemic</span></div>
+      <div class="peak-track"><div class="peak-fill peak2021" style="width:87.3%"></div></div>
+      <div class="peak-val">38.58</div>
+    </div>
+    <div class="peak-bar">
+      <div class="peak-label">1929 Peak <span class="yr">Pre-Depression</span></div>
+      <div class="peak-track"><div class="peak-fill peak1929" style="width:73.7%"></div></div>
+      <div class="peak-val">32.56</div>
+    </div>
+    <div class="insight">
+      The current CAPE has <strong>exceeded the 1929 peak</strong> and the <strong>2021 post-pandemic peak</strong>. Only the 2000 Dot-com peak (44.19) remains higher. The S&amp;P 500 sits roughly <strong>3.5% below the highest valuation in modern financial history</strong>.
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card-title">Historical Trend · Trailing P/E vs Shiller CAPE (1990 – Present)</div>
+    <div class="chart-wrap tall"><canvas id="peChart"></canvas></div>
+    <div class="insight navy">
+      <strong>Interpretation:</strong> Both series cycle around their long-term means but only briefly visit current levels. The 2000 spike was Trailing-led (earnings collapsed first, then price), while today's spike is more CAPE-driven — meaning even a flat 10-year earnings stream would leave valuations stretched.
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card-title">Forward P/E in Context · FactSet / Yardeni Consensus</div>
+    <div class="grid-2">
+      <div>
+        <table class="dt">
+          <thead><tr><th>Multiple</th><th class="right">Fwd EPS</th><th class="right">P/E</th><th class="right">vs Trailing</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Forward 12M Consensus</strong><div style="font-size:11px;color:var(--muted);margin-top:3px">"Earnings-led meltup" thesis</div></td><td class="num" data-live="fwdEps">$359.81</td><td class="num"><span data-live="fwdPeFactSet">21.07</span>x</td><td class="num"><span class="pill pill-warn">+22.3%</span></td></tr>
+            <tr><td>Trailing baseline</td><td class="num" data-live="trailingEps">$294.25</td><td class="num">25.76x</td><td class="num" style="color:var(--muted)">—</td></tr>
+            <tr><td>5Y Forward P/E avg</td><td class="num" style="color:var(--muted)">—</td><td class="num">19.90x</td><td class="num" style="color:var(--muted)">—</td></tr>
+            <tr><td>10Y Forward P/E avg</td><td class="num" style="color:var(--muted)">—</td><td class="num">18.90x</td><td class="num" style="color:var(--muted)">—</td></tr>
+          </tbody>
+        </table>
+        <div class="insight">
+          <strong>The optimism inside <span data-live="fwdPeFactSet">21.07</span>x:</strong> The forward multiple looks "only" elevated because it relies on a <strong>+22.3% jump in forward EPS</strong> from already-record trailing earnings — supported by aggressive CY26 ($330) and CY27 ($375) earnings expectations. If those revisions falter, the multiple snaps higher mechanically.
+        </div>
+      </div>
+      <div>
+        <div class="chart-wrap"><canvas id="fwdpeChart"></canvas></div>
+        <div class="insight navy">
+          <strong>Reading:</strong> At <span data-live="fwdPeFactSet">21.07</span>x, the Forward P/E remains meaningfully above the 5Y avg (19.9x) and 10Y avg (18.9x). The consensus EPS path requires Mag 7 / AI earnings to deliver without interruption.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════ ERP ═════════════════ -->
+<div class="section" id="erp">
+  <div class="section-heading">The Equity Risk Premium — Red Flag</div>
+  <p class="section-sub">ERP = Earnings Yield − 10-Year Treasury Yield. Historically positive (+3 to +5%) to compensate equity investors for volatility and default risk. Currently negative on both bases — meaning the bond market <em>literally pays you more</em> to take less risk.</p>
+
+  <div class="grid-2">
+    <div class="card alert">
+      <div class="card-title">Current Status</div>
+      <table class="dt">
+        <thead><tr><th>Measure</th><th class="right">Yield</th><th class="right">vs 10Y</th><th class="right">ERP</th></tr></thead>
+        <tbody>
+          <tr><td>Trailing Earnings Yield (1/25.76)</td><td class="num">3.88%</td><td class="num">4.45%</td><td class="num"><span class="pill pill-bad">-0.57%</span></td></tr>
+          <tr><td>Shiller Earnings Yield (1/42.66)</td><td class="num">2.34%</td><td class="num">4.45%</td><td class="num"><span class="pill pill-bad">-2.11%</span></td></tr>
+          <tr><td>10-Year Treasury Yield</td><td class="num" colspan="2" style="color:var(--muted)">Risk-free benchmark</td><td class="num"><span class="pill pill-navy">4.45%</span></td></tr>
+        </tbody>
+      </table>
+      <div class="insight">
+        <strong>Trailing ERP</strong> is 1.81% below its 10Y average of +1.24% (Z = -1.41). <strong>Shiller ERP</strong> is 2.46% below its 10Y average of +0.35% (Z = -1.80). Both remain negative despite the earnings catch-up.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">ERP Flow · How It's Computed</div>
+      <div class="erp-diagram">
+        <div class="erp-row">
+          <div class="erp-node">
+            <strong>S&amp;P 500 Earnings Yield</strong>
+            <div class="v">Trailing 3.88% · Shiller 2.34%</div>
+          </div>
+          <div class="erp-node">
+            <strong>10-Year Treasury</strong>
+            <div class="v">Yield 4.45%</div>
+          </div>
+        </div>
+        <div class="erp-arrow red"></div>
+        <div class="erp-arrow-label">Earnings Yield − Treasury Yield</div>
+        <div class="erp-node calc">
+          <strong>Equity Risk Premium</strong>
+          <div class="v">Trailing -0.57% · Shiller -2.11%</div>
+        </div>
+        <div class="erp-arrow red"></div>
+        <div class="erp-arrow-label">Negative Premium</div>
+        <div class="erp-node outcome">
+          <strong>Equities Overvalued Relative to Bonds</strong>
+          <div class="v">Rational flows favor fixed income</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card-title">Live ERP Calculator · Test Your Assumptions</div>
+    <div class="grid-2" style="gap:30px">
+      <div>
+        <div class="calc-row">
+          <label class="calc-label" for="calcPE">Trailing P/E ratio</label>
+          <input id="calcPE" type="range" min="10" max="40" step="0.5" value="25.76" class="calc-slider">
+          <div class="calc-output" id="outPE">25.76</div>
+        </div>
+        <div class="calc-row">
+          <label class="calc-label" for="calcCAPE">Shiller CAPE</label>
+          <input id="calcCAPE" type="range" min="15" max="50" step="0.5" value="42.66" class="calc-slider">
+          <div class="calc-output" id="outCAPE">42.66</div>
+        </div>
+        <div class="calc-row">
+          <label class="calc-label" for="calc10Y">10-Year Treasury yield</label>
+          <input id="calc10Y" type="range" min="0.5" max="8" step="0.05" value="4.45" class="calc-slider">
+          <div class="calc-output" id="out10Y">4.45%</div>
+        </div>
+        <button class="calc-reset" onclick="resetCalc()">Reset to today's values</button>
+      </div>
+      <div>
+        <div class="calc-result">
+          <div>
+            <div class="calc-result-label">Trailing Earnings Yield</div>
+            <div class="calc-result-val" id="resTEY" style="color:var(--navy)">3.88%</div>
+          </div>
+          <div>
+            <div class="calc-result-label">Trailing ERP</div>
+            <div class="calc-result-val" id="resTERP" style="color:var(--red)">-0.57%</div>
+          </div>
+        </div>
+        <div class="calc-result">
+          <div>
+            <div class="calc-result-label">Shiller Earnings Yield</div>
+            <div class="calc-result-val" id="resSEY" style="color:var(--navy)">2.34%</div>
+          </div>
+          <div>
+            <div class="calc-result-label">Shiller ERP</div>
+            <div class="calc-result-val" id="resSERP" style="color:var(--red)">-2.11%</div>
+          </div>
+        </div>
+        <div class="insight" id="calcInsight">
+          <strong>Reading:</strong> Both ERPs are negative — equities yield less than risk-free Treasurys. To restore a historically normal +3% Trailing ERP, the Trailing P/E would need to fall to about <strong>13.4</strong>, or the 10-year yield to about <strong>0.88%</strong>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card-title">Historical ERP Trend · 1990 – Present</div>
+    <div class="chart-wrap tall"><canvas id="erpChart"></canvas></div>
+    <div class="insight">
+      <strong>Two epochs of negative ERP:</strong> the 1997–2001 Dot-com peak (Trailing ERP bottomed at -3.2%, Shiller at -4.4%), and today. Between those, the post-GFC era ran a strongly positive ERP — equities were systematically cheap relative to bonds, which is why simple buy-and-hold worked so well. That regime is now over.
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-top:18px">
+    <div class="card">
+      <div class="card-title">Implication 1</div>
+      <h3>Risk Mispricing</h3>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">Investors are accepting <em>zero or negative</em> compensation for equity-level volatility and default risk. Capital that should require a premium is being deployed at a discount.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Implication 2</div>
+      <h3>Fixed Income Superiority</h3>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">On a risk-adjusted basis, Treasurys (and high-quality corporates) present a superior reward profile. The 10Y still pays investors more than the broad equity earnings yield with no equity-style drawdown risk.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Implication 3</div>
+      <h3>Dot-com Parallel</h3>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">Jan 2000: Shiller PE 43.77, 10Y 6.65%, Shiller ERP -4.36%, Trailing ERP -3.20%. Today's ERP is less negative than 2000, but is the only other comparable episode in 35+ years.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════ DRIVERS ═════════════════ -->
+<div class="section" id="drivers">
+  <div class="section-heading">Macro Drivers of Current Valuation</div>
+  <p class="section-sub">Three reinforcing forces have lifted index multiples to historic highs. Understanding them is essential to gauging fragility and to identifying what could reverse the regime.</p>
+
+  <div class="grid-3">
+    <div class="driver">
+      <div class="driver-icon">7</div>
+      <h3>Mag 7 + AI Concentration</h3>
+      <p>Mega-cap tech has reached an unprecedented share of S&amp;P 500 market capitalization. Generative AI optimism is fueling massive capex and multiple expansion in a narrow set of names.</p>
+      <ul class="driver-list">
+        <li><strong>Index distortion:</strong> Cap-weighting means mega-cap multiples inflate the entire index.</li>
+        <li><strong>Median masked:</strong> The median S&amp;P 500 stock trades at a far more modest valuation than the index print.</li>
+        <li><strong>Idiosyncratic risk:</strong> A handful of names dominate beta — any AI-monetization disappointment is index-level.</li>
+      </ul>
+    </div>
+    <div class="driver">
+      <div class="driver-icon">%</div>
+      <h3>Sticky Inflation vs Cut Expectations</h3>
+      <p>A critical macro divergence: market expectations for aggressive rate cuts vs the persistence of sticky inflation and the Fed's "higher-for-longer" framing.</p>
+      <ul class="driver-list">
+        <li><strong>10Y yield 4.45%:</strong> Restrictive policy stance still intact.</li>
+        <li><strong>Equity market priced for soft landing:</strong> Multiples imply rates drop without margin damage.</li>
+        <li><strong>Asymmetric:</strong> If inflation re-accelerates, both yields rise and multiples compress.</li>
+      </ul>
+    </div>
+    <div class="driver">
+      <div class="driver-icon">Δ</div>
+      <h3>Real Economy vs Multiples</h3>
+      <p>A widening divergence between real-economy macro indicators and equity market pricing.</p>
+      <ul class="driver-list">
+        <li><strong>Softening leading indicators:</strong> Manufacturing PMIs, bank credit standards, consumer credit delinquencies.</li>
+        <li><strong>Multiples still expanding:</strong> Index priced as if growth is accelerating.</li>
+        <li><strong>Vulnerability:</strong> Any negative macro shock would compress multiples mechanically.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card-title">Tension Map · Indicators vs Index Pricing</div>
+    <div class="chart-wrap"><canvas id="tensionChart"></canvas></div>
+    <div class="insight navy">
+      <strong>Reading:</strong> The gap between "real economy soft" and "equity market positive" closes one of two ways — either real-economy indicators rebound to justify pricing, or pricing reverts to track indicators. Historically the latter is faster.
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════ RISKS & SENSITIVITY ═════════════════ -->
+<div class="section" id="risks">
+  <div class="section-heading">Risks &amp; Sensitivity Analysis</div>
+  <p class="section-sub">Given the elevated multiples and negative ERP, several systemic risks could catalyze a severe downward repricing. Below: the four primary risk vectors, and a sensitivity heatmap showing where the S&amp;P 500 implied fair value lands across different earnings &amp; P/E scenarios.</p>
+
+  <div class="risk-grid">
+    <div class="risk-card">
+      <h4>Earnings Disappointments <span class="risk-sev high">High</span></h4>
+      <p>The forward P/E of <strong><span data-live="fwdPeFactSet">21.07</span>x</strong> relies on a forward 12-month EPS of <strong><span data-live="fwdEps">$359.81</span> — a +22.3% jump</strong> over trailing <span data-live="trailingEps">$294.25</span>. That's an "earnings-led meltup" assumption resting on aggressive CY26 ($330) and CY27 ($375) revisions. Any margin compression from sticky labor &amp; input costs would force a major multiple contraction.</p>
+    </div>
+    <div class="risk-card">
+      <h4>Yield-Curve Normalization <span class="risk-sev high">High</span></h4>
+      <p>The 10Y–2Y inversion is unwinding. Normalization driven by <strong>bull steepening</strong> (short-end falling on weakness) historically coincides with recession onset and equity volatility. Bear steepening (long-end rising) directly compresses long-duration assets.</p>
+    </div>
+    <div class="risk-card">
+      <h4>Inflation Resurgence <span class="risk-sev med">Medium</span></h4>
+      <p>A secondary wave from supply shocks, commodities, or fiscal expansion would force central banks to hold or raise rates. The 10Y pushes higher, ERP compresses further, and growth equities (long-duration cash flows) sell off mechanically.</p>
+    </div>
+    <div class="risk-card">
+      <h4>Liquidity &amp; Geopolitical Shocks <span class="risk-sev med">Medium</span></h4>
+      <p>Ongoing QT drains global liquidity. Combined with geopolitical flashpoints in Eastern Europe and the Middle East and trade tensions, a sudden liquidity drop can trigger rapid deleveraging.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card-title">S&amp;P 500 Sensitivity · Fair Value (Index Points) by EPS &amp; Trailing P/E</div>
+    <div class="scenario-tabs">
+      <button class="scen-btn bear active" data-scenario="bear">Bear (P/E 15)</button>
+      <button class="scen-btn" data-scenario="base">Base (P/E 22)</button>
+      <button class="scen-btn bull" data-scenario="bull">Bull (P/E 27)</button>
+    </div>
+    <div class="heatmap" id="sensHeatmap"></div>
+    <div class="insight" id="sensInsight">
+      <strong>Scenario:</strong> A reversion to a P/E of 15 (long-term post-1980 mean) on flat EPS would imply an S&amp;P fair value near 4,414 — a drawdown of roughly 42%. Even at unchanged today's earnings, multiple contraction alone is the largest downside lever.
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:18px">
+    <div class="card">
+      <div class="card-title">Drawdown Math · From 7,580.06</div>
+      <table class="dt">
+        <thead><tr><th>If Trailing P/E reverts to…</th><th class="right">Implied S&amp;P</th><th class="right">Drawdown</th></tr></thead>
+        <tbody>
+          <tr><td>27 (Bull · stretched stays)</td><td class="num">7,945</td><td class="num"><span class="pill pill-ok">+4.8%</span></td></tr>
+          <tr><td>25 (Soft mean revert)</td><td class="num">7,356</td><td class="num"><span class="pill pill-warn">-3.0%</span></td></tr>
+          <tr><td>22 (10Y median)</td><td class="num">6,474</td><td class="num"><span class="pill pill-warn">-14.6%</span></td></tr>
+          <tr><td>19.9 (5Y avg Fwd P/E)</td><td class="num">5,856</td><td class="num"><span class="pill pill-bad">-22.7%</span></td></tr>
+          <tr><td>18.9 (10Y avg Fwd P/E)</td><td class="num">5,561</td><td class="num"><span class="pill pill-bad">-26.6%</span></td></tr>
+          <tr><td>15 (Post-1980 long-term mean)</td><td class="num">4,414</td><td class="num"><span class="pill pill-bad">-41.8%</span></td></tr>
+        </tbody>
+      </table>
+      <div class="insight">EPS held constant at trailing <strong>$294.25</strong>. Assumes only multiple contraction; a coincident earnings shock would deepen drawdowns proportionally. Forward EPS of $359.81 would shift these implied levels up by ~22% — but only if those estimates are realized.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">ERP Restoration Paths</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:10px">To restore a historically normal <strong>+3% Trailing ERP</strong> from today's -0.57%, one of the following must occur:</p>
+      <table class="dt">
+        <thead><tr><th>Mechanism</th><th class="right">Required move</th></tr></thead>
+        <tbody>
+          <tr><td>10Y Treasury yield falls</td><td class="num"><span class="pill pill-warn">to ~0.88%</span></td></tr>
+          <tr><td>Trailing P/E contracts (EPS flat)</td><td class="num"><span class="pill pill-warn">to ~13.4</span></td></tr>
+          <tr><td>EPS rises (P/E flat)</td><td class="num"><span class="pill pill-warn">+92%</span></td></tr>
+          <tr><td>Some combination</td><td class="num" style="color:var(--muted)">most likely</td></tr>
+        </tbody>
+      </table>
+      <div class="insight">All three mechanisms point in the same direction: <strong>equity returns from here are heavily dependent on a combination of lower rates and faster earnings — neither of which the data is currently delivering.</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════ ALLOCATION ═════════════════ -->
+<div class="section" id="allocation">
+  <div class="section-heading">Outlook &amp; Allocation Guidelines</div>
+  <p class="section-sub">Given negative ERP and historically stretched valuation multiples, the report recommends a disciplined, defensive stance. Toggle below to compare profiles.</p>
+
+  <div class="alloc-toggle" id="allocToggle">
+    <button data-profile="defensive" class="active">Defensive (Recommended)</button>
+    <button data-profile="neutral">Neutral</button>
+    <button data-profile="aggressive">Aggressive</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title" id="allocTitle">Strategic Asset Allocation · Defensive</div>
+    <div id="allocBody">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:18px">
+    <div class="card">
+      <div class="card-title">Allocation Guidelines</div>
+      <div class="bullets">
+        <div class="bullet red">
+          <div class="bullet-num red">1</div>
+          <div><p><strong>Reduce broad index exposure.</strong> Underweight passive S&amp;P 500 index funds — the index is heavily exposed to concentration risk and multiple contraction.</p></div>
+        </div>
+        <div class="bullet green">
+          <div class="bullet-num green">2</div>
+          <div><p><strong>Prioritize fixed income yields.</strong> Reallocate to high-quality government &amp; IG corporates to capture yields above equity earnings yields (3.88% trailing, 2.34% CAPE).</p></div>
+        </div>
+        <div class="bullet navy">
+          <div class="bullet-num">3</div>
+          <div><p><strong>Emphasize quality &amp; value factors.</strong> Tilt within equities toward value, high-dividend, strong balance sheets, low debt, high FCF margins. These factors historically outperform in high-rate, low-ERP regimes.</p></div>
+        </div>
+        <div class="bullet yellow">
+          <div class="bullet-num yellow">4</div>
+          <div><p><strong>Active over passive in growth.</strong> Avoid broad speculative growth at extreme multiples. Focus on GARP (Growth at a Reasonable Price): proven earnings power + reasonable valuations.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Allocation Visualization</div>
+      <div class="chart-wrap"><canvas id="allocChart"></canvas></div>
+      <div class="insight navy" id="allocInsight"><strong>Defensive profile:</strong> Underweight broad equities, overweight high-quality fixed income, elevated cash cushion for optionality. Selective long limited to high-quality factor exposures.</div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    Source: S&P 500 Macroeconomic Valuation Analysis · Macro Quantitative Research Team · Updated May 29, 2026. Data inputs: AP market close, Multpl Shiller CAPE, StreetStats trailing/forward P/E and EPS, Treasury.gov 10Y yield via Slickcharts, and FactSet/Yardeni earnings context. Drawdown math uses trailing EPS of 294.25 (= 7,580.06 / 25.76). Sensitivity heatmap holds the variable not on the axis at base-case. ERP restoration math uses the formula 1/P/E − 10Y yield. This report is a synthesis of the source data and does not constitute investment advice.
+  </div>
+</div>
+
+</div><!-- /.main -->
+
+<!-- ─────────────────── MODAL ─────────────────── -->
+<div class="modal-bg" id="manualModal" onclick="if(event.target===this)closeManual()">
+  <div class="modal-wrap">
+    <div class="modal">
+      <button class="modal-close" onclick="closeManual()">×</button>
+      <h2>How to Use This Report</h2>
+      <p>This is an interactive macro briefing on S&amp;P 500 valuation and the negative Equity Risk Premium signal. Each tab covers a layer of the analysis.</p>
+
+      <h3>Tabs</h3>
+      <ul>
+        <li><strong>Overview</strong> — Executive summary and the headline reading of equity vs bond yields.</li>
+        <li><strong>Valuation</strong> — Current multiples vs history, percentile distributions, peak comparisons, and a 35-year trend chart.</li>
+        <li><strong>ERP Red Flag</strong> — The central thesis. Includes a live calculator: drag any slider to see how the Equity Risk Premium responds.</li>
+        <li><strong>Macro Drivers</strong> — Three structural forces that have lifted multiples to historic highs.</li>
+        <li><strong>Risks &amp; Sensitivity</strong> — Risk vectors with severity tags, a P/E × EPS heatmap (toggle Bear / Base / Bull), and drawdown math.</li>
+        <li><strong>Allocation</strong> — Recommended asset-mix matrix; toggle Defensive / Neutral / Aggressive profiles.</li>
+      </ul>
+
+      <h3>Interactive Widgets</h3>
+      <ul>
+        <li><strong>ERP Calculator</strong> (ERP tab): Move P/E, CAPE, or 10Y yield sliders. The four output boxes update live, plus a written reading at the bottom.</li>
+        <li><strong>Sensitivity Heatmap</strong> (Risks tab): Click Bear / Base / Bull buttons to recompute the index fair-value grid at different multiples.</li>
+        <li><strong>Allocation Toggle</strong> (Allocation tab): Switch between Defensive / Neutral / Aggressive — the table, doughnut chart, and reading all update.</li>
+      </ul>
+
+      <h3>Notes on Data</h3>
+      <ul>
+        <li>Headline market data is updated through the May 29, 2026 close. Historical chart series use published anchor points and reasonable interpolation between them for trend visualization.</li>
+        <li>Drawdown math holds EPS constant; concurrent earnings shocks would deepen losses.</li>
+        <li>This is a static snapshot, not a live market feed. For intraday numbers, check the macro dashboard.</li>
+      </ul>
+
+      <h3>Keyboard / Print</h3>
+      <ul>
+        <li>Use <strong>Print / PDF</strong> in the header to save a static copy.</li>
+        <li>All sections are expanded in print view.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════ SCRIPTS ═════════════════ -->
+<script>
+(function(){
+  'use strict';
+
+  // ─── Tab navigation ────────────────────────────────────────────
+  const tabs = document.querySelectorAll('.tab');
+  const sections = document.querySelectorAll('.section');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    const id = t.dataset.tab;
+    tabs.forEach(x => x.classList.remove('active'));
+    sections.forEach(s => s.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }));
+
+  // ─── Modal ────────────────────────────────────────────────────
+  window.openManual = function(){ document.getElementById('manualModal').classList.add('open'); };
+  window.closeManual = function(){ document.getElementById('manualModal').classList.remove('open'); };
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeManual(); });
+
+  // ─── Common Chart.js options ──────────────────────────────────
+  const FONT = "'Inter', sans-serif";
+  Chart.defaults.font.family = FONT;
+  Chart.defaults.color = '#5B5B5B';
+  Chart.defaults.font.size = 11;
+  const GRID = { color: 'rgba(0,0,0,0.06)', drawTicks:false };
+  const NAVY = '#1B3A5C', RED = '#C72E0B', GREEN = '#00936C', YELLOW = '#D8A000', MUTED = '#5B5B5B', BLUE = '#2A6CB8';
+
+  // ─── Headline mini-chart (Overview): Earnings yield vs 10Y ────
+  new Chart(document.getElementById('headlineChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Trailing\nEarnings Yield', 'Shiller\nEarnings Yield', '10-Year\nTreasury'],
+      datasets: [{
+        data: [3.88, 2.34, 4.45],
+        backgroundColor: [RED, RED, NAVY],
+        borderRadius: 4,
+        borderWidth: 0,
+        barThickness: 50
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => c.parsed.y.toFixed(2) + '%' } }
+      },
+      scales: {
+        x: { grid: { display:false } },
+        y: { beginAtZero: true, grid: GRID, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+
+  // ─── P/E trend chart (Valuation) ──────────────────────────────
+  // Anchor points from report: 1990, 2000 peak (CAPE 44.19), 2009 trough,
+  // 2021 peak (CAPE 38.58), 2026 (CAPE 42.66, P/E 25.76). 10Y avg lines.
+  const years = [];
+  for(let y = 1990; y <= 2026; y++) years.push(y);
+  // CAPE anchors and a smoothed interpolation between them
+  const capeAnchors = {1990:17.05, 1995:21.43, 2000:44.19, 2003:22.32, 2007:27.21, 2009:13.32, 2014:25.55, 2018:31.20, 2021:38.58, 2022:33.55, 2024:35.40, 2026:42.66};
+  const trailAnchors = {1990:15.45, 1995:17.21, 2000:30.50, 2003:22.94, 2007:18.20, 2009:23.50, 2014:18.10, 2018:21.40, 2021:30.10, 2022:21.85, 2024:25.10, 2026:25.76};
+  function interp(anchors, y){
+    const xs = Object.keys(anchors).map(Number).sort((a,b)=>a-b);
+    if(y <= xs[0]) return anchors[xs[0]];
+    if(y >= xs[xs.length-1]) return anchors[xs[xs.length-1]];
+    for(let i = 0; i < xs.length-1; i++){
+      if(y >= xs[i] && y <= xs[i+1]){
+        const t = (y - xs[i]) / (xs[i+1] - xs[i]);
+        return anchors[xs[i]] + (anchors[xs[i+1]] - anchors[xs[i]]) * t;
+      }
+    }
+  }
+  const capeSeries = years.map(y => interp(capeAnchors, y));
+  const trailSeries = years.map(y => interp(trailAnchors, y));
+  const capeAvg = 32.19, trailAvg = 25.27;
+
+  new Chart(document.getElementById('peChart'), {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [
+        { label: 'Shiller CAPE', data: capeSeries, borderColor: RED, backgroundColor: 'rgba(199,46,11,0.08)', borderWidth: 2.5, fill: true, tension: 0.35, pointRadius: 0, pointHoverRadius: 5 },
+        { label: 'Trailing P/E', data: trailSeries, borderColor: NAVY, backgroundColor: 'rgba(27,58,92,0.05)', borderWidth: 2.5, fill: false, tension: 0.35, pointRadius: 0, pointHoverRadius: 5 },
+        { label: 'CAPE 10Y avg (32.19)', data: years.map(()=>capeAvg), borderColor: RED, borderWidth: 1.2, borderDash: [4,4], pointRadius: 0, fill: false },
+        { label: 'Trailing 10Y avg (25.27)', data: years.map(()=>trailAvg), borderColor: NAVY, borderWidth: 1.2, borderDash: [4,4], pointRadius: 0, fill: false }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', align: 'end', labels: { boxWidth: 10, padding: 14, font: { size: 11 } } },
+        tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(2)}x` } }
+      },
+      scales: {
+        x: { grid: { display:false }, ticks: { maxTicksLimit: 10 } },
+        y: { grid: GRID, title: { display:true, text: 'P/E multiple', color:MUTED, font:{size:11} } }
+      }
+    }
+  });
+
+  // ─── Forward P/E context chart ───────────────────────────────
+  new Chart(document.getElementById('fwdpeChart'), {
+    type: 'bar',
+    data: {
+      labels: ['10Y avg\n(18.9x)', '5Y avg\n(19.9x)', 'Forward\nConsensus\n(21.1x)', 'Trailing P/E\n(25.76x)'],
+      datasets: [{
+        label: 'P/E multiple',
+        data: [18.9, 19.9, 21.07, 25.76],
+        backgroundColor: [MUTED, MUTED, YELLOW, RED],
+        borderRadius: 4,
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => c.parsed.y.toFixed(2) + 'x' } }
+      },
+      scales: {
+        x: { grid: { display:false }, ticks: { font:{size:10} } },
+        y: { beginAtZero: true, grid: GRID, ticks: { callback: v => v + 'x' }, title: { display:true, text:'P/E multiple', color:MUTED, font:{size:11} } }
+      }
+    }
+  });
+
+  // ─── ERP trend chart ──────────────────────────────────────────
+  // Trailing ERP and Shiller ERP anchors based on report
+  const trailErpAnchors = {1990:5.51, 1995:-0.50, 2000:-3.20, 2003:1.10, 2007:1.20, 2009:1.20, 2014:3.10, 2018:1.85, 2021:2.05, 2023:0.40, 2026:-0.57};
+  const shillerErpAnchors = {1990:-1.95, 1995:-1.85, 2000:-4.36, 2003:-1.95, 2007:-1.10, 2009:3.50, 2014:0.30, 2018:0.30, 2021:0.10, 2023:-1.10, 2026:-2.11};
+  const trailErpSeries = years.map(y => interp(trailErpAnchors, y));
+  const shillerErpSeries = years.map(y => interp(shillerErpAnchors, y));
+
+  new Chart(document.getElementById('erpChart'), {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [
+        { label: 'Trailing ERP', data: trailErpSeries, borderColor: NAVY, backgroundColor: 'rgba(27,58,92,0.05)', borderWidth: 2.4, tension: 0.35, pointRadius: 0, pointHoverRadius: 5, fill: false },
+        { label: 'Shiller ERP', data: shillerErpSeries, borderColor: RED, backgroundColor: 'rgba(199,46,11,0.08)', borderWidth: 2.4, tension: 0.35, pointRadius: 0, pointHoverRadius: 5, fill: false },
+        { label: '0% baseline', data: years.map(()=>0), borderColor: '#888', borderWidth: 1, borderDash: [6,4], pointRadius: 0, fill: false },
+        { label: 'Trailing 10Y avg (1.24%)', data: years.map(()=>1.24), borderColor: NAVY, borderWidth: 1.2, borderDash: [3,3], pointRadius: 0, fill: false },
+        { label: 'Shiller 10Y avg (0.35%)', data: years.map(()=>0.35), borderColor: RED, borderWidth: 1.2, borderDash: [3,3], pointRadius: 0, fill: false }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position:'top', align:'end', labels: { boxWidth:10, padding:12, font:{ size:11 } } },
+        tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(2)}%` } }
+      },
+      scales: {
+        x: { grid: { display:false }, ticks: { maxTicksLimit: 10 } },
+        y: { grid: GRID, title: { display:true, text:'ERP (%)', color:MUTED, font:{size:11} }, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+
+  // ─── Tension chart (Macro Drivers) — radial-style bar ─────────
+  new Chart(document.getElementById('tensionChart'), {
+    type: 'bar',
+    data: {
+      labels: ['S&P CAPE\n(percentile)', 'Mag 7 share\nof S&P 500', 'AI capex\n2-yr CAGR', 'Manufacturing\nPMI', 'Bank credit\nstandards', 'Consumer credit\ndelinquency'],
+      datasets: [
+        {
+          label: 'Equity market signal (high = bullish)',
+          data: [99, 92, 88, 0, 0, 0],
+          backgroundColor: 'rgba(0,147,108,0.75)',
+          borderRadius: 4,
+          borderWidth: 0,
+          stack: 'a'
+        },
+        {
+          label: 'Real economy signal (high = bearish)',
+          data: [0, 0, 0, -65, -72, -58],
+          backgroundColor: 'rgba(199,46,11,0.78)',
+          borderRadius: 4,
+          borderWidth: 0,
+          stack: 'a'
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position:'top', align:'end', labels: { boxWidth:10, padding:12, font:{size:11} } },
+        tooltip: { callbacks: { label: c => `${c.dataset.label}: ${Math.abs(c.parsed.y)}` } }
+      },
+      scales: {
+        x: { grid: { display:false } },
+        y: { grid: GRID, min: -100, max: 100, ticks: { callback: v => Math.abs(v) } }
+      }
+    }
+  });
+
+  // ─── ERP calculator ───────────────────────────────────────────
+  const calcPE = document.getElementById('calcPE');
+  const calcCAPE = document.getElementById('calcCAPE');
+  const calc10Y = document.getElementById('calc10Y');
+  const outPE = document.getElementById('outPE');
+  const outCAPE = document.getElementById('outCAPE');
+  const out10Y = document.getElementById('out10Y');
+  const resTEY = document.getElementById('resTEY');
+  const resSEY = document.getElementById('resSEY');
+  const resTERP = document.getElementById('resTERP');
+  const resSERP = document.getElementById('resSERP');
+  const calcInsight = document.getElementById('calcInsight');
+
+  function updateCalc(){
+    const pe = parseFloat(calcPE.value);
+    const cape = parseFloat(calcCAPE.value);
+    const ty = parseFloat(calc10Y.value);
+    outPE.textContent = pe.toFixed(2);
+    outCAPE.textContent = cape.toFixed(2);
+    out10Y.textContent = ty.toFixed(2) + '%';
+    const tey = (1/pe)*100;
+    const sey = (1/cape)*100;
+    const terp = tey - ty;
+    const serp = sey - ty;
+    resTEY.textContent = tey.toFixed(2) + '%';
+    resSEY.textContent = sey.toFixed(2) + '%';
+    resTERP.textContent = (terp >= 0 ? '+' : '') + terp.toFixed(2) + '%';
+    resSERP.textContent = (serp >= 0 ? '+' : '') + serp.toFixed(2) + '%';
+    resTERP.style.color = terp >= 0 ? 'var(--green)' : 'var(--red)';
+    resSERP.style.color = serp >= 0 ? 'var(--green)' : 'var(--red)';
+    // Insight
+    const targetTERP = 3.0;
+    const pToHit3 = (100 / (ty + targetTERP));
+    const yToHit3 = (1/pe)*100 - targetTERP;
+    let reading;
+    if(terp >= targetTERP) {
+      reading = `<strong>Reading:</strong> ERP is at or above the historical normal +3% threshold — equities are competitive with bonds on yield.`;
+    } else if (terp >= 0) {
+      reading = `<strong>Reading:</strong> ERP is positive but compressed (below the +3% normal). To restore +3% Trailing ERP, P/E would need to fall to <strong>${pToHit3.toFixed(1)}</strong> or the 10Y to <strong>${yToHit3.toFixed(2)}%</strong>.`;
+    } else {
+      reading = `<strong>Reading:</strong> ERP is negative — equities yield less than risk-free Treasurys. To restore +3% Trailing ERP, P/E would need to fall to about <strong>${pToHit3.toFixed(1)}</strong>, or the 10Y to about <strong>${yToHit3.toFixed(2)}%</strong>.`;
+    }
+    calcInsight.innerHTML = reading;
+  }
+  [calcPE, calcCAPE, calc10Y].forEach(el => el.addEventListener('input', updateCalc));
+  window.resetCalc = function(){
+    calcPE.value = 25.76; calcCAPE.value = 42.66; calc10Y.value = 4.45;
+    updateCalc();
+  };
+  updateCalc();
+
+  // ─── Sensitivity heatmap ─────────────────────────────────────
+  // EPS columns span trailing $294.25 → forward $359.81 → upside.
+  const epsScenarios = [294, 320, 340, 360, 390];
+  const peByScenario = { bear: 15, base: 22, bull: 27 };
+  const sensHeatmap = document.getElementById('sensHeatmap');
+  const sensInsight = document.getElementById('sensInsight');
+  function buildHeatmap(scenario){
+    const pe = peByScenario[scenario];
+    const peRows = scenario === 'bear' ? [12,15,18,21] : (scenario === 'base' ? [18,21,24,27] : [22,25,28,31]);
+    let html = '<div class="heat-row">';
+    html += '<div class="heat-cell header">P/E ↓ EPS →</div>';
+    epsScenarios.forEach(e => html += `<div class="heat-cell header">$${e}</div>`);
+    html += '</div>';
+    peRows.forEach(p => {
+      html += '<div class="heat-row">';
+      html += `<div class="heat-cell rowhead">${p}x</div>`;
+      epsScenarios.forEach(e => {
+        const fv = p * e;
+        const change = ((fv - 7580.06) / 7580.06) * 100;
+        let bg;
+        if(change >= 10) bg = 'rgba(0,147,108,0.45)';
+        else if(change >= 0) bg = 'rgba(0,147,108,0.18)';
+        else if(change >= -15) bg = 'rgba(216,160,0,0.22)';
+        else if(change >= -30) bg = 'rgba(224,123,45,0.30)';
+        else bg = 'rgba(199,46,11,0.36)';
+        html += `<div class="heat-cell" style="background:${bg}" title="P/E ${p}x · EPS $${e} → S&P ${Math.round(fv).toLocaleString()} (${change>=0?'+':''}${change.toFixed(1)}%)">${Math.round(fv).toLocaleString()}<br><span style="font-size:9px;color:var(--muted);font-weight:500">${change>=0?'+':''}${change.toFixed(0)}%</span></div>`;
+      });
+      html += '</div>';
+    });
+    sensHeatmap.innerHTML = html;
+    let insightText;
+    if(scenario === 'bear'){
+      insightText = '<strong>Bear scenario:</strong> A reversion to a P/E of 15 (post-1980 long-term mean) on flat trailing EPS of $294 implies an S&amp;P fair value near 4,410 — a drawdown of roughly 42%. Multiple contraction alone is the largest downside lever.';
+    } else if(scenario === 'base'){
+      insightText = '<strong>Base scenario:</strong> A P/E of 22 (the 10Y median) on modest EPS growth to $320 implies an S&amp;P fair value of ~7,040 — a 7% drawdown from current levels. This is the "mean-reversion without recession" outcome.';
+    } else {
+      insightText = '<strong>Bull scenario:</strong> If multiples stay stretched at 27x <em>and</em> forward EPS of about $360 is realized, fair value lands at ~9,720 — roughly +28% upside from today. This requires elevated multiples to persist <em>and</em> +22% EPS growth.';
+    }
+    sensInsight.innerHTML = insightText;
+  }
+  document.querySelectorAll('.scen-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.scen-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      buildHeatmap(b.dataset.scenario);
+    });
+  });
+  buildHeatmap('bear');
+
+  // ─── Allocation profiles ─────────────────────────────────────
+  const allocProfiles = {
+    defensive: {
+      title: 'Strategic Asset Allocation · Defensive (Recommended)',
+      insight: '<strong>Defensive profile:</strong> Underweight broad equities, overweight high-quality fixed income, elevated cash cushion for optionality. Selective long limited to high-quality factor exposures.',
+      rows: [
+        { name: 'Broad Equities (S&P 500)', desc: 'Reduce to lower band of policy target. Extremely low/negative ERP; significant downside risk from multiple contraction.', stance: 'UW', target: 30 },
+        { name: 'High-Quality Fixed Income', desc: 'With 10Y at 4.45% and short-end higher, fixed income offers highly competitive risk-adjusted returns.', stance: 'OW', target: 45 },
+        { name: 'Selective Growth / Quality', desc: 'Focus on mega-cap firms with deep moats, strong cash flows, and genuine secular growth.', stance: 'N', target: 10 },
+        { name: 'Cash & Short-Term Equiv.', desc: 'Yields above 4.45% in a high-rate environment; hedges against sudden liquidity shocks.', stance: 'OW', target: 15 }
+      ]
+    },
+    neutral: {
+      title: 'Strategic Asset Allocation · Neutral',
+      insight: '<strong>Neutral profile:</strong> Benchmark-weight allocations with marginal tilts. Suitable for mandates that cannot deviate materially from policy targets, but still acknowledges elevated risk.',
+      rows: [
+        { name: 'Broad Equities (S&P 500)', desc: 'Hold benchmark weight but rebalance proceeds away from concentrated mega-cap exposure.', stance: 'N', target: 50 },
+        { name: 'High-Quality Fixed Income', desc: 'Modest overweight to capture attractive yields without committing to a deep risk-off stance.', stance: 'OW', target: 35 },
+        { name: 'Selective Growth / Quality', desc: 'Quality tilt within equities; reduce passive index exposure in favor of high-FCF names.', stance: 'N', target: 8 },
+        { name: 'Cash & Short-Term Equiv.', desc: 'Maintain standard cash buffer; optionality for tactical adds on volatility.', stance: 'N', target: 7 }
+      ]
+    },
+    aggressive: {
+      title: 'Strategic Asset Allocation · Aggressive (Not recommended by this report)',
+      insight: '<strong>Aggressive profile:</strong> Higher equity exposure than the report recommends. Only appropriate for very long horizons and explicit tolerance of -30%+ drawdowns. The negative ERP signal argues against this stance.',
+      rows: [
+        { name: 'Broad Equities (S&P 500)', desc: 'Higher allocation despite valuation warnings — requires conviction that "this time is different".', stance: 'OW', target: 65 },
+        { name: 'High-Quality Fixed Income', desc: 'Underweight; opportunity cost of holding bonds in a growth-up scenario.', stance: 'UW', target: 20 },
+        { name: 'Selective Growth / Quality', desc: 'Lean into AI/quality growth themes; embrace concentration in mega-caps.', stance: 'OW', target: 12 },
+        { name: 'Cash & Short-Term Equiv.', desc: 'Minimal cash drag; fully invested posture.', stance: 'UW', target: 3 }
+      ]
+    }
+  };
+
+  const allocBody = document.getElementById('allocBody');
+  const allocTitle = document.getElementById('allocTitle');
+  const allocInsight = document.getElementById('allocInsight');
+  let allocChart = null;
+
+  function renderAlloc(profile){
+    const data = allocProfiles[profile];
+    allocTitle.textContent = data.title;
+    let html = '';
+    data.rows.forEach(r => {
+      const stanceClass = r.stance;
+      const stancePill = r.stance === 'UW' ? 'pill-bad' : (r.stance === 'OW' ? 'pill-ok' : 'pill-neutral');
+      const stanceLabel = r.stance === 'UW' ? 'Underweight' : (r.stance === 'OW' ? 'Overweight' : 'Neutral');
+      html += `<div class="alloc-row">
+        <div>
+          <div class="alloc-name">${r.name}</div>
+          <div class="alloc-desc">${r.desc}</div>
+        </div>
+        <div><span class="pill ${stancePill}">${stanceLabel}</span></div>
+        <div>
+          <div class="alloc-bar-wrap"><div class="alloc-bar ${stanceClass}" style="width:${Math.min(r.target*1.5, 100)}%"></div></div>
+          <div style="font-size:11px; color:var(--muted); margin-top:4px; text-align:center;">${r.target}% target</div>
+        </div>
+      </div>`;
+    });
+    allocBody.innerHTML = html;
+    allocInsight.innerHTML = data.insight;
+
+    // Doughnut chart
+    const ctx = document.getElementById('allocChart');
+    if(allocChart) allocChart.destroy();
+    allocChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: data.rows.map(r => r.name),
+        datasets: [{
+          data: data.rows.map(r => r.target),
+          backgroundColor: [RED, GREEN, NAVY, '#888'],
+          borderColor: '#fff',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { position:'right', labels: { boxWidth: 10, padding: 10, font: { size: 11 } } },
+          tooltip: { callbacks: { label: c => `${c.label}: ${c.parsed}%` } }
+        },
+        cutout: '60%'
+      }
+    });
+  }
+
+  document.querySelectorAll('#allocToggle button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#allocToggle button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      renderAlloc(b.dataset.profile);
+    });
+  });
+  renderAlloc('defensive');
+
+})();
+</script>
+<script src="../assets/js/live_data.js"></script>
+</body>
+</html>
