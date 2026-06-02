@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Economist 风格范本 · Sample</title>
+<style>
+  :root{
+    --red:#E3120B;            /* 报头砖红 */
+    --ink:#121212;            /* 正文近黑 */
+    --ink-soft:#3a3a3a;
+    --muted:#6b6b6b;
+    --rule:#d9d4cb;           /* 细分隔线 */
+    --paper:#fffdf8;          /* 微暖纸白 */
+    --panel:#f4f1ea;          /* 浅色信息块 */
+    --blue:#114b5f;           /* 数据强调蓝 */
+    --serif: Georgia, "Times New Roman", "Songti SC", "Noto Serif SC", serif;
+    --sans: "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:#e8e4db; color:var(--ink);
+    font-family:var(--serif); line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{
+    max-width:760px; margin:28px auto; background:var(--paper);
+    padding:0 56px 56px; border:1px solid #ccc7bd;
+    box-shadow:0 2px 14px rgba(0,0,0,.10);
+  }
+
+  /* ---------- 报头 ---------- */
+  .masthead{
+    border-bottom:3px solid var(--red); padding:22px 0 10px;
+    display:flex; align-items:flex-end; justify-content:space-between;
+  }
+  .brand{
+    background:var(--red); color:#fff; font-family:var(--serif);
+    font-weight:700; font-size:21px; letter-spacing:.3px;
+    padding:7px 12px 6px; line-height:1; white-space:nowrap;
+  }
+  .brand span{font-style:italic; font-weight:400;}
+  .issue{
+    font-family:var(--sans); font-size:11px; color:var(--muted);
+    text-align:right; text-transform:uppercase; letter-spacing:.08em; line-height:1.5;
+  }
+  .kicker-bar{
+    font-family:var(--sans); font-size:11px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--muted);
+    border-bottom:1px solid var(--rule); padding:8px 0; margin-bottom:26px;
+    display:flex; justify-content:space-between;
+  }
+
+  /* ---------- 标题区 ---------- */
+  .section-tag{
+    display:inline-block; font-family:var(--sans); font-size:11px; font-weight:700;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--red);
+    border-top:2px solid var(--red); padding-top:5px; margin-bottom:12px;
+  }
+  h1.headline{
+    font-size:34px; line-height:1.16; font-weight:700; margin:0 0 10px;
+    letter-spacing:-.01em;
+  }
+  .standfirst{
+    font-size:17px; color:var(--ink-soft); font-style:italic;
+    margin:0 0 22px; line-height:1.5;
+  }
+  .byline{
+    font-family:var(--sans); font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--muted);
+    border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+    padding:9px 0; margin-bottom:26px;
+  }
+
+  /* ---------- 正文 ---------- */
+  .body p{margin:0 0 16px; font-size:16px;}
+  .body p:first-of-type::first-letter{
+    float:left; font-size:62px; line-height:.82; font-weight:700;
+    padding:6px 10px 0 0; color:var(--red);
+  }
+  .body h2{
+    font-family:var(--sans); font-size:13px; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--ink);
+    margin:30px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--rule);
+  }
+  .body a{color:var(--blue); text-decoration:none; border-bottom:1px solid var(--blue);}
+
+  /* ---------- 拉引语 ---------- */
+  blockquote{
+    margin:26px 0; padding:4px 0 4px 20px; border-left:3px solid var(--red);
+    font-size:22px; line-height:1.34; font-weight:700; color:var(--ink);
+  }
+  blockquote cite{
+    display:block; font-family:var(--sans); font-size:11px; font-weight:400;
+    font-style:normal; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); margin-top:8px;
+  }
+
+  /* ---------- 数据表 ---------- */
+  .exhibit{margin:30px 0; border-top:2px solid var(--ink);}
+  .exhibit-cap{
+    font-family:var(--sans); font-size:12px; padding:8px 0 4px;
+  }
+  .exhibit-cap b{font-weight:700;}
+  .exhibit-cap .sub{color:var(--muted); font-weight:400;}
+  table{width:100%; border-collapse:collapse; font-family:var(--sans); font-size:13px;}
+  thead th{
+    text-align:right; font-weight:700; color:var(--muted); font-size:11px;
+    letter-spacing:.04em; text-transform:uppercase;
+    border-bottom:1px solid var(--rule); padding:8px 6px;
+  }
+  thead th:first-child{text-align:left;}
+  tbody td{padding:8px 6px; text-align:right; border-bottom:1px solid #ece8e0;}
+  tbody td:first-child{text-align:left; font-weight:600; color:var(--ink);}
+  tbody tr:last-child td{border-bottom:none;}
+  .pos{color:#0a7d3c;}
+  .neg{color:var(--red);}
+  .src{font-family:var(--sans); font-size:10.5px; color:var(--muted);
+    margin-top:6px; letter-spacing:.02em;}
+
+  /* ---------- 条形图(纯 CSS)---------- */
+  .barchart{margin:14px 0 4px; font-family:var(--sans);}
+  .barrow{display:flex; align-items:center; font-size:12px; margin:6px 0;}
+  .barrow .lab{width:96px; color:var(--ink); flex:none;}
+  .bartrack{flex:1; background:#ece8e0; height:15px; position:relative;}
+  .barfill{height:100%; background:var(--red);}
+  .barrow .val{width:54px; text-align:right; flex:none; color:var(--muted);}
+
+  /* ---------- 信息块 ---------- */
+  .panel{
+    background:var(--panel); border-top:3px solid var(--red);
+    padding:18px 20px; margin:28px 0; font-size:15px;
+  }
+  .panel h3{
+    margin:0 0 10px; font-family:var(--sans); font-size:12px; font-weight:700;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--red);
+  }
+  .panel p{margin:0 0 8px;}
+  .panel p:last-child{margin:0;}
+
+  /* ---------- 页脚 ---------- */
+  .foot{
+    margin-top:34px; padding-top:14px; border-top:3px solid var(--red);
+    font-family:var(--sans); font-size:11px; color:var(--muted);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .note{
+    background:#fff7d6; border:1px solid #e6d98a; font-family:var(--sans);
+    font-size:11px; color:#6b5d18; padding:6px 12px; margin:18px 0 0;
+    letter-spacing:.02em;
+  }
+  @media (max-width:640px){
+    .sheet{padding:0 22px 36px; margin:0;}
+    h1.headline{font-size:27px;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- 报头 -->
+  <div class="masthead">
+    <div class="brand">The <span>Economist</span></div>
+    <div class="issue">范本 / Specimen<br>2026年6月2日</div>
+  </div>
+  <div class="kicker-bar">
+    <span>Finance &amp; economics</span>
+    <span>排版样式参考 · 非真实数据</span>
+  </div>
+
+  <!-- 标题 -->
+  <span class="section-tag">宏观 · 利率</span>
+  <h1 class="headline">耐心的代价:当降息预期一再落空</h1>
+  <p class="standfirst">市场已第三次推迟对首次降息的押注。这对久期、对周期股、对仍以现金为王的配置,意味着什么?</p>
+  <div class="byline">研究备忘 · 示例署名 | 货币与利率组</div>
+
+  <!-- 正文 -->
+  <div class="body">
+    <p>过去六个月里,投资者学会了一个朴素的道理:中央银行说"依赖数据",通常意味着"比你想的更久"。每一次通胀数据的小幅反弹,都足以让利率期货市场把首次降息的时点向后推移一个季度——而每推移一次,长久期资产就要重新支付一次耐心的代价。</p>
+
+    <p>这并非新鲜的故事,但它的分布正在改变。真正承压的不是指数本身,而是指数内部的结构:高估值、远期现金流为主的板块,对贴现率的边际变化最为敏感。</p>
+
+    <blockquote>
+      "利率不是背景音。在当前点位,它是决定板块相对表现的第一变量。"
+      <cite>— 范本拉引语</cite>
+    </blockquote>
+
+    <h2>市场怎么定价</h2>
+    <p>下表为<strong>示例数据</strong>,仅用于演示《经济学人》式数据表的排版:右对齐的数字、克制的红绿、小字体的来源行。真实仪表盘应由 <a href="#">live_data.js</a> 注入。</p>
+
+    <!-- 数据表 -->
+    <div class="exhibit">
+      <div class="exhibit-cap"><b>主要资产年内回报</b> &nbsp;<span class="sub">%, 截至范本日</span></div>
+      <table>
+        <thead>
+          <tr><th>资产</th><th>1日</th><th>1周</th><th>年内</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>标普500</td><td class="pos">+0.4</td><td class="pos">+1.2</td><td class="pos">+8.7</td></tr>
+          <tr><td>纳斯达克100</td><td class="pos">+0.6</td><td class="pos">+1.9</td><td class="pos">+11.4</td></tr>
+          <tr><td>罗素2000</td><td class="neg">−0.3</td><td class="neg">−0.8</td><td class="neg">−2.1</td></tr>
+          <tr><td>10年期美债收益率</td><td class="pos">+3bp</td><td class="pos">+11bp</td><td class="pos">+42bp</td></tr>
+          <tr><td>黄金</td><td class="pos">+0.2</td><td class="pos">+0.9</td><td class="pos">+14.3</td></tr>
+          <tr><td>美元指数 DXY</td><td class="neg">−0.1</td><td class="pos">+0.5</td><td class="pos">+3.6</td></tr>
+        </tbody>
+      </table>
+      <div class="src">来源:范本示例数据 · The Economist 样式</div>
+    </div>
+
+    <h2>板块敏感度</h2>
+    <p>纯 CSS 条形图——无需任何图表库,适合自包含的单文件研报。条宽即数值,颜色即方向。</p>
+
+    <!-- 条形图 -->
+    <div class="exhibit" style="border-top:none;">
+      <div class="exhibit-cap"><b>板块年内回报</b> &nbsp;<span class="sub">%, 示例</span></div>
+      <div class="barchart">
+        <div class="barrow"><span class="lab">科技</span><div class="bartrack"><div class="barfill" style="width:92%"></div></div><span class="val">+18.2</span></div>
+        <div class="barrow"><span class="lab">通讯服务</span><div class="bartrack"><div class="barfill" style="width:68%"></div></div><span class="val">+13.1</span></div>
+        <div class="barrow"><span class="lab">金融</span><div class="bartrack"><div class="barfill" style="width:46%"></div></div><span class="val">+8.4</span></div>
+        <div class="barrow"><span class="lab">医疗</span><div class="bartrack"><div class="barfill" style="width:20%"></div></div><span class="val">+3.2</span></div>
+        <div class="barrow"><span class="lab">公用事业</span><div class="bartrack"><div class="barfill" style="width:10%;background:#9a9488"></div></div><span class="val">−1.6</span></div>
+      </div>
+      <div class="src">来源:范本示例数据</div>
+    </div>
+
+    <!-- 信息块 -->
+    <div class="panel">
+      <h3>一图读懂</h3>
+      <p>当首次降息被推迟一个季度,长久期成长股相对价值股通常跑输——历史上这一缺口的中位数约为数个百分点(示例表述)。</p>
+      <p>对以指数为主的配置者而言,真正的决策不是"买哪只股",而是"久期暴露要不要降"。</p>
+    </div>
+
+    <h2>结论</h2>
+    <p>耐心从来不是免费的。只要利率维持在限制性水平,内部分化就会持续:盈利质量、自由现金流、对再融资的依赖度,这些基本面的差异会被放大。对宏观配置者来说,与其预测降息的确切月份,不如管理好对它的暴露。</p>
+  </div>
+
+  <div class="note">⚠ 本页所有数字均为排版演示用的示例数据,不构成任何行情或投资参考。</div>
+
+  <!-- 页脚 -->
+  <div class="foot">
+    <span>The Economist · 样式范本</span>
+    <span>砖红报头 #E3120B · 衬线正文 · 严肃克制</span>
+  </div>
+
+</div>
+</body>
+</html>

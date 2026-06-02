@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navy Dashboard Style · Specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5C; --navy-2:#16314E; --navy-3:#0F2438;
+    --red:#C72E0B; --red-soft:#FFF4F1;
+    --bg:#F4F6F8; --surface:#FFFFFF; --surface-2:#F8FAFB;
+    --border:#E6E9ED; --border-2:#D4D9E0;
+    --ink:#18222E; --ink-2:#5A6675; --ink-3:#8B95A3;
+    --blue:#1E6FD0; --teal:#08808F; --amber:#B7791F; --purple:#6B4FA3; --green:#0B8A63;
+    --radius:14px; --radius-sm:9px;
+    --shadow:0 1px 2px rgba(20,40,65,.05), 0 4px 14px rgba(20,40,65,.06);
+    --shadow-lg:0 6px 16px rgba(20,40,65,.10), 0 14px 40px rgba(20,40,65,.10);
+    --font:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font); background:var(--bg); color:var(--ink);
+    font-size:14px; line-height:1.6; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  .brandbar{ height:3px; background:var(--red); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    background:
+      radial-gradient(900px 340px at 88% -120px, rgba(199,46,11,.30), transparent 60%),
+      linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 55%, var(--navy-3) 100%);
+    color:#fff; position:relative; overflow:hidden;
+  }
+  .hero::after{
+    content:''; position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size:34px 34px;
+    mask-image:linear-gradient(180deg, rgba(0,0,0,.6), transparent 75%); pointer-events:none;
+  }
+  .hero-inner{ max-width:760px; margin:0 auto; padding:34px 40px 30px; position:relative; z-index:1; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:7px;
+    background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.22);
+    border-radius:100px; padding:4px 13px;
+    font-size:11px; font-weight:600; letter-spacing:.6px; text-transform:uppercase;
+    color:#EAF1F8; margin-bottom:14px;
+  }
+  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:#48E0B0; animation:pulse 2.4s infinite; }
+  @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(72,224,176,.55);} 70%{box-shadow:0 0 0 7px rgba(72,224,176,0);} 100%{box-shadow:0 0 0 0 rgba(72,224,176,0);} }
+  .hero h1{ font-size:30px; font-weight:800; letter-spacing:-.6px; line-height:1.1; color:#fff; }
+  .hero h1 .accent{ color:#FF8A6B; }
+  .hero p{ margin-top:9px; font-size:13.5px; color:rgba(255,255,255,.74); }
+
+  /* ---------- main ---------- */
+  .main{ max-width:760px; margin:0 auto; padding:26px 40px 56px; }
+
+  .section-head{ display:flex; align-items:baseline; gap:12px; margin:30px 0 14px; }
+  .section-head:first-of-type{ margin-top:4px; }
+  .section-num{ font-size:11px; font-weight:800; color:#fff; background:var(--navy); border-radius:6px; padding:2px 8px; letter-spacing:.5px; }
+  .section-title{ font-size:15px; font-weight:700; color:var(--ink); letter-spacing:-.2px; }
+  .section-rule{ flex:1; height:1px; background:var(--border); align-self:center; }
+
+  /* stat row */
+  .stat-row{ display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:12px; margin:10px 0 6px; }
+  .stat{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); box-shadow:var(--shadow); padding:14px 16px; }
+  .stat .l{ font-size:10.5px; text-transform:uppercase; letter-spacing:.5px; color:var(--ink-3); margin-bottom:5px; }
+  .stat .v{ font-size:20px; font-weight:800; line-height:1.1; }
+  .stat .v.up{ color:var(--green); } .stat .v.down{ color:var(--red); }
+  .stat .s{ font-size:11px; color:var(--ink-2); margin-top:4px; }
+
+  /* body copy */
+  .body p{ margin:0 0 14px; font-size:14px; color:var(--ink-2); }
+  .body p strong{ color:var(--ink); }
+
+  /* card */
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px 20px; margin:18px 0; position:relative; overflow:hidden; }
+  .card::before{ content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--blue); }
+  .card h3{ font-size:15px; font-weight:700; margin-bottom:8px; }
+  .card p{ font-size:13px; color:var(--ink-2); line-height:1.6; }
+
+  /* data table */
+  .exhibit{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px 18px; margin:18px 0; }
+  .exhibit-cap{ font-size:12px; font-weight:700; color:var(--ink); margin-bottom:2px; }
+  .exhibit-cap .sub{ color:var(--ink-3); font-weight:500; }
+  table{ width:100%; border-collapse:collapse; font-size:13px; margin-top:10px; }
+  thead th{ text-align:right; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--ink-3); border-bottom:1px solid var(--border); padding:8px 6px; }
+  thead th:first-child{ text-align:left; }
+  tbody td{ padding:9px 6px; text-align:right; border-bottom:1px solid var(--surface-2); }
+  tbody td:first-child{ text-align:left; font-weight:600; color:var(--ink); }
+  tbody tr:last-child td{ border-bottom:none; }
+  .pos{ color:var(--green); } .neg{ color:var(--red); }
+  .src{ font-size:10.5px; color:var(--ink-3); margin-top:8px; }
+
+  /* bar chart */
+  .barchart{ margin:12px 0 2px; }
+  .barrow{ display:flex; align-items:center; font-size:12px; margin:7px 0; color:var(--ink-2); }
+  .barrow .lab{ width:110px; flex:none; color:var(--ink); }
+  .bartrack{ flex:1; background:var(--surface-2); height:16px; border-radius:5px; overflow:hidden; }
+  .barfill{ height:100%; background:var(--blue); border-radius:5px; }
+  .barrow .val{ width:54px; text-align:right; flex:none; }
+
+  /* insight box */
+  .insight{ background:var(--red-soft); border:1px solid #FFD9CC; border-left:3px solid var(--red); border-radius:var(--radius-sm); padding:13px 16px; margin:18px 0; font-size:12.5px; color:var(--ink-2); line-height:1.6; }
+  .insight strong{ color:var(--ink); }
+
+  /* footer */
+  .foot{ margin-top:30px; padding:16px 18px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); box-shadow:var(--shadow); font-size:11.5px; color:var(--ink-3); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  .note{ background:#FFF7D6; border:1px solid #E6D98A; border-radius:var(--radius-sm); font-size:11px; color:#6b5d18; padding:8px 13px; margin-top:14px; }
+
+  @media (max-width:640px){
+    .hero-inner,.main{ padding-left:22px; padding-right:22px; }
+    .hero h1{ font-size:24px; }
+  }
+</style>
+</head>
+<body>
+<div class="brandbar"></div>
+
+<!-- hero -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow"><span class="dot"></span>Style Template · Specimen</span>
+    <h1>Navy Dashboard <span class="accent">Style</span></h1>
+    <p>The modern fintech-dashboard look: Inter throughout, a navy gradient hero, a red brand accent, soft shadows and rounded cards. Sample data only — not a market reference.</p>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <span class="section-title">Headline numbers</span>
+    <span class="section-rule"></span>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="l">S&amp;P 500 · YTD</div><div class="v up">+8.7%</div><div class="s">Sample</div></div>
+    <div class="stat"><div class="l">10-Yr Yield</div><div class="v down">4.46%</div><div class="s">Cycle high</div></div>
+    <div class="stat"><div class="l">Brent Crude</div><div class="v down">$120+</div><div class="s">Sample</div></div>
+    <div class="stat"><div class="l">Recession Odds</div><div class="v">30%</div><div class="s">12-mo, sample</div></div>
+  </div>
+
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <span class="section-title">Narrative &amp; cards</span>
+    <span class="section-rule"></span>
+  </div>
+  <div class="body">
+    <p>This specimen shows the original dashboard aesthetic: <strong>Inter</strong> as the single typeface across headings, body and data, paired with a navy gradient hero and a coral-red accent. Cards carry a top accent bar, soft shadows and a 14px corner radius.</p>
+  </div>
+  <div class="card">
+    <h3>Card component</h3>
+    <p>Rounded surface, hairline border, soft shadow, and a colored top rule that signals category. The hover lift and category accents (blue, teal, amber, purple, green) define the visual system.</p>
+  </div>
+
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <span class="section-title">Data exhibit</span>
+    <span class="section-rule"></span>
+  </div>
+  <div class="exhibit">
+    <div class="exhibit-cap">Major Asset Returns <span class="sub">· %, sample</span></div>
+    <table>
+      <thead><tr><th>Asset</th><th>1 Day</th><th>1 Week</th><th>YTD</th></tr></thead>
+      <tbody>
+        <tr><td>S&amp;P 500</td><td class="pos">+0.4</td><td class="pos">+1.2</td><td class="pos">+8.7</td></tr>
+        <tr><td>Nasdaq 100</td><td class="pos">+0.6</td><td class="pos">+1.9</td><td class="pos">+11.4</td></tr>
+        <tr><td>Russell 2000</td><td class="neg">−0.3</td><td class="neg">−0.8</td><td class="neg">−2.1</td></tr>
+        <tr><td>Gold</td><td class="pos">+0.2</td><td class="pos">+0.9</td><td class="pos">+14.3</td></tr>
+      </tbody>
+    </table>
+    <div class="src">Source: specimen sample data · Navy dashboard style</div>
+  </div>
+
+  <div class="exhibit">
+    <div class="exhibit-cap">Sector Returns <span class="sub">· % YTD, sample</span></div>
+    <div class="barchart">
+      <div class="barrow"><span class="lab">Technology</span><div class="bartrack"><div class="barfill" style="width:92%"></div></div><span class="val">+18.2</span></div>
+      <div class="barrow"><span class="lab">Comm. Services</span><div class="bartrack"><div class="barfill" style="width:68%"></div></div><span class="val">+13.1</span></div>
+      <div class="barrow"><span class="lab">Financials</span><div class="bartrack"><div class="barfill" style="width:46%"></div></div><span class="val">+8.4</span></div>
+      <div class="barrow"><span class="lab">Utilities</span><div class="bartrack"><div class="barfill" style="width:10%;background:#9aa3ad"></div></div><span class="val">−1.6</span></div>
+    </div>
+    <div class="src">Source: specimen sample data</div>
+  </div>
+
+  <div class="insight"><strong>The bottom line:</strong> the navy/Inter system is the "modern SaaS dashboard" look — clean sans-serif, soft shadows, rounded cards and a single bold accent. Best when the page is interactive and screen-first rather than print-style.</div>
+
+  <div class="note">⚠ All figures here are sample data for layout demonstration only — not a quote or investment reference.</div>
+
+  <div class="foot">
+    <span>Navy Dashboard · Style Template</span>
+    <span>Inter typeface · navy #1B3A5C · coral-red #C72E0B accent</span>
+  </div>
+
+</main>
+</body>
+</html>
