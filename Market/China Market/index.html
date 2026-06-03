@@ -278,13 +278,13 @@
   .idx-row-label{font-size:10.5px;color:var(--ink-3);letter-spacing:1.5px}
   .idx-row-value{font-size:13.5px;color:var(--ink);font-weight:500;line-height:1.5}
 
-  .idx-rrr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-  .idx-rrr-cell{background:#FAF8F2;border:1px solid var(--line);padding:10px 12px;text-align:center}
+  .idx-rrr{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+  .idx-rrr-cell{background:#FAF8F2;border:1px solid var(--line);padding:10px 8px;text-align:center}
   .idx-rrr-label{font-size:11px;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px}
   .idx-rrr-value{font-family:'Noto Serif SC';font-weight:700;font-size:15px;color:var(--up-deep)}
 
   .idx-purpose-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media(max-width:680px){.idx-purpose-grid{grid-template-columns:1fr} .idx-rrr{grid-template-columns:1fr}}
+  @media(max-width:680px){.idx-purpose-grid{grid-template-columns:1fr} .idx-rrr{grid-template-columns:repeat(2,1fr)}}
   .idx-purpose-cell{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--gold);padding:12px 14px}
   .idx-purpose-cell.investors{border-top-color:var(--up)}
   .idx-purpose-cell.macro{border-top-color:var(--navy)}
@@ -1337,243 +1337,316 @@ window.addEventListener('scroll', ()=>{
 /* ========== 指数百科 · INDEX ENCYCLOPEDIA  · 弹窗系统 ============= */
 /* ====================================================================== */
 const INDEX_INFO = {
+  /* === 宽基 === */
   shanghai: {
     name:'上证综合指数', short:'上证综指', code:'000001', cat:'broad',
     issuer:'上海证券交易所', type:'宽基 · 大盘价值',
     universe:'上交所全部 A 股 + 红筹存托凭证（剔除 ST / *ST）',
     sample:'数千只（全市场样本）',
-    industry:'金融、能源、地产等传统板块权重高（银行、保险、石油、电力）；少数大型国企集中',
+    industry:'金融、能源、地产等传统板块权重高；少数大型国企集中',
     style:'大盘价值；波动较低、防御性强',
-    growth:'低', volatility:'低', yieldR:'高',
-    purpose:'反映上交所整体表现；防御性配置工具；宏观防御周期通常表现抗跌',
+    growth:'低', volatility:'低', liquidity:'最高', elasticity:'低', yieldR:'高',
+    strategy:'价值 / 防御',
     investors:'稳健型、价值型',
-    repETF:'上证指数 ETF（场内追踪标的较多，通常以沪深 300 / 上证 50 作为蓝筹替代）',
-    note:'权重集中于少数大型国企，行业结构偏传统经济（能源、地产、金融）',
-    macro:'经济下行 / 紧缩末期 / 利率上行预期下防御阶段表现稳健'
+    repETF:'沪深 300 替代追踪（上证综指 ETF 较少）',
+    note:'权重集中于大型国企，行业结构偏传统经济；防御抗跌',
+    macro:'经济下行 / 紧缩末期 / 避险阶段表现稳健'
   },
   shenzhen: {
     name:'深证成份指数', short:'深证成指', code:'399001', cat:'broad',
     issuer:'深圳证券交易所', type:'宽基 · 中盘成长',
-    universe:'深交所主板 A 股（非 ST、上市 ≥ 半年）',
+    universe:'深交所主板 A 股（非 ST 且上市 ≥ 半年）',
     sample:'500 只规模大、流动性好的股票',
-    industry:'民营 + 成长性企业为主：电子、通信、医疗居多；金融权重低',
+    industry:'民营 / 制造 / 电子 / 通信 / 医疗居多；金融权重低',
     style:'中盘成长，弹性大于上证综指',
-    growth:'中-高', volatility:'中', yieldR:'低',
-    purpose:'代表深市主板走势；中小市值成长型企业配置工具',
-    investors:'平衡型 + 部分成长型',
-    repETF:'深证成指 ETF（159901 等）',
-    note:'深圳金融股偏少，民营 / 制造业 / 科技板块集中；对市场情绪更敏感',
-    macro:'景气扩张、流动性宽松、出口好转期表现较强'
+    growth:'中-高', volatility:'中', liquidity:'高', elasticity:'中', yieldR:'低',
+    strategy:'成长配置 / 风格扩散',
+    investors:'平衡型、成长型',
+    repETF:'深证成指 ETF (159901)',
+    note:'对市场情绪更敏感；弹性大于上证综指',
+    macro:'景气扩张 + 出口好转期表现较强'
   },
   chinext: {
     name:'创业板指', short:'创业板指', code:'399006', cat:'broad',
     issuer:'深圳证券交易所', type:'宽基 · 大盘成长',
     universe:'深交所创业板非 ST 股（上市 > 6 月）',
     sample:'100 只（样本满 100 后锁定）',
-    industry:'新能源、医药、科技等"新经济"为主；高估值高成长',
+    industry:'新能源 / 医药 / 科技等"新经济"为主；高估值高成长',
     style:'大盘成长，弹性高、波动大',
-    growth:'很高', volatility:'很高', yieldR:'低',
-    purpose:'把握中国新兴产业机会；阶段性进攻 / 趋势跟随',
+    growth:'很高', volatility:'很高', liquidity:'中', elasticity:'很高', yieldR:'低',
+    strategy:'成长主线 / 趋势跟随',
     investors:'高风险偏好型；成长主线',
     repETF:'创业板 ETF (159915)、创业板 50 ETF (159949)',
-    note:'反映创新型中小盘股；牛市领涨、熊市跌幅大；震荡市波动最剧烈',
-    macro:'宽松货币 + 风险偏好上升 + 产业政策（半导体 / 新能源等）刺激'
+    note:'反映创新型中小盘股；牛市领涨、熊市跌幅大',
+    macro:'宽松货币 + 风险偏好上升 + 产业政策刺激'
   },
   star50: {
     name:'科创板 50 指数', short:'科创 50', code:'000688', cat:'broad',
     issuer:'上海证券交易所', type:'硬科技 · 大盘成长',
     universe:'科创板上市公司中市值最大、流动性最好的 50 只',
     sample:'50 只（单只 ≤ 10%，前五合计 ≤ 40%）',
-    industry:'半导体、集成电路、高端制造、新材料、AI 等"硬科技"',
+    industry:'半导体 / 集成电路 / 高端制造 / 新材料 / AI 等"硬科技"',
     style:'硬科技成长；估值溢价高、Beta 极大',
-    growth:'极高', volatility:'极高', yieldR:'低',
-    purpose:'科创板核心龙头跟踪；纯科技主题（半导体 / 算力周期）进攻配置',
+    growth:'极高', volatility:'极高', liquidity:'中', elasticity:'很高', yieldR:'低',
+    strategy:'科技主题进攻',
     investors:'超高风险偏好型；科技主题',
     repETF:'科创 50 ETF (588000)、科创板 50 ETF (588080)',
     note:'比创业板更偏硬科技、大市值；不适合作为防御配置',
-    macro:'美联储转鸽 + 全球流动性宽松 + 半导体 / AI 周期上行时表现极强'
+    macro:'美联储转鸽 + 全球流动性宽松 + 半导体 / AI 周期上行'
   },
   csi300: {
     name:'沪深 300 指数', short:'沪深 300', code:'000300', cat:'broad',
     issuer:'中证指数公司', type:'宽基 · 大盘均衡',
     universe:'沪深市场全部 A 股（市值 + 流动性筛选）',
     sample:'300 只（沪 / 深 ≈ 6:4 分布）',
-    industry:'大盘蓝筹为主：银行、券商、地产、能源、白酒等',
-    style:'大盘均衡；估值居中；单只 ≤ 10%，前十合计 ~20%',
-    growth:'中', volatility:'中', yieldR:'高',
-    purpose:'A 股核心资产代表；长期核心仓位 / 大盘风格轮动基石',
-    investors:'多数投资者（适合作为核心仓位）',
+    industry:'大盘蓝筹：银行 / 券商 / 地产 / 能源 / 白酒',
+    style:'大盘均衡；最具代表性的核心宽基',
+    growth:'中', volatility:'中', liquidity:'高', elasticity:'中', yieldR:'高',
+    strategy:'核心配置 / 轮动基石',
+    investors:'多数投资者',
     repETF:'沪深 300 ETF (510300、159919)',
-    note:'市值覆盖率约 60%；行业最分散的大盘宽基',
-    macro:'复苏初期 / 政策稳增长 / 利率回落环境表现稳健'
+    note:'市值覆盖约 60%；最分散的大盘宽基',
+    macro:'复苏初期 / 稳增长 / 利率回落'
   },
   csi500: {
     name:'中证 500 指数', short:'中证 500', code:'000905', cat:'broad',
     issuer:'中证指数公司', type:'宽基 · 中盘成长',
-    universe:'沪深 A 股剔除沪深 300 + 市值前 300 后的剩余股份',
-    sample:'500 只（剔除流动性最低 20% 后市值排名）',
-    industry:'制造业、科技成长企业（工业、可选消费、信息技术）；金融权重低',
-    style:'中盘成长；景气扩张期跑赢大盘',
-    growth:'高', volatility:'高', yieldR:'低',
-    purpose:'增长配置 / 风格轮动；中盘价值代表，估值修复行情布局',
+    universe:'沪深市场剔除沪深 300 + 市值前 300 后',
+    sample:'500 只',
+    industry:'工业 / 可选消费 / 信息技术；金融权重低',
+    style:'中盘成长，弹性大于沪深 300',
+    growth:'高', volatility:'高', liquidity:'中', elasticity:'高', yieldR:'低',
+    strategy:'增长配置 / 风格轮动',
     investors:'高风险偏好型',
     repETF:'中证 500 ETF (510500、510510)',
-    note:'介于大盘 300 和小盘 1000 之间；制造 + 科技占比高；金融权重低',
-    macro:'景气扩张初期、并购重组 / 专精特新政策、风格转中盘时领涨'
+    note:'介于大盘 300 和小盘 1000；制造 + 科技占比高',
+    macro:'景气扩张初期 / 专精特新政策'
   },
   csi1000: {
     name:'中证 1000 指数', short:'中证 1000', code:'000852', cat:'broad',
     issuer:'中证指数公司', type:'宽基 · 小盘成长',
-    universe:'沪深全市场剔除中证 800（沪深 300 + 中证 500）后的小市值股票',
-    sample:'1000 只小盘流动性较好的股票',
-    industry:'小盘 / 微盘股；制造、消费、TMT 分散',
-    style:'小盘成长；对经济与风格变化敏感',
-    growth:'很高', volatility:'很高', yieldR:'低',
-    purpose:'弹性交易 / 阶段性配置；赚钱效应扩散期受益',
+    universe:'剔除中证 800 后的小市值股票',
+    sample:'1000 只',
+    industry:'小盘分散：制造 / 消费 / TMT',
+    style:'小盘成长，波动大、弹性高',
+    growth:'很高', volatility:'很高', liquidity:'中低', elasticity:'很高', yieldR:'低',
+    strategy:'弹性交易 / 阶段配置',
     investors:'激进型、机会型',
     repETF:'中证 1000 ETF (560010、512100)',
-    note:'小盘股占比比中证 500 更大；高弹性、高波动',
-    macro:'资金宽松末期 / 政策刺激 / 题材活跃期表现突出'
+    note:'对经济与风格变化敏感',
+    macro:'资金宽松末期 / 题材活跃期'
   },
   csi2000: {
     name:'中证 2000 指数', short:'中证 2000', code:'932000', cat:'broad',
     issuer:'中证指数公司', type:'宽基 · 微盘成长',
-    universe:'剔除中证 800 + 中证 1000 后的最小市值股票',
-    sample:'2000 只市值最小股票',
+    universe:'剔除中证 800 + 1000 后的最小市值',
+    sample:'2000 只',
     industry:'极小市值成长 / 题材股',
-    style:'微盘成长；极高波动、极高弹性',
-    growth:'极高', volatility:'极高', yieldR:'低',
-    purpose:'题材套利；短线波段 / 风格扩散末段',
+    style:'微盘成长；波动极高',
+    growth:'极高', volatility:'极高', liquidity:'低', elasticity:'极高', yieldR:'低',
+    strategy:'题材套利',
     investors:'投机型、主题型',
-    repETF:'中证 2000 ETF（场内品种较少，可观察）',
-    note:'高波动高风险；不适合长期核心仓位，仅作微盘卫星 / 题材配置',
-    macro:'流动性极宽 + 风险偏好极高 + 主题轮动期'
+    repETF:'中证 2000 ETF',
+    note:'极高波动；不适合长期核心仓位',
+    macro:'流动性极宽 + 风险偏好极高'
   },
   sse50: {
     name:'上证 50 指数', short:'上证 50', code:'000016', cat:'broad',
-    issuer:'上交所 + 中证公司', type:'宽基 · 大盘价值',
+    issuer:'上交所 + 中证', type:'宽基 · 大盘价值',
     universe:'上证 180 范围（沪市蓝筹池）',
-    sample:'50 只市值、流动性最优股票',
-    industry:'金融、石油、基建等龙头股权重大；央企 / 国企集中',
-    style:'大盘价值；波动比沪深 300 更低；代表性最强',
-    growth:'低', volatility:'低', yieldR:'高',
-    purpose:'价值修复 / 防御策略；低估值蓝筹配置工具',
+    sample:'50 只',
+    industry:'金融 / 石油 / 基建；央企 / 国企集中',
+    style:'大盘价值；估值最低、波动最小',
+    growth:'低', volatility:'低', liquidity:'最高', elasticity:'低', yieldR:'高',
+    strategy:'价值 / 防御',
     investors:'稳健型、价值型',
     repETF:'上证 50 ETF (510050)',
-    note:'代表沪市最具影响力的龙头蓝筹（大行、国企、大白马）；估值最低、波动最小',
-    macro:'风险偏好下降 / 利率上行 / 避险情绪高涨时受青睐'
+    note:'代表沪市最具影响力的龙头蓝筹；估值最低、波动最小',
+    macro:'利率上行 / 风险偏好下降 / 避险'
   },
   csiA50: {
     name:'中证 A50 指数', short:'中证 A50', code:'930050', cat:'broad',
     issuer:'中证指数公司', type:'宽基 · 大盘龙头',
-    universe:'全部 A 股（不限沪 / 深）',
-    sample:'各行业市值最大的 50 只（行业最少一只 → 行业均衡）',
-    industry:'覆盖沪深各行业头部龙头；包括科技 / 消费等新经济',
-    style:'大盘龙头；单只 ≤ 10%；比上证 50 更国际化、扁平化',
-    growth:'中偏上', volatility:'中', yieldR:'中',
-    purpose:'核心 / 价值兼顾；A 股核心资产 + 大盘蓝筹跟踪',
+    universe:'全 A（每行业至少一只 → 行业均衡）',
+    sample:'50 只',
+    industry:'沪深各行业头部龙头；含科技 / 消费新经济',
+    style:'大盘龙头；兼具成长与估值优势',
+    growth:'中偏上', volatility:'中', liquidity:'高', elasticity:'中', yieldR:'中',
+    strategy:'核心 / 价值兼顾',
     investors:'核心仓位型',
     repETF:'中证 A50 ETF (563000 等)',
-    note:'兼具成长与估值优势；适合作为关注 A 股核心资产的工具',
-    macro:'稳增长 + 沪深均衡风格期表现稳健'
+    note:'兼具成长与估值优势；行业均衡',
+    macro:'稳增长 + 沪深均衡风格'
   },
   bse50: {
     name:'北证 50 指数', short:'北证 50', code:'899050', cat:'broad',
     issuer:'北京证券交易所', type:'北交所 · 小盘创新',
-    universe:'北交所上市的全部公司',
-    sample:'50 家市值最大 / 流动性最佳企业',
-    industry:'原新三板精选层 + 北交所中小型创新公司',
-    style:'小盘创新；高波动、流动性有限；权重集中（前十超一半）',
-    growth:'很高', volatility:'极高', yieldR:'低',
-    purpose:'微盘主题 / 短期博弈；卫星 / 套利仓位',
-    investors:'激进主题投资者；不适合普通长期 ETF 投资者',
+    universe:'北交所市值最大、流动性最佳',
+    sample:'50 家',
+    industry:'原新三板精选层 + 北交所中小型创新',
+    style:'小盘创新；波动极高',
+    growth:'很高', volatility:'极高', liquidity:'低', elasticity:'很高', yieldR:'低',
+    strategy:'微盘主题 / 短期博弈',
+    investors:'激进主题投资者',
     repETF:'北证 50 ETF (920050)',
-    note:'更偏"题材 + 政策"属性，适合专注创新经济的微观投机',
-    macro:'主题资金活跃 / "专精特新"政策刺激期'
+    note:'权重前十超一半；不适合长期核心仓位',
+    macro:'专精特新政策刺激期'
   },
   csiall: {
     name:'中证全指指数', short:'中证全指', code:'000985', cat:'broad',
     issuer:'中证指数公司', type:'宽基 · 全市场',
-    universe:'沪深 + 北交所全部合资格股票 / 存托凭证（除 ST / 退市风险）',
-    sample:'近 5,000 只（覆盖 96%+ 市值）',
-    industry:'与 Wind 全 A、国证 A 指类似，最广覆盖',
-    style:'全市场综合；宏观跟踪基准',
-    growth:'中', volatility:'中', yieldR:'中',
-    purpose:'宏观 Beta 暴露；指数化全市场参与；用于宏观跟踪',
-    investors:'资产配置型 / 长期持有',
+    universe:'沪深 + 北交所全部合资格股票 / 存托凭证',
+    sample:'近 5000 只',
+    industry:'与 Wind 全 A 类似，最广覆盖',
+    style:'全市场综合；代表性最强',
+    growth:'中', volatility:'中', liquidity:'高', elasticity:'中', yieldR:'中',
+    strategy:'宏观 Beta / 长期持有',
+    investors:'资产配置型',
     repETF:'中证全指 ETF',
-    note:'北交所 ≥ 2 年、科创板 ≥ 1 年、其他 ≥ 3 月才纳入；代表性最强',
-    macro:'指数化 / 长期持有 / 与 Wind 全 A 类似'
+    note:'覆盖 96%+ 市值；代表性最强',
+    macro:'指数化 / 长期持有'
   },
+  /* === 策略 === */
   dividend: {
     name:'中证红利指数', short:'红利指数', code:'000922', cat:'strategy',
     issuer:'中证指数公司', type:'策略 · 大盘价值 + 低波',
     universe:'高股息率且持续稳定分红的大型企业',
-    sample:'100 只（过去三年持续现金分红，股息率加权）',
-    industry:'金融、能源、公用事业等稳定派息板块',
-    style:'高股息策略；低波动 + 收益稳健',
-    growth:'低', volatility:'低', yieldR:'高',
-    purpose:'类债基替代；防御 + 分红收益；低利率环境配置高股息资产',
-    investors:'保守型、稳健型、收益型',
+    sample:'100 只（股息率加权）',
+    industry:'金融 / 能源 / 公用事业等稳定派息板块',
+    style:'大盘价值 + 低波动；类债基替代',
+    growth:'低', volatility:'低', liquidity:'中', elasticity:'低', yieldR:'高',
+    strategy:'收益 / 稳健 / 配置分红',
+    investors:'保守型、稳健型',
     repETF:'红利 ETF (510880)、红利低波 ETF (515100)',
-    note:'股息率加权；机构抱团蓝筹时受益；高股息策略代表',
-    macro:'低利率环境 / 资金抱团蓝筹 / 避险周期表现突出'
+    note:'类债基替代；机构抱团蓝筹时受益',
+    macro:'低利率环境 / 资金抱团蓝筹'
+  },
+  lowVol: {
+    name:'中证红利低波动指数', short:'红利低波', code:'930740', cat:'strategy',
+    issuer:'中证指数公司', type:'策略 · 低波 + 高息',
+    universe:'分红稳定 + 波动率低',
+    sample:'50 只',
+    industry:'银行 / 公用事业 / 必需消费等稳定板块',
+    style:'大盘价值 + 低波动；防御核心',
+    growth:'低', volatility:'低', liquidity:'中', elasticity:'低', yieldR:'高',
+    strategy:'稳健核心 / 防御',
+    investors:'保守型、稳健型',
+    repETF:'红利低波 ETF (515100、512890)',
+    note:'比中证红利更"低波"；适合作长期防御核心',
+    macro:'熊市后期 / 利率下行'
   },
   soe: {
-    name:'上证央企 50 / 央企红利', short:'央企指数', code:'000042 等', cat:'strategy',
-    issuer:'上交所 / 中证公司', type:'策略 · 大盘价值 + 政策',
-    universe:'中央国资（国务院国资委 / 财政部）控股上市公司',
-    sample:'50 只（央企龙头）；类似还有中证央企红利、中证国企红利',
-    industry:'能源、电力、重工等低估值价值板块；央企 / 地方国企',
-    style:'大盘价值 + 政策驱动；防御',
-    growth:'低', volatility:'低', yieldR:'高',
-    purpose:'防御 + 价值修复；央企改革主线参与',
+    name:'上证央企 50 指数', short:'上证央企 50', code:'000042', cat:'strategy',
+    issuer:'上海证券交易所', type:'策略 · 央企龙头',
+    universe:'国资委 / 财政部控股的上交所央企',
+    sample:'50 只',
+    industry:'能源 / 电力 / 重工等低估值板块',
+    style:'大盘价值 + 政策；价值修复',
+    growth:'低', volatility:'低', liquidity:'中', elasticity:'低', yieldR:'高',
+    strategy:'防御 + 价值修复 / 央企改革',
     investors:'收益型、稳健型',
-    repETF:'央企 ETF (519615)、央企红利 ETF',
-    note:'防御性配置或国企调结构受益；常用于价值修复或避险阶段',
-    macro:'央企改革 / 政策刺激 / 防御阶段'
+    repETF:'央企 ETF (510060、519615)',
+    note:'央企龙头集中；价值修复 / 红利属性',
+    macro:'国企改革 / 政策刺激'
   },
+  soeDiv: {
+    name:'中证央企红利指数', short:'央企红利', code:'000825', cat:'strategy',
+    issuer:'中证指数公司', type:'策略 · 央企 + 红利',
+    universe:'央企控股 + 高股息',
+    sample:'50 只',
+    industry:'能源 / 银行 / 电力等央企稳定派息',
+    style:'大盘价值 + 低波动；防御 + 政策',
+    growth:'低', volatility:'低', liquidity:'中', elasticity:'低', yieldR:'高',
+    strategy:'收益 / 政策驱动',
+    investors:'收益型、稳健型',
+    repETF:'央企红利 ETF',
+    note:'兼具防御与政策属性',
+    macro:'央企改革 + 利率下行'
+  },
+  aOneHundred: {
+    name:'国证 A100 / 国证全 A 类', short:'A100 / 全 A', code:'399314', cat:'strategy',
+    issuer:'国证指数', type:'宽基 · 大盘均衡（补充）',
+    universe:'国证体系大盘指数',
+    sample:'100 只',
+    industry:'与沪深 300 类似的大盘均衡',
+    style:'大盘均衡；沪深 300 替代选择',
+    growth:'中', volatility:'中', liquidity:'高', elasticity:'中', yieldR:'中',
+    strategy:'宽基核心 / 大盘均衡替代',
+    investors:'多数投资者',
+    repETF:'国证 A 指 ETF',
+    note:'作为沪深 300 的替代选择',
+    macro:'核心仓位 / 长期持有'
+  },
+  /* === 主题 === */
   semi: {
-    name:'中证半导体产业指数', short:'半导体指数', code:'931865', cat:'theme',
+    name:'中证半导体产业指数', short:'半导体', code:'931865', cat:'theme',
     issuer:'中证指数公司', type:'行业主题 · 硬科技',
     universe:'半导体核心公司',
-    sample:'不超过 40 家',
+    sample:'不超 40 家',
     industry:'半导体 / 集成电路 / 芯片设备 / 材料',
-    style:'细分高成长；行业集中度高，弹性极大',
-    growth:'极高', volatility:'极高', yieldR:'低',
-    purpose:'科技主题、波段交易；半导体周期 / 国产替代行情配置',
+    style:'细分高成长；情绪 + 政策驱动',
+    growth:'极高', volatility:'极高', liquidity:'低', elasticity:'极高', yieldR:'低',
+    strategy:'科技主题 / 波段交易',
     investors:'投机型、主题型',
     repETF:'半导体 ETF (512480)、芯片 ETF (159995)',
-    note:'与全球半导体周期强相关；制裁 / 国产替代政策催化',
-    macro:'美联储转鸽 + 半导体周期上行 + 国产替代政策'
+    note:'与全球半导体周期强相关；制裁 / 国产替代催化',
+    macro:'半导体周期上行 + 国产替代政策'
   },
   newenergy: {
-    name:'中证内地新能源主题', short:'新能源指数', code:'000941', cat:'theme',
+    name:'中证内地新能源主题指数', short:'新能源', code:'000941', cat:'theme',
     issuer:'中证指数公司', type:'行业主题 · 新能源',
-    universe:'内地新能源产业链公司',
-    sample:'50 家（太阳能、风能、新能源汽车等）',
+    universe:'内地新能源产业链',
+    sample:'50 家',
     industry:'光伏 / 风电 / 储能 / 新能源车 / 锂电池',
-    style:'细分高成长；产业政策驱动',
-    growth:'极高', volatility:'高', yieldR:'低',
-    purpose:'能源转型、成长板块；新能源主线长期布局',
+    style:'细分高成长；政策 + 渗透率驱动',
+    growth:'极高', volatility:'高', liquidity:'中', elasticity:'高', yieldR:'低',
+    strategy:'能源转型 / 成长板块',
     investors:'成长型、主题型',
     repETF:'新能源 ETF (516160)、新能车 ETF (159806)、光伏 ETF (159691)',
-    note:'碳中和 + 渗透率提升长期受益；注意补贴退坡 / 价格竞争',
-    macro:'政策扶持期 + 全球能源转型加速'
+    note:'碳中和 + 渗透率提升；警惕补贴退坡',
+    macro:'政策扶持 + 全球能源转型加速'
   },
   ai: {
-    name:'中证人工智能主题', short:'AI 主题', code:'930713', cat:'theme',
+    name:'中证人工智能主题指数', short:'AI 主题', code:'930713', cat:'theme',
     issuer:'中证指数公司', type:'行业主题 · 硬科技',
-    universe:'涉足 AI 基础硬件与软件的公司',
+    universe:'AI 基础硬件与软件公司',
     sample:'50 家',
     industry:'AI 算力 / 大模型 / 数据中心 / 计算机 / 通信',
-    style:'细分高成长；情绪 + 政策驱动；估值弹性高',
-    growth:'极高', volatility:'极高', yieldR:'低',
-    purpose:'科技主题、周期行情；AI 浪潮跟随',
+    style:'细分高成长；情绪 + 政策驱动、估值弹性高',
+    growth:'极高', volatility:'极高', liquidity:'低', elasticity:'高', yieldR:'低',
+    strategy:'科技主题 / 周期行情',
     investors:'高风险偏好型',
     repETF:'AI ETF (515980)、人工智能 ETF (515070)',
-    note:'与 AI 落地周期高度相关；警惕主题集中 / 拥挤回调',
-    macro:'AI 应用爆发 + 算力需求扩张周期'
+    note:'与 AI 落地周期高度相关；警惕主题拥挤回调',
+    macro:'AI 应用爆发 + 算力需求扩张'
+  },
+  military: {
+    name:'中证军工指数', short:'军工', code:'399967', cat:'theme',
+    issuer:'中证指数公司', type:'行业主题 · 政策驱动',
+    universe:'国防 / 军工核心公司',
+    sample:'50 家左右',
+    industry:'国防军工 / 航空航天 / 信息化',
+    style:'细分政策驱动；订单与项目周期影响',
+    growth:'高', volatility:'高', liquidity:'中', elasticity:'高', yieldR:'低',
+    strategy:'国防军工周期',
+    investors:'投机型、主题型',
+    repETF:'军工 ETF (512660、159864)',
+    note:'政策属性强；订单与项目周期影响',
+    macro:'国防预算 / 国际紧张 / 装备升级'
+  },
+  robot: {
+    name:'国证机器人产业指数', short:'机器人', code:'H30090', cat:'theme',
+    issuer:'国证指数', type:'行业主题 · 先进制造',
+    universe:'机器人 / 工业自动化产业链',
+    sample:'50 家左右',
+    industry:'工业机器人 / 智能装备 / 核心零部件',
+    style:'细分高成长；国产化驱动',
+    growth:'高', volatility:'高', liquidity:'中', elasticity:'高', yieldR:'低',
+    strategy:'制造升级 / 长线主题',
+    investors:'成长型、主题型',
+    repETF:'机器人 ETF (159829、562500)',
+    note:'国产化提速 + 人形机器人催化',
+    macro:'制造业升级 + 工业 4.0 + 国产化'
   }
 };
 
@@ -1598,10 +1671,15 @@ const INDEX_MATCH = [
   ['中证 A50','csiA50'],['中证A50','csiA50'],
   ['北证 50','bse50'],['北证50','bse50'],['北交所 50','bse50'],['北交所50','bse50'],
   ['中证全指','csiall'],
+  ['国证 A100','aOneHundred'],['国证A100','aOneHundred'],['A100','aOneHundred'],['国证全 A','aOneHundred'],['国证全A','aOneHundred'],
+  ['红利低波','lowVol'],['中证红利低波','lowVol'],['红利低波 ETF','lowVol'],
   ['中证红利','dividend'],['红利指数','dividend'],['红利 ETF','dividend'],
-  ['央企指数','soe'],['央企红利','soe'],['央企 ETF','soe'],['上证央企','soe'],
+  ['央企红利','soeDiv'],['中证央企红利','soeDiv'],['央企红利 ETF','soeDiv'],
+  ['上证央企 50','soe'],['上证央企50','soe'],['上证央企','soe'],['央企指数','soe'],['央企 ETF','soe'],
   ['半导体指数','semi'],['半导体 ETF','semi'],['半导体ETF','semi'],
   ['新能源指数','newenergy'],['新能源车','newenergy'],['新能源 ETF','newenergy'],
+  ['军工指数','military'],['中证军工','military'],['军工 ETF','military'],
+  ['机器人指数','robot'],['国证机器人','robot'],['机器人 ETF','robot'],
   ['AI 主题','ai'],['人工智能 ETF','ai'],['AI ETF','ai']
 ];
 
@@ -1682,6 +1760,8 @@ function openIdxDetail(key){
         <div class="idx-rrr">
           <div class="idx-rrr-cell"><div class="idx-rrr-label">成长性</div><div class="idx-rrr-value">${v.growth}</div></div>
           <div class="idx-rrr-cell"><div class="idx-rrr-label">波动性</div><div class="idx-rrr-value">${v.volatility}</div></div>
+          <div class="idx-rrr-cell"><div class="idx-rrr-label">流动性</div><div class="idx-rrr-value">${v.liquidity}</div></div>
+          <div class="idx-rrr-cell"><div class="idx-rrr-label">弹性</div><div class="idx-rrr-value">${v.elasticity}</div></div>
           <div class="idx-rrr-cell"><div class="idx-rrr-label">分红 / 股息</div><div class="idx-rrr-value">${v.yieldR}</div></div>
         </div>
       </div>
@@ -1690,8 +1770,8 @@ function openIdxDetail(key){
         <div class="idx-section-h">投资用途与适合人群 <small>INVESTMENT USE</small></div>
         <div class="idx-purpose-grid">
           <div class="idx-purpose-cell">
-            <div class="idx-purpose-cell-label">投资用途</div>
-            <div class="idx-purpose-cell-text">${v.purpose}</div>
+            <div class="idx-purpose-cell-label">策略定位 / 用途</div>
+            <div class="idx-purpose-cell-text">${v.strategy}</div>
           </div>
           <div class="idx-purpose-cell investors">
             <div class="idx-purpose-cell-label">适合人群</div>
