@@ -287,7 +287,7 @@
     </div>
     <div class="topbar-meta">
       <span>覆盖：<b>22 个指数 · 13 大章节</b></span>
-      <span>更新：<b>2026-05-29</b></span>
+      <span>更新：<b>2026-06-02</b></span>
     </div>
   </div>
 </header>
@@ -755,7 +755,7 @@
   </div>
 </section>
 
-<footer>· A 股指数体系交互式指南 · 22 指数 × 13 章节 · 2026-05-29 ·</footer>
+<footer>· A 股指数体系交互式指南 · 22 指数 × 13 章节 · 2026-06-02 ·</footer>
 
 </main>
 
@@ -972,16 +972,16 @@ const HOLDINGS = {
   shanghai:'贵州茅台、工商银行、中国石油',
   shenzhen:'宁德时代、中际旭创、新易盛',
   chinext:'宁德时代、中际旭创、新易盛',
-  star50:'寒武纪、澜起科技、海光信息',
-  csi300:'宁德时代、中际旭创、贵州茅台',
-  csi500:'华虹公司、百济神州、江波龙',
-  csi1000:'多为市值 100-200 亿元的细分行业龙头',
+  star50:'寒武纪、中芯国际、海光信息',
+  csi300:'中际旭创、宁德时代、贵州茅台',
+  csi500:'立讯精密、比亚迪、五粮液',
+  csi1000:'威迈斯、莱斯信息、普冉股份（单只权重均不足 0.35%）',
   csi2000:'多为市值 50 亿元以下的企业',
-  sse50:'贵州茅台、工商银行、中国平安',
+  sse50:'工商银行、农业银行、中国石油',
   csiA50:'宁德时代、贵州茅台、中际旭创',
   bse50:'贝特瑞、连城数控、吉林碳谷',
   csiall:'宁德时代、中际旭创、贵州茅台',
-  dividend:'中国神华、工商银行、建设银行',
+  dividend:'中远海控、广汇能源、兖矿能源',
   lowVol:'工商银行、建设银行、长江电力',
   soe:'中国石油、中国石化、中国神华',
   soeDiv:'中国神华、中国石油、工商银行',
@@ -1017,6 +1017,20 @@ const ANALYSIS = {
   robot:'人形机器人产业发展迅速、相关标准近期落地，但市场资金高度集中于半导体与 AI，机器人板块未获足够关注，表现相对平淡。'
 };
 INDEX_DATA.forEach(d=>{ d.top3 = HOLDINGS[d.key]||'—'; d.analysis = ANALYSIS[d.key]||''; });
+
+/* =================================================================== */
+/* ===== 估值与风险收益数据（截至 2026-06-02，来源：A股核心指数深度分析）=== */
+/* PE(TTM) · 近10年分位 · PB(LF) · 股息率 · 基日以来年化 · 波动率 · 风险等级 */
+const VALUATION = {
+  dividend:{pe:'8.5（25% 分位）', pb:'1.1（15% 分位）', div:'4.82%', ann:'9.8%', vol:'15.2%', risk:'低'},
+  sse50:   {pe:'11.2（55% 分位）',pb:'1.2（18% 分位）', div:'3.2%',  ann:'7.5%', vol:'16.8%', risk:'低'},
+  csi300:  {pe:'14.5（69% 分位）',pb:'1.5（31% 分位）', div:'2.5%',  ann:'8.2%', vol:'18.5%', risk:'中低'},
+  csi500:  {pe:'36.8（68% 分位）',pb:'2.6（52% 分位）', div:'1.8%',  ann:'9.1%', vol:'22.3%', risk:'中'},
+  chinext: {pe:'47.4（59% 分位）',pb:'5.2（65% 分位）', div:'0.8%',  ann:'10.8%',vol:'28.7%', risk:'中高'},
+  csi1000: {pe:'55.8（86% 分位）',pb:'3.2（72% 分位）', div:'1.2%',  ann:'10.5%',vol:'26.8%', risk:'中高'},
+  star50:  {pe:'158.9（91% 分位）',pb:'7.6（93% 分位）',div:'0.3%',  ann:'12.5%',vol:'35.2%', risk:'高'}
+};
+INDEX_DATA.forEach(d=>{ d.val = VALUATION[d.key] || null; });
 
 /* YTD 渲染助手 */
 function ytdClass(v){ return (v===null||v===undefined) ? 'flat' : (v>0?'up':(v<0?'down':'flat')); }
@@ -1080,6 +1094,7 @@ function openDetail(key){
     </div>
     <div class="idx-detail-row">
       <div class="idx-detail-cell"><div class="idx-detail-cell-label">YTD 年初至今 <span style="opacity:.7">· 截至 ${YTD_ASOF}</span></div><div class="idx-detail-cell-val">${ytdText(d)}</div></div>
+      ${d.val ? `<div class="idx-detail-cell" style="grid-column:1/-1;background:#FFFDF6"><div class="idx-detail-cell-label" style="color:var(--gold)">估值与风险收益 · 截至 2026-06-02</div><div class="idx-detail-cell-val"><b>PE(TTM)</b> ${d.val.pe} · <b>PB(LF)</b> ${d.val.pb} · <b>股息率</b> ${d.val.div} · <b>基日以来年化</b> <span style="color:var(--up);font-weight:700">${d.val.ann}</span> · <b>波动率</b> ${d.val.vol} · <b>风险等级</b> <span class="pill ${d.val.risk==='低'||d.val.risk==='中低'?'down':(d.val.risk==='中'?'gold':'up')}">${d.val.risk}</span></div></div>` : ''}
       <div class="idx-detail-cell"><div class="idx-detail-cell-label">样本空间</div><div class="idx-detail-cell-val">${d.universe}</div></div>
       <div class="idx-detail-cell"><div class="idx-detail-cell-label">成分数量</div><div class="idx-detail-cell-val">${d.sample}</div></div>
       <div class="idx-detail-cell"><div class="idx-detail-cell-label">行业结构</div><div class="idx-detail-cell-val">${d.industry}</div></div>
@@ -1555,26 +1570,26 @@ renderAlloc();
 /* ===== Ch8: 投资者画像 ===== */
 /* =================================================================== */
 const INVESTORS = [
-  {key:'safe', icon:'🛡️', name:'稳健型', tag:'保守',
-   desc:'目标低波动、稳健分红、控制回撤、长期持有。',
-   strategy:'重仓大盘价值型；构建"避险组合"',
-   alloc:'核心 70% · 防御 25% · 卫星 5%',
-   indexes:['sse50','csi300','dividend','lowVol','soe','soeDiv']},
-  {key:'balanced', icon:'⚖️', name:'平衡型', tag:'中庸',
-   desc:'兼顾成长与防御，中长期持有。',
-   strategy:'50-70% 核心宽基 + 剩余成长 / 主题',
-   alloc:'核心 60% · 卫星 25% · 防御 15%',
-   indexes:['csi300','csi500','csiA50','chinext','dividend']},
-  {key:'aggressive', icon:'🚀', name:'进取型', tag:'激进',
-   desc:'追求高弹性、高成长，接受较大波动。',
-   strategy:'重仓成长主题和小盘指数；可做主题交易',
-   alloc:'核心 25% · 进攻 55% · 卫星 20%',
-   indexes:['chinext','star50','csi1000','csi2000','semi','newenergy','ai']},
-  {key:'macro', icon:'🎛️', name:'宏观交易者', tag:'轮动',
-   desc:'灵活切换仓位，把握周期与风格轮动。',
-   strategy:'跟踪 PMI / 社融 / 利率 + 资金流；动态调整',
-   alloc:'核心 40% · 卫星 40% · 防御 20%（动态）',
-   indexes:['csi300','csi500','chinext','star50','dividend','sse50']}
+  {key:'safe', icon:'🛡️', name:'保守型', tag:'稳健收益',
+   desc:'风险承受低、追求稳健收益。预期年化 6%-8%，最大回撤 ≤ 15%，适合养老与稳健理财。',
+   strategy:'红利打底 + 超级蓝筹：中证红利 ETF (515080) 60% · 上证 50 ETF (510050) 40%',
+   alloc:'红利 60% · 上证 50 40%',
+   indexes:['dividend','sse50','soe','soeDiv','lowVol']},
+  {key:'balanced', icon:'⚖️', name:'稳健型', tag:'长期增值',
+   desc:'风险承受中等、追求长期增值。预期年化 8%-10%，最大回撤 ≤ 25%，适合长期定投与家庭资产配置。',
+   strategy:'大中盘搭配：沪深 300 ETF (510300) 60% · 中证 500 ETF (510500) 40%',
+   alloc:'沪深 300 60% · 中证 500 40%',
+   indexes:['csi300','csi500','csiA50']},
+  {key:'aggressive', icon:'🚀', name:'进取型', tag:'高弹性',
+   desc:'风险承受高、追求高弹性收益。预期年化 10%-15%，波动较大，适合能承受短期波动的长期投资者。',
+   strategy:'押注新质生产力：创业板 ETF (159915) 30% · 科创 50 ETF (588000) 30% · 中证 1000 ETF (512100) 40%',
+   alloc:'创业板 30% · 科创 50 30% · 中证 1000 40%',
+   indexes:['chinext','star50','csi1000','semi','ai']},
+  {key:'macro', icon:'🎯', name:'行业轮动型', tag:'波段操作',
+   desc:'根据行业景气度在主题 ETF 间波段切换，把握行业景气周期收益。',
+   strategy:'宽基底仓 + 主题轮动：半导体 ETF (159995)、新能源 ETF (159806) 等；单只主题 ETF ≤ 15%',
+   alloc:'宽基底仓 40% · 主题轮动 60%（动态）',
+   indexes:['csi300','semi','newenergy','ai','military','robot']}
 ];
 function renderInvestorPicker(){
   const root = document.getElementById('investor-picker');

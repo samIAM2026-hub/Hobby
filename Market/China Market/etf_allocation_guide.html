@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A股核心指数 · 高流动性 ETF 配置指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#F7F4ED; --paper:#FFFFFF; --ink:#1A1A1A; --ink-2:#3D3D3D; --ink-3:#6B6B6B;
+    --line:#E4DED1; --line-strong:#C8BFAE;
+    --navy:#0E2A47; --navy-2:#143E66; --gold:#B08842; --gold-light:#D4B271;
+    --up:#D7263D; --up-soft:#FBE9EC; --up-deep:#9E1A2D;
+    --down:#1F8A47; --down-soft:#E7F5EC; --down-deep:#125F30;
+    --flat:#8A8A8A; --warm:#E27A3F;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  .serif{font-family:'Noto Serif SC',serif}
+
+  header.topbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#0E2A47 0%,#143E66 100%);color:#fff;border-bottom:3px solid var(--gold)}
+  .topbar-inner{max-width:1320px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-seal{width:42px;height:42px;background:var(--up);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC';font-weight:900;font-size:20px;border:2px solid var(--gold-light)}
+  .brand-text{display:flex;flex-direction:column;line-height:1.15}
+  .brand-title{font-family:'Noto Serif SC';font-weight:700;font-size:18px;letter-spacing:1px}
+  .brand-sub{font-size:11px;color:#C9D6E3;letter-spacing:2px}
+  .topbar-meta{display:flex;gap:22px;font-size:12px;color:#C9D6E3}
+  .topbar-meta span b{color:#fff;font-weight:500;margin-left:4px}
+
+  nav.chapters{position:sticky;top:71px;z-index:40;background:#FAF8F2;border-bottom:1px solid var(--line)}
+  .chapters-inner{max-width:1320px;margin:0 auto;padding:0 28px;display:flex;overflow-x:auto}
+  .chapter-tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--ink-3);border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;transition:all .15s;text-decoration:none}
+  .chapter-tab:hover{color:var(--navy)}
+  .chapter-tab.active{color:var(--up);border-bottom-color:var(--up);font-weight:700}
+  .chapter-tab .num{font-family:'Noto Serif SC';margin-right:6px;color:var(--gold)}
+
+  main{max-width:1320px;margin:0 auto;padding:28px 28px 80px}
+  section.chapter{background:var(--paper);border:1px solid var(--line);padding:32px 36px;margin-bottom:24px;box-shadow:0 1px 3px rgba(14,42,71,0.04);scroll-margin-top:130px}
+  .ch-head{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:22px;gap:24px;flex-wrap:wrap}
+  .ch-title{font-family:'Noto Serif SC';font-weight:900;font-size:23px;color:var(--navy);display:flex;align-items:baseline;gap:14px}
+  .ch-num{color:var(--up);font-size:30px;line-height:1;border-right:2px solid var(--gold);padding-right:14px}
+  .ch-en{font-size:11px;color:var(--ink-3);letter-spacing:3px;text-transform:uppercase}
+
+  .tldr{background:linear-gradient(90deg,#FFF7E0 0%, #FAF8F2 100%);border-left:4px solid var(--gold);padding:14px 18px;margin-bottom:22px;font-size:14px;color:var(--ink-2)}
+  .tldr b{color:var(--navy);font-weight:700}
+
+  .sub-h{font-family:'Noto Serif SC';font-weight:700;color:var(--navy);font-size:16px;border-left:4px solid var(--up);padding-left:10px;margin:22px 0 14px;display:flex;align-items:baseline;gap:10px}
+  .sub-h small{font-size:11px;color:var(--ink-3);letter-spacing:2px;font-weight:400;font-family:'Noto Sans SC'}
+
+  table.research{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;background:var(--paper)}
+  table.research th{background:var(--navy);color:#fff;text-align:left;padding:10px 12px;font-weight:500;font-size:12.5px;letter-spacing:.5px;border-right:1px solid #1F4A72;cursor:pointer;user-select:none;white-space:nowrap}
+  table.research th:hover{background:var(--navy-2)}
+  table.research th.sortable::after{content:' ↕';color:#7FA0C2;font-size:11px}
+  table.research th.sort-asc::after{content:' ↑';color:var(--gold-light)}
+  table.research th.sort-desc::after{content:' ↓';color:var(--gold-light)}
+  table.research td{padding:9px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:middle}
+  table.research tr:hover td{background:#FAF8F2}
+  table.research .mono{font-family:'Courier New',monospace;font-size:12px;color:var(--up-deep)}
+  .big{font-family:'Noto Serif SC';font-weight:700;color:var(--navy)}
+  .perf-up{color:var(--up);font-weight:700;font-family:'Noto Serif SC'}
+  .perf-down{color:var(--down);font-weight:700;font-family:'Noto Serif SC'}
+
+  .pill{display:inline-block;padding:2px 8px;font-size:11px;margin:1px 2px;border-radius:2px;letter-spacing:.5px;white-space:nowrap}
+  .pill.up{background:var(--up-soft);color:var(--up-deep)}
+  .pill.down{background:var(--down-soft);color:var(--down-deep)}
+  .pill.navy{background:#E9EEF5;color:var(--navy)}
+  .pill.gold{background:#FCEACE;color:#8A5A14}
+  .pill.warm{background:#FCE3D4;color:#9C4A1E}
+
+  /* 指数卡片 */
+  .idx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .idx-card{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--gold);padding:16px 18px;cursor:pointer;transition:all .2s}
+  .idx-card:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(14,42,71,.08);background:#FAF8F2}
+  .idx-card.risk-low{border-top-color:var(--down)}
+  .idx-card.risk-midlow{border-top-color:#5BA36F}
+  .idx-card.risk-mid{border-top-color:var(--gold)}
+  .idx-card.risk-midhigh{border-top-color:var(--warm)}
+  .idx-card.risk-high{border-top-color:var(--up)}
+  .idx-card-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;gap:8px}
+  .idx-card-name{font-family:'Noto Serif SC';font-weight:900;font-size:18px;color:var(--navy)}
+  .idx-card-code{font-size:10.5px;color:var(--ink-3);font-family:'Courier New',monospace;letter-spacing:1px}
+  .idx-card-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+  .idx-metric{background:#FAF8F2;border:1px solid var(--line);padding:7px 8px;text-align:center}
+  .idx-metric .k{font-size:10px;color:var(--ink-3);letter-spacing:.5px;margin-bottom:2px}
+  .idx-metric .v{font-family:'Noto Serif SC';font-weight:700;font-size:15px;color:var(--navy)}
+  .idx-card-tagline{font-size:12.5px;color:var(--ink-2);line-height:1.55;margin-top:6px}
+  .idx-card-foot{font-size:11.5px;color:var(--ink-3);margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;gap:8px}
+  .idx-card-foot b{color:var(--up-deep);font-family:'Courier New',monospace}
+
+  /* 详情面板 */
+  .idx-detail{background:linear-gradient(135deg,#FFF7E0 0%,#FAF8F2 100%);border:1px solid var(--gold-light);border-left:5px solid var(--up);padding:20px 24px;margin-top:16px}
+  .idx-detail.hidden{display:none}
+  .detail-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;margin-bottom:6px}
+  .detail-name{font-family:'Noto Serif SC';font-weight:900;font-size:22px;color:var(--navy)}
+  .detail-code{font-size:12px;color:var(--ink-3);letter-spacing:1px}
+  .detail-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin-top:14px;align-items:start}
+  @media(max-width:820px){.detail-grid{grid-template-columns:1fr}}
+  .detail-block{background:var(--paper);border:1px solid var(--line);padding:14px 16px}
+  .detail-block h5{margin:0 0 10px;font-family:'Noto Serif SC';font-size:14px;color:var(--navy);border-bottom:1px solid var(--line);padding-bottom:6px}
+  .kv-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--line);font-size:12.5px;gap:10px}
+  .kv-row:last-child{border-bottom:0}
+  .kv-row .k{color:var(--ink-3)}
+  .kv-row .v{color:var(--ink-2);text-align:right;font-weight:500}
+  .hold-row{display:grid;grid-template-columns:1fr auto;gap:8px;font-size:12px;padding:3px 0;align-items:center}
+  .hold-bar{height:14px;background:var(--up-soft);position:relative;margin-top:2px}
+  .hold-bar span{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--up) 0%,var(--up-deep) 100%)}
+  .detail-analysis{background:var(--up-soft);border-left:3px solid var(--up);padding:10px 14px;margin-top:14px;font-size:13px;color:var(--up-deep);line-height:1.65}
+  .sector-wrap{position:relative;height:200px}
+
+  /* 投资者画像 */
+  .picker-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:18px}
+  .picker-card{background:var(--paper);border:1px solid var(--line-strong);padding:16px;cursor:pointer;text-align:center;transition:all .2s}
+  .picker-card:hover{border-color:var(--up);background:#FAF8F2}
+  .picker-card.active{border-color:var(--up);background:linear-gradient(135deg,#FFE8EB 0%,#FFF7E0 100%);border-width:2px}
+  .picker-icon{font-size:26px;margin-bottom:6px}
+  .picker-name{font-family:'Noto Serif SC';font-weight:700;color:var(--navy);font-size:15px}
+  .picker-tag{font-size:11px;color:var(--up-deep);letter-spacing:1px;margin-top:3px}
+
+  .pf-body{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin-top:8px}
+  @media(max-width:880px){.pf-body{grid-template-columns:1fr}}
+  .pf-summary{background:#FAF8F2;border:1px solid var(--line);padding:18px 20px}
+  .pf-summary h3{margin:0 0 12px;font-family:'Noto Serif SC';font-size:19px;color:var(--navy)}
+  .pf-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line-strong);font-size:13px;gap:12px}
+  .pf-row:last-of-type{border-bottom:0}
+  .pf-row b{color:var(--up);font-weight:700;font-family:'Noto Serif SC';text-align:right}
+  .pf-rationale{font-size:13px;color:var(--ink-2);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-strong);line-height:1.65}
+  .pf-chart-card{background:var(--paper);border:1px solid var(--line);padding:18px 22px}
+  .pf-chart-title{font-family:'Noto Serif SC';font-weight:700;font-size:15px;color:var(--navy);border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+  .pf-chart-title small{font-weight:400;font-size:11px;color:var(--ink-3);letter-spacing:1px;font-family:'Noto Sans SC'}
+  .pf-chart-wrap{position:relative;height:260px}
+  .pf-holdings{margin-top:14px}
+  .pf-hold-row{display:grid;grid-template-columns:14px 1fr auto auto;gap:10px;align-items:center;font-size:12.5px;padding:5px 0;border-bottom:1px dashed var(--line)}
+  .pf-hold-row:last-child{border-bottom:0}
+  .pf-hold-dot{width:12px;height:12px;border-radius:50%}
+  .pf-hold-code{font-family:'Courier New',monospace;font-size:11px;color:var(--up-deep)}
+  .pf-hold-pct{text-align:right;font-family:'Noto Serif SC';font-weight:700;color:var(--navy);min-width:38px}
+
+  .chart-card{background:var(--paper);border:1px solid var(--line);padding:18px 22px;margin-bottom:18px}
+  .chart-title{font-family:'Noto Serif SC';font-weight:700;font-size:15px;color:var(--navy);border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:14px}
+  .chart-wrap{position:relative;height:440px}
+  .legend-inline{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--ink-2);margin-top:10px}
+  .legend-dot{width:11px;height:11px;display:inline-block;margin-right:5px;border-radius:50%;vertical-align:middle}
+
+  .quote{border-left:3px solid var(--gold);padding:10px 16px;margin:16px 0;background:#FFF7E0;color:var(--navy);font-size:13.5px;font-family:'Noto Serif SC'}
+  .warn{border-left:3px solid var(--up);background:var(--up-soft);color:var(--up-deep)}
+  footer{text-align:center;font-size:12px;color:var(--ink-3);padding:24px 0 0;border-top:1px solid var(--line);margin-top:24px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-seal">配</div>
+      <div class="brand-text">
+        <span class="brand-title">A股核心指数 · 高流动性 ETF 配置指南</span>
+        <span class="brand-sub">A-SHARE CORE INDEX · HIGH-LIQUIDITY ETF PLAYBOOK</span>
+      </div>
+    </div>
+    <div class="topbar-meta">
+      <span>覆盖：<b>8 宽基 + 6 主题 ETF</b></span>
+      <span>数据截止：<b>2026-06-02</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="chapters">
+  <div class="chapters-inner" id="chapter-nav">
+    <a class="chapter-tab active" data-target="ch1"><span class="num">壹</span>指数概览</a>
+    <a class="chapter-tab" data-target="ch2"><span class="num">贰</span>ETF 汇总</a>
+    <a class="chapter-tab" data-target="ch3"><span class="num">叁</span>风险收益</a>
+    <a class="chapter-tab" data-target="ch4"><span class="num">肆</span>配置建议</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ 壹 · 指数概览 ============ -->
+<section class="chapter" id="ch1">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">壹</span><span>核心宽基指数概览</span></div>
+    <div class="ch-en">CHAPTER 01 · INDEX OVERVIEW</div>
+  </div>
+  <div class="tldr">
+    <b>8 只核心宽基 · 从低波红利到高弹科技。</b>每张卡片标注 <b>PE / 股息率 / 风险等级</b> 与该指数的<b>最优 ETF</b>。
+    <b>点击任一卡片</b>展开完整信息：编制规则、估值分位、行业分布、前十大权重股与全部高流动性 ETF。
+  </div>
+  <div class="idx-grid" id="idx-grid"></div>
+  <div class="idx-detail hidden" id="idx-detail"></div>
+</section>
+
+<!-- ============ 贰 · ETF 汇总 ============ -->
+<section class="chapter" id="ch2">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">贰</span><span>高流动性 ETF 汇总</span></div>
+    <div class="ch-en">CHAPTER 02 · ETF SCREEN</div>
+  </div>
+  <div class="tldr">
+    <b>筛选标准：规模 ≥ 50 亿、近 3 月日均成交额 ≥ 1 亿。</b>点击表头排序 —
+    规模越大、成交越活、跟踪误差越小，越适合作为长期配置的底层工具。
+  </div>
+
+  <div class="sub-h">宽基指数 ETF <small>BROAD-BASED · 15 只</small></div>
+  <div style="overflow-x:auto">
+    <table class="research" id="etf-table">
+      <thead><tr>
+        <th class="sortable" data-key="code">代码</th>
+        <th class="sortable" data-key="name">ETF 名称</th>
+        <th class="sortable" data-key="track">跟踪指数</th>
+        <th class="sortable" data-key="mgr">管理人</th>
+        <th class="sortable" data-key="aum">规模(亿)</th>
+        <th class="sortable" data-key="vol">日均成交(亿)</th>
+        <th class="sortable" data-key="fee">管理费</th>
+        <th class="sortable" data-key="terr">跟踪误差</th>
+      </tr></thead>
+      <tbody id="etf-tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="sub-h" style="margin-top:24px">热门行业主题 ETF <small>SECTOR THEMES · 卫星配置</small></div>
+  <div style="overflow-x:auto">
+    <table class="research" id="theme-table">
+      <thead><tr>
+        <th>代码</th><th>ETF 名称</th><th>跟踪指数</th><th>规模(亿)</th><th>日均成交(亿)</th><th>核心赛道</th>
+      </tr></thead>
+      <tbody id="theme-tbody"></tbody>
+    </table>
+  </div>
+  <div class="quote warn" style="margin-top:14px">行业主题 ETF 波动远高于宽基，仅适合<b>卫星仓位</b>。务必用定投平滑成本，单只主题 ETF 仓位建议 ≤ 总资产 10%-15%。</div>
+</section>
+
+<!-- ============ 叁 · 风险收益 ============ -->
+<section class="chapter" id="ch3">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">叁</span><span>风险收益综合对比</span></div>
+    <div class="ch-en">CHAPTER 03 · RISK / RETURN</div>
+  </div>
+  <div class="tldr">
+    <b>一张图看清 8 只宽基的风险收益定位。</b>散点图：<b>横轴 = 波动率</b>，<b>纵轴 = 长期年化收益</b>，<b>点大小 = PE 估值（越大越贵）</b>。
+    收益与波动高度正相关 —— 想要更高弹性，必须承受更大回撤。
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">波动率 × 年化收益 × 估值</div>
+    <div class="chart-wrap"><canvas id="chart-rr"></canvas></div>
+    <div class="legend-inline">
+      <span><span class="legend-dot" style="background:var(--down)"></span>低风险</span>
+      <span><span class="legend-dot" style="background:var(--gold)"></span>中风险</span>
+      <span><span class="legend-dot" style="background:var(--warm)"></span>中高风险</span>
+      <span><span class="legend-dot" style="background:var(--up)"></span>高风险</span>
+      <span style="margin-left:auto">点大小 = PE(TTM) 估值水平</span>
+    </div>
+  </div>
+
+  <div class="sub-h">综合对比表 <small>SORTABLE · 点击表头排序</small></div>
+  <div style="overflow-x:auto">
+    <table class="research" id="cmp-table">
+      <thead><tr>
+        <th class="sortable" data-key="short">指数</th>
+        <th class="sortable" data-key="pe">PE(TTM)</th>
+        <th class="sortable" data-key="pb">PB(LF)</th>
+        <th class="sortable" data-key="div">股息率</th>
+        <th class="sortable" data-key="ann">长期年化</th>
+        <th class="sortable" data-key="vol">波动率</th>
+        <th class="sortable" data-key="riskN">风险等级</th>
+        <th>最优 ETF</th>
+        <th class="sortable" data-key="aum">ETF 规模(亿)</th>
+      </tr></thead>
+      <tbody id="cmp-tbody"></tbody>
+    </table>
+  </div>
+  <div class="quote">估值分位提示：<b>科创 50（PE 近 10 年 91% 分位）、国证 2000（88%）、中证 1000（86%）处历史高位</b>，追高需谨慎；
+  <b>中证红利（25%）、上证 50（55%）、沪深 300 PB（31%）</b>仍具配置性价比。</div>
+</section>
+
+<!-- ============ 肆 · 配置建议 ============ -->
+<section class="chapter" id="ch4">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">肆</span><span>分风险偏好的配置建议</span></div>
+    <div class="ch-en">CHAPTER 04 · ALLOCATION MODELS</div>
+  </div>
+  <div class="tldr">
+    <b>4 类投资者 · 4 套可直接照做的 ETF 组合。</b>点击你对应的类型，查看具体 ETF 代码、权重、预期收益与回撤。
+    <b>核心原则：</b>风险偏好越低，红利与大盘蓝筹权重越高；越高，则成长与科技弹性越大。
+  </div>
+
+  <div class="picker-grid" id="investor-picker"></div>
+
+  <div class="pf-body">
+    <div class="pf-summary">
+      <h3 id="pf-name">组合名称</h3>
+      <div class="pf-row"><span>投资目标</span><b id="pf-goal">—</b></div>
+      <div class="pf-row"><span>预期年化</span><b id="pf-ret">—</b></div>
+      <div class="pf-row"><span>预期最大回撤</span><b id="pf-dd">—</b></div>
+      <div class="pf-row"><span>适合人群</span><b id="pf-who">—</b></div>
+      <div class="pf-rationale" id="pf-rationale">—</div>
+    </div>
+    <div class="pf-chart-card">
+      <div class="pf-chart-title">配置权重 <small id="pf-tag">PORTFOLIO</small></div>
+      <div class="pf-chart-wrap"><canvas id="pf-pie"></canvas></div>
+      <div class="pf-holdings" id="pf-holdings"></div>
+    </div>
+  </div>
+
+  <div class="quote warn" style="margin-top:24px">
+    <b>风险提示：</b>市场有风险，投资需谨慎。以上为基于 2026-06-02 公开数据的客观整理与一般性配置框架，<b>不构成投资建议</b>。
+    ETF 规模、费率、跟踪误差与历史收益请以基金最新公告为准。
+  </div>
+</section>
+
+<footer>· A 股核心指数 · 高流动性 ETF 配置指南 · 数据截止 2026-06-02 · 本文档不构成投资建议 ·</footer>
+
+</main>
+
+<script>
+/* =================================================================== */
+/* ===== 8 宽基指数数据（数据截止 2026-06-02） ===== */
+/* =================================================================== */
+const RISK_CLASS = {'低':'risk-low','中低':'risk-midlow','中':'risk-mid','中高':'risk-midhigh','高':'risk-high'};
+const RISK_NUM   = {'低':1,'中低':2,'中':3,'中高':4,'高':5};
+const RISK_COLOR = {'低':'#1F8A47','中低':'#5BA36F','中':'#B08842','中高':'#E27A3F','高':'#D7263D'};
+
+const INDEXES = [
+  {key:'dividend', short:'中证红利', name:'中证红利指数', code:'000922', issuer:'中证指数公司', date:'2008-05-26',
+   pe:8.5, pePct:'25%', pb:1.1, pbPct:'15%', div:'4.82%', ann:'9.8%', vol:'15.2%', risk:'低',
+   rule:'选取股息率高、分红稳定的 100 只股票，每半年调整，股息率加权。',
+   cap:'价值蓝筹，平均自由流通市值约 200 亿元',
+   tagline:'高股息核心，抗跌属性极强，类债基替代，长期稳健配置最佳标的。',
+   sectors:[['银行',24],['煤炭',16],['交通运输',15],['钢铁',5],['传媒',4],['其他',36]],
+   holdings:[['601919','中远海控',2.74,'交通运输'],['600256','广汇能源',2.17,'能源'],['600188','兖矿能源',2.13,'煤炭'],['600546','山煤国际',1.98,'煤炭'],['601088','中国神华',1.92,'能源'],['601939','建设银行',1.87,'银行'],['601988','中国银行',1.82,'银行'],['601398','工商银行',1.78,'银行'],['601166','兴业银行',1.75,'银行'],['600028','中国石化',1.72,'石油石化']],
+   conc:'前十大合计约 22%',
+   etfs:[['515080','招商中证红利 ETF','招商',110.2,5.6,'0.15%','0.05%','0.10%'],['510880','华泰柏瑞红利 ETF','华泰柏瑞',98.7,3.2,'0.15%','0.05%','0.11%']],
+   analysis:'股息率 4.82% 远超十年期国债收益率（约 1.7%），是低利率环境下资金抱团蓝筹的避风港；PE/PB 均处近 10 年低位，安全边际充足。'},
+
+  {key:'sse50', short:'上证 50', name:'上证 50 指数', code:'000016', issuer:'上海证券交易所', date:'2004-01-02',
+   pe:11.2, pePct:'55%', pb:1.2, pbPct:'18%', div:'3.2%', ann:'7.5%', vol:'16.8%', risk:'低',
+   rule:'选取沪市市值大、流动性好的 50 只超级蓝筹，每半年调整，自由流通市值加权。',
+   cap:'沪市超级大盘龙头，平均自由流通市值约 1200 亿元',
+   tagline:'超级蓝筹代表，金融能源为主，波动最小、分红稳定。2026 年起科技权重提升。',
+   sectors:[['金融',45],['科技',18],['能源',15],['消费',12],['公用事业',10]],
+   holdings:[['601398','工商银行',7.82,'商业银行'],['601288','农业银行',6.54,'商业银行'],['601857','中国石油',5.98,'石油石化'],['601988','中国银行',5.76,'商业银行'],['600519','贵州茅台',5.21,'高端白酒'],['688981','中芯国际',4.87,'晶圆代工'],['601088','中国神华',4.52,'煤炭、能源'],['601318','中国平安',4.23,'综合金融'],['600036','招商银行',3.98,'商业银行'],['601628','中国人寿',3.76,'保险']],
+   conc:'前十大合计约 45%',
+   etfs:[['510050','华夏上证 50ETF','华夏',628.4,10.2,'0.15%','0.05%','0.07%'],['510100','易方达上证 50ETF','易方达',186.2,3.5,'0.15%','0.05%','0.08%']],
+   analysis:'PB 仅 1.2 倍、近 10 年 18% 分位，估值极低、防御性强。2026 年 6 月调整后纳入兆易创新等科技龙头，科技属性显著提升。'},
+
+  {key:'csi300', short:'沪深 300', name:'沪深 300 指数', code:'000300', issuer:'中证指数公司', date:'2005-04-08',
+   pe:14.5, pePct:'69%', pb:1.5, pbPct:'31%', div:'2.5%', ann:'8.2%', vol:'18.5%', risk:'中低',
+   rule:'选取沪深两市市值大、流动性好的 300 只股票，每半年调整，自由流通市值加权。',
+   cap:'全市场大盘龙头，平均自由流通市值约 800 亿元',
+   tagline:'A 股最具代表性的宽基，覆盖全市场约 60% 总市值，市场"晴雨表"。',
+   sectors:[['信息技术',21.19],['金融',18.89],['工业',17.60],['通信服务',10.97],['原材料',8.83],['主要消费',6.60],['可选消费',5.79],['医药卫生',4.27],['公用事业',2.94],['能源',2.49],['房地产',0.44]],
+   holdings:[['300308','中际旭创',4.75,'高速光模块'],['300750','宁德时代',4.20,'动力电池、储能'],['600519','贵州茅台',3.10,'高端白酒'],['300502','新易盛',2.55,'光模块'],['601318','中国平安',2.17,'综合金融'],['601899','紫金矿业',1.88,'有色矿业'],['600036','招商银行',1.79,'商业银行'],['000333','美的集团',1.52,'家电'],['688256','寒武纪',1.47,'AI 芯片'],['002475','立讯精密',1.36,'消费电子']],
+   conc:'前十大合计 24.72%',
+   etfs:[['510300','华泰柏瑞沪深 300ETF','华泰柏瑞',1374.2,28.6,'0.15%','0.05%','0.08%'],['510310','易方达沪深 300ETF','易方达',1052.1,15.3,'0.15%','0.05%','0.09%'],['159919','嘉实沪深 300ETF','嘉实',721.5,8.7,'0.15%','0.05%','0.10%']],
+   analysis:'机构核心配置标的，科技成长权重已超过金融成为第一大行业。510300 为全市场规模最大的权益 ETF，支持期权交易，流动性最优。'},
+
+  {key:'csi500', short:'中证 500', name:'中证 500 指数', code:'000905', issuer:'中证指数公司', date:'2007-01-15',
+   pe:36.8, pePct:'68%', pb:2.6, pbPct:'52%', div:'1.8%', ann:'9.1%', vol:'22.3%', risk:'中',
+   rule:'剔除沪深 300 成分股后，选取市值排名前 500 的股票，每半年调整，自由流通市值加权。',
+   cap:'中盘股，平均自由流通市值约 150 亿元',
+   tagline:'A 股中盘成长核心，专精特新企业占比超 35%，弹性高于大盘。',
+   sectors:[['工业',22],['信息技术',18],['原材料',15],['医药卫生',11],['主要消费',10],['其他',24]],
+   holdings:[['002475','立讯精密',0.92,'消费电子'],['002594','比亚迪',0.87,'新能源汽车'],['000858','五粮液',0.81,'白酒'],['000001','平安银行',0.78,'银行'],['000157','中联重科',0.75,'工程机械'],['002007','华兰生物',0.72,'生物医药'],['002230','科大讯飞',0.70,'AI 语音'],['002304','洋河股份',0.68,'白酒'],['002415','海康威视',0.65,'安防'],['002460','赣锋锂业',0.63,'锂电池']],
+   conc:'前十大合计不足 8%（高度分散）',
+   etfs:[['510500','南方中证 500ETF','南方',582.3,12.4,'0.15%','0.05%','0.12%'],['159922','嘉实中证 500ETF','嘉实',186.7,4.2,'0.15%','0.05%','0.13%']],
+   analysis:'行业高度分散，单一行业权重不超 25%，抗周期属性好；无个股能主导走势，集中度风险低，是大盘与小盘之间的均衡选择。'},
+
+  {key:'chinext', short:'创业板指', name:'创业板指', code:'399006', issuer:'深圳证券交易所', date:'2010-06-01',
+   pe:47.4, pePct:'59%', pb:5.2, pbPct:'65%', div:'0.8%', ann:'10.8%', vol:'28.7%', risk:'中高',
+   rule:'选取创业板中市值大、流动性好的 100 只股票，每半年调整，自由流通市值加权。',
+   cap:'创业板龙头，平均自由流通市值约 350 亿元',
+   tagline:'A 股新兴成长核心，聚焦新能源、AI 算力等新质生产力，弹性极强。',
+   sectors:[['新能源',25],['AI 算力/光模块',22],['信息技术',18],['医药生物',15],['其他',20]],
+   holdings:[['300750','宁德时代',16.15,'动力电池、储能'],['300308','中际旭创',8.41,'高速光模块'],['300502','新易盛',5.90,'光模块'],['300059','东方财富',5.34,'互联网金融'],['300274','阳光电源',3.94,'光伏逆变器'],['300476','胜宏科技',3.82,'高端 PCB'],['300394','天孚通信',3.75,'光器件'],['300124','汇川技术',3.68,'工业自动化'],['300408','三环集团',3.51,'电子陶瓷'],['300760','迈瑞医疗',3.42,'医疗设备']],
+   conc:'前十大合计高达 60.92%（集中度极高）',
+   etfs:[['159915','易方达创业板 ETF','易方达',650.9,18.7,'0.15%','0.05%','0.11%']],
+   analysis:'宁德时代单只权重达 16.15%，龙头集中度极高 —— 既是高弹性来源，也意味着指数走势高度依赖少数龙头。累计涨幅 303.8% 创历史新高，注意高位波动。'},
+
+  {key:'csi1000', short:'中证 1000', name:'中证 1000 指数', code:'000852', issuer:'中证指数公司', date:'2014-10-17',
+   pe:55.8, pePct:'86%', pb:3.2, pbPct:'72%', div:'1.2%', ann:'10.5%', vol:'26.8%', risk:'中高',
+   rule:'剔除沪深 300、中证 500 成分股后，选取市值前 1000 的股票，每半年调整，自由流通市值加权。',
+   cap:'小盘股，平均自由流通市值约 80 亿元',
+   tagline:'A 股小盘成长核心，专精特新与小市值成长股为主，弹性最大。',
+   sectors:[['工业',28],['信息技术',22],['原材料',15],['医药',12],['消费',10],['其他',13]],
+   holdings:[['688612','威迈斯',0.32,'电源管理'],['688631','莱斯信息',0.28,'指挥信息系统'],['688766','普冉股份',0.27,'存储芯片'],['688779','五矿新能',0.26,'新能源'],['000089','深圳机场',0.25,'交通运输'],['000099','中信海直',0.24,'通用航空'],['000156','华数传媒',0.23,'传媒'],['000620','盈新发展',0.22,'地产'],['000680','山推股份',0.21,'工程机械'],['000899','赣能股份',0.20,'电力']],
+   conc:'前十大合计不足 3%（极度分散）',
+   etfs:[['512100','南方中证 1000ETF','南方',286.7,9.8,'0.15%','0.05%','0.15%'],['159845','华夏中证 1000ETF','华夏',168.3,6.2,'0.15%','0.05%','0.14%']],
+   analysis:'PE 近 10 年 86% 分位，估值偏高。成分股众多、业绩分化明显，资金集中龙头的环境下小盘整体偏弱，适合作为进攻型卫星弹性配置。'},
+
+  {key:'gz2000', short:'国证 2000', name:'国证 2000 指数', code:'399303', issuer:'深圳证券信息公司', date:'2013-11-25',
+   pe:62.5, pePct:'88%', pb:3.5, pbPct:'75%', div:'0.9%', ann:'11.2%', vol:'30.5%', risk:'高',
+   rule:'选取全市场市值最小的 2000 只股票，每半年调整，等权重加权。',
+   cap:'微盘股，平均自由流通市值约 50 亿元',
+   tagline:'A 股微盘股核心，极小市值成长股为主，弹性极致，小票行情风向标。',
+   sectors:[['工业',30],['信息技术',22],['原材料',15],['医药',12],['消费',10],['其他',11]],
+   holdings:[['002766','索菱股份',0.08,'汽车电子'],['000058','深赛格',0.08,'电子'],['000560','我爱我家',0.07,'地产'],['000601','韶能股份',0.07,'电力'],['000620','盈新发展',0.07,'地产'],['000860','顺鑫农业',0.07,'消费'],['000886','海南高速',0.07,'交通运输'],['000949','新乡化纤',0.07,'化工'],['001288','运机集团',0.06,'装备'],['001298','好上好',0.06,'电子分销']],
+   conc:'单一个股权重不超 0.1%（全市场最分散）',
+   etfs:[['159299','富国国证 2000ETF','富国',78.5,4.8,'0.15%','0.05%','0.18%']],
+   analysis:'PE 近 10 年 88% 分位、波动率高达 30.5%，是全市场风险最高的宽基之一。等权重使其极度分散，但微盘股流动性弱、波动剧烈，仅适合小仓位博弹性。'},
+
+  {key:'star50', short:'科创 50', name:'科创 50 指数', code:'000688', issuer:'上海证券交易所', date:'2020-07-22',
+   pe:158.9, pePct:'91%', pb:7.6, pbPct:'93%', div:'0.3%', ann:'12.5%', vol:'35.2%', risk:'高',
+   rule:'选取科创板中市值大、流动性好的 50 只股票，每季度调整，自由流通市值加权。',
+   cap:'科创板硬科技龙头，平均自由流通市值约 400 亿元',
+   tagline:'中国硬科技核心，聚焦半导体、AI 芯片等卡脖子领域，科技成长极致标的。',
+   sectors:[['半导体/芯片',60],['生物医药',15],['信息技术/软件',12],['高端制造',10],['其他',3]],
+   holdings:[['688256','寒武纪',9.55,'AI 芯片'],['688981','中芯国际',8.74,'晶圆代工'],['688041','海光信息',8.73,'服务器 CPU'],['688008','澜起科技',6.21,'内存接口芯片'],['688012','中微公司',5.87,'半导体设备'],['688521','芯原股份',4.32,'芯片设计服务'],['688525','佰维存储',3.98,'存储芯片'],['688072','拓荆科技',3.65,'半导体设备'],['688271','联影医疗',3.51,'医疗设备'],['688111','金山办公',3.42,'办公软件']],
+   conc:'前十大合计约 55%',
+   etfs:[['588000','华夏科创 50ETF','华夏',482.6,22.5,'0.15%','0.05%','0.10%'],['588800','华泰柏瑞科创 50ETF','华泰柏瑞',126.3,6.8,'0.15%','0.05%','0.11%']],
+   analysis:'PE 高达 158.9 倍、近 10 年 91% 分位，估值极高、波动极大。半导体占比超 60%，是 A 股科技属性最强的指数。无需开通科创板权限即可通过 ETF 参与。'}
+];
+
+INDEXES.forEach(d=>{ d.riskN = RISK_NUM[d.risk]; d.peNum=d.pe; d.pbNum=d.pb; d.divNum=parseFloat(d.div); d.annNum=parseFloat(d.ann); d.volNum=parseFloat(d.vol); d.aum=d.etfs[0][3]; d.bestEtf=`${d.etfs[0][1]} (${d.etfs[0][0]})`; });
+
+/* 主题 ETF */
+const THEME_ETFS = [
+  ['159995','华夏国证半导体 ETF','国证半导体芯片',326.8,18.5,'半导体芯片全产业链'],
+  ['159806','广发新能源 ETF','中证新能源',286.3,12.7,'新能源全产业链'],
+  ['159928','汇添富消费 ETF','中证消费',215.6,6.8,'必选消费龙头'],
+  ['159938','易方达医药 ETF','中证医药',198.2,7.2,'医药生物全产业链'],
+  ['516160','南方新能源汽车 ETF','中证新能源汽车',168.9,8.5,'新能源汽车产业链'],
+  ['512480','国联安全指半导体 ETF','中证全指半导体',126.5,9.2,'半导体芯片']
+];
+
+/* =================================================================== */
+/* ===== Ch1: 指数概览卡片 ===== */
+/* =================================================================== */
+function renderGrid(){
+  const root = document.getElementById('idx-grid');
+  root.innerHTML='';
+  INDEXES.forEach(d=>{
+    const c=document.createElement('div');
+    c.className='idx-card '+RISK_CLASS[d.risk];
+    c.innerHTML=`
+      <div class="idx-card-h">
+        <span class="idx-card-name">${d.short}</span>
+        <span class="idx-card-code">${d.code}</span>
+      </div>
+      <div class="idx-card-metrics">
+        <div class="idx-metric"><div class="k">PE(TTM)</div><div class="v">${d.pe}</div></div>
+        <div class="idx-metric"><div class="k">股息率</div><div class="v">${d.div}</div></div>
+        <div class="idx-metric"><div class="k">波动率</div><div class="v">${d.vol}</div></div>
+      </div>
+      <div class="idx-card-tagline">${d.tagline}</div>
+      <div class="idx-card-foot"><span>风险：<span class="pill ${d.riskN<=2?'down':(d.riskN===3?'gold':'up')}">${d.risk}</span></span><span>最优 ETF <b>${d.etfs[0][0]}</b></span></div>`;
+    c.addEventListener('click',()=>openDetail(d.key));
+    root.appendChild(c);
+  });
+}
+let detailChart=null;
+function openDetail(key){
+  const d=INDEXES.find(x=>x.key===key); if(!d) return;
+  const root=document.getElementById('idx-detail');
+  root.classList.remove('hidden');
+  const maxW=Math.max(...d.holdings.map(h=>h[2]));
+  const holdRows=d.holdings.map(h=>`
+    <div>
+      <div class="hold-row"><span><span class="mono">${h[0]}</span> ${h[1]} <span style="color:var(--ink-3)">· ${h[3]}</span></span><span class="big">${h[2]}%</span></div>
+      <div class="hold-bar"><span style="width:${(h[2]/maxW*100).toFixed(1)}%"></span></div>
+    </div>`).join('');
+  const etfRows=d.etfs.map(e=>`<tr><td class="mono">${e[0]}</td><td>${e[1]}</td><td class="big">${e[3]}</td><td>${e[4]}</td><td>${e[7]}</td></tr>`).join('');
+  root.innerHTML=`
+    <div class="detail-head">
+      <div>
+        <div class="detail-name">${d.name}</div>
+        <div class="detail-code">${d.code} · ${d.issuer} · 发布于 ${d.date}</div>
+      </div>
+      <div>
+        <span class="pill navy">${d.cap.split('，')[0]}</span>
+        <span class="pill ${d.riskN<=2?'down':(d.riskN===3?'gold':'up')}">风险 ${d.risk}</span>
+      </div>
+    </div>
+    <div class="detail-analysis">${d.analysis}</div>
+    <div class="detail-grid">
+      <div>
+        <div class="detail-block">
+          <h5>估值与收益 · 截至 2026-06-02</h5>
+          <div class="kv-row"><span class="k">PE(TTM)</span><span class="v">${d.pe} 倍 <span class="pill navy">近 10 年 ${d.pePct} 分位</span></span></div>
+          <div class="kv-row"><span class="k">PB(LF)</span><span class="v">${d.pb} 倍 <span class="pill navy">${d.pbPct} 分位</span></span></div>
+          <div class="kv-row"><span class="k">股息率</span><span class="v">${d.div}</span></div>
+          <div class="kv-row"><span class="k">基日以来年化</span><span class="v perf-up">${d.ann}</span></div>
+          <div class="kv-row"><span class="k">波动率</span><span class="v">${d.vol}</span></div>
+        </div>
+        <div class="detail-block" style="margin-top:14px">
+          <h5>编制规则</h5>
+          <div style="font-size:12.5px;color:var(--ink-2);line-height:1.6">${d.rule}</div>
+          <div style="font-size:12px;color:var(--ink-3);margin-top:8px"><b>市值区间：</b>${d.cap}</div>
+        </div>
+        <div class="detail-block" style="margin-top:14px">
+          <h5>行业分布</h5>
+          <div class="sector-wrap"><canvas id="detail-sector"></canvas></div>
+        </div>
+      </div>
+      <div>
+        <div class="detail-block">
+          <h5>前十大权重股 <span style="font-weight:400;font-size:11px;color:var(--ink-3)">${d.conc}</span></h5>
+          ${holdRows}
+        </div>
+        <div class="detail-block" style="margin-top:14px">
+          <h5>对应高流动性 ETF</h5>
+          <table class="research" style="margin:0"><thead><tr><th>代码</th><th>名称</th><th>规模(亿)</th><th>日均成交</th><th>跟踪误差</th></tr></thead><tbody>${etfRows}</tbody></table>
+        </div>
+      </div>
+    </div>`;
+  if(detailChart) detailChart.destroy();
+  const palette=['#0E2A47','#143E66','#B08842','#D7263D','#1F8A47','#E27A3F','#6BBF7D','#D4B271','#9E1A2D','#7FA0C2','#C8BFAE'];
+  detailChart=new Chart(document.getElementById('detail-sector'),{
+    type:'doughnut',
+    data:{labels:d.sectors.map(s=>s[0]),datasets:[{data:d.sectors.map(s=>s[1]),backgroundColor:palette,borderColor:'#fff',borderWidth:1.5}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{family:'Noto Sans SC',size:11},boxWidth:11}},tooltip:{callbacks:{label:c=>`${c.label}：${c.raw}%`}}}}
+  });
+  root.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+renderGrid();
+
+/* =================================================================== */
+/* ===== Ch2: ETF 汇总表 ===== */
+/* =================================================================== */
+const ETF_ROWS=[];
+INDEXES.forEach(d=>d.etfs.forEach(e=>ETF_ROWS.push({code:e[0],name:e[1],track:d.short,mgr:e[2],aum:e[3],vol:e[4],fee:e[5],terr:e[7]})));
+let etfSort={key:'aum',dir:'desc'};
+function renderEtfTable(){
+  const tb=document.getElementById('etf-tbody'); tb.innerHTML='';
+  const sorted=[...ETF_ROWS].sort((a,b)=>{
+    let av=a[etfSort.key],bv=b[etfSort.key];
+    if(typeof av==='string') return etfSort.dir==='asc'?av.localeCompare(bv,'zh'):bv.localeCompare(av,'zh');
+    return etfSort.dir==='asc'?av-bv:bv-av;
+  });
+  sorted.forEach(e=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="mono">${e.code}</td><td>${e.name}</td><td><span class="pill navy">${e.track}</span></td><td>${e.mgr}</td><td class="big">${e.aum}</td><td>${e.vol}</td><td>${e.fee}</td><td>${e.terr}</td>`;
+    tb.appendChild(tr);
+  });
+  document.querySelectorAll('#etf-table th').forEach(th=>{th.classList.remove('sort-asc','sort-desc');if(th.dataset.key===etfSort.key)th.classList.add(etfSort.dir==='asc'?'sort-asc':'sort-desc');});
+}
+document.querySelectorAll('#etf-table th.sortable').forEach(th=>th.addEventListener('click',()=>{
+  if(etfSort.key===th.dataset.key)etfSort.dir=etfSort.dir==='asc'?'desc':'asc';else{etfSort.key=th.dataset.key;etfSort.dir='desc';}
+  renderEtfTable();
+}));
+renderEtfTable();
+
+function renderThemeTable(){
+  const tb=document.getElementById('theme-tbody'); tb.innerHTML='';
+  THEME_ETFS.forEach(e=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="mono">${e[0]}</td><td>${e[1]}</td><td><span class="pill gold">${e[2]}</span></td><td class="big">${e[3]}</td><td>${e[4]}</td><td>${e[5]}</td>`;
+    tb.appendChild(tr);
+  });
+}
+renderThemeTable();
+
+/* =================================================================== */
+/* ===== Ch3: 风险收益散点 + 对比表 ===== */
+/* =================================================================== */
+function renderScatter(){
+  const ctx=document.getElementById('chart-rr'); if(!ctx) return;
+  const pts=INDEXES.map(d=>({x:d.volNum,y:d.annNum,r:6+Math.min(d.peNum,160)/160*26,label:d.short,risk:d.risk}));
+  const byRisk={};
+  ['低','中低','中','中高','高'].forEach(r=>byRisk[r]=pts.filter(p=>p.risk===r));
+  const datasets=Object.keys(byRisk).filter(r=>byRisk[r].length).map(r=>({label:r,data:byRisk[r],backgroundColor:RISK_COLOR[r].replace('rgb','rgba'),borderColor:'#fff',borderWidth:1.5}));
+  /* apply alpha */
+  datasets.forEach(ds=>{ds.backgroundColor=RISK_COLOR[ds.label]+'CC';});
+  new Chart(ctx,{type:'bubble',data:{datasets},options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{labels:{font:{family:'Noto Sans SC'},color:'#1A1A1A'}},
+      tooltip:{callbacks:{label:c=>{const d=INDEXES.find(x=>x.short===c.raw.label);return [`${d.short}（${d.code}）`,`年化 ${d.ann} · 波动 ${d.vol}`,`PE ${d.pe} · 股息率 ${d.div} · 风险 ${d.risk}`];}}}
+    },
+    scales:{
+      x:{title:{display:true,text:'波动率 %（越右越高）',color:'#6B6B6B',font:{family:'Noto Sans SC'}},min:12,max:40,grid:{color:'#EFE9D9'},ticks:{color:'#6B6B6B'}},
+      y:{title:{display:true,text:'长期年化收益 %（越上越高）',color:'#6B6B6B',font:{family:'Noto Sans SC'}},min:6,max:14,grid:{color:'#EFE9D9'},ticks:{color:'#6B6B6B'}}
+    },
+    onClick:(e,el,chart)=>{if(el.length){const p=chart.data.datasets[el[0].datasetIndex].data[el[0].index];const d=INDEXES.find(x=>x.short===p.label);if(d){openDetail(d.key);document.getElementById('ch1').scrollIntoView({behavior:'smooth'});}}}
+  }});
+}
+let cmpSort={key:'riskN',dir:'asc'};
+function renderCmpTable(){
+  const tb=document.getElementById('cmp-tbody'); tb.innerHTML='';
+  const sorted=[...INDEXES].sort((a,b)=>{
+    const map={pe:'peNum',pb:'pbNum',div:'divNum',ann:'annNum',vol:'volNum',aum:'aum',riskN:'riskN',short:'short'};
+    const k=map[cmpSort.key]||cmpSort.key;
+    let av=a[k],bv=b[k];
+    if(typeof av==='string') return cmpSort.dir==='asc'?av.localeCompare(bv,'zh'):bv.localeCompare(av,'zh');
+    return cmpSort.dir==='asc'?av-bv:bv-av;
+  });
+  sorted.forEach(d=>{
+    const tr=document.createElement('tr'); tr.style.cursor='pointer';
+    tr.innerHTML=`<td><b>${d.short}</b><br/><small style="color:var(--ink-3);font-size:10px">${d.code}</small></td>
+      <td class="big">${d.pe}</td><td>${d.pb}</td><td>${d.div}</td><td class="perf-up">${d.ann}</td><td>${d.vol}</td>
+      <td><span class="pill ${d.riskN<=2?'down':(d.riskN===3?'gold':'up')}">${d.risk}</span></td>
+      <td style="font-size:12px">${d.bestEtf}</td><td class="big">${d.aum}</td>`;
+    tr.addEventListener('click',()=>{openDetail(d.key);document.getElementById('ch1').scrollIntoView({behavior:'smooth'});});
+    tb.appendChild(tr);
+  });
+  document.querySelectorAll('#cmp-table th').forEach(th=>{th.classList.remove('sort-asc','sort-desc');if(th.dataset.key===cmpSort.key)th.classList.add(cmpSort.dir==='asc'?'sort-asc':'sort-desc');});
+}
+document.querySelectorAll('#cmp-table th.sortable').forEach(th=>th.addEventListener('click',()=>{
+  if(cmpSort.key===th.dataset.key)cmpSort.dir=cmpSort.dir==='asc'?'desc':'asc';else{cmpSort.key=th.dataset.key;cmpSort.dir=th.dataset.key==='short'||th.dataset.key==='riskN'?'asc':'desc';}
+  renderCmpTable();
+}));
+renderCmpTable();
+
+/* =================================================================== */
+/* ===== Ch4: 配置建议 ===== */
+/* =================================================================== */
+const PORTFOLIOS=[
+  {key:'conservative',icon:'🛡️',name:'保守型',tag:'稳健收益',
+   goal:'低波动、稳健分红、控制回撤',ret:'年化 6%-8%',dd:'最大回撤 ≤ 15%',who:'养老、稳健理财、风险承受低',
+   rationale:'以高股息红利打底、超级蓝筹上证 50 辅之，PE/PB 均处历史低位，下行抗跌、分红稳定，适合追求绝对收益与本金安全的投资者。',
+   holdings:[{n:'中证红利 ETF',code:'515080',v:60,c:'#1F8A47'},{n:'上证 50 ETF',code:'510050',v:40,c:'#143E66'}]},
+  {key:'steady',icon:'⚖️',name:'稳健型',tag:'长期增值',
+   goal:'兼顾稳健与长期增值',ret:'年化 8%-10%',dd:'最大回撤 ≤ 25%',who:'长期定投、家庭资产配置',
+   rationale:'沪深 300 提供大盘核心 Beta，中证 500 增强中盘成长弹性 —— 大中盘搭配，覆盖面广、流动性最佳，是最适合普通人的"懒人式"长期定投组合。',
+   holdings:[{n:'沪深 300 ETF',code:'510300',v:60,c:'#0E2A47'},{n:'中证 500 ETF',code:'510500',v:40,c:'#B08842'}]},
+  {key:'aggressive',icon:'🚀',name:'进取型',tag:'高弹性',
+   goal:'追求高弹性收益',ret:'年化 10%-15%',dd:'波动较大',who:'能承受短期波动的长期投资者',
+   rationale:'创业板与科创 50 押注新能源、半导体、AI 算力等新质生产力，中证 1000 增强小盘弹性。高成长高波动，需以长期视角穿越周期。',
+   holdings:[{n:'创业板 ETF',code:'159915',v:30,c:'#D7263D'},{n:'科创 50 ETF',code:'588000',v:30,c:'#9E1A2D'},{n:'中证 1000 ETF',code:'512100',v:40,c:'#E27A3F'}]},
+  {key:'rotation',icon:'🎯',name:'行业轮动型',tag:'波段操作',
+   goal:'把握行业景气周期收益',ret:'取决于择时',dd:'波动大',who:'有择时能力、主动管理的投资者',
+   rationale:'以宽基为底仓，根据行业景气度在半导体、新能源等主题 ETF 间波段切换。需紧密跟踪景气与资金流，单只主题 ETF 仓位建议 ≤ 15%。',
+   holdings:[{n:'沪深 300 ETF（底仓）',code:'510300',v:40,c:'#0E2A47'},{n:'半导体 ETF',code:'159995',v:25,c:'#D7263D'},{n:'新能源 ETF',code:'159806',v:20,c:'#1F8A47'},{n:'医药 ETF',code:'159938',v:15,c:'#B08842'}]}
+];
+function renderInvestorPicker(){
+  const root=document.getElementById('investor-picker');
+  PORTFOLIOS.forEach((p,i)=>{
+    const c=document.createElement('div');
+    c.className='picker-card'+(i===0?' active':'');
+    c.dataset.key=p.key;
+    c.innerHTML=`<div class="picker-icon">${p.icon}</div><div class="picker-name">${p.name}</div><div class="picker-tag">${p.tag}</div>`;
+    c.addEventListener('click',()=>{document.querySelectorAll('#investor-picker .picker-card').forEach(x=>x.classList.remove('active'));c.classList.add('active');renderPortfolio(p.key);});
+    root.appendChild(c);
+  });
+}
+let pfChart=null;
+function renderPortfolio(key){
+  const p=PORTFOLIOS.find(x=>x.key===key); if(!p) return;
+  document.getElementById('pf-name').textContent=`${p.icon} ${p.name}投资者`;
+  document.getElementById('pf-goal').textContent=p.goal;
+  document.getElementById('pf-ret').textContent=p.ret;
+  document.getElementById('pf-dd').textContent=p.dd;
+  document.getElementById('pf-who').textContent=p.who;
+  document.getElementById('pf-rationale').textContent=p.rationale;
+  document.getElementById('pf-tag').textContent=p.tag.toUpperCase();
+  const ctx=document.getElementById('pf-pie');
+  if(pfChart) pfChart.destroy();
+  pfChart=new Chart(ctx,{type:'doughnut',data:{labels:p.holdings.map(h=>h.n),datasets:[{data:p.holdings.map(h=>h.v),backgroundColor:p.holdings.map(h=>h.c),borderColor:'#fff',borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}：${c.raw}%`}}}}});
+  const root=document.getElementById('pf-holdings'); root.innerHTML='';
+  p.holdings.forEach(h=>{
+    const r=document.createElement('div');
+    r.className='pf-hold-row';
+    r.innerHTML=`<span class="pf-hold-dot" style="background:${h.c}"></span><span>${h.n}</span><span class="pf-hold-code">${h.code}</span><span class="pf-hold-pct">${h.v}%</span>`;
+    root.appendChild(r);
+  });
+}
+renderInvestorPicker();
+renderPortfolio('conservative');
+
+/* =================================================================== */
+/* ===== 导航 scrollspy ===== */
+/* =================================================================== */
+const tabs=document.querySelectorAll('.chapter-tab');
+tabs.forEach(tab=>tab.addEventListener('click',e=>{e.preventDefault();const el=document.getElementById(tab.dataset.target);if(el)el.scrollIntoView({behavior:'smooth'});}));
+const secs=Array.from(document.querySelectorAll('section.chapter'));
+window.addEventListener('scroll',()=>{const top=window.scrollY+160;let a=secs[0];for(const s of secs){if(s.offsetTop<=top)a=s;}tabs.forEach(t=>t.classList.toggle('active',t.dataset.target===a.id));});
+
+if(window.Chart){renderScatter();} else {window.addEventListener('load',()=>{if(window.Chart)renderScatter();});}
+</script>
+</body>
+</html>
