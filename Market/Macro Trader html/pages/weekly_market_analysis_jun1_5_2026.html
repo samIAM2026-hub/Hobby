@@ -205,6 +205,16 @@
   .fsig .fbull{background:var(--green-soft);} .fsig .fbear{background:var(--red-soft2);}
   .fsig b{display:block; font-size:10px; letter-spacing:.5px; text-transform:uppercase; margin-bottom:2px;}
   .fsig .fbull b{color:var(--green);} .fsig .fbear b{color:var(--red);}
+
+  .vrow{display:flex; align-items:center; gap:12px; padding:9px 13px; border:1px solid var(--border); border-radius:8px; margin-bottom:6px; font-size:13px; transition:all .12s;}
+  .vrow.cur{border-color:var(--navy); border-width:2px; background:var(--surface-2);}
+  .vrow .vlvl{font-weight:700; flex:0 0 64px;}
+  .vrow .vpe{flex:0 0 54px; color:var(--ink-2); font-weight:600;}
+  .vrow .vtrack{flex:1; height:8px; background:var(--bg); border-radius:5px; overflow:hidden; min-width:60px;}
+  .vrow .vfill{height:100%; border-radius:5px;}
+  .vrow .vzone{flex:0 0 auto; font-size:10.5px; font-weight:700; padding:2px 9px; border-radius:100px; white-space:nowrap;}
+  .vrow .vcur{flex:0 0 auto; font-size:10.5px; font-weight:700; color:var(--navy);}
+  .vnote{font-size:13px; color:var(--ink-2); background:var(--blue-soft); border-left:3px solid var(--blue); padding:10px 14px; border-radius:0 8px 8px 0; margin:12px 0;}
 </style>
 </head>
 <body>
@@ -323,6 +333,28 @@
     <div id="caseBox"></div>
   </div>
 
+  <div class="card" id="valuation">
+    <div class="tag">Valuation tracking · SPX after Friday</div>
+    <h2>Cheaper than Thursday — still a premium</h2>
+    <div class="sub">Friday's −2.64% took SPX to ~7,384. That trimmed the multiple but did not make it cheap: still ~20–22x forward earnings depending on the EPS estimate. Pick an EPS basis to recompute the ladder and DCA zone.</div>
+    <div class="kpis" id="valKpis" style="margin-bottom:14px;"></div>
+    <div class="metricbtns" id="epsBtns" style="margin-bottom:6px;"></div>
+    <div class="vnote" id="valRead"></div>
+    <div style="font-size:11px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--ink-3); margin:14px 0 8px;">Forward P/E band ladder &amp; DCA zones</div>
+    <div id="valLadder"></div>
+    <div class="cols2" style="margin-top:16px;">
+      <div class="stylebox">
+        <h3 style="margin-bottom:8px;">External reference points</h3>
+        <div id="valRefs"></div>
+      </div>
+      <div class="stylebox">
+        <h3 style="margin-bottom:8px;">DCA read</h3>
+        <div id="valDca"></div>
+      </div>
+    </div>
+    <div class="gap-note">Anchor: StreetStats had SPX 7,584.31 on Jun 4 with forward P/E 20.85x, forward EPS $363.75, trailing EPS $296.16. Applying Friday's −2.64% gives SPX ~7,384 → forward P/E ~20.3x, trailing ~24.9x. Band ladder computes P/E = level ÷ selected EPS; zones are P/E-based.</div>
+  </div>
+
   <div class="card" id="strategy">
     <div class="tag">Strategy progression</div>
     <h2>How the playbook evolved across the week</h2>
@@ -358,7 +390,7 @@
   <div class="card" id="ahead">
     <div class="tag">The week ahead · Jun 9–13</div>
     <h2>The data runway before the FOMC runway</h2>
-    <div class="sub">Friday's rout turned next week into a minefield. Every print feeds directly into what the Warsh Fed signals at the Jun 16–17 FOMC. Click any event for why it matters.</div>
+    <div class="sub">Friday's rout turned next week into a minefield — CPI and PPI feed straight into the Jun 16–17 FOMC, and the largest IPO in history (SpaceX) prices Thu and debuts Fri. Click any event for why it matters.</div>
     <div class="kpis" id="aheadKpis" style="margin-bottom:18px;"></div>
     <div class="metricbtns" id="dayFilter" style="margin-bottom:14px;"></div>
     <div id="calendar"></div>
@@ -798,7 +830,8 @@ const AHEAD_KPIS = [
  {l:'Dec hike odds', v:'68.4%', s:'neg', c:'from 52% prior day'},
  {l:'Fed funds now', v:'3.50–3.75%', s:'neu', c:'June 16–17 hold expected'},
  {l:'10Y yield', v:'4.54%', s:'neg', c:'+6 bps on jobs'},
- {l:'Pivotal day', v:'Wed Jun 10', s:'neg', c:'CPI + Oracle + BoC'}
+ {l:'Pivotal day', v:'Wed Jun 10', s:'neg', c:'CPI + Oracle + BoC'},
+ {l:'SpaceX IPO', v:'$75B raise', s:'neu', c:'prices Jun 11, debuts Jun 12'}
 ];
 document.getElementById('aheadKpis').innerHTML = AHEAD_KPIS.map(k=>
  '<div class="kpi"><div class="kl">'+k.l+'</div><div class="kv">'+k.v+'</div><div class="kc '+k.s+'">'+k.c+'</div></div>').join('');
@@ -826,9 +859,13 @@ const CAL = [
    {t:'Initial Jobless Claims', time:'8:30 ET', sens:'high', fore:'~232K',
     why:'After the blockbuster payrolls, claims are scrutinized for any reversal. Still historically low — but an upside surprise (higher claims) could paradoxically relieve markets by softening rate-hike fears.'},
    {t:'Adobe (ADBE) · Q2 FY2026', time:'After close', sens:'high', fore:'EPS $5.61–5.85 · rev ~$6.46B (guided $6.43–6.48B)',
-    why:'The other major tech bellwether this week. Software has been recovering on the thesis that AI agents drive MORE software demand. Adobe\'s Firefly AI monetization commentary will validate or undercut that recovery narrative — and the bar is high after an ~8% early-June rally.'}
+    why:'The other major tech bellwether this week. Software has been recovering on the thesis that AI agents drive MORE software demand. Adobe\'s Firefly AI monetization commentary will validate or undercut that recovery narrative — and the bar is high after an ~8% early-June rally.'},
+   {t:'🚀 SpaceX (SPCX) · IPO pricing', time:'Evening', sens:'vhigh', fore:'555.6M shares @ $135 → ~$75B raise · ~$1.75T market cap',
+    why:'The largest IPO ever, shattering Saudi Aramco\'s $26B record. The roadshow began Jun 4; shares price tonight ahead of Friday\'s debut. Only ~3–5% of stock is floated (a tiny public float) with an unusually large 30% retail tranche (~$25–26B) some analysts call "worrying." 2025 revenue was $18.67B (Starlink $11.39B, +50% y/y), so ~$1.75T implies ~94x price-to-revenue — Morningstar pegs fair value at $780B, ~55% below the target. A $75B single-day raise drains liquidity and historically forces the market to "make room," pressuring existing holdings.'}
  ]},
- {day:'Fri · Jun 12', hot:false, key:'fri', events:[
+ {day:'Fri · Jun 12', hot:true, key:'fri', tag:'🚀 SpaceX debuts on Nasdaq — the largest listing in history', events:[
+   {t:'🚀 SpaceX (SPCX) · Nasdaq debut', time:'At open', sens:'vhigh', fore:'Ticker SPCX · ~$1.75T cap · Musk stake ~$866B',
+    why:'Index mechanics dominate. Nasdaq fast-tracked Nasdaq-100 inclusion to ~15 trading days (≈Jul 7) and FTSE Russell to 5 days — but S&P Dow Jones rejected fast-track (12-month seasoning), so no passive S&P 500 buying for a year. At an eventual ~50% free float it would be ~1.33% of the CRSP US Total Market, diluting NVDA/AAPL/MSFT weights in tech funds. The staggered lockup lets insiders begin selling as early as ~August (Musk pledged to hold his 40%+ for a year). Small float + forced index buying can inflate the price short-term before late-2026 insider supply hits. Space peers already wobbled on rotation fears — ASTS −11%, RKLB/LUNR ~−2%.'},
    {t:'Michigan Consumer Sentiment (Jun preliminary)', time:'10:00 ET', sens:'high', fore:'Watching after record-low 44.8',
     why:'May\'s final cratered to a record-low 44.8 despite a strong labor market. That divergence — strong jobs, collapsing confidence — suggests deep worry about inflation and purchasing power. With consumer spending ~70% of GDP, whether sentiment stabilizes or keeps falling is a critical leading indicator.'}
  ]}
@@ -896,9 +933,64 @@ document.getElementById('factorList').innerHTML = FACTORS.map(f=>
  +'<div class="fbody">'+f.body
  +'<div class="fsig"><div class="fbull"><b>Bullish trigger</b>'+f.bull+'</div><div class="fbear"><b>Bearish trigger</b>'+f.bear+'</div></div></div></details>').join('');
 
+const SPX_FRI = 7384;
+const EPS_OPTS = [
+ ['fwd','Forward $363.75', 363.75, 'forward'],
+ ['cons','Conservative $338.29', 338.29, 'forward'],
+ ['gs','Goldman 2026 $340', 340, 'forward'],
+ ['ttm','Trailing $296.16', 296.16, 'trailing']
+];
+const VAL_LEVELS = [8000, SPX_FRI, 7275, 6912, 6548, 6200];
+function zoneFor(pe){
+  if(pe>=22) return ['Expensive / euphoric','c-bear','var(--red)'];
+  if(pe>=20) return ['Partial DCA','c-mix','var(--amber)'];
+  if(pe>=19) return ['Normal DCA','c-info','var(--blue)'];
+  if(pe>=18) return ['Accumulate','c-bull','var(--green)'];
+  return ['Aggressive buy','c-bull','var(--green)'];
+}
+let curEps = 'fwd';
+function valOpt(){ return EPS_OPTS.find(e=>e[0]===curEps); }
+function renderVal(){
+  const o = valOpt(), eps = o[2], basis = o[3];
+  const pe = Math.round(SPX_FRI/eps*10)/10, ey = eps/SPX_FRI*100;
+  const z = zoneFor(pe);
+  document.getElementById('valKpis').innerHTML = [
+   {l:'SPX level', v:'~7,384', c:'after Fri −2.64%', s:'neg'},
+   {l:(basis==='trailing'?'Trailing':'Forward')+' P/E', v:pe.toFixed(1)+'x', c:'EPS '+(eps.toFixed(2)), s:'neu'},
+   {l:'Earnings yield', v:ey.toFixed(1)+'%', c:'inverse of P/E', s:'neu'},
+   {l:'DCA zone', v:z[0], c:'at this multiple', s: pe>=22?'neg':(pe>=20?'neu':'pos')}
+  ].map(k=>'<div class="kpi"><div class="kl">'+k.l+'</div><div class="kv">'+k.v+'</div><div class="kc '+k.s+'">'+k.c+'</div></div>').join('');
+  const basisWord = basis==='trailing'?'trailing':'forward';
+  const thuPE = Math.round(7584.31/eps*10)/10;
+  document.getElementById('valRead').innerHTML = '<b>At '+basisWord+' EPS '+eps.toFixed(2)+',</b> SPX ~7,384 trades at <b>'+pe.toFixed(1)+'x</b> ('+ey.toFixed(1)+'% earnings yield) — the <b>'+z[0].toLowerCase()+'</b> band. '+(pe>=20?('Down from Thursday’s ~'+thuPE.toFixed(1)+'x on the same '+basisWord+' basis, but still a premium — especially with bond yields rising.'):('A more constructive multiple — closer to a standard accumulation zone.'));
+  const lo=6000, hi=8200;
+  document.getElementById('valLadder').innerHTML = VAL_LEVELS.map(L=>{
+    const p = Math.round(L/eps*10)/10, zz = zoneFor(p), w = Math.max(4, Math.min(100, (L-lo)/(hi-lo)*100)), cur = L===SPX_FRI;
+    return '<div class="vrow'+(cur?' cur':'')+'"><span class="vlvl">'+L.toLocaleString()+'</span>'
+      +'<span class="vpe">'+p.toFixed(1)+'x</span>'
+      +'<span class="vtrack"><span class="vfill" style="width:'+w+'%; background:'+zz[2]+'"></span></span>'
+      +'<span class="vzone '+zz[1]+'">'+zz[0]+'</span>'
+      +(cur?'<span class="vcur">← now</span>':'')+'</div>';
+  }).join('');
+  document.querySelectorAll('#epsBtns .mbtn').forEach(b=>b.classList.toggle('active', b.dataset.eps===curEps));
+}
+const epsBtns = document.getElementById('epsBtns');
+EPS_OPTS.forEach(o=>{ const b=document.createElement('button'); b.className='mbtn'; b.dataset.eps=o[0]; b.textContent=o[1]; b.onclick=()=>{curEps=o[0]; renderVal();}; epsBtns.appendChild(b); });
+document.getElementById('valRefs').innerHTML = [
+ ['MacroMicro forward P/E','22.21x as of Jun 5 — above our ~20.3x using StreetStats EPS.'],
+ ['Yardeni framework','Uses an 18–22x forward P/E range for its S&P 500 target — today sits in the upper half.'],
+ ['Goldman EPS','$340 for 2026, $385 for 2027 — today\'s multiple leans heavily on that growth continuing.']
+].map(r=>'<div class="fl"><b>'+r[0]+'</b>'+r[1]+'</div>').join('');
+document.getElementById('valDca').innerHTML = [
+ ['Classification','c-mix','"Expensive but no longer euphoric after the selloff."'],
+ ['Dynamic DCA zone','c-mix','Normal / partial DCA — not an aggressive buy zone.'],
+ ['What would change it','c-info','Price falling toward the 19x (~7,275), 18x (~6,548) bands opens standard → accumulate zones.']
+].map(r=>'<div class="fl"><span class="chip '+r[1]+'" style="margin-bottom:4px;">'+r[0]+'</span><div style="margin-top:4px;">'+r[2]+'</div></div>').join('');
+renderVal();
+
 const NAV = [
  ['overview','Overview'],['days','By day'],['indices','Indices'],['macro','Macro'],['ratings','Ratings'],
- ['nfp','NFP shock'],['sectors','Sectors'],['style','Style'],['cases','Bull / Bear'],['strategy','Strategy'],
+ ['nfp','NFP shock'],['sectors','Sectors'],['style','Style'],['cases','Bull / Bear'],['valuation','Valuation'],['strategy','Strategy'],
  ['deck','Deck'],['watch','Watchlist'],['ahead','Week ahead'],['factors','Other factors'],['verdict','Verdict']
 ];
 const navInner = document.getElementById('navInner');
