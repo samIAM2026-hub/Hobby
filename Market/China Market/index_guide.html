@@ -286,8 +286,8 @@
       </div>
     </div>
     <div class="topbar-meta">
-      <span>覆盖：<b>22 个指数 · 13 大章节</b></span>
-      <span>更新：<b>2026-06-02</b></span>
+      <span>覆盖：<b>22 个指数 · 16 大章节</b></span>
+      <span>更新：<b>2026-06-05</b></span>
       <a href="etf_allocation_guide.html" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--gold);color:#1A1A1A;font-size:12.5px;font-weight:700;text-decoration:none;border:1px solid var(--gold-light);white-space:nowrap;letter-spacing:.5px">ETF 配置指南 →</a>
     </div>
   </div>
@@ -308,6 +308,9 @@
     <a class="chapter-tab" data-target="ch11"><span class="num">十一</span>常见误区</a>
     <a class="chapter-tab" data-target="ch12"><span class="num">十二</span>选择流程</a>
     <a class="chapter-tab" data-target="ch13"><span class="num">十三</span>定投指南</a>
+    <a class="chapter-tab" data-target="ch14"><span class="num">十四</span>操作流程</a>
+    <a class="chapter-tab" data-target="ch15"><span class="num">十五</span>每日跟踪</a>
+    <a class="chapter-tab" data-target="ch16"><span class="num">十六</span>风控避坑</a>
   </div>
 </nav>
 
@@ -756,7 +759,308 @@
   </div>
 </section>
 
-<footer>· A 股指数体系交互式指南 · 22 指数 × 13 章节 · 2026-06-02 ·</footer>
+<!-- ============ 十四 · ETF 投资全流程操作 ============ -->
+<section class="chapter" id="ch14">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">十四</span><span>ETF 投资全流程操作 SOP</span></div>
+    <div class="ch-en">CHAPTER 14 · FULL-CYCLE WORKFLOW</div>
+  </div>
+
+  <div class="tldr">
+    <b>六阶段闭环：准备 → 筛选 → 建仓 → 跟踪 → 止盈止损 → 复盘。</b>
+    本章把通用操作流程与本站数据打通 —— 筛选标准对照 <a href="etf_allocation_guide.html" style="color:var(--up);font-weight:700">ETF 配置指南</a> 的入池 ETF，
+    止盈纪律直接套用当前估值分位（截至 2026-06-02）。
+    <b>流程的意义在于：每一步都有明确规则，不靠临场情绪做决定。</b>
+  </div>
+
+  <div class="sub-h">一、前期准备 <small>BEFORE YOU START</small></div>
+  <div class="conclusion-grid">
+    <div class="conc"><div class="conc-num">01</div><h4>账户与费率</h4><p>确认交易佣金（优先万 2.5 以下、5 元最低门槛可谈）。场内 ETF 免印花税，成本优势要守住。</p></div>
+    <div class="conc"><div class="conc-num">02</div><h4>目标与风险偏好</h4><p>长期稳健 → 宽基；短期弹性 → 行业 / 主题；低风险流动性 → 债券 / 货币；全球配置 → 跨境 / 商品。对照第捌章「目标匹配」找到自己的画像。</p></div>
+    <div class="conc"><div class="conc-num">03</div><h4>资金三分法</h4><p>长期配置资金 + 短期交易资金分开管理，预留 3-6 个月生活费应急。<b style="color:var(--up-deep)">绝不使用杠杆资金。</b></p></div>
+  </div>
+
+  <div class="sub-h" style="margin-top:26px">二、标的筛选 · 四步筛选法 <small>SCREENING</small></div>
+  <div class="quote">第一步「匹配需求选指数」请用第捌章 + 第拾贰章决策流程完成。第二步用下表做硬指标筛选 —— 本站 ETF 池已按更严标准预筛。</div>
+  <div style="overflow-x:auto">
+    <table class="research">
+      <thead><tr><th>核心指标</th><th>合格标准</th><th>优质标准</th><th>本站 ETF 池现状</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><b>基金规模</b></td><td>≥ 5 亿元</td><td>≥ 20 亿元</td><td><span class="perf-up">入池门槛 ≥ 50 亿</span></td><td>低于 5 亿有清盘风险，规模越大运作越稳</td></tr>
+        <tr><td><b>近 20 日日均成交额</b></td><td>≥ 1000 万元</td><td>≥ 1 亿元</td><td><span class="perf-up">入池门槛 ≥ 1 亿（近 3 月）</span></td><td>流动性差则买卖价差大、容易卡单</td></tr>
+        <tr><td><b>年化跟踪误差</b></td><td>≤ 0.5%</td><td>≤ 0.2%</td><td><span class="perf-up">池内 0.07% – 0.18%</span></td><td>越小越贴合指数长期收益</td></tr>
+        <tr><td><b>综合费率（管理+托管）</b></td><td>≤ 0.6%</td><td>≤ 0.2%</td><td><span class="perf-up">池内统一 0.20%（0.15+0.05）</span></td><td>长期复利下费率差异显著影响收益</td></tr>
+        <tr><td><b>折溢价率</b></td><td>≤ ±0.5%</td><td>≤ ±0.3%</td><td>下单前实时查 IOPV</td><td><b style="color:var(--up-deep)">超过 ±1% 高度警惕，QDII 跨境 ETF 易现高溢价陷阱</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="quote" style="border-left-color:var(--warm);background:#FDF1E7;color:#8A4A1E">
+    <b>第三步排除项：</b>成立不足 1 年的新品 ✕ ｜ 规模连续 3 个月缩水 ✕ ｜ 同一指数下的小众品种 ✕（只选头部机构龙头 ETF，如 510300 / 510500 / 588000 / 159915）。
+  </div>
+
+  <div class="sub-h" style="margin-top:26px">三、估值定位 · 当前操作区对照 <small>VALUATION GATE · 2026-06-02</small></div>
+  <div style="overflow-x:auto">
+    <table class="research">
+      <thead><tr><th>指数</th><th>PE(TTM)</th><th>PE 近 10 年分位</th><th>所处操作区</th><th>流程动作</th></tr></thead>
+      <tbody>
+        <tr><td><b>中证红利</b></td><td>8.5</td><td>25%</td><td><span class="pill down">低估区</span></td><td><span class="perf-down">可正常建仓 / 加仓，底仓首选</span></td></tr>
+        <tr><td><b>上证 50</b></td><td>11.2</td><td>55%</td><td><span class="pill navy">中性区</span></td><td>正常定投</td></tr>
+        <tr><td><b>创业板指</b></td><td>47.4</td><td>59%</td><td><span class="pill navy">中性区</span></td><td>正常定投，控制节奏（龙头集中度 61% 偏高）</td></tr>
+        <tr><td><b>中证 500</b></td><td>36.8</td><td>68%</td><td><span class="pill gold">中性偏高</span></td><td>继续定投，不追高</td></tr>
+        <tr><td><b>沪深 300</b></td><td>14.5</td><td>69%</td><td><span class="pill gold">逼近减仓观察线</span></td><td>新增资金分批，触及 70% 分位启动逐步减仓</td></tr>
+        <tr><td><b>中证 1000</b></td><td>55.8</td><td>86%</td><td><span class="pill up">减仓区（70-90%）</span></td><td><span class="perf-up">停止新增，逐步减仓</span></td></tr>
+        <tr><td><b>国证 2000</b></td><td>62.5</td><td>88%</td><td><span class="pill up">减仓区（70-90%）</span></td><td><span class="perf-up">停止新增，逐步减仓</span></td></tr>
+        <tr><td><b>科创 50</b></td><td>158.9</td><td>91%</td><td><span class="pill up">清仓警戒区（&gt;90%）</span></td><td><span class="perf-up">执行估值止盈纪律，仅留观察仓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="quote"><b>估值止盈规则：</b>PE 突破近 10 年 <b>70% 分位 → 逐步减仓</b>；突破 <b>90% 分位 → 清仓</b>。该表每月初对照 <a href="etf_allocation_guide.html" style="color:var(--up)">ETF 配置指南</a> 更新一次分位数。</div>
+
+  <div class="sub-h" style="margin-top:26px">四、建仓与仓位管理 <small>POSITION RULES</small></div>
+  <div class="alloc-grid" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr))">
+    <div class="alloc-card core"><div class="alloc-stripe"></div>
+      <div class="alloc-title">定投策略 <span class="alloc-pill core">默认</span></div>
+      <div class="alloc-desc">每周 / 每月定期定额，发薪日后扣款。<b>下跌周期可手动加倍</b>，摊薄成本。执行细节见第拾叁章定投指南。</div>
+    </div>
+    <div class="alloc-card satellite"><div class="alloc-stripe"></div>
+      <div class="alloc-title">分批建仓 <span class="alloc-pill satellite">择时</span></div>
+      <div class="alloc-desc">看好标的后分 <b>3-5 批</b>买入，避免一次性满仓踏空或套牢。每批间隔以时间（周）或跌幅（-3%~-5%）触发。</div>
+    </div>
+    <div class="alloc-card offense"><div class="alloc-stripe"></div>
+      <div class="alloc-title">核心-卫星 <span class="alloc-pill offense">结构</span></div>
+      <div class="alloc-desc"><b>70% 宽基核心</b>（市场平均收益）+ <b>30% 行业 / 主题卫星</b>（博超额）。与第柒章四层框架（核心50/卫星20/防御15/进攻15）二选一并坚持。</div>
+    </div>
+  </div>
+  <div style="overflow-x:auto">
+    <table class="research">
+      <thead><tr><th>仓位红线</th><th>上限</th><th>触发后动作</th></tr></thead>
+      <tbody>
+        <tr><td>单只 ETF 占总资金</td><td><b>≤ 20%</b></td><td>超限 → 减仓提醒（见第十五章预警设置）</td></tr>
+        <tr><td>权益类 ETF 总仓位</td><td><b>≤ 80%</b></td><td>预留 20% 现金应对极端行情</td></tr>
+        <tr><td>行业 / 主题 ETF 合计</td><td><b>≤ 40%</b></td><td>避免行业系统性风险</td></tr>
+        <tr><td>单只行业 / 主题 ETF</td><td><b>≤ 10%-15%</b></td><td>与第玖章风险信号一致（AI 主题单只 ≤ 15%）</td></tr>
+        <tr><td>杠杆 ETF</td><td><b>仅日内 · 不隔夜为宜</b></td><td>单日 -15% 强制止损</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub-h" style="margin-top:26px">五、止盈与止损 · 三盈三损 <small>EXIT RULES</small></div>
+  <div class="dca-grid">
+    <div class="dca-card r-low">
+      <div class="dca-card-h"><span class="dca-card-name">① 目标收益止盈</span><span class="pill down">新手首选</span></div>
+      <div class="dca-row"><b>规则：</b>预设目标收益率（宽基累计 20%-30%、主题 30%-40%），达标分批兑现：先赎 50%，剩余设 10% 回撤保护。</div>
+    </div>
+    <div class="dca-card r-mid">
+      <div class="dca-card-h"><span class="dca-card-name">② 估值止盈</span><span class="pill gold">进阶 · 本章核心</span></div>
+      <div class="dca-row"><b>规则：</b>PE/PB 突破近 10 年 70% 分位逐步减仓、90% 分位清仓。当前科创 50（91%）已在清仓警戒区，国证 2000（88%）、中证 1000（86%）在减仓区。</div>
+    </div>
+    <div class="dca-card r-midhigh">
+      <div class="dca-card-h"><span class="dca-card-name">③ 趋势止盈</span><span class="pill" style="background:#FCE3D4;color:#9C4A1E">右侧</span></div>
+      <div class="dca-row"><b>规则：</b>价格跌破 20 日均线且连续 3 天站不回 → 止盈离场。适合主题 / 行业卫星仓。</div>
+    </div>
+    <div class="dca-card r-high">
+      <div class="dca-card-h"><span class="dca-card-name">止损三条 · 无条件执行</span><span class="pill up">纪律</span></div>
+      <div class="dca-row"><b>①</b> 单笔亏损达 <b style="color:var(--up-deep)">-10%</b> 无条件止损。</div>
+      <div class="dca-row"><b>②</b> 指数基本面逻辑破坏（政策打压 / 行业逻辑破坏）立即止损。</div>
+      <div class="dca-row"><b>③</b> 杠杆 ETF 单日 <b style="color:var(--up-deep)">-15%</b> 强制止损。</div>
+    </div>
+  </div>
+  <div class="quote"><b>例外：</b>定投中的宽基底仓浮亏不止损、不停投（第拾叁章纪律）。止损规则针对的是<b>一次性买入的交易仓与主题卫星仓</b>。</div>
+
+  <div class="sub-h" style="margin-top:26px">六、定期复盘 <small>REVIEW CADENCE</small></div>
+  <div class="conclusion-grid">
+    <div class="conc"><div class="conc-num">月</div><h4>每月末 · 交易复盘</h4><p>复盘当月收益与交易记录，分析盈亏原因；对照本章估值表更新 PE 分位。</p></div>
+    <div class="conc"><div class="conc-num">季</div><h4>每季度 · 持仓体检 + 再平衡</h4><p>核查持仓 ETF 规模 / 流动性 / 跟踪误差是否仍达标（跌破 5 亿或 1000 万 → 换仓同指数龙头）；仓位偏离目标 &gt;5% → 再平衡。</p></div>
+    <div class="conc"><div class="conc-num">年</div><h4>每年末 · 策略复盘</h4><p>全面复盘年度收益，重检风险偏好与目标，调整下一年配置框架（第柒章）。</p></div>
+  </div>
+</section>
+
+<!-- ============ 十五 · 每日跟踪流程 ============ -->
+<section class="chapter" id="ch15">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">十五</span><span>每日市场跟踪流程</span></div>
+    <div class="ch-en">CHAPTER 15 · DAILY ROUTINE</div>
+  </div>
+
+  <div class="tldr">
+    <b>早盘 15 分钟 + 盘中按预警驱动 + 盘后 15 分钟。</b>
+    每日跟踪不是盯盘，而是<b>按清单检查、按阈值行动</b>。宏观与资金类指标与第玖章轮动信号、
+    <a href="index.html" style="color:var(--up);font-weight:700">板块行业研报</a>第玖章 20 项监控清单共用同一套体系。
+    <b>定投型投资者可只做盘后部分 + 每周一次完整流程。</b>
+  </div>
+
+  <div class="sub-h">一、早盘 9:00 – 9:30 · 开盘前四查 <small>PRE-MARKET</small></div>
+  <div class="signal-grid">
+    <div class="signal-item cat-macro">
+      <div class="signal-h">① 隔夜外盘<span class="signal-tag macro">影响开盘</span></div>
+      <div><b style="color:var(--navy);font-weight:500">查：</b>美股三大指数、欧股涨跌；原油 / 黄金 / 铜（→ 商品 ETF）；人民币汇率（→ 跨境 ETF、北向资金）。</div>
+    </div>
+    <div class="signal-item cat-macro">
+      <div class="signal-h">② 当日数据日历<span class="signal-tag macro">事件驱动</span></div>
+      <div><b style="color:var(--navy);font-weight:500">查：</b>CPI / PMI / 社融 / MLF 等发布安排，预判对市场冲击方向（解读对照第肆章宏观选指）。</div>
+    </div>
+    <div class="signal-item cat-market">
+      <div class="signal-h">③ 资金面<span class="signal-tag market">情绪先行</span></div>
+      <div><b style="color:var(--navy);font-weight:500">查：</b>北向资金前一日流向 + 当日早盘预披露；两融余额变化。</div>
+    </div>
+    <div class="signal-item cat-market">
+      <div class="signal-h">④ 早间新闻<span class="signal-tag market">持仓相关</span></div>
+      <div><b style="color:var(--navy);font-weight:500">查：</b>政策动向、行业重大事件 —— 只判断一件事：<b>是否影响持仓 ETF 的逻辑</b>。</div>
+    </div>
+  </div>
+
+  <div class="sub-h" style="margin-top:26px">二、盘中 9:30 – 15:00 · 持仓五查 + 预警阈值 <small>INTRADAY</small></div>
+  <div class="conclusion-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">
+    <div class="conc"><div class="conc-num">01</div><h4>价格强弱</h4><p>对比大盘走势判断相对强弱，强于大盘的回调可容忍，弱于大盘的反弹要警惕。</p></div>
+    <div class="conc"><div class="conc-num">02</div><h4>折溢价率</h4><p>超过 ±1% → 警惕套利回归或情绪过热，<b>溢价时不买入</b>。</p></div>
+    <div class="conc"><div class="conc-num">03</div><h4>成交量比</h4><p>放大到 30 日均量 2 倍以上 → 关注是否有大资金异动 / 消息驱动。</p></div>
+    <div class="conc"><div class="conc-num">04</div><h4>资金流向</h4><p>当日净流入还是流出；某类 ETF 持续大额流入 = 主题过热信号（第玖章）。</p></div>
+    <div class="conc"><div class="conc-num">05</div><h4>技术信号</h4><p>RSI &gt; 70 超买 / &lt; 30 超卖；MACD、KDJ 辅助。宽基重点看 5/10/20/60 日均线。</p></div>
+  </div>
+
+  <div style="overflow-x:auto">
+    <table class="research">
+      <thead><tr><th>ETF 类型</th><th>单日涨跌幅预警阈值</th><th>特殊监控项</th></tr></thead>
+      <tbody>
+        <tr><td><b>宽基 ETF</b></td><td><span class="perf-up">±2%</span></td><td>是否突破 / 跌破关键均线（5 / 10 / 20 / 60 日）</td></tr>
+        <tr><td><b>行业 / 主题 ETF</b></td><td><span class="perf-up">±3%</span></td><td>对应行业政策、新闻、龙头公司公告</td></tr>
+        <tr><td><b>债券 ETF</b></td><td><span class="perf-up">±1.5%</span></td><td>10 年期国债收益率异动</td></tr>
+        <tr><td><b>跨境 ETF</b></td><td><span class="perf-up">±3%</span></td><td>对应海外市场实时走势 + 汇率 + <b style="color:var(--up-deep)">溢价率</b></td></tr>
+        <tr><td><b>商品 ETF</b></td><td><span class="perf-up">±3%</span></td><td>对应大宗商品期货价格</td></tr>
+        <tr><td><b>杠杆 ETF</b></td><td><span class="perf-up">±5%</span></td><td>严格只做日内，-15% 强制止损</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="quote">市场整体层面同步盯三件事：<b>板块涨跌幅排名</b>（轮动方向，切换阈值 = 板块涨跌中位数差 &gt; 6pp / 周）、<b>北向资金实时流向</b>、<b>两市成交额</b>（连续萎缩 = 反弹乏力，放量上涨 = 趋势延续）。</div>
+
+  <div class="sub-h" style="margin-top:26px">三、盘后 15:00+ · 收盘五步 <small>POST-MARKET</small></div>
+  <div class="conclusion-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">
+    <div class="conc"><div class="conc-num">01</div><h4>核对盈亏</h4><p>更新持仓记录与成本，账实一致。</p></div>
+    <div class="conc"><div class="conc-num">02</div><h4>检查触发</h4><p>是否触发止盈 / 止损 / 估值线（第十四章）？触发 → <b>当晚写好次日交易计划</b>，开盘照单执行。</p></div>
+    <div class="conc"><div class="conc-num">03</div><h4>轮动复盘</h4><p>当日板块轮动是否改变卫星仓逻辑；对照第玖章信号矩阵评估风格切换。</p></div>
+    <div class="conc"><div class="conc-num">04</div><h4>晚间事件</h4><p>浏览晚间新闻 / 公告，标记可能影响次日开盘的事件。</p></div>
+    <div class="conc"><div class="conc-num">05</div><h4>资金流排名</h4><p>查当日 ETF 资金流向排名，发现热点与冷点，进备选池。</p></div>
+  </div>
+
+  <div class="sub-h" style="margin-top:26px">四、自动化预警设置 <small>ALERT SETUP · 交易软件一次配好</small></div>
+  <div class="alloc-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+    <div class="alloc-card core"><div class="alloc-stripe"></div>
+      <div class="alloc-title">每只持仓 ETF <span class="alloc-pill core">必设</span></div>
+      <ul class="alloc-list">
+        <li>对应类型的涨跌幅预警（按上表阈值）</li>
+        <li>52 周新高 / 新低预警（趋势强弱）</li>
+        <li>折溢价率 ±1% 预警</li>
+      </ul>
+    </div>
+    <div class="alloc-card satellite"><div class="alloc-stripe"></div>
+      <div class="alloc-title">行业 ETF 观察池 <span class="alloc-pill satellite">轮动雷达</span></div>
+      <ul class="alloc-list">
+        <li>主要行业 ETF 设 52 周新高 / 新低预警 —— 提前发现板块轮动信号</li>
+        <li>±3% 涨跌幅预警，捕捉行业异动</li>
+        <li>观察池可直接用 <a href="etf_allocation_guide.html" style="color:var(--up)">ETF 配置指南</a> 的主题池：159995 半导体 / 159806 新能源 / 159928 消费 / 159938 医药 / 516160 新能车 / 512480 全指半导体</li>
+      </ul>
+    </div>
+    <div class="alloc-card defense"><div class="alloc-stripe"></div>
+      <div class="alloc-title">组合层面 <span class="alloc-pill defense">纪律</span></div>
+      <ul class="alloc-list">
+        <li>权益仓位偏离目标 &gt; 5% → 再平衡提醒</li>
+        <li>单只 ETF 仓位 &gt; 20% → 减仓提醒</li>
+        <li>组合回撤触及 10% / 15% / 20% → 分级减仓（第玖章）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 十六 · 风控避坑 ============ -->
+<section class="chapter" id="ch16">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">十六</span><span>风险控制与七大避坑</span></div>
+    <div class="ch-en">CHAPTER 16 · RISK TRAPS</div>
+  </div>
+
+  <div class="tldr">
+    <b>ETF 亏大钱的方式只有几种，全部可以提前规避。</b>
+    本章 7 大陷阱与第拾壹章「指数选择误区」互补 —— 那边讲<b>选错</b>，这边讲<b>做错</b>。点击展开每条的解决方案。
+  </div>
+
+  <div class="mistakes-list">
+    <div class="mistake-item">
+      <div class="mistake-head" onclick="this.parentElement.classList.toggle('open')"><span class="mistake-num">01</span><span style="flex:1">流动性陷阱 —— 想卖卖不出去</span><span class="mistake-toggle">+</span></div>
+      <div class="mistake-body">
+        <div><b style="color:var(--navy)">症状：</b>交易日均成交额低于 1000 万的 ETF，买卖价差大、挂单久不成交，急跌时根本跑不掉。</div>
+        <div class="mistake-fix">只在高流动性池内交易。本站 ETF 池入池门槛为近 3 月日均成交 ≥ 1 亿，远高于 1000 万合格线。</div>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-head" onclick="this.parentElement.classList.toggle('open')"><span class="mistake-num">02</span><span style="flex:1">QDII 高溢价陷阱 —— 买入即亏 5%</span><span class="mistake-toggle">+</span></div>
+      <div class="mistake-body">
+        <div><b style="color:var(--navy)">症状：</b>外汇额度紧张时跨境 ETF（纳指 / 标普 / 恒科）溢价可冲到 5%-10%，额度恢复或情绪退潮后溢价快速回落，净值没跌钱先亏。</div>
+        <div class="mistake-fix">下单前必查实时溢价率（对照 IOPV）。溢价 &gt; 1% 不买；高溢价需求可改用场外联接基金（如 270042 / 050025 / 013402）按净值申购。</div>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-head" onclick="this.parentElement.classList.toggle('open')"><span class="mistake-num">03</span><span style="flex:1">杠杆 ETF 损耗 —— 长期持有必输</span><span class="mistake-toggle">+</span></div>
+      <div class="mistake-body">
+        <div><b style="color:var(--navy)">症状：</b>每日再平衡的复利损耗使杠杆 ETF 长期收益严重偏离指数 ×倍数，震荡市里指数不跌它也跌。</div>
+        <div class="mistake-fix">杠杆 ETF 仅用于日内 / 极短线交易，绝不长期持有；单日 -15% 强制止损（第十四章止损三条）。</div>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-head" onclick="this.parentElement.classList.toggle('open')"><span class="mistake-num">04</span><span style="flex:1">频繁交易 —— 手续费 + 追涨杀跌双重损耗</span><span class="mistake-toggle">+</span></div>
+      <div class="mistake-body">
+        <div><b style="color:var(--navy)">症状：</b>ETF 费率虽低，但高频进出累积成本可观，且高频决策天然偏向情绪化追涨杀跌。</div>
+        <div class="mistake-fix">用纪律替代预测：核心仓只做定投 + 季度再平衡；卫星仓的进出全部由预警阈值触发（第十五章），不由盘面情绪触发。</div>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-head" onclick="this.parentElement.classList.toggle('open')"><span class="mistake-num">05</span><span style="flex:1">迷你 ETF 清盘 —— 被动割肉</span><span class="mistake-toggle">+</span></div>
+      <div class="mistake-body">
+        <div><b style="color:var(--navy)">症状：</b>规模低于 2 亿的迷你 ETF 随时可能触发清盘条款，被迫在低位卖出，还要等漫长的清算期。</div>
+        <div class="mistake-fix">远离规模 &lt; 2 亿的品种；持仓 ETF 规模跌破 5 亿即启动换仓到同指数龙头（第十四章季检规则）。</div>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-head" onclick="this.parentElement.classList.toggle('open')"><span class="mistake-num">06</span><span style="flex:1">T+0 / T+1 规则混淆</span><span class="mistake-toggle">+</span></div>
+      <div class="mistake-body">
+        <div><b style="color:var(--navy)">症状：</b>以为当天买的 A 股 ETF 能当天卖，结果遇到尾盘跳水只能干看着。</div>
+        <div class="mistake-fix">记住规则：A 股普通股票 ETF = T+1；跨境、黄金、债券、货币 ETF = T+0。做短线波段只用 T+0 品种。</div>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-head" onclick="this.parentElement.classList.toggle('open')"><span class="mistake-num">07</span><span style="flex:1">大涨日追入主题 ETF</span><span class="mistake-toggle">+</span></div>
+      <div class="mistake-body">
+        <div><b style="color:var(--navy)">症状：</b>主题 ETF 单日大涨后追入，情绪退潮跌得比涨得快；尤其在估值高分位区（当前科创 50 / 中证 1000 / 国证 2000）。</div>
+        <div class="mistake-fix">大涨 ≥3% 当日不买入；想上车则等回踩分批（第十四章分批建仓），并核对估值操作区是否允许新增。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-h" style="margin-top:26px">交易规则速查 <small>QUICK REFERENCE</small></div>
+  <div style="overflow-x:auto">
+    <table class="research">
+      <thead><tr><th>品种</th><th>交易规则</th><th>关键注意</th></tr></thead>
+      <tbody>
+        <tr><td><b>A 股股票 ETF</b>（宽基 / 行业 / 主题）</td><td>T+1</td><td>当日买入次日才能卖；尾盘决策要留余地</td></tr>
+        <tr><td><b>跨境 ETF</b>（QDII）</td><td><span class="perf-up">T+0</span></td><td>盯溢价率，&gt;1% 不买；汇率影响净值</td></tr>
+        <tr><td><b>黄金 / 商品 ETF</b></td><td><span class="perf-up">T+0</span></td><td>跟期货价，注意展期成本</td></tr>
+        <tr><td><b>债券 / 货币 ETF</b></td><td><span class="perf-up">T+0</span></td><td>波动小，±1.5% 已属重大异动</td></tr>
+        <tr><td><b>杠杆 / 反向（境外）</b></td><td>T+0</td><td>仅日内，损耗极高，-15% 强制止损</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quote" style="margin-top:18px;border-left:3px solid var(--gold);background:#FFF7E0;color:var(--navy);font-family:'Noto Serif SC'">
+    <b>风险红线总览：</b>单只 ETF ≤ 20% ｜ 权益总仓 ≤ 80% ｜ 行业主题合计 ≤ 40% ｜ 单只主题 ≤ 10%-15% ｜ 组合回撤 10% / 15% / 20% 分级减仓 ｜
+    成交 &lt; 1000 万不碰 ｜ 规模 &lt; 2 亿不碰 ｜ 溢价 &gt; 1% 不买 ｜ 单笔 -10% 无条件止损。
+    <b>规则写在亏损之前，才有意义。</b>
+  </div>
+
+  <div style="margin-top:24px;text-align:center;font-size:12px;color:var(--ink-3);padding-top:16px;border-top:1px solid var(--line)">
+    第十四 – 十六章流程整合自《ETF 投资者全流程操作与每日跟踪提示词》（2026-06-05），估值分位与 ETF 池数据截至 2026-06-02 · 本文档不构成投资建议
+  </div>
+</section>
+
+<footer>· A 股指数体系交互式指南 · 22 指数 × 16 章节 · 2026-06-05 ·</footer>
 
 </main>
 

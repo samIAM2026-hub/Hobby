@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A股一周复盘 · 2026-06-01 → 06-05</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#F7F4ED; --paper:#FFFFFF;
+    --ink:#1A1A1A; --ink-2:#3D3D3D; --ink-3:#6B6B6B;
+    --line:#E4DED1; --line-strong:#C8BFAE;
+    --navy:#0E2A47; --navy-2:#143E66;
+    --gold:#B08842; --gold-light:#D4B271;
+    --up:#D7263D; --up-soft:#FBE9EC; --up-deep:#9E1A2D;
+    --down:#1F8A47; --down-soft:#E7F5EC; --down-deep:#125F30;
+    --flat:#8A8A8A;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  .serif{font-family:'Noto Serif SC',serif}
+
+  header.topbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#0E2A47 0%,#143E66 100%);color:#fff;border-bottom:3px solid var(--gold)}
+  .topbar-inner{max-width:1380px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-seal{width:42px;height:42px;background:var(--up);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC';font-weight:900;font-size:22px;border:2px solid var(--gold-light);box-shadow:0 0 0 1px rgba(255,255,255,.15)}
+  .brand-text{display:flex;flex-direction:column;line-height:1.15}
+  .brand-title{font-family:'Noto Serif SC';font-weight:700;font-size:18px;letter-spacing:1px}
+  .brand-sub{font-size:11.5px;color:#C9D6E3;letter-spacing:2px}
+  .topbar-meta{display:flex;gap:22px;font-size:12px;color:#C9D6E3}
+  .topbar-meta span b{color:#fff;font-weight:500;margin-left:4px}
+
+  nav.chapters{position:sticky;top:71px;z-index:40;background:#FAF8F2;border-bottom:1px solid var(--line)}
+  .chapters-inner{max-width:1380px;margin:0 auto;padding:0 28px;display:flex;gap:0;overflow-x:auto}
+  .chapter-tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--ink-3);border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;transition:all .15s;text-decoration:none}
+  .chapter-tab:hover{color:var(--navy)}
+  .chapter-tab.active{color:var(--up);border-bottom-color:var(--up);font-weight:700}
+  .chapter-tab .num{font-family:'Noto Serif SC';margin-right:6px;color:var(--gold)}
+
+  main{max-width:1380px;margin:0 auto;padding:32px 28px 80px}
+  section.chapter{background:var(--paper);border:1px solid var(--line);padding:36px 40px;margin-bottom:28px;box-shadow:0 1px 3px rgba(14,42,71,0.04);scroll-margin-top:130px}
+  .ch-head{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:24px;gap:24px;flex-wrap:wrap}
+  .ch-title{font-family:'Noto Serif SC';font-weight:900;font-size:26px;color:var(--navy);display:flex;align-items:baseline;gap:14px}
+  .ch-num{color:var(--up);font-size:36px;line-height:1;border-right:2px solid var(--gold);padding-right:14px}
+  .ch-en{font-size:12px;color:var(--ink-3);letter-spacing:3px;text-transform:uppercase;font-family:'Noto Sans SC'}
+
+  .tldr{background:linear-gradient(90deg,#FFF7E0 0%, #FAF8F2 100%);border-left:4px solid var(--gold);padding:14px 18px;margin-bottom:24px;font-size:14px;color:var(--ink-2)}
+  .tldr b{color:var(--navy);font-weight:700}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:28px}
+  .kpi{background:var(--paper);padding:18px 18px 16px;display:flex;flex-direction:column;gap:4px}
+  .kpi-label{font-size:11.5px;color:var(--ink-3);letter-spacing:1px}
+  .kpi-value{font-family:'Noto Serif SC';font-weight:700;font-size:28px;line-height:1.1}
+  .kpi-value.up{color:var(--up)}.kpi-value.down{color:var(--down)}
+  .kpi-sub{font-size:11.5px;color:var(--ink-3)}
+
+  table.research{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0;background:var(--paper)}
+  table.research th{background:var(--navy);color:#fff;text-align:left;padding:10px 12px;font-weight:500;font-size:12.5px;letter-spacing:1px;border-right:1px solid #1F4A72}
+  table.research td{padding:11px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  table.research tr:hover td{background:#FAF8F2}
+  table.research .perf-up{color:var(--up);font-weight:700;font-family:'Noto Serif SC'}
+  table.research .perf-down{color:var(--down);font-weight:700;font-family:'Noto Serif SC'}
+  table.research .perf-flat{color:var(--flat);font-weight:700;font-family:'Noto Serif SC'}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+  @media(max-width:960px){.two-col{grid-template-columns:1fr}}
+
+  .chart-card{background:var(--paper);border:1px solid var(--line);padding:16px 18px}
+  .chart-title{font-family:'Noto Serif SC';font-weight:700;font-size:15px;color:var(--navy);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:14px}
+  .chart-title small{font-family:'Noto Sans SC';font-weight:400;font-size:11px;color:var(--ink-3);letter-spacing:1px}
+  .chart-wrap{position:relative;height:320px}
+
+  .theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .theme-card{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--gold);padding:16px 18px;transition:all .18s;position:relative}
+  .theme-card:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(14,42,71,.08)}
+  .theme-card.hot{border-top-color:var(--up)}
+  .theme-card.cold{border-top-color:var(--down)}
+  .theme-name{font-family:'Noto Serif SC';font-weight:700;font-size:15.5px;color:var(--navy);margin-bottom:6px}
+  .theme-desc{font-size:13px;color:var(--ink-2);line-height:1.6}
+
+  .sub-tabs{display:flex;border:1px solid var(--navy);margin-bottom:16px;width:fit-content;flex-wrap:wrap}
+  .sub-tab{padding:8px 18px;font-size:13px;font-weight:500;cursor:pointer;background:var(--paper);color:var(--navy);border-right:1px solid var(--navy);transition:all .15s}
+  .sub-tab:last-child{border-right:0}
+  .sub-tab.active{background:var(--navy);color:#fff}
+  .day-panel{display:none}
+  .day-panel.active{display:block}
+
+  .pill{display:inline-block;padding:2px 9px;font-size:11.5px;margin:2px 5px 2px 0;border-radius:2px}
+  .pill.up{background:var(--up-soft);color:var(--up-deep)}
+  .pill.down{background:var(--down-soft);color:var(--down-deep)}
+
+  .idx-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:14px}
+  .idx-row{background:var(--paper);padding:11px 14px;display:flex;flex-direction:column;gap:3px}
+  .idx-row-label{font-size:10.5px;color:var(--ink-3);letter-spacing:1.5px}
+  .idx-row-value{font-size:13.5px;color:var(--ink);font-weight:500;line-height:1.5}
+
+  .flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:760px){.flow-grid{grid-template-columns:1fr}}
+  .flow-box{border:1px solid var(--line);padding:12px 16px;font-size:13px;line-height:1.6;color:var(--ink-2)}
+  .flow-box.in{background:var(--up-soft);border-left:4px solid var(--up)}
+  .flow-box.out{background:var(--down-soft);border-left:4px solid var(--down)}
+  .flow-box b{display:block;font-family:'Noto Serif SC';margin-bottom:4px}
+  .flow-box.in b{color:var(--up-deep)} .flow-box.out b{color:var(--down-deep)}
+
+  .conclusion-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+  .conc{background:linear-gradient(180deg,#FFFDF6 0%, #F7F4ED 100%);border:1px solid var(--line);border-top:3px double var(--up);padding:16px 18px}
+  .conc-num{font-family:'Noto Serif SC';font-weight:900;font-size:36px;color:var(--up);line-height:1}
+  .conc h4{margin:6px 0 8px;font-family:'Noto Serif SC';color:var(--navy);font-size:15px}
+  .conc p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.65}
+
+  .quote{border-left:3px solid var(--up);padding:8px 14px;margin:14px 0;background:var(--up-soft);color:var(--up-deep);font-size:14px}
+  .note{background:#FFFAEC;border:1px dashed var(--gold-light);padding:10px 14px;font-size:12.5px;color:var(--ink-3);margin-top:16px}
+
+  footer{text-align:center;font-size:12px;color:var(--ink-3);padding:24px 0 0;border-top:1px solid var(--line);margin-top:24px}
+  .heat-cell{font-family:'Noto Serif SC';font-weight:700;text-align:center}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-seal">复</div>
+      <div class="brand-text">
+        <span class="brand-title">A股一周复盘 · 走势与板块轮动</span>
+        <span class="brand-sub">WEEKLY REVIEW · TREND · SECTOR ROTATION</span>
+      </div>
+    </div>
+    <div class="topbar-meta">
+      <span>复盘区间：<b>2026-06-01 → 06-05</b></span>
+      <span>交易日：<b>4 个（6-04 无报告）</b></span>
+      <span>生成于：<b>2026-06-05</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="chapters">
+  <div class="chapters-inner" id="chapter-nav">
+    <a class="chapter-tab active" href="#ch1"><span class="num">壹</span>核心结论</a>
+    <a class="chapter-tab" href="#ch2"><span class="num">贰</span>指数走势</a>
+    <a class="chapter-tab" href="#ch3"><span class="num">叁</span>量能资金</a>
+    <a class="chapter-tab" href="#ch4"><span class="num">肆</span>板块轮动</a>
+    <a class="chapter-tab" href="#ch5"><span class="num">伍</span>每日复盘</a>
+    <a class="chapter-tab" href="#ch6"><span class="num">陆</span>下周关注</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ 壹 · 核心结论 ============ -->
+<section class="chapter" id="ch1">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">壹</span><span>本周核心结论</span></div>
+    <div class="ch-en">WEEKLY EXECUTIVE SUMMARY</div>
+  </div>
+
+  <div class="tldr">
+    <b>一周主线：极致的"高低切换"。</b>周一资金弃科技硬件、买煤炭与AI应用 → 周二三猛烈回流<b>通信硬件 / CPO</b>（指数涨、个股普跌的极致二八）→ 周五高位抱团瓦解、放量杀跌，资金涌向<b>机器人、6G 新题材与北交所小票</b>。单一主线持续性不超过 2–3 天；全周无系统性风险，属<b>结构性再平衡</b>。
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi"><span class="kpi-label">上证指数 · 周五收盘</span><span class="kpi-value down">4027.74</span><span class="kpi-sub">全周约 −0.36% · 失守短期均线</span></div>
+    <div class="kpi"><span class="kpi-label">创业板指</span><span class="kpi-value down">3957.94</span><span class="kpi-sub">全周约 −1.2% · 周三创新高后回落</span></div>
+    <div class="kpi"><span class="kpi-label">最强指数 · 北证50</span><span class="kpi-value up">+5.59%</span><span class="kpi-sub">周五独立行情 · 全周约 +6.3%</span></div>
+    <div class="kpi"><span class="kpi-label">最弱指数 · 科创50</span><span class="kpi-value down">−4.01%</span><span class="kpi-sub">周五单日 · 全周约 −4.8%</span></div>
+    <div class="kpi"><span class="kpi-label">日均成交额</span><span class="kpi-value">2.98<small style="font-size:14px">万亿</small></span><span class="kpi-sub">周三 3.15 万亿创近期新高</span></div>
+    <div class="kpi"><span class="kpi-label">北向资金 · 4日合计</span><span class="kpi-value down">−44亿</span><span class="kpi-sub">周五净卖出 56.8 亿 · 连续2日流出</span></div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="quote">市场全周在"高位兑现 → 低位挖掘"之间反复摆动，赚钱效应与亏钱效应并存：周中"赚指数不赚钱"，周五"亏指数赚个股"。</div>
+      <p style="font-size:13.5px;color:var(--ink-2);margin:0">炸板率从周一约 27% 一路升至周五 42%，连板高度全周被压制在 3 板，短线接力情绪持续降温；但个股层面周五重现普涨（涨跌比 61:39），表明资金并未离场，而是在调仓。</p>
+    </div>
+    <div class="idx-rows" style="margin-top:0">
+      <div class="idx-row"><span class="idx-row-label">本周情绪曲线</span><span class="idx-row-value">分歧 → 二八抱团 → 放量强化 → 抱团瓦解</span></div>
+      <div class="idx-row"><span class="idx-row-label">轮动路径</span><span class="idx-row-value">煤炭/电力/AI应用 → 通信硬件/CPO → 机器人/6G/北交所</span></div>
+      <div class="idx-row"><span class="idx-row-label">风格切换</span><span class="idx-row-value">大盘成长（周中）→ 小盘/低位防御（周五）</span></div>
+      <div class="idx-row"><span class="idx-row-label">系统性风险</span><span class="idx-row-value">无 · 流动性始终维持 2.8 万亿以上</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 贰 · 指数走势 ============ -->
+<section class="chapter" id="ch2">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">贰</span><span>指数走势分析</span></div>
+    <div class="ch-en">INDEX TREND</div>
+  </div>
+
+  <div class="tldr"><b>箱体震荡、周五破位：</b>上证全周围绕 4030–4105 箱体运行，周五收 4027.74 失守全部短期均线，<b>4000 点整数关</b>成下周生命线；创业板周三盘中创历史新高（4122.99）后周五 −3.20% 破位；科创50 周五 992.70 逼近千点关口。</div>
+
+  <div class="two-col">
+    <div class="chart-card">
+      <div class="chart-title">主要指数每日涨跌幅 <small>点击图例可显隐 · 单位 %</small></div>
+      <div class="chart-wrap"><canvas id="chgChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">全周累计涨跌 <small>以 6-01 前收盘为基准复利 · 单位 %</small></div>
+      <div class="chart-wrap"><canvas id="cumChart"></canvas></div>
+    </div>
+  </div>
+
+  <table class="research">
+    <thead><tr><th>指数</th><th>周五收盘</th><th>周五涨跌</th><th>全周累计</th><th>技术状态与点评</th></tr></thead>
+    <tbody>
+      <tr><td><b>上证指数</b></td><td>4027.74</td><td class="perf-down">−0.74%</td><td class="perf-down">−0.36%</td><td>失守 5/10/20/60 日线，4000 点整数关为下周关键支撑</td></tr>
+      <tr><td><b>深证成指</b></td><td>15314.70</td><td class="perf-down">−2.21%</td><td class="perf-down">−1.40%</td><td>断头铡刀跌破多根均线，短期调整压力大</td></tr>
+      <tr><td><b>创业板指</b></td><td>3957.94</td><td class="perf-down">−3.20%</td><td class="perf-down">−1.16%</td><td>周三创历史新高后破位，3900–3950 区域看承接</td></tr>
+      <tr><td><b>科创50</b></td><td>992.70</td><td class="perf-down">−4.01%</td><td class="perf-down">−4.78%</td><td>全周最弱，半导体重挫拖累，千点关口背水一战</td></tr>
+      <tr><td><b>沪深300</b></td><td>4816.92</td><td class="perf-down">−1.79%</td><td class="perf-down">−0.86%</td><td>权重抛压显现，中期趋势尚未完全破坏</td></tr>
+      <tr><td><b>北证50</b></td><td>1301.47</td><td class="perf-up">+5.59%</td><td class="perf-up">+6.35%</td><td>政策催化下独立走牛，全周唯一站稳全部均线的指数</td></tr>
+    </tbody>
+  </table>
+  <div class="note">注：科创50（6-01 报告区间 −3.78%~−5.00% 取中值）、北证50（6-01 报告区间 +0.45%~+1.58% 取约 +1%）用于累计估算；6-04 无复盘报告，累计为 4 个交易日复利。</div>
+</section>
+
+<!-- ============ 叁 · 量能与资金 ============ -->
+<section class="chapter" id="ch3">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">叁</span><span>量能与资金</span></div>
+    <div class="ch-en">VOLUME &amp; CAPITAL FLOW</div>
+  </div>
+
+  <div class="tldr"><b>量价结构转弱：</b>周三放量上涨（健康）→ 周五放量下跌（高位兑现离场信号）。北向全周净流出约 44 亿且周五加速；主力资金"集中流出高位、集中流入低位"，是<b>调仓而非离场</b>。</div>
+
+  <div class="two-col">
+    <div class="chart-card">
+      <div class="chart-title">两市成交额 <small>单位 亿元 · 红柱=下跌日放量</small></div>
+      <div class="chart-wrap"><canvas id="volChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">市场广度与北向资金 <small>柱=涨/跌家数（左）· 线=北向净流入亿元（右）</small></div>
+      <div class="chart-wrap"><canvas id="breadthChart"></canvas></div>
+    </div>
+  </div>
+
+  <table class="research">
+    <thead><tr><th>日期</th><th>成交额</th><th>涨/跌家数</th><th>炸板率</th><th>北向资金</th><th>主力净流入方向</th><th>主力净流出方向</th></tr></thead>
+    <tbody>
+      <tr><td><b>6-01 周一</b></td><td>2.88万亿（缩量）</td><td><span class="perf-up">3776</span> / <span class="perf-down">1682</span></td><td>约27%</td><td class="perf-down">−31.2亿</td><td>计算机 +89.4亿 · 传媒 ≈+50亿 · 煤炭 +37.2亿</td><td>电子 −268.8亿 · 通信 ≈−80亿</td></tr>
+      <tr><td><b>6-02 周二</b></td><td>2.81万亿（缩量）</td><td><span class="perf-up">1543</span> / <span class="perf-down">3876</span></td><td>31%</td><td class="perf-up">+28.6亿</td><td>通信 +168.6亿 · 电子 +95.3亿 · 有色 +82.6亿</td><td>传媒 −78.7亿 · 美容护理 −42.4亿</td></tr>
+      <tr><td><b>6-03 周三</b></td><td>3.15万亿（放量）</td><td><span class="perf-up">1713</span> / <span class="perf-down">3727</span></td><td>43.6%</td><td class="perf-up">+15.4亿</td><td>通信 +36.3亿 · 电子 +13.3亿 · 机械 +9.9亿</td><td>电力设备 −42.2亿 · 元件 −40.1亿 · 电池 −37.8亿</td></tr>
+      <tr><td><b>6-05 周五</b></td><td>3.07万亿（放量杀跌）</td><td><span class="perf-up">≈3200</span> / <span class="perf-down">≈2050</span></td><td>42%</td><td class="perf-down">−56.8亿</td><td>机器人 · 6G · 低估值蓝筹（北向加仓）</td><td>高位半导体 · AI算力（北向连续抛售）</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 肆 · 板块轮动 ============ -->
+<section class="chapter" id="ch4">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">肆</span><span>行业板块轮动</span></div>
+    <div class="ch-en">SECTOR ROTATION</div>
+  </div>
+
+  <div class="tldr"><b>轮动三段式：</b>煤炭/电力/AI应用（周一）→ 通信硬件/CPO/有色（周二三）→ 机器人/6G/北交所/低位防御（周五）。<b>每条主线寿命仅 2–3 个交易日</b>，追高风险大，低吸轮动是本周最优策略。</div>
+
+  <div style="overflow-x:auto">
+  <table class="research" id="heatTable">
+    <thead><tr><th style="min-width:120px">板块</th><th>6-01 周一</th><th>6-02 周二</th><th>6-03 周三</th><th>6-05 周五</th><th style="min-width:150px">备注</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  </div>
+  <div class="legend" style="display:flex;gap:14px;font-size:12px;color:var(--ink-3);margin:4px 0 18px">
+    <span><span style="display:inline-block;width:10px;height:10px;background:var(--up);vertical-align:middle;margin-right:4px"></span>上涨（A股惯例红涨）</span>
+    <span><span style="display:inline-block;width:10px;height:10px;background:var(--down);vertical-align:middle;margin-right:4px"></span>下跌</span>
+    <span>"—" 为报告未提供数值；周五板块以定性结论为主</span>
+  </div>
+
+  <div class="theme-grid">
+    <div class="theme-card hot">
+      <div class="theme-name">6-01 周一 · 切低位</div>
+      <div class="theme-desc">煤炭 +5.53% 全线涨停、计算机/传媒（AI应用）爆发；半导体、CPO 获利兑现重挫。催化：能源保供会议、焦煤期货大涨 7%、英伟达 GTC Taipei。</div>
+    </div>
+    <div class="theme-card hot">
+      <div class="theme-name">6-02 周二 · 回硬件</div>
+      <div class="theme-desc">通信 +5.71% 成绝对主线（主力净流入 168.6 亿），AI 应用退潮；指数全涨但超 3800 家下跌。东山精密、亨通光电等 7 只龙头创历史新高。</div>
+    </div>
+    <div class="theme-card">
+      <div class="theme-name">6-03 周三 · 主线强化</div>
+      <div class="theme-desc">AI 硬件分歧中强化（通信 +4.78%），煤炭避险支线并行；放量 3.15 万亿创近期新高，中际旭创、天孚通信、新易盛集体创历史新高。</div>
+    </div>
+    <div class="theme-card cold">
+      <div class="theme-name">6-05 周五 · 抱团瓦解</div>
+      <div class="theme-desc">高位科技放量杀跌（科创50 −4.01%），机器人、6G 新题材批量涨停启动，北证50 +5.59% 独立行情，市场进入"老主线退潮、新主线试错"过渡期。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 伍 · 每日复盘 ============ -->
+<section class="chapter" id="ch5">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">伍</span><span>每日复盘详情</span></div>
+    <div class="ch-en">DAILY REVIEW</div>
+  </div>
+  <div class="sub-tabs" id="dayTabs"></div>
+  <div id="dayPanels"></div>
+</section>
+
+<!-- ============ 陆 · 下周关注 ============ -->
+<section class="chapter" id="ch6">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">陆</span><span>一周总结与下周关注</span></div>
+    <div class="ch-en">SUMMARY &amp; WATCHLIST</div>
+  </div>
+
+  <div class="conclusion-grid">
+    <div class="conc"><div class="conc-num">一</div><h4>守 4000 点</h4><p>上证 4000 点整数关与创业板 3900–3950 区域能否企稳，决定调整是"高低切换"还是趋势转弱。跌破则降仓至 5 成以下。</p></div>
+    <div class="conc"><div class="conc-num">二</div><h4>新主线验真</h4><p>机器人、6G 是真启动还是一日游：看连板晋级、量能承接与主力复流。承接有力则为下一阶段进攻主线。</p></div>
+    <div class="conc"><div class="conc-num">三</div><h4>老主线生死</h4><p>科创50 逼近千点、严重超跌，通信/半导体龙头（中际旭创、亨通光电、东山精密）止跌与否决定 AI 硬件主线是否仅是回踩。</p></div>
+    <div class="conc"><div class="conc-num">四</div><h4>量能与外资</h4><p>成交能否守住 3 万亿、北向是否止流出（周五 −56.8 亿为本周最大单日流出）。缩量+外资续流出则防御为先。</p></div>
+    <div class="conc"><div class="conc-num">五</div><h4>策略基调</h4><p>主线寿命仅 2–3 天的环境下：不追高、低吸轮动；底仓配高股息/红利对冲，进攻仓在新主线确认后再上。</p></div>
+    <div class="conc"><div class="conc-num">六</div><h4>风格天平</h4><p>北证50 全周 +6.3% 独立走牛、小盘占优周五极端化；若延续，关注中证1000/北交所方向；若反转，蓝筹回补。</p></div>
+  </div>
+
+  <div class="note">本页基于 6-01 / 6-02 / 6-03 / 6-05 四份每日复盘报告整理（6-04 无报告，6-05 板块明细不全）；部分数据来源口径不一，已注明约值。仅供个人研究参考，不构成投资建议。</div>
+</section>
+
+<footer>A股一周复盘 · 2026-06-01 → 06-05 · 设计风格：China Market 研究模版 · 数据：同花顺 / 东方财富 Choice / Wind</footer>
+</main>
+
+<script>
+const UP='#D7263D', DOWN='#1F8A47', NAVY='#0E2A47', NAVY2='#143E66', GOLD='#B08842', GOLDL='#D4B271', FLAT='#8A8A8A';
+const DAYS=['6-01 周一','6-02 周二','6-03 周三','6-05 周五'];
+Chart.defaults.font.family="'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif";
+Chart.defaults.color='#6B6B6B';
+
+const INDEX_CHG={
+  '上证指数':[-0.27,0.43,0.22,-0.74],
+  '深证成指':[-1.51,1.63,0.73,-2.21],
+  '创业板指':[-2.15,2.66,1.65,-3.20],
+  '科创50':[-4.39,1.62,2.11,-4.01],
+  '沪深300':[-0.98,1.45,0.49,-1.79],
+  '北证50':[1.00,0.20,-0.48,5.59]
+};
+const SERIES_COLORS=[NAVY,'#1E6FD0',UP,GOLD,'#6B4FA3',DOWN];
+const VOL=[28770,28128,31531,30700];
+const ADV=[3776,1543,1713,3200];
+const DEC=[1682,3876,3727,2050];
+const NORTH=[-31.2,28.6,15.39,-56.8];
+
+new Chart(document.getElementById('chgChart'),{
+  type:'line',
+  data:{labels:DAYS,datasets:Object.entries(INDEX_CHG).map(([k,v],i)=>({
+    label:k,data:v,borderColor:SERIES_COLORS[i],backgroundColor:SERIES_COLORS[i]+'22',
+    borderWidth:2,tension:.3,pointRadius:4,pointHoverRadius:6,
+    hidden:['深证成指','沪深300'].includes(k)
+  }))},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14,font:{size:12}}},
+      tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y>0?'+':''}${c.parsed.y.toFixed(2)}%`}}},
+    scales:{y:{ticks:{callback:v=>v+'%'},grid:{color:'#EFEAE0'}},x:{grid:{display:false}}}}
+});
+
+const weekTotals=Object.entries(INDEX_CHG).map(([k,v])=>{
+  let acc=1; v.forEach(d=>acc*=(1+d/100));
+  return {k,v:+((acc-1)*100).toFixed(2)};
+}).sort((a,b)=>b.v-a.v);
+new Chart(document.getElementById('cumChart'),{
+  type:'bar',
+  data:{labels:weekTotals.map(d=>d.k),datasets:[{data:weekTotals.map(d=>d.v),
+    backgroundColor:weekTotals.map(d=>d.v>=0?UP+'D0':DOWN+'D0'),
+    borderColor:weekTotals.map(d=>d.v>=0?UP:DOWN),borderWidth:1}]},
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`全周 ${c.parsed.x>0?'+':''}${c.parsed.x.toFixed(2)}%`}}},
+    scales:{x:{ticks:{callback:v=>v+'%'},grid:{color:'#EFEAE0'}},y:{grid:{display:false}}}}
+});
+
+new Chart(document.getElementById('volChart'),{
+  type:'bar',
+  data:{labels:DAYS,datasets:[{label:'成交额',data:VOL,
+    backgroundColor:[NAVY+'CC',NAVY+'CC',GOLD+'DD',UP+'CC'],
+    borderColor:[NAVY,NAVY,GOLD,UP],borderWidth:1}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.parsed.y/10000).toFixed(2)+' 万亿元'}}},
+    scales:{y:{min:25000,ticks:{callback:v=>(v/10000).toFixed(1)+'万亿'},grid:{color:'#EFEAE0'}},x:{grid:{display:false}}}}
+});
+
+new Chart(document.getElementById('breadthChart'),{
+  data:{labels:DAYS,datasets:[
+    {type:'bar',label:'上涨家数',data:ADV,backgroundColor:UP+'B8',yAxisID:'y'},
+    {type:'bar',label:'下跌家数',data:DEC,backgroundColor:DOWN+'B8',yAxisID:'y'},
+    {type:'line',label:'北向净流入(亿)',data:NORTH,borderColor:NAVY,borderWidth:2,tension:.3,
+     pointRadius:4,pointBackgroundColor:NORTH.map(v=>v>=0?UP:DOWN),yAxisID:'y2'}]},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14,font:{size:12}}}},
+    scales:{y:{position:'left',grid:{color:'#EFEAE0'}},
+      y2:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>v+'亿'}},
+      x:{grid:{display:false}}}}
+});
+
+/* ---- 轮动热力表 ---- */
+const SECTORS=[
+  ['通信',        -3.28, 5.71, 4.78, null, '周五高位退潮'],
+  ['电子/半导体', -4.17, 2.62, 2.30, null, '周五重挫领跌'],
+  ['煤炭',         5.53, null, 2.55, null, '能源保供 · 避险支线'],
+  ['电力/公用事业',3.50, 1.27, 0.97, null, '6-01 为 2%~5% 区间'],
+  ['计算机',       3.50,-1.56, null, null, 'AI应用周一爆发后退潮'],
+  ['传媒(AI应用)', 3.32,-3.04,-1.58, null, '高位获利回吐'],
+  ['有色金属',     null, 3.26, 1.42, null, 'AI硬件上游需求'],
+  ['美容护理',     2.66,-2.78,-1.47, null, '消费抱团瓦解'],
+  ['食品饮料',     null, null,-1.25, null, '防御属性被能源替代'],
+  ['银行',         null, null,-1.08, null, '息差压力 · 资金流出'],
+  ['机器人 / 6G',  null, null, null, '★', '周五最强进攻主线 · 批量涨停']
+];
+function heatStyle(v){
+  const a=Math.min(Math.abs(v)/6,1);
+  const base=v>=0?'215,38,61':'31,138,71';
+  const fg=a>0.45?'#fff':(v>=0?'#9E1A2D':'#125F30');
+  return `background:rgba(${base},${(0.08+a*0.6).toFixed(2)});color:${fg}`;
+}
+document.querySelector('#heatTable tbody').innerHTML=SECTORS.map(([name,a,b,c,d,note])=>{
+  const cells=[a,b,c,d].map(v=>{
+    if(v==='★') return `<td class="heat-cell" style="background:var(--up-soft);color:var(--up-deep)">主线启动</td>`;
+    if(v===null) return `<td class="heat-cell" style="color:#C8BFAE">—</td>`;
+    return `<td class="heat-cell" style="${heatStyle(v)}">${v>0?'+':''}${v.toFixed(2)}%</td>`;
+  }).join('');
+  return `<tr><td><b>${name}</b></td>${cells}<td style="font-size:12px;color:var(--ink-3)">${note}</td></tr>`;
+}).join('');
+
+/* ---- 每日复盘 Tab ---- */
+const DAILY=[
+ {d:'6月1日 · 周一',mood:'缩量调整 · 个股普涨',
+  one:'指数分化、个股普涨的结构性高低切换：资金从高位科技硬件大规模流向低位煤炭、电力、高股息与 AI 应用端。',
+  hot:['煤炭 +5.53%','计算机 +3.50%','传媒 +3.32%','电力 2%~5%','AI PC'],
+  cold:['电子 −4.17%','通信 −3.28%','半导体/CPO','国防军工','建筑材料'],
+  rows:[['成交额','2.88万亿（缩量4417亿）'],['涨/跌家数','3776 / 1682（69%上涨）'],['涨停/跌停','113~166家 / 14~51家'],['北向资金','约净流出31.2亿'],['主力资金','净流出608亿（电子−268.8亿）'],['情绪','炸板率约27% · 分歧中等']],
+  fin:'计算机 +89.4亿 · 文化传媒 ≈+50亿 · 煤炭 +37.2亿',
+  fout:'电子 −268.8亿 · 通信 ≈−80亿 · 机械设备 ≈−50亿',
+  note:'催化：发改委迎峰度夏能源保供会议、焦煤期货大涨7%、英伟达 GTC Taipei 开幕、MiniMax 启动 IPO 辅导。'},
+ {d:'6月2日 · 周二',mood:'缩量上涨 · 极致二八',
+  one:'三大指数全线收涨但超 3800 只个股下跌；通信硬件 / CPO 产业链成全场绝对核心，AI 主线由应用端切回硬件端。',
+  hot:['通信 +5.71%（主力+168.6亿）','光通信/CPO +7.4%','被动元件 +7.2%','有色 +3.26%','电子 +2.62%'],
+  cold:['传媒 −3.04%','美容护理 −2.78%','农林牧渔 −2.33%','游戏跌停潮','计算机 −1.56%'],
+  rows:[['成交额','2.81万亿（缩量837亿）'],['涨/跌家数','1543 / 3876（72%下跌）'],['涨停/炸板率','96家 / 31%'],['北向资金','净流入28.6亿'],['主力资金','全市场+65.1亿 · 高度集中通信'],['市场评分','62分']],
+  fin:'通信 +168.6亿 · 电子 +95.3亿 · 有色 +82.6亿',
+  fout:'传媒 −78.7亿 · 美容护理 −42.4亿 · 农林牧渔 −38.6亿',
+  note:'催化：台北电脑展英伟达发布 Cosmos 3 与 AI PC 芯片 N1X；高盛"MLCC 成 AI 服务器第三大成本项"；上海十五五新型工业化规划。东山精密、亨通光电、工业富联等 7 只龙头创历史新高。'},
+ {d:'6月3日 · 周三',mood:'放量上涨 · 主线强化',
+  one:'AI 硬件主线分歧中强化、煤炭避险支线并行；成交放量至 3.15 万亿创近期新高，但下跌个股仍占 68%。',
+  hot:['通信 +4.78%','煤炭 +2.55%','电子 +2.30%','有色 +1.42%','石油石化 +1.18%'],
+  cold:['综合 −1.82%','建筑材料 −1.69%','交通运输 −1.64%','传媒 −1.58%','银行 −1.08%'],
+  rows:[['成交额','3.15万亿（放量3403亿）'],['涨/跌家数','1713 / 3727（涨跌比0.46）'],['涨停/炸板率','66家 / 43.6%'],['北向资金','净流入15.4亿（加仓长电、中核）'],['连板高度','维持3板未突破'],['市场评分','70分']],
+  fin:'通信 +36.3亿 · 电子 +13.3亿 · 机械设备 +9.9亿',
+  fout:'电力设备 −42.2亿 · 元件 −40.1亿 · 电池 −37.8亿',
+  note:'中际旭创、天孚通信、新易盛、源杰科技集体创历史新高；创业板指盘中创历史新高后冲高回落；发改委国企座谈会催化国企改革。'},
+ {d:'6月5日 · 周五',mood:'放量杀跌 · 新旧切换',
+  one:'三大指数集体回调但个股普涨（涨跌比 61:39）：高位科技抱团集中退潮，资金涌向机器人、6G 新题材、低位防御与北交所。',
+  hot:['北证50 +5.59%','机器人（批量涨停）','6G 通信','低位防御/高股息','中小盘普涨'],
+  cold:['科创50 −4.01%','创业板指 −3.20%','半导体/AI算力','深成指 −2.21%','沪深300 −1.79%'],
+  rows:[['成交额','3.07万亿（放量杀跌）'],['涨/跌家数','超3200家上涨（61:39）'],['炸板率','42% · 接力情绪降温'],['北向资金','净卖出56.8亿（连续2日）'],['技术面','上证失守全部短期均线'],['情绪','老主线退潮 · 新主线试错过渡期']],
+  fin:'机器人 · 6G · 低估值蓝筹（北向加仓）',
+  fout:'高位半导体 · AI算力（北向连续抛售）',
+  note:'北交所政策催化专精特新小票独立行情；下周关注上证 4000 点整数关与新主线承接力度。6月4日无复盘报告。'}
+];
+const tabsEl=document.getElementById('dayTabs'),panelsEl=document.getElementById('dayPanels');
+DAILY.forEach((d,i)=>{
+  const t=document.createElement('div');
+  t.className='sub-tab'+(i===3?' active':''); t.textContent=d.d.split(' ')[0];
+  t.onclick=()=>{document.querySelectorAll('.sub-tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.day-panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active'); document.getElementById('dp'+i).classList.add('active');};
+  tabsEl.appendChild(t);
+  const p=document.createElement('div');
+  p.className='day-panel'+(i===3?' active':''); p.id='dp'+i;
+  p.innerHTML=`
+    <div style="font-family:'Noto Serif SC';font-weight:700;font-size:18px;color:var(--navy)">${d.d}
+      <span style="font-family:'Noto Sans SC';font-weight:500;font-size:12px;color:var(--gold);margin-left:10px;letter-spacing:1px">${d.mood}</span></div>
+    <div class="quote" style="margin:12px 0">${d.one}</div>
+    <div style="margin-bottom:8px">${d.hot.map(x=>`<span class="pill up">▲ ${x}</span>`).join('')}${d.cold.map(x=>`<span class="pill down">▼ ${x}</span>`).join('')}</div>
+    <div class="idx-rows">${d.rows.map(([k,v])=>`<div class="idx-row"><span class="idx-row-label">${k}</span><span class="idx-row-value">${v}</span></div>`).join('')}</div>
+    <div class="flow-grid">
+      <div class="flow-box in"><b>主力净流入方向</b>${d.fin}</div>
+      <div class="flow-box out"><b>主力净流出方向</b>${d.fout}</div>
+    </div>
+    <div class="note">${d.note}</div>`;
+  panelsEl.appendChild(p);
+});
+
+/* ---- 章节导航高亮 ---- */
+const tabs=[...document.querySelectorAll('.chapter-tab')];
+const secs=tabs.map(t=>document.querySelector(t.getAttribute('href')));
+function syncNav(){
+  let idx=0;
+  secs.forEach((s,i)=>{if(s.getBoundingClientRect().top<160)idx=i;});
+  tabs.forEach((t,i)=>t.classList.toggle('active',i===idx));
+}
+window.addEventListener('scroll',syncNav,{passive:true});
+</script>
+</body>
+</html>

@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Market Analysis · Jun 1–5, 2026 · Macro Trader</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5C; --navy-2:#16314E; --navy-3:#0F2438;
+    --red:#C72E0B; --red-soft:#FFF4F1;
+    --bg:#F4F6F8; --surface:#FFFFFF; --surface-2:#F8FAFB;
+    --border:#E6E9ED; --border-2:#D4D9E0;
+    --ink:#18222E; --ink-2:#5A6675; --ink-3:#8B95A3;
+    --blue:#1E6FD0; --teal:#08808F; --amber:#B7791F; --purple:#6B4FA3; --green:#0B8A63;
+    --green-soft:#EBF7F2; --amber-soft:#FBF3E4; --red-soft2:#FDEEEA; --blue-soft:#EBF2FC;
+    --radius:14px; --radius-sm:9px;
+    --shadow:0 1px 2px rgba(20,40,65,.05), 0 4px 14px rgba(20,40,65,.06);
+    --font:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font); background:var(--bg); color:var(--ink); font-size:14px; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  .brandbar{height:3px; background:var(--red);}
+
+  .hero{background:
+      radial-gradient(900px 340px at 88% -120px, rgba(199,46,11,.34), transparent 60%),
+      linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 55%, var(--navy-3) 100%);
+    color:#fff; position:relative; overflow:hidden;}
+  .hero::after{content:''; position:absolute; inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size:34px 34px; mask-image:linear-gradient(180deg, rgba(0,0,0,.6), transparent 75%); pointer-events:none;}
+  .hero-inner{max-width:1080px; margin:0 auto; padding:36px 40px 32px; position:relative; z-index:1;}
+  .eyebrow{display:inline-flex; align-items:center; gap:7px; background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.22);
+    border-radius:100px; padding:4px 13px; font-size:11px; font-weight:600; letter-spacing:.6px; text-transform:uppercase; color:#EAF1F8; margin-bottom:14px;}
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:#FF6B4A;}
+  .hero h1{font-size:30px; font-weight:800; letter-spacing:-.02em; line-height:1.2; margin-bottom:10px;}
+  .hero .stand{font-size:15px; color:#C9D6E4; max-width:780px; margin-bottom:18px;}
+  .verdicts{display:flex; flex-wrap:wrap; gap:10px;}
+  .verdict{background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.20); border-radius:10px; padding:8px 14px;}
+  .verdict .vl{font-size:10px; font-weight:600; letter-spacing:.7px; text-transform:uppercase; color:#9FB4C9;}
+  .verdict .vv{font-size:13px; font-weight:700; color:#fff;}
+
+  .wrap{max-width:1080px; margin:0 auto; padding:26px 40px 60px;}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px 24px; margin-bottom:22px;}
+  .card h2{font-size:16px; font-weight:700; letter-spacing:-.01em; margin-bottom:4px;}
+  .card .sub{font-size:12.5px; color:var(--ink-2); margin-bottom:16px;}
+  .tag{display:inline-block; font-size:10px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--red); margin-bottom:6px;}
+
+  .arc{display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:4px;}
+  @media (max-width:760px){.arc{grid-template-columns:1fr;}}
+  .arccell{border-radius:var(--radius-sm); padding:11px 12px; border:1px solid var(--border);}
+  .arccell .ad{font-size:10.5px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--ink-3);}
+  .arccell .at{font-size:13px; font-weight:700; margin:3px 0;}
+  .arccell .ax{font-size:11.5px; color:var(--ink-2); line-height:1.4;}
+  .a-up{background:var(--green-soft);} .a-dn{background:var(--red-soft2);} .a-mx{background:var(--amber-soft);}
+
+  .tabs{display:flex; gap:7px; margin-bottom:18px; flex-wrap:wrap;}
+  .tab{flex:1; min-width:120px; text-align:left; cursor:pointer; border:1px solid var(--border-2); background:var(--surface-2);
+    border-radius:var(--radius-sm); padding:9px 12px; font-family:var(--font); transition:all .15s;}
+  .tab .t1{font-size:11.5px; font-weight:700;}
+  .tab .t2{font-size:10.5px; color:var(--ink-2); line-height:1.3;}
+  .tab:hover{border-color:var(--navy);}
+  .tab.active{background:var(--navy); border-color:var(--navy); color:#fff;}
+  .tab.active .t2{color:#B9C9DA;}
+
+  .kpis{display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:12px; margin-bottom:14px;}
+  .kpi{background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px;}
+  .kpi .kl{font-size:10.5px; font-weight:600; letter-spacing:.5px; text-transform:uppercase; color:var(--ink-3);}
+  .kpi .kv{font-size:19px; font-weight:800; letter-spacing:-.01em; margin:2px 0 0;}
+  .kpi .kc{font-size:12px; font-weight:700;}
+  .pos{color:var(--green);} .neg{color:var(--red);} .neu{color:var(--amber);}
+  .daynote{font-size:13px; color:var(--ink-2); background:var(--blue-soft); border-left:3px solid var(--blue); padding:10px 14px; border-radius:0 8px 8px 0;}
+
+  .chart-legend{display:flex; gap:14px; flex-wrap:wrap; font-size:11.5px; color:var(--ink-2); margin-bottom:8px;}
+  .chart-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .sw{width:10px; height:10px; border-radius:3px; display:inline-block;}
+  #barTip,#lineTip{position:absolute; pointer-events:none; background:var(--navy-3); color:#fff; font-size:12px; padding:6px 10px; border-radius:7px; opacity:0; transition:opacity .12s; white-space:nowrap; z-index:5;}
+
+  .metricbtns{display:flex; gap:7px; margin-bottom:12px; flex-wrap:wrap;}
+  .mbtn{font-family:var(--font); font-size:11.5px; font-weight:600; padding:5px 12px; border-radius:100px; border:1px solid var(--border-2); background:var(--surface); cursor:pointer; color:var(--ink-2);}
+  .mbtn.active{background:var(--navy); color:#fff; border-color:var(--navy);}
+
+  table.mx{width:100%; border-collapse:collapse; font-size:12px;}
+  table.mx th{font-size:10px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--ink-3); text-align:left; padding:7px 8px; border-bottom:2px solid var(--border-2);}
+  table.mx td{padding:8px 8px; border-bottom:1px solid var(--border); vertical-align:top;}
+  tr.exp{cursor:pointer;}
+  tr.exp:hover td{background:var(--surface-2);}
+  tr.detail td{background:var(--surface-2); color:var(--ink-2); font-size:12.5px; border-left:3px solid var(--navy);}
+  .chip{display:inline-block; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:100px; white-space:nowrap;}
+  .c-bull{background:var(--green-soft); color:var(--green);}
+  .c-bear{background:var(--red-soft2); color:var(--red);}
+  .c-mix{background:var(--amber-soft); color:var(--amber);}
+  .c-info{background:var(--blue-soft); color:var(--blue);}
+  .arrow{font-size:11px; color:var(--ink-3); margin-left:6px;}
+
+  .sortbtns{display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;}
+  .sbtn{font-family:var(--font); font-size:11.5px; font-weight:600; padding:5px 12px; border-radius:100px; border:1px solid var(--border-2); background:var(--surface); cursor:pointer; color:var(--ink-2);}
+  .sbtn.active{background:var(--navy); color:#fff; border-color:var(--navy);}
+
+  .cols2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media (max-width:760px){.cols2{grid-template-columns:1fr;} .wrap,.hero-inner{padding-left:20px;padding-right:20px;}}
+  .stylebox{border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px;}
+  .stylebox h3{font-size:13px; font-weight:700; margin-bottom:10px;}
+  .srow{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:5px 0; font-size:12.5px; border-bottom:1px dashed var(--border);}
+  .srow:last-child{border-bottom:none;}
+  .bar-out{flex:0 0 80px; height:7px; background:var(--bg); border-radius:5px; overflow:hidden;}
+  .bar-in{height:100%; border-radius:5px;}
+
+  .toggle{display:inline-flex; background:var(--surface-2); border:1px solid var(--border-2); border-radius:100px; padding:3px; margin-bottom:14px;}
+  .toggle button{font-family:var(--font); font-size:12px; font-weight:700; border:none; background:transparent; padding:6px 16px; border-radius:100px; cursor:pointer; color:var(--ink-2);}
+  .toggle button.on-bull{background:var(--green); color:#fff;}
+  .toggle button.on-bear{background:var(--red); color:#fff;}
+  .case ul{list-style:none;}
+  .case li{padding:7px 0 7px 22px; position:relative; font-size:13px; border-bottom:1px dashed var(--border);}
+  .case li:last-child{border-bottom:none;}
+  .case li::before{content:'▸'; position:absolute; left:4px; font-weight:700;}
+  .case.bullc li::before{color:var(--green);} .case.bearc li::before{color:var(--red);}
+  .verdict-strip{margin-top:12px; font-size:12.5px; background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px;}
+
+  .nfp{background:linear-gradient(160deg, #7A1E0A 0%, #4A1206 100%); color:#fff; border:none;}
+  .nfp h2{color:#fff;} .nfp .sub{color:#E6B5A6;}
+  .nfp .tag{color:#FFB59E;}
+  .nfp-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:12px; margin-top:6px;}
+  .nfp-item{background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18); border-radius:var(--radius-sm); padding:11px 13px;}
+  .nfp-item .nl{font-size:10px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:#F0C3B6; margin-bottom:3px;}
+  .nfp-item .nv{font-size:18px; font-weight:800;}
+  .nfp-item .nx{font-size:11px; color:#E6B5A6; margin-top:2px;}
+
+  details.sig{border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; background:var(--surface);}
+  details.sig summary{cursor:pointer; padding:11px 14px; font-size:13px; font-weight:600; list-style:none; display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  details.sig summary::-webkit-details-marker{display:none;}
+  details.sig[open] summary{border-bottom:1px solid var(--border);}
+  .sigbody{padding:10px 14px; font-size:12.5px; color:var(--ink-2); display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media (max-width:680px){.sigbody{grid-template-columns:1fr;}}
+  .sigcol{border-radius:8px; padding:9px 12px;}
+  .sig-bull{background:var(--green-soft);} .sig-bear{background:var(--red-soft2);}
+  .sigcol b{display:block; font-size:10.5px; letter-spacing:.6px; text-transform:uppercase; margin-bottom:3px;}
+  .sig-bull b{color:var(--green);} .sig-bear b{color:var(--red);}
+
+  .deck-stage{position:relative; background:var(--navy-3); border-radius:var(--radius-sm); overflow:hidden; display:flex; align-items:center;}
+  .deck-stage img{width:100%; display:block; aspect-ratio:1514/845;}
+  .deck-nav{position:absolute; top:50%; transform:translateY(-50%); width:38px; height:56px; border:none; cursor:pointer;
+    background:rgba(15,36,56,.55); color:#fff; font-size:26px; line-height:1; border-radius:8px; transition:background .15s; z-index:2;}
+  .deck-nav:hover{background:rgba(15,36,56,.85);}
+  #deckPrev{left:10px;} #deckNext{right:10px;}
+  .deck-cap{display:flex; align-items:flex-start; gap:10px; font-size:12.5px; color:var(--ink-2); margin-top:10px; min-height:36px;}
+  .deck-dots{display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;}
+  .deck-dots button{width:26px; height:6px; border-radius:4px; border:none; background:var(--border-2); cursor:pointer; transition:background .15s;}
+  .deck-dots button.on{background:var(--navy);}
+
+  .dayblock{margin-bottom:14px;}
+  .dayhead{display:flex; align-items:center; gap:10px; font-size:13px; font-weight:700; margin:0 0 8px; padding-bottom:6px; border-bottom:1px solid var(--border);}
+  .dayhead .dd{font-size:10.5px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:#fff; background:var(--navy); border-radius:100px; padding:2px 10px;}
+  .dayhead.hot .dd{background:var(--red);}
+  .ev{border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:7px; background:var(--surface);}
+  .ev.vhigh{border-left:3px solid var(--red);}
+  .ev.high{border-left:3px solid var(--amber);}
+  .ev.med{border-left:3px solid var(--ink-3);}
+  .ev summary{cursor:pointer; list-style:none; padding:9px 13px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .ev summary::-webkit-details-marker{display:none;}
+  .ev .et{font-size:12.5px; font-weight:600; flex:1; min-width:160px;}
+  .ev .etime{font-size:11px; color:var(--ink-3);}
+  .ev .ebody{padding:0 13px 11px; font-size:12.5px; color:var(--ink-2);}
+  .ev .efore{font-size:11.5px; color:var(--ink-2); background:var(--surface-2); border-radius:6px; padding:6px 10px; margin-bottom:8px; display:inline-block;}
+  .sens{font-size:9.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; padding:2px 8px; border-radius:100px; white-space:nowrap;}
+  .s-vhigh{background:var(--red-soft2); color:var(--red);}
+  .s-high{background:var(--amber-soft); color:var(--amber);}
+  .s-med{background:var(--blue-soft); color:var(--blue);}
+  .fl{padding:8px 0; border-bottom:1px dashed var(--border); font-size:12.5px;}
+  .fl:last-child{border-bottom:none;}
+  .fl b{display:block; font-size:12px; color:var(--ink); margin-bottom:2px;}
+
+  .final{background:linear-gradient(160deg, var(--navy) 0%, var(--navy-3) 100%); color:#fff; border:none;}
+  .final h2{color:#fff;} .final .sub{color:#AFC2D6;}
+  .fgrid{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:12px;}
+  .fitem{background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16); border-radius:var(--radius-sm); padding:11px 14px;}
+  .fitem .fl{font-size:10px; font-weight:700; letter-spacing:.7px; text-transform:uppercase; color:#9FB4C9; margin-bottom:3px;}
+  .fitem .fv{font-size:13px; font-weight:600; line-height:1.45;}
+
+  .foot{font-size:11.5px; color:var(--ink-3); margin-top:8px;}
+  .gap-note{font-size:11.5px; color:var(--ink-3); font-style:italic; margin-top:14px;}
+
+  .topnav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.93); backdrop-filter:blur(8px); border-bottom:1px solid var(--border);}
+  .topnav-inner{max-width:1080px; margin:0 auto; padding:8px 40px; display:flex; gap:6px; overflow-x:auto;}
+  .topnav-inner::-webkit-scrollbar{height:5px;} .topnav-inner::-webkit-scrollbar-thumb{background:var(--border-2); border-radius:5px;}
+  .topnav a{flex:0 0 auto; font-size:12px; font-weight:600; color:var(--ink-2); text-decoration:none; padding:6px 12px; border-radius:100px; white-space:nowrap; transition:all .15s;}
+  .topnav a:hover{background:var(--surface-2); color:var(--ink);}
+  .topnav a.active{background:var(--navy); color:#fff;}
+  @media (max-width:760px){.topnav-inner{padding-left:16px; padding-right:16px;}}
+  .card{scroll-margin-top:62px;}
+
+  .factor{border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; background:var(--surface);}
+  .factor.f-vhigh{border-left:3px solid var(--red);} .factor.f-high{border-left:3px solid var(--amber);} .factor.f-med{border-left:3px solid var(--ink-3);}
+  .factor summary{cursor:pointer; list-style:none; padding:11px 14px; display:flex; align-items:center; gap:10px;}
+  .factor summary::-webkit-details-marker{display:none;}
+  .factor .fn{font-size:13px; font-weight:700; flex:1;}
+  .factor .fstate{font-size:11px; color:var(--ink-2); background:var(--surface-2); border-radius:6px; padding:3px 9px; white-space:nowrap;}
+  .factor .fbody{padding:0 14px 13px; font-size:12.5px; color:var(--ink-2);}
+  .factor .fsig{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;}
+  @media (max-width:680px){.factor .fsig{grid-template-columns:1fr;}}
+  .factor .fsig div{border-radius:8px; padding:8px 11px; font-size:12px;}
+  .fsig .fbull{background:var(--green-soft);} .fsig .fbear{background:var(--red-soft2);}
+  .fsig b{display:block; font-size:10px; letter-spacing:.5px; text-transform:uppercase; margin-bottom:2px;}
+  .fsig .fbull b{color:var(--green);} .fsig .fbear b{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="brandbar"></div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow"><span class="dot"></span>Weekly Analysis · June 1–5, 2026 · Prepared Jun 5</div>
+    <h1>The Week the "No-Landing" Trade Broke</h1>
+    <div class="stand">Records on Monday and Tuesday, a wobble Wednesday, a healthy rotation Thursday — then Friday's hot jobs report (172k vs ~85k) detonated the whole structure. The S&amp;P fell 2.64%, the Nasdaq 100 4.77%, the VIX exploded 40% to 21.51, and the rotation that had been so orderly gave way to a broad, stagflationary risk-off. Step through the five days below.</div>
+    <div class="verdicts">
+      <div class="verdict"><div class="vl">Weekly Bias</div><div class="vv">Bearish — reduce risk</div></div>
+      <div class="verdict"><div class="vl">Leadership</div><div class="vv">Defensive (XLP·XLU·XLV)</div></div>
+      <div class="verdict"><div class="vl">Regime Shift</div><div class="vv">No-Landing → Stagflation</div></div>
+      <div class="verdict"><div class="vl">VIX</div><div class="vv">16 → 21.51 (+40%)</div></div>
+      <div class="verdict"><div class="vl">Next Catalyst</div><div class="vv">CPI Jun 10 · FOMC Jun 16–17</div></div>
+    </div>
+  </div>
+</div>
+
+<nav class="topnav"><div class="topnav-inner" id="navInner"></div></nav>
+
+<div class="wrap">
+
+  <div class="card" id="overview">
+    <div class="tag">The week in one line per day</div>
+    <h2>Five sessions, a complete regime change</h2>
+    <div class="sub">Records → wobble → rotation → collapse. The macro data ran hot all week; Friday's NFP was the straw that broke it.</div>
+    <div class="arc" id="arcRow"></div>
+    <div class="foot">S&amp;P 500 path: 7,599.96 → 7,609.78 (ATH) → 7,553.68 → 7,584.31 → 7,383.74. Peak-to-Friday: −2.97%. YTD: +11.27% → +7.9%.</div>
+  </div>
+
+  <div class="card" id="days">
+    <div class="tag">Day-by-day snapshot</div>
+    <h2>Select a day to load its close and regime read</h2>
+    <div class="tabs" id="dayTabs"></div>
+    <div class="kpis" id="kpiGrid"></div>
+    <div class="daynote" id="dayNote"></div>
+  </div>
+
+  <div class="card" id="indices" style="position:relative;">
+    <div class="tag">Index performance</div>
+    <h2>Daily % change by index — the whole week</h2>
+    <div class="sub">Hover any bar. Note how Thursday's broad green flipped to Friday's broad red once the jobs number hit.</div>
+    <div class="chart-legend" id="barLegend"></div>
+    <div id="barWrap" style="position:relative;"><svg id="barChart" width="100%" height="300" role="img" aria-label="Grouped bar chart of daily percent change for four indices across June 1 to 5"></svg><div id="barTip"></div></div>
+    <div class="foot">Nasdaq series uses Composite for Jun 1–4 and Nasdaq 100 for Jun 5 (the Friday report quotes NDX −4.77%). QQQ closed −0.7% on Jun 4.</div>
+  </div>
+
+  <div class="card" id="macro" style="position:relative;">
+    <div class="tag">Macro dashboard</div>
+    <h2>The pressure built all week — pick a gauge</h2>
+    <div class="sub">Every macro dial moved against equities into Friday: yields up, dollar up, volatility up, hike odds up.</div>
+    <div class="metricbtns" id="metricBtns"></div>
+    <div id="lineWrap" style="position:relative;"><svg id="lineChart" width="100%" height="220" role="img" aria-label="Line chart of a selected macro metric across June 1 to 5"></svg><div id="lineTip"></div></div>
+    <div class="foot" id="lineFoot"></div>
+  </div>
+
+  <div class="card" id="ratings">
+    <div class="tag">Condition ratings</div>
+    <h2>Seven-category rating matrix · the full week</h2>
+    <div class="sub">Click any row for the interpretation behind the ratings.</div>
+    <table class="mx" id="ratingTable">
+      <thead><tr><th style="width:16%">Category</th><th>Jun 1</th><th>Jun 2</th><th>Jun 3</th><th>Jun 4</th><th>Jun 5</th><th style="width:20%">Week's path</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="card nfp" id="nfp">
+    <div class="tag">Friday's hinge · the NFP shock</div>
+    <h2>"Good news is bad news" — the jobs print that ended the rally</h2>
+    <div class="sub">May payrolls more than doubled expectations, with +93k of upward revisions. The market read it as: no rate cuts, possibly hikes. Everything long-duration broke.</div>
+    <div class="nfp-grid" id="nfpGrid"></div>
+    <div class="gap-note" style="color:#E0A593">Beneath the headline: jobs were concentrated in leisure/hospitality (+70k, World Cup prep), local government (+55k) and health care (+35k); financial activities lost 22k; long-term unemployed (27+ weeks) rose to 27.5% from 20.4% a year ago. A strong headline over a softening core.</div>
+  </div>
+
+  <div class="card" id="sectors">
+    <div class="tag">Sector rotation board</div>
+    <h2>Eleven sectors plus semiconductors, across the week</h2>
+    <div class="sub">Energy and tech led early; by Friday the only green was defensive. Sort to see the trajectory.</div>
+    <div class="sortbtns">
+      <button class="sbtn active" data-sort="d5">Sort by Friday result</button>
+      <button class="sbtn" data-sort="dir">Sort by week trajectory</button>
+    </div>
+    <table class="mx" id="sectorTable">
+      <thead><tr><th style="width:15%">Sector</th><th>Jun 1</th><th>Jun 2</th><th>Jun 3</th><th>Jun 4</th><th>Jun 5</th><th style="width:13%">Path</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="foot" id="sectorFoot"></div>
+  </div>
+
+  <div class="card" id="style">
+    <div class="tag">Style rotation</div>
+    <h2>Where leadership ended the week</h2>
+    <div class="sub">Bars show conviction of the 5-day shift. By Friday the market paid only for safety and yield.</div>
+    <div class="cols2">
+      <div class="stylebox">
+        <h3 style="color:var(--green)">▲ Held up / gained</h3>
+        <div id="styleUp"></div>
+      </div>
+      <div class="stylebox">
+        <h3 style="color:var(--red)">▼ Lost / broke</h3>
+        <div id="styleDown"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="cases">
+    <div class="tag">Two readings — and which one won</div>
+    <h2>Bull case vs bear case (the bear case won on Friday)</h2>
+    <div class="sub">The three-day report flagged the hot-NFP bear scenario as the top risk. Friday delivered it. Toggle to compare.</div>
+    <div class="toggle">
+      <button id="btnBull">Bull case</button>
+      <button id="btnBear" class="on-bear">Bear case ✓</button>
+    </div>
+    <div id="caseBox"></div>
+  </div>
+
+  <div class="card" id="strategy">
+    <div class="tag">Strategy progression</div>
+    <h2>How the playbook evolved across the week</h2>
+    <div class="sub">From "participate but protect" to "reduce risk" — the call tightened each day and was vindicated Friday.</div>
+    <table class="mx" id="stratTable">
+      <thead><tr><th style="width:22%">Strategy question</th><th>Mon–Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th style="width:22%">End-of-week call</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="card" id="deck">
+    <div class="tag">Strategic deck · 范式转变</div>
+    <h2>The 2026 Market Paradigm Shift — companion slide deck</h2>
+    <div class="sub">15-slide strategic briefing on the full week, "from AI mania to stagflation reality" (Chinese). Built directly on the Jun 1–5 data this page covers. Navigate with arrows, dots, or keyboard · <a href="../assets/docs/The_2026_Market_Paradigm_Shift.pdf" target="_blank" style="color:var(--blue); font-weight:600;">open the full PDF ↗</a></div>
+    <div class="deck">
+      <div class="deck-stage">
+        <button class="deck-nav" id="deckPrev" aria-label="Previous slide">‹</button>
+        <img id="deckImg" src="../assets/img/pms/slide01.jpg" alt="Slide 1" loading="lazy">
+        <button class="deck-nav" id="deckNext" aria-label="Next slide">›</button>
+      </div>
+      <div class="deck-cap"><span id="deckNum" class="chip c-info">1 / 10</span><span id="deckCap"></span></div>
+      <div class="deck-dots" id="deckDots"></div>
+    </div>
+  </div>
+
+  <div class="card" id="watch">
+    <div class="tag">Watchlist · post-NFP</div>
+    <h2>Key signals to watch next week</h2>
+    <div class="sub">The whole tape now hinges on yields, CPI, and the FOMC. Each signal expands into its bullish vs bearish read.</div>
+    <div id="signals"></div>
+  </div>
+
+  <div class="card" id="ahead">
+    <div class="tag">The week ahead · Jun 9–13</div>
+    <h2>The data runway before the FOMC runway</h2>
+    <div class="sub">Friday's rout turned next week into a minefield. Every print feeds directly into what the Warsh Fed signals at the Jun 16–17 FOMC. Click any event for why it matters.</div>
+    <div class="kpis" id="aheadKpis" style="margin-bottom:18px;"></div>
+    <div class="metricbtns" id="dayFilter" style="margin-bottom:14px;"></div>
+    <div id="calendar"></div>
+    <div class="cols2" style="margin-top:18px;">
+      <div class="stylebox">
+        <h3 style="margin-bottom:8px;">Three macro fault lines into next week</h3>
+        <div id="faultlines"></div>
+      </div>
+      <div class="stylebox">
+        <h3 style="margin-bottom:8px;">How to read each outcome</h3>
+        <div id="playbook"></div>
+      </div>
+    </div>
+    <div class="gap-note">Dec rate-hike odds cited by this source: 68.4% (up from 52% the prior day) — higher than the 43–50% range in Friday's recap; both reflect the same post-NFP repricing toward a hike. Day-of-week labels follow the calendar (Jun 1 = Monday).</div>
+  </div>
+
+  <div class="card" id="factors">
+    <div class="tag">Other market factors · beyond the calendar</div>
+    <h2>Six forces that will steer next week's direction</h2>
+    <div class="sub">The scheduled data is only half the picture. These positioning, volatility, and geopolitical factors can amplify or reverse any print. Click each to expand its bull/bear triggers.</div>
+    <div id="factorList"></div>
+    <div class="daynote" style="margin-top:14px;"><b>The binary that defines the week:</b> the dominant regime is "good data = bad market." A soft CPI (≤3.8% y/y) could trigger a sharp short-covering relief rally given record hedge-fund shorts; a hot print (≥4.2% as RBC forecasts) validates a new leg down with oil, the dollar, and yields all working against equities at once. One more structural marker: <b>Jun 18 is Triple Witching</b> (moved up from the 19th for Juneteenth) — expect gamma-amplified swings into expiry.</div>
+  </div>
+
+  <div class="card final" id="verdict">
+    <div class="tag" style="color:#FF8A6B">Final conclusion · week of Jun 1–5</div>
+    <h2>The verdict</h2>
+    <div class="sub">The week began pricing an AI-led no-landing boom and ended pricing stagflation and a possible Fed hike. Reduce risk; anchor in cash, short duration, and defensives.</div>
+    <div class="fgrid">
+      <div class="fitem"><div class="fl">Market bias</div><div class="fv">Bearish — the structural underpinnings fractured Friday</div></div>
+      <div class="fitem"><div class="fl">Risk appetite</div><div class="fv">Weak — broad risk-off; VIX 21.51, gold and Bitcoin both liquidated</div></div>
+      <div class="fitem"><div class="fl">Leadership</div><div class="fv">Deteriorating → defensive: Staples, Utilities, Health Care, Real Estate the only green Friday</div></div>
+      <div class="fitem"><div class="fl">Preferred style</div><div class="fv">Defensive / low-volatility / equal-weight; avoid growth-momentum and high-beta small caps</div></div>
+      <div class="fitem"><div class="fl">Best ETF focus</div><div class="fv">SGOV · SHY · RSP · XLV · XLU · XLP · DIA</div></div>
+      <div class="fitem"><div class="fl">Avoid / distribute</div><div class="fv">QQQ · SMH/SOXX · XLK · XLY · IWM · TLT · GLD · Bitcoin ETFs</div></div>
+      <div class="fitem"><div class="fl">Main risk</div><div class="fv">10Y &gt; 4.60% triggering systematic liquidation; short-gamma dealer feedback loop; sticky CPI Jun 10 forcing the Fed to acknowledge hikes</div></div>
+      <div class="fitem"><div class="fl">Strategy</div><div class="fv">Reduce risk — defensive rotation, not buy-the-dip</div></div>
+      <div class="fitem"><div class="fl">Risk level</div><div class="fv">High</div></div>
+    </div>
+    <div class="gap-note" style="color:#8FA6BC">Source inconsistencies across the daily reports: Russell 2000 Jun 1 close (2,817.36) does not reconcile with Jun 2's +0.90% to 2,931.96; Nasdaq is reported as Composite some days and NDX/QQQ others; AVGO's earnings reaction and LULU's guidance cut appear on both Jun 4 and Jun 5. Directional conclusions are unaffected. Daily % changes are each cited within their own report; weekly figures derived from those closes.</div>
+  </div>
+
+</div>
+
+<script>
+const ARC = [
+ ['Mon · Jun 1','Narrow record','a-mx','SPX +0.26% ATH on negative breadth; NVDA +6.26% (RTX Spark), HPE +29%; oil spikes, 10Y 4.50%. Only 21 S&P names at new highs — a 2000 echo.'],
+ ['Tue · Jun 2','Record, still narrow','a-mx','SPX +0.13% to 7,609.78 ATH; Russell +0.90% best. JOLTS 7.618M hot. XLK RSI 82.9, CAPE 42.78, VIX 15.99.'],
+ ['Wed · Jun 3','Risk-off break','a-dn','SPX −0.74%, 9-day streak snapped; 10Y 4.50%, WTI $96; ADP 122k hot. Dec hike odds jump to 41.1%. AVGO/CRWD sold after hours.'],
+ ['Thu · Jun 4','Healthy rotation','a-up','SPX +0.41%, Dow +1.73% record on 2.19:1 breadth; IWM +1.46%. Market absorbs AVGO −12.47% — value & small-caps lead.'],
+ ['Fri · Jun 5','The break','a-dn','NFP 172k vs ~85k. SPX −2.64%, NDX −4.77%, VIX +40% to 21.51, 10Y 4.55%, DXY >100. Rotation overwhelmed; only defensives green.']
+];
+document.getElementById('arcRow').innerHTML = ARC.map(a=>
+ '<div class="arccell '+a[2]+'"><div class="ad">'+a[0]+'</div><div class="at">'+a[1]+'</div><div class="ax">'+a[3]+'</div></div>').join('');
+
+const DAYS = [
+ {t1:'Mon · Jun 1', t2:'Narrow record / barbell',
+  note:'<b>Bifurcated record.</b> SPX and Nasdaq close at highs purely on mega-cap AI — NVDA +6.26% on the RTX Spark chip, HPE +29% on blowout server earnings — while a slight majority of stocks fell and only 21 S&P names made new 52-week highs (BofA flags the 2000 dot-com parallel). Oil spiked (Brent +4% to ~$95), 10Y hit 4.50%, ISM Manufacturing 54.0 (4-year high). Strategy: barbell tech + energy, hedge.',
+  kpis:[
+   {l:'S&P 500', v:'7,599.96', c:'+0.26%', s:'pos', x:'Record high'},
+   {l:'Nasdaq Comp', v:'27,086.81', c:'+0.42%', s:'pos', x:'Record'},
+   {l:'Dow Jones', v:'51,078.88', c:'+0.09%', s:'neu', x:'Laggard'},
+   {l:'Russell 2000', v:'2,817.36', c:'−0.50%', s:'neg', x:'Rate pressure'},
+   {l:'VIX', v:'~16', c:'Complacent', s:'neu', x:''},
+   {l:'10Y Yield', v:'4.50%', c:'Rising', s:'neg', x:'Oil-driven'},
+   {l:'WTI / Brent', v:'$92 / $95', c:'+4% Brent', s:'neg', x:'Iran escalation'},
+   {l:'Breadth', v:'Negative', c:'21 new highs', s:'neg', x:'2000 echo'}
+  ]},
+ {t1:'Tue · Jun 2', t2:'Record, narrow',
+  note:'<b>Another record, still hollow.</b> SPX +0.13% to an all-time high 7,609.78 on negative NYSE breadth (1.04:1 decliners). Russell led (+0.90%); Marvell +33% and HPE on the AI-hardware euphoria. JOLTS surged to 7.618M (vs 6.88M est). XLK RSI 82.9, CAPE 42.78, VIX 15.99. Strategy: "participate, but protect."',
+  kpis:[
+   {l:'S&P 500', v:'7,609.78', c:'+0.13%', s:'pos', x:'All-time high'},
+   {l:'Nasdaq Comp', v:'27,093.90', c:'+0.03%', s:'pos', x:'ATH'},
+   {l:'Dow Jones', v:'51,307.79', c:'+0.45%', s:'pos', x:'Record'},
+   {l:'Russell 2000', v:'2,931.96', c:'+0.90%', s:'pos', x:'Best major'},
+   {l:'VIX', v:'15.99', c:'Complacent', s:'neu', x:''},
+   {l:'10Y Yield', v:'4.43–4.45%', c:'Stable', s:'neu', x:''},
+   {l:'WTI', v:'$91–93.5', c:'Elevated', s:'neu', x:'Brent ~$96'},
+   {l:'NYSE Breadth', v:'0.96 : 1', c:'Negative at ATH', s:'neg', x:'519H / 144L'}
+  ]},
+ {t1:'Wed · Jun 3', t2:'Risk-off break',
+  note:'<b>The streak snaps.</b> Hot ADP (122k) + ISM Services 54.5 + Iranian strikes pushed the 10Y to 4.50% and WTI to $96; the 9-day S&P run ended with a close at the lows. December hike odds jumped to 41.1%. After hours, Broadcom and CrowdStrike were sold hard on blowout results. Strategy: "hedge and rebalance, do not chase."',
+  kpis:[
+   {l:'S&P 500', v:'7,553.68', c:'−0.74%', s:'neg', x:'Closed at lows'},
+   {l:'Nasdaq Comp', v:'26,853.98', c:'−0.89%', s:'neg', x:''},
+   {l:'Dow Jones', v:'50,687.07', c:'−1.21%', s:'neg', x:'−620.72 pts'},
+   {l:'Russell 2000', v:'2,893.50', c:'−1.31%', s:'neg', x:'Worst major'},
+   {l:'VIX', v:'16.2–16.3', c:'+2.85%', s:'neg', x:'Hedging on'},
+   {l:'10Y Yield', v:'4.49–4.50%', c:'Surging', s:'neg', x:'Pain threshold'},
+   {l:'WTI', v:'$96.02', c:'+2.4%', s:'neg', x:'Iran strikes'},
+   {l:'NYSE Breadth', v:'Decliners led', c:'Broad selling', s:'neg', x:''}
+  ]},
+ {t1:'Thu · Jun 4', t2:'Healthy rotation',
+  note:'<b>Rotation day.</b> The market absorbed Broadcom −12.47% and still pushed the Dow +874.86 to a record on 2.19:1 breadth, with the Russell within ~1% of all-time highs. Yields eased (10Y 4.451%); value, small-caps and healthcare led — tech did not. Claims rose to a 4-month high (225k). Strategy: "reduce risk in tech, buy the dip in value."',
+  kpis:[
+   {l:'S&P 500', v:'7,584.31', c:'+0.41%', s:'pos', x:'10th gain in 11'},
+   {l:'Nasdaq Comp', v:'26,830.96', c:'−0.09%', s:'neg', x:'QQQ −0.7%'},
+   {l:'Dow Jones', v:'51,561.93', c:'+1.73%', s:'pos', x:'Record · at highs'},
+   {l:'Russell 2000', v:'2,935.33', c:'+1.46%', s:'pos', x:'YTD +18.3%'},
+   {l:'VIX', v:'16.06', c:'1-day VIX +30%', s:'neu', x:'Pre-NFP hedging'},
+   {l:'10Y Yield', v:'4.451%', c:'Easing', s:'pos', x:'2Y 4.048%'},
+   {l:'WTI', v:'$92.82', c:'−3% · XLE up', s:'neu', x:'Ceasefire talk'},
+   {l:'NYSE Breadth', v:'2.19 : 1', c:'Strongly +', s:'pos', x:'308H / 145L'}
+  ]},
+ {t1:'Fri · Jun 5', t2:'The break — broad risk-off',
+  note:'<b>The structure fractures.</b> May payrolls came in at 172k vs ~85k expected, with +93k of upward revisions — the rate-cut thesis collapsed and the market began pricing hikes. SPX −2.64% (sharpest since Oct 2025), NDX −4.77%, VIX +40% to 21.51, 10Y 4.55%, DXY >100. Broadcom\'s soft AI guidance ($16B vs $17.2B whisper) crushed SOXX −10.4%. The rotation broke: small caps −3.50%, but defensives (XLP/XLU/XLV/XLRE) rose. Strategy: "reduce risk — defensive rotation."',
+  kpis:[
+   {l:'S&P 500', v:'7,383.74', c:'−2.64%', s:'neg', x:'Below 20/50-day'},
+   {l:'Nasdaq 100', v:'28,957.60', c:'−4.77%', s:'neg', x:'RSI 24.9'},
+   {l:'Dow Jones', v:'50,866.78', c:'−1.35%', s:'neg', x:'Most resilient'},
+   {l:'Russell 2000', v:'2,833.50', c:'−3.50%', s:'neg', x:'Broke 50-day'},
+   {l:'VIX', v:'21.51', c:'+39.6%', s:'neg', x:'Regime change'},
+   {l:'10Y Yield', v:'4.55%', c:'Highest since Feb-25', s:'neg', x:'2Y 4.16%'},
+   {l:'DXY', v:'100.06', c:'+0.66%', s:'neg', x:'Above 100'},
+   {l:'NYSE Breadth', v:'266 : 237 dn', c:'Broad selling', s:'neg', x:'Paradox broke'}
+  ]}
+];
+
+const tabsEl = document.getElementById('dayTabs');
+DAYS.forEach((d,i)=>{
+  const b = document.createElement('button');
+  b.className = 'tab'+(i===4?' active':'');
+  b.innerHTML = '<div class="t1">'+d.t1+'</div><div class="t2">'+d.t2+'</div>';
+  b.onclick = ()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); b.classList.add('active'); renderDay(i);};
+  tabsEl.appendChild(b);
+});
+function renderDay(i){
+  const d = DAYS[i];
+  document.getElementById('kpiGrid').innerHTML = d.kpis.map(k=>
+    '<div class="kpi"><div class="kl">'+k.l+'</div><div class="kv">'+k.v+'</div><div class="kc '+k.s+'">'+k.c+'</div>'+(k.x?'<div style="font-size:11px;color:var(--ink-3)">'+k.x+'</div>':'')+'</div>').join('');
+  document.getElementById('dayNote').innerHTML = d.note;
+}
+renderDay(4);
+
+const DLAB = ['Jun 1','Jun 2','Jun 3','Jun 4','Jun 5'];
+const DCOL = ['#6B4FA3','#1E6FD0','#B7791F','#0B8A63','#C72E0B'];
+const BARS = {
+  groups:['S&P 500','Nasdaq','Dow Jones','Russell 2000'],
+  vals:[
+    [0.26, 0.42, 0.09, -0.50],
+    [0.13, 0.03, 0.45, 0.90],
+    [-0.74,-0.89,-1.21,-1.31],
+    [0.41,-0.09, 1.73, 1.46],
+    [-2.64,-4.77,-1.35,-3.50]
+  ]
+};
+document.getElementById('barLegend').innerHTML = DLAB.map((l,i)=>'<span><span class="sw" style="background:'+DCOL[i]+'"></span>'+l+'</span>').join('');
+function drawBars(){
+  const svg = document.getElementById('barChart');
+  const W = svg.clientWidth || 980, H = 300, padL = 44, padR = 10, padT = 14, padB = 34;
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  const min=-5.2, max=2.0;
+  const y = v => padT + (max - v)/(max-min) * (H-padT-padB);
+  let s='';
+  for(let g=-5; g<=2.0; g+=1){
+    const yy=y(g);
+    s += '<line x1="'+padL+'" y1="'+yy+'" x2="'+(W-padR)+'" y2="'+yy+'" stroke="'+(Math.abs(g)<0.001?'#9AA6B5':'#E6E9ED')+'" stroke-width="'+(Math.abs(g)<0.001?1.5:1)+'"/>';
+    s += '<text x="'+(padL-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="10.5" fill="#8B95A3">'+(g>0?'+':'')+g+'%</text>';
+  }
+  const gw = (W-padL-padR)/BARS.groups.length, bw = Math.min(15, gw/6.4);
+  BARS.groups.forEach((name,gi)=>{
+    const cx = padL + gw*gi + gw/2;
+    s += '<text x="'+cx+'" y="'+(H-12)+'" text-anchor="middle" font-size="11.5" font-weight="600" fill="#5A6675">'+name+'</text>';
+    for(let di=0; di<5; di++){
+      const v = BARS.vals[di][gi];
+      const x = cx + (di-2)*(bw+3) - bw/2;
+      const y0 = y(0), y1 = y(v);
+      const top = Math.min(y0,y1), h = Math.max(2, Math.abs(y0-y1));
+      s += '<rect class="bar" data-tip="'+DLAB[di]+' · '+name+': '+(v>0?'+':'')+v.toFixed(2)+'%" x="'+x+'" y="'+top+'" width="'+bw+'" height="'+h+'" rx="2.5" fill="'+DCOL[di]+'" opacity="0.92"/>';
+    }
+  });
+  svg.innerHTML = s;
+  const tip = document.getElementById('barTip'), wrap = document.getElementById('barWrap');
+  svg.querySelectorAll('.bar').forEach(r=>{
+    r.addEventListener('mousemove', e=>{
+      const b = wrap.getBoundingClientRect();
+      tip.textContent = r.getAttribute('data-tip');
+      tip.style.left = (e.clientX - b.left + 12)+'px';
+      tip.style.top = (e.clientY - b.top - 30)+'px';
+      tip.style.opacity = 1; r.setAttribute('opacity','1');
+    });
+    r.addEventListener('mouseleave', ()=>{tip.style.opacity=0; r.setAttribute('opacity','0.92');});
+  });
+}
+drawBars();
+
+const METRICS = {
+ vix:{label:'VIX', vals:[16.0,15.99,16.25,16.06,21.51], fmt:v=>v.toFixed(2),
+   foot:'Suppressed near 16 for four days of complacency, then exploded 39.6% to 21.51 on Friday — the regime line (18) decisively broken.'},
+ y10:{label:'10Y Yield %', vals:[4.50,4.44,4.495,4.451,4.55], fmt:v=>v.toFixed(2)+'%',
+   foot:'Pinned near 4.50% all week, eased Thursday, then broke to 4.55% Friday (highest since Feb 2025). 4.60% is the systematic-liquidation trigger.'},
+ wti:{label:'WTI Crude $', vals:[92.0,92.5,96.02,92.82,90.25], fmt:v=>'$'+v.toFixed(2),
+   foot:'A geopolitical bid early (Iran/Israel) faded into Friday as growth-shock fears overwhelmed the supply premium despite the Strait of Hormuz risk.'},
+ gold:{label:'Gold $/oz', vals:[4483,4531,4462,4500,4331], fmt:v=>'$'+v.toLocaleString(),
+   foot:'Held above $4,400 most of the week on the reserve-asset shift, then liquidated −3.22% Friday as real yields and the dollar surged. (Mid-range values where a band was quoted.)'},
+ hike:{label:'Dec hike odds %', vals:[9.1,9.1,41.1,41.1,46.5], fmt:v=>v.toFixed(0)+'%',
+   foot:'The defining macro move of the week: December rate-HIKE odds went from ~9% to ~41% by Wednesday and 43–50% (some metrics 67%) after Friday\'s NFP. Cut thesis dead.'}
+};
+let curMetric='hike';
+const mbtns = document.getElementById('metricBtns');
+Object.entries(METRICS).forEach(([k,m])=>{
+  const b=document.createElement('button');
+  b.className='mbtn'+(k===curMetric?' active':''); b.textContent=m.label;
+  b.onclick=()=>{curMetric=k; [...mbtns.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); drawLine();};
+  mbtns.appendChild(b);
+});
+function drawLine(){
+  const m = METRICS[curMetric];
+  const svg = document.getElementById('lineChart');
+  const W = svg.clientWidth || 980, H = 220, padL = 52, padR = 16, padT = 16, padB = 30;
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  const vals = m.vals, lo = Math.min(...vals), hi = Math.max(...vals);
+  const pad = (hi-lo)*0.18 || 1, min = lo-pad, max = hi+pad;
+  const x = i => padL + i*(W-padL-padR)/4;
+  const y = v => padT + (max-v)/(max-min)*(H-padT-padB);
+  let s='';
+  for(let g=0; g<=4; g++){
+    const gv = min + g*(max-min)/4, yy = padT + (4-g)*(H-padT-padB)/4;
+    s += '<line x1="'+padL+'" y1="'+yy+'" x2="'+(W-padR)+'" y2="'+yy+'" stroke="#E6E9ED"/>';
+    s += '<text x="'+(padL-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="10.5" fill="#8B95A3">'+m.fmt(gv)+'</text>';
+  }
+  let pts = vals.map((v,i)=>x(i)+','+y(v)).join(' ');
+  s += '<polyline points="'+pts+'" fill="none" stroke="#1B3A5C" stroke-width="2.5"/>';
+  vals.forEach((v,i)=>{
+    s += '<text x="'+x(i)+'" y="'+(H-10)+'" text-anchor="middle" font-size="10.5" font-weight="600" fill="#5A6675">'+DLAB[i]+'</text>';
+    s += '<circle class="pt" data-tip="'+DLAB[i]+': '+m.fmt(v)+'" cx="'+x(i)+'" cy="'+y(v)+'" r="5" fill="#C72E0B"/>';
+  });
+  svg.innerHTML = s;
+  document.getElementById('lineFoot').textContent = m.foot;
+  const tip = document.getElementById('lineTip'), wrap = document.getElementById('lineWrap');
+  svg.querySelectorAll('.pt').forEach(c=>{
+    c.addEventListener('mousemove', e=>{
+      const b = wrap.getBoundingClientRect();
+      tip.textContent = c.getAttribute('data-tip');
+      tip.style.left = (e.clientX - b.left + 12)+'px';
+      tip.style.top = (e.clientY - b.top - 30)+'px'; tip.style.opacity=1;
+    });
+    c.addEventListener('mouseleave', ()=>tip.style.opacity=0);
+  });
+}
+drawLine();
+window.addEventListener('resize', ()=>{drawBars(); drawLine();});
+
+const RATINGS = [
+ {cat:'Market Trend', d:[['Record (narrow)','c-mix'],['Record (narrow)','c-mix'],['Break','c-bear'],['Rotation','c-bull'],['Collapse −2.64%','c-bear']], dir:'Topped Tue, broke Fri',
+  why:'SPX made its high (7,609.78) Tuesday, wobbled Wednesday, staged a value rotation Thursday, then lost 2.64% Friday — sharpest single-day drop since Oct 2025, closing below the 20- and 50-day MAs.'},
+ {cat:'Risk Appetite', d:[['Complacent','c-mix'],['Complacent','c-mix'],['Risk-off','c-bear'],['Rotating','c-mix'],['Broad risk-off','c-bear']], dir:'Complacency → fear',
+  why:'VIX sat near 16 for four sessions of remarkable calm despite oil and war, then exploded 40% to 21.51. Gold (−3.22%) and Bitcoin both liquidated Friday — no haven held except cash and short duration.'},
+ {cat:'Breadth', d:[['Negative (21 highs)','c-bear'],['Negative at ATH','c-bear'],['Negative','c-bear'],['2.19:1 positive','c-bull'],['Paradox broke','c-bear']], dir:'Hollow → one good day → broke',
+  why:'The week ran on a "breadth paradox" — indices up on shrinking participation. Thursday briefly broadened (2.19:1), but Friday the paradox resolved violently to the downside with no mega-cap support left to catch the fall.'},
+ {cat:'Sector Leadership', d:[['Tech + Energy','c-mix'],['Tech + Energy','c-mix'],['Energy only','c-bear'],['Value + defensives','c-bull'],['Defensives only','c-mix']], dir:'Barbell → defensives',
+  why:'Energy and tech split the early week; by Friday the only green was defensive — Staples +1.6%, Utilities +0.8%, Health Care +0.7%, Real Estate +0.7% — a textbook stagflationary crouch.'},
+ {cat:'Liquidity / Flows', d:[['Chasing momentum','c-mix'],['HFs adding fast','c-mix'],['Bond inflows; distribution','c-bear'],['Rotation flows','c-mix'],['SGOV record; short gamma','c-bear']], dir:'Quietly defensive all week',
+  why:'Even amid record May equity inflows (VOO +$19B), SGOV (0–3mo T-bills) pulled a record $6.7B — advisors hedged duration the whole time. Friday\'s break below 7,500 flipped dealers short-gamma, mechanically amplifying the selloff.'},
+ {cat:'Technical Structure', d:[['Overbought','c-mix'],['RSI 82.9 extreme','c-mix'],['Bearish engulfing','c-bear'],['IWM breakout','c-bull'],['SPX below 50-day; RSI 19.7','c-bear']], dir:'Overbought → broken',
+  why:'From parabolic overbought (XLK RSI 82.9) to structurally broken: SPX RSI crashed to 19.66 with a confirmed MACD sell; NDX RSI 24.9. Deeply oversold short-term, but every key moving average was lost.'},
+ {cat:'Strategy Signal', d:[['Barbell, hedge','c-mix'],['Participate, protect','c-mix'],['Hedge, don\'t chase','c-bear'],['Trim tech, buy value','c-mix'],['Reduce risk','c-bear']], dir:'Tightened to "reduce risk"',
+  why:'The call grew more defensive every day and was vindicated Friday. The mid-week "buy the value dip" gave way to "reduce risk, hold cash/short-duration/defensives" once the rotation itself broke.'}
+];
+const rtb = document.querySelector('#ratingTable tbody');
+RATINGS.forEach(r=>{
+  const tr = document.createElement('tr'); tr.className='exp';
+  tr.innerHTML = '<td><b>'+r.cat+'</b><span class="arrow">▾</span></td>'
+    + r.d.map(x=>'<td><span class="chip '+x[1]+'">'+x[0]+'</span></td>').join('')
+    + '<td style="font-weight:600">'+r.dir+'</td>';
+  const det = document.createElement('tr'); det.className='detail'; det.style.display='none';
+  det.innerHTML = '<td colspan="7">'+r.why+'</td>';
+  tr.onclick = ()=>{det.style.display = det.style.display==='none'?'table-row':'none';};
+  rtb.appendChild(tr); rtb.appendChild(det);
+});
+
+const NFP = [
+ {l:'May payrolls', v:'+172k', x:'vs ~85k expected'},
+ {l:'Prior revisions', v:'+93k', x:'Mar +29k, Apr +64k'},
+ {l:'Unemployment', v:'4.3%', x:'Steady, tight'},
+ {l:'Avg hourly earnings', v:'+3.4% y/y', x:'Sticky wages'},
+ {l:'10Y reaction', v:'4.55%', x:'Highest since Feb-25'},
+ {l:'Dec hike odds', v:'43–50%', x:'from 26% a month ago'},
+ {l:'VIX reaction', v:'21.51', x:'+39.6%'},
+ {l:'Long-term jobless', v:'27.5%', x:'27+ wks, up from 20.4%'}
+];
+document.getElementById('nfpGrid').innerHTML = NFP.map(n=>
+ '<div class="nfp-item"><div class="nl">'+n.l+'</div><div class="nv">'+n.v+'</div><div class="nx">'+n.x+'</div></div>').join('');
+
+const SECTORS = [
+ {n:'Consumer Staples (XLP)', d:[['−1.8%','c-bear'],['Lag','c-bear'],['Neutral','c-mix'],['+0.40%','c-bull'],['+1.6%','c-bull']], v5:1.6, dir:2, dirT:'↑↑ Fri leader', sig:'Sold early as yield-proxy, then THE safe harbor Friday — inelastic demand bid.'},
+ {n:'Utilities (XLU)', d:[['−0.77%','c-bear'],['Bid','c-mix'],['Rel strength','c-mix'],['−0.43%','c-bear'],['+0.8%','c-bull']], v5:0.8, dir:1, dirT:'↑ Defensive bid', sig:'Rose Friday despite the 4.55% yield — growth-shock fear overrode rate correlation.'},
+ {n:'Health Care (XLV)', d:[['−0.14%','c-bear'],['Lag','c-bear'],['Neutral','c-mix'],['+0.79%','c-bull'],['+0.7%','c-bull']], v5:0.7, dir:2, dirT:'↑↑ Clean leader', sig:'Emerged Thu–Fri (UNH, JNJ); inelastic demand at reasonable multiples.'},
+ {n:'Real Estate (XLRE)', d:[['Impaired','c-bear'],['Lag','c-bear'],['Underperf','c-bear'],['+0.05%','c-mix'],['+0.7%','c-bull']], v5:0.7, dir:1, dirT:'↑ Late bid', sig:'Yield hostage that caught a defensive bid Friday; YTD +11.1%.'},
+ {n:'Financials (XLF)', d:[['−$328M out','c-bear'],['Lag','c-bear'],['Underperf','c-bear'],['−1.15%','c-mix'],['+0.1%','c-mix']], v5:0.1, dir:1, dirT:'Bifurcated', sig:'Money-centers (JPM, GS) strong; flat Friday on net-interest-margin hopes vs market gravity.'},
+ {n:'Industrials (XLI)', d:[['Mixed','c-mix'],['Positive','c-bull'],['Underperf','c-bear'],['−0.08%','c-mix'],['−1.1%','c-bear']], v5:-1.1, dir:-1, dirT:'↓ Faded', sig:'Factory orders +4.8% support undercut Friday by growth fears; YTD still +12.1%.'},
+ {n:'Comm. Svcs (XLC)', d:[['−0.41%','c-bear'],['Mixed','c-mix'],['Mixed','c-mix'],['−1.31%','c-bear'],['−1.7%','c-bear']], v5:-1.7, dir:-1, dirT:'↓ Laggard', sig:'META −5.5% Friday on AI-capex dilution fears ($145B); persistent drag.'},
+ {n:'Energy (XLE)', d:[['+0.51%','c-bull'],['#2','c-bull'],['#1 sole','c-bull'],['+1.29%','c-bull'],['−1.8%','c-bear']], v5:-1.8, dir:-1, dirT:'Led 4d, cracked Fri', sig:'The week\'s most consistent leader until Friday, when demand-destruction fear beat the geopolitical bid. YTD +27.4%.'},
+ {n:'Materials (XLB)', d:[['Mixed','c-mix'],['Flat','c-mix'],['Underperf','c-bear'],['+0.21%','c-bull'],['−2.0%','c-bear']], v5:-2.0, dir:-1, dirT:'↓ Cyclical hit', sig:'Cyclical growth fears overwhelmed supply constraints Friday.'},
+ {n:'Cons. Disc. (XLY)', d:[['+0.07%','c-mix'],['Lag','c-bear'],['Severe','c-bear'],['−0.73%','c-bear'],['−2.4%','c-bear']], v5:-2.4, dir:-2, dirT:'↓↓ Weak all week', sig:'LULU −13% (gross margin −410bps) crystallized consumer stress; YTD −2.6%.'},
+ {n:'Technology (XLK)', d:[['Anchor/inflows','c-mix'],['#1 RSI 82.9','c-bull'],['Severe','c-bear'],['−1.00%','c-bear'],['−5.8%','c-bear']], v5:-5.8, dir:-3, dirT:'↓↓↓ Broke', sig:'From market anchor to −5.8% Friday — violent multiple contraction on the rate shock.'},
+ {n:'Semiconductors (SMH/SOXX)', d:[['Split: NVDA+6.3','c-mix'],['MRVL +33%','c-bull'],['AVGO sold AH','c-bear'],['AVGO −12.47%','c-bear'],['SOXX −10.4%','c-bear']], v5:-10.4, dir:-3, dirT:'↓↓↓ Epicenter', sig:'Fri: AVGO −7.9–14%, MU −13.3%, NVDA −6.2%, MRVL −16.7%. AI-capex digestion fear; avoid.'}
+];
+const stb = document.querySelector('#sectorTable tbody');
+function renderSectors(mode){
+  const rows = [...SECTORS].sort((a,b)=> mode==='d5' ? b.v5-a.v5 : b.dir-a.dir);
+  stb.innerHTML = rows.map(s=>
+    '<tr class="exp"><td><b>'+s.n+'</b><span class="arrow">▾</span></td>'
+    + s.d.map(x=>'<td><span class="chip '+x[1]+'">'+x[0]+'</span></td>').join('')
+    + '<td style="font-weight:700">'+s.dirT+'</td></tr>'
+    + '<tr class="detail" style="display:none"><td colspan="7">'+s.sig+'</td></tr>').join('');
+  stb.querySelectorAll('tr.exp').forEach(tr=>{
+    tr.onclick=()=>{const d=tr.nextElementSibling; d.style.display=d.style.display==='none'?'table-row':'none';};
+  });
+}
+renderSectors('d5');
+document.querySelectorAll('.sbtn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.sbtn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); renderSectors(b.dataset.sort);
+});
+document.getElementById('sectorFoot').textContent = 'Tip: tap any row for the read. Friday\'s split — defensives green, everything cyclical/growth red — is the clearest stagflation signal of the week.';
+
+const STYLES_UP = [
+ ['Defensive', 95, 'XLP/XLU/XLV/XLRE the only green Friday'],
+ ['Low Volatility', 88, 'Outperformed as VIX exploded'],
+ ['Value (blue-chip)', 72, 'Dow most resilient (−1.35% Fri)'],
+ ['Equal-Weight', 78, 'RSP outperformed SPY; YTD lead flipped'],
+ ['Cash / short duration', 96, 'SGOV record $6.7B inflow; 2Y 4.16%']
+];
+const STYLES_DOWN = [
+ ['Growth / Momentum', 96, 'XLK −5.8% Friday; multiple contraction'],
+ ['Semiconductors', 98, 'SOXX −10.4%; MU −13.3%, AVGO, NVDA'],
+ ['High Beta', 90, 'Small caps −3.50%; froth purged'],
+ ['Mega-Cap AI', 85, 'NDX −4.77%; META −5.5% on dilution'],
+ ['Speculative / Gold', 80, 'Gold −3.22%, Bitcoin to ~$62k — no haven held']
+];
+function styleRows(arr, color){
+  return arr.map(s=>'<div class="srow"><span style="font-weight:600; flex:0 0 130px">'+s[0]+'</span><span style="color:var(--ink-2); flex:1">'+s[2]+'</span><span class="bar-out"><span class="bar-in" style="width:'+s[1]+'%; background:'+color+'"></span></span></div>').join('');
+}
+document.getElementById('styleUp').innerHTML = styleRows(STYLES_UP, 'var(--green)');
+document.getElementById('styleDown').innerHTML = styleRows(STYLES_DOWN, 'var(--red)');
+
+const CASES = {
+ bull: {cls:'bullc', items:[
+   'Deeply oversold by Friday\'s close: SPX RSI 19.66, NDX RSI 24.9 — stretched enough for a sharp short-covering bounce off 7,360 support.',
+   'Defensive rotation proved capital is repositioning, not fleeing: Staples, Utilities, Health Care and Real Estate all closed green even as the index fell 2.64%.',
+   'The labor "core" is softening under the strong headline — long-term unemployed at 27.5%, financial-activities jobs −22k — which could let the Fed avoid actually hiking.',
+   'May equity inflows were enormous (VOO +$19B); that passive bid has historically defended dips.',
+   'Dovish Fed rhetoric to calm the bond market could trigger a swift relief rally, especially if CPI (Jun 10) comes in soft.'],
+  note:'<b>Path to confirmation:</b> SPX defends 7,360 · 10Y falls back below 4.50% · soft CPI Jun 10 · VIX fades back under 18. Without those, bounces are sell-the-rip.'},
+ bear: {cls:'bearc', items:[
+   '✓ It happened: the three-day report\'s top risk — hot NFP → 10Y up, VIX >18, rotation breaks — played out almost exactly on Friday.',
+   'The "breadth paradox" resolved to the downside: with the mega-cap pillars finally cracking, there was no internal support to catch the index.',
+   'Dealers flipped short-gamma below SPX 7,500, mechanically selling into weakness — a self-reinforcing downside feedback loop.',
+   'The Fed is trapped: 3.8% inflation + oil shock blocks cuts, while heavy debt loads make hikes dangerous — real yields must rise, toxic for long duration.',
+   'Even the rotation\'s winners broke: small caps −3.50% (most rate-sensitive), and Energy — the week\'s leader — cracked −1.8% on demand-destruction fear.'],
+  note:'<b>Confirmation (mostly already triggered):</b> 10Y toward 4.60–4.70% · VIX above 25 · gap-down through SPX 7,360 → 7,199 · sticky CPI forcing the Fed to acknowledge hikes Jun 16–17.'}
+};
+function renderCase(which){
+  const c = CASES[which];
+  document.getElementById('caseBox').innerHTML = '<div class="case '+c.cls+'"><ul>'+c.items.map(i=>'<li>'+i+'</li>').join('')+'</ul><div class="verdict-strip">'+c.note+'</div></div>';
+  document.getElementById('btnBull').className = which==='bull'?'on-bull':'';
+  document.getElementById('btnBear').className = which==='bear'?'on-bear':'';
+}
+document.getElementById('btnBull').onclick = ()=>renderCase('bull');
+document.getElementById('btnBear').onclick = ()=>renderCase('bear');
+renderCase('bear');
+
+const STRAT = [
+ ['Equity exposure?', ['Barbell','c-mix'], ['Reduce/hedge','c-bear'], ['Maintain, rotate','c-mix'], ['Reduce','c-bear'], 'Reduce — defensives + cash'],
+ ['QQQ / tech?', ['Hold core','c-mix'], ['Reduce','c-bear'], ['Take profits','c-bear'], ['Sell rips','c-bear'], 'Reduce; sell relief rallies'],
+ ['Semis (SMH/SOXX)?', ['Selective','c-mix'], ['Wait','c-bear'], ['Avoid','c-bear'], ['Avoid/short','c-bear'], 'Avoid — falling knife'],
+ ['Small caps (IWM)?', ['Avoid','c-bear'], ['Avoid','c-bear'], ['Buy breakout','c-bull'], ['Broke','c-bear'], 'Avoid until Fed eases'],
+ ['Defensives (XLV/XLP/XLU)?', ['Avoid yld-proxy','c-bear'], ['Bid emerging','c-mix'], ['Add','c-bull'], ['Overweight','c-bull'], 'Overweight'],
+ ['Equal-weight (RSP)?', ['Lagging','c-mix'], ['Rotate in','c-bull'], ['Buy','c-bull'], ['Core hold','c-bull'], 'Core equity holding'],
+ ['Bonds?', ['Ultra-short only','c-mix'], ['SHY yes, TLT no','c-mix'], ['Same','c-mix'], ['SGOV/SHY','c-bull'], 'SGOV/SHY only; avoid TLT'],
+ ['Gold / Bitcoin?', ['Pressured','c-bear'], ['Hedge','c-mix'], ['Hold GLD','c-mix'], ['Liquidated','c-bear'], 'Avoid until real yields fall'],
+ ['Hedges / cash?', ['Cheap tails','c-bull'], ['Activate','c-bull'], ['Hold into NFP','c-bull'], ['Raise cash','c-bull'], 'High cash; VIX already repriced']
+];
+document.querySelector('#stratTable tbody').innerHTML = STRAT.map(r=>
+ '<tr><td><b>'+r[0]+'</b></td>'
+ +[1,2,3,4].map(i=>'<td><span class="chip '+r[i][1]+'">'+r[i][0]+'</span></td>').join('')
+ +'<td style="font-weight:700">'+r[5]+'</td></tr>').join('');
+
+const DECK = [
+ ['Paradigm shift — title', 'From AI mania to stagflation reality: a deep review of the first week of June and a diagnosis of its structural cracks. SPX 7,383.74 (−2.64%), NDX −4.77%, 10Y broke 4.55%.'],
+ ['Sentiment reversal — the long-rehearsed perfect storm', 'The week\'s VIX waterline: ~16 for four sessions, then 21.51. Fragile peak (CAPE 42.78) → macro shock (WTI $96) → micro crack (Broadcom guidance) → Friday\'s NFP detonation.'],
+ ['Fragile peak — structural hollowness', 'The concentration trap: only 21 S&P names at new highs (a March-2000 echo). The breadth divergence: cap-weight SPY rising while equal-weight RSP fell — the median stock was already in a downtrend.'],
+ ['Stagflation squeeze mechanism', 'How macro data crushed micro valuations: exogenous oil ($96 WTI) + structural labor (NFP 172k, wages +3.4%) → a trapped Warsh Fed → 10Y 4.55% → XLK −5.8% and IWM −3.5%.'],
+ ['Narrative end — "soft-landing cuts" → "December-hike panic"', 'From two cuts priced three months ago, to a 96.4% June hold, to a 41.1% December HIKE (some models 67%). Unit labor costs +1.8% killed the rate-cut hope.'],
+ ['Safe-haven stress test under a strong dollar', 'DXY broke 100.06. Gold — now 27% of global reserves vs Treasuries\' 22% — still fell 3.22% to $4,331. Bitcoin −13% to ~$62,000: a high-beta tech proxy, not a hedge.'],
+ ['The "priced-for-perfection" trap', 'Broadcom: Q2 revenue +48%, AI +143% — yet −12% on $16B Q3 guide vs $17.2B whisper. CrowdStrike: beat and raised, +26% revenue — yet −10% on a billings miss at 137x forward. Zero tolerance.'],
+ ['Mag 7 fracture — "buy blindly" → "scrutinize capital returns"', 'Mapped by monetization vs capex risk: META +4.2% (immediate AI revenue via WhatsApp/IG) stands alone; NVDA −6.2%; GOOGL/MSFT lag on $80B raises and capex-dilution fears.'],
+ ['End of consumer resilience', 'Lululemon −13%: gross margin −410bps (to 54.6%), operating margin −730bps. $96 oil is a regressive tax draining the middle-class wallet; Consumer Discretionary (XLY) −2.4%.'],
+ ['The Great Rotation — capital\'s real vote', 'Outflows: XLK −5.8%, IWM −3.5%, crypto ETFs −$3.4B. Inflows: XLP +1.6%, XLE (YTD +27.4%), XLU/XLV — low-beta defensives bid in a stagflation crouch.'],
+ ['Capital-structure divergence — fortress vs soft-rib', 'The blue-chip fortress (DIA −1.35%, cash-rich UNH/JPM) versus the debt soft-rib (IWM −3.5%, broke its 50-day): floating-rate small caps crushed by the 4.55% 10-year.'],
+ ['Beneath the iceberg — volatility & quant mechanics', 'Three sub-surface forces: the VIX awakening (+40% to 21.51), the gamma squeeze (dealers flip short-gamma below 7,500, selling into weakness), and CTA forced liquidation below the 20-day.'],
+ ['Logic reset — recognising the new market quadrant', 'The debunked old narrative (2025–May 2026: no-landing, priced-for-perfection AI, long-duration + crypto) vs the stagflation new normal (Jun 2026+: hike risk, zero valuation tolerance, cash + energy + gold).'],
+ ['New-normal survival rules — ETF action list', 'Overweight/add: XLE (energy/inflation hedge), SHY (1–3yr, 4%+ risk-free), RSP (equal-weight breadth). Reduce/avoid: XLK/QQQ (capex-peak risk), IWM (rate victim), TLT (term-premium destruction).'],
+ ['Monitoring the next catalysts', 'Rubicon line: 10Y at 4.50%. Micro test: SMH / semiconductor earnings. Macro flashpoint: WTI $96 and the Middle East. "In a priced-for-perfection market, good news is just the par line — any flaw meets the guillotine."']
+];
+let deckI = 0;
+const deckImg = document.getElementById('deckImg'), deckCap = document.getElementById('deckCap'),
+      deckNum = document.getElementById('deckNum'), deckDots = document.getElementById('deckDots');
+DECK.forEach((_,i)=>{
+  const d=document.createElement('button'); d.setAttribute('aria-label','Slide '+(i+1));
+  d.onclick=()=>showDeck(i); deckDots.appendChild(d);
+});
+function showDeck(i){
+  deckI = (i+DECK.length)%DECK.length;
+  deckImg.src = '../assets/img/pms/slide'+String(deckI+1).padStart(2,'0')+'.jpg';
+  deckImg.alt = 'Slide '+(deckI+1)+': '+DECK[deckI][0];
+  deckNum.textContent = (deckI+1)+' / '+DECK.length;
+  deckCap.innerHTML = '<b>'+DECK[deckI][0]+'.</b> '+DECK[deckI][1];
+  [...deckDots.children].forEach((d,j)=>d.classList.toggle('on', j===deckI));
+}
+document.getElementById('deckPrev').onclick = ()=>showDeck(deckI-1);
+document.getElementById('deckNext').onclick = ()=>showDeck(deckI+1);
+document.addEventListener('keydown', e=>{ if(e.key==='ArrowLeft') showDeck(deckI-1); if(e.key==='ArrowRight') showDeck(deckI+1); });
+showDeck(0);
+
+const SIGNALS = [
+ ['CPI report — June 10', 'Decides whether the Fed must formally acknowledge hikes in its June projections. The single most important data point next week.', 'Soft/in-line CPI → yields ease, rate-cut hope revives, oversold bounce sticks', 'Hot CPI → Fed forced to signal hikes; 10Y toward 4.70%, deeper selloff'],
+ ['FOMC decision — June 16–17', 'Warsh\'s first meeting under a stagflation trap; the dot plot and tone set the regime.', 'Dovish hold / calming guidance defuses the bond market', 'Hawkish hold or a hike signal cements multiple compression'],
+ ['10-Year yield: 4.50 / 4.60 / 4.70%', 'The discount rate for everything; 4.60% is the systematic-liquidation trigger.', 'Falls back below 4.50%', 'Breaks 4.60% → algorithmic equity liquidation across sectors'],
+ ['S&P 500: 7,360 → 7,199', 'The line that defines whether this is a dip or a downtrend.', 'Holds 7,360, reclaims 7,460', 'Gap-down through 7,360 opens the 7,199 monthly level'],
+ ['VIX 18 / 25', 'Now un-anchored above its long suppression; the speed gauge for the selloff.', 'Fades back under 18', 'Above 25 = forced CTA/vol-control deleveraging'],
+ ['Dealer gamma / SPX 7,500', 'Below 7,500 dealers are short-gamma, selling into weakness.', 'Reclaim 7,500 flips dealers back to stabilizing long-gamma', 'Stays below → mechanical selling feedback loop persists'],
+ ['Defensive leadership (XLV/XLU/XLP)', 'Confirms whether the flight to safety has staying power.', 'Defensives keep leading while cyclicals stabilize', 'Even defensives roll over = broad liquidation, raise cash further'],
+ ['Oracle / Adobe earnings', 'Next tests of AI-infrastructure appetite after the Broadcom guidance shock.', 'Strong AI commentary steadies semis sentiment', 'Soft guidance extends the multiple-compression cascade'],
+ ['DXY 100', 'A dollar above 100 tightens global liquidity and pressures multinationals.', 'Pulls back under 100', 'Sustains above 100 → further headwind for risk assets'],
+ ['SGOV / short-duration flows', 'The marginal dollar\'s risk appetite, in real time.', 'Flows rotate back into equities', 'Continued SGOV hoarding confirms defensive positioning']
+];
+document.getElementById('signals').innerHTML = SIGNALS.map(s=>
+ '<details class="sig"><summary><span>'+s[0]+'</span><span class="arrow">▾</span></summary>'
+ +'<div style="padding:10px 14px 0; font-size:12.5px; color:var(--ink-2)">'+s[1]+'</div>'
+ +'<div class="sigbody"><div class="sigcol sig-bull"><b>Bullish confirmation</b>'+s[2]+'</div>'
+ +'<div class="sigcol sig-bear"><b>Bearish warning</b>'+s[3]+'</div></div></details>').join('');
+
+const AHEAD_KPIS = [
+ {l:'Set-up', v:'Post-rout', s:'neg', c:'NDX −4.77% Fri'},
+ {l:'Dec hike odds', v:'68.4%', s:'neg', c:'from 52% prior day'},
+ {l:'Fed funds now', v:'3.50–3.75%', s:'neu', c:'June 16–17 hold expected'},
+ {l:'10Y yield', v:'4.54%', s:'neg', c:'+6 bps on jobs'},
+ {l:'Pivotal day', v:'Wed Jun 10', s:'neg', c:'CPI + Oracle + BoC'}
+];
+document.getElementById('aheadKpis').innerHTML = AHEAD_KPIS.map(k=>
+ '<div class="kpi"><div class="kl">'+k.l+'</div><div class="kv">'+k.v+'</div><div class="kc '+k.s+'">'+k.c+'</div></div>').join('');
+
+const CAL = [
+ {day:'Tue · Jun 9', hot:false, key:'mon', events:[
+   {t:'US Trade Balance (Apr)', time:'', sens:'med', fore:'—',
+    why:'Shows how the strong dollar and geopolitical energy costs are reshaping import/export flows. A wider deficit would add to growth concerns just as the market is already nervous about a slowdown.'},
+   {t:'Existing Home Sales (May)', time:'', sens:'med', fore:'~4.01M',
+    why:'Expected to stay sluggish. Mortgage rates reset higher after Friday\'s yield surge, so affordability keeps biting — a read on whether the rate shock is reaching the real economy.'},
+   {t:'NY Fed Survey of Consumer Expectations', time:'11:00 ET', sens:'high', fore:'Inflation-expectations focus',
+    why:'Watched for inflation expectations. After Michigan sentiment crashed to a record-low 44.8 in May, any further deterioration signals consumer stress is accelerating — the soft underbelly beneath the strong jobs headline.'}
+ ]},
+ {day:'Wed · Jun 10', hot:true, key:'wed', tag:'🔴 Triple threat — the most important single day of June', events:[
+   {t:'US CPI (May)', time:'8:30 ET', sens:'vhigh', fore:'+0.5% m/m → 4.2% y/y headline · core +0.3% → 2.9%',
+    why:'The single most market-moving print of the week. April CPI already hit 3.8% y/y (hottest in three years) and PPI ran +6.0%. A hot read this close to the Jun 16–17 FOMC would all but cement rate-hike expectations for later in 2026. The 2-year is already at a one-year high of 4.16%; an upside surprise sends already-shattered tech/growth lower while financials and energy may catch a bid.'},
+   {t:'Bank of Canada Rate Decision', time:'9:45 ET', sens:'high', fore:'Hold at 2.25% expected',
+    why:'Canada is in a technical recession (two straight quarters of GDP contraction) with unemployment 6.5–7%, caught between weak growth and ~3% oil-driven inflation. A hold is expected, but the statement tone on US spillover and energy prices moves CAD, Canadian bonds, and rate-sensitive TSX sectors.'},
+   {t:'Oracle (ORCL) · Q4 FY2026', time:'After close', sens:'vhigh', fore:'EPS $1.96–2.00 · rev $18.9–19.2B · Street "Moderate Buy", $263.62 PT',
+    why:'After Broadcom\'s rout, Oracle is the next stress test for the AI-capex narrative. Strong cloud + AI demand and a guidance raise could stabilize battered AI names; a disappointment — or merely meeting without raising — extends the selloff. The market is on a knife\'s edge.'}
+ ]},
+ {day:'Thu · Jun 11', hot:false, key:'thu', events:[
+   {t:'US PPI (May)', time:'8:30 ET', sens:'vhigh', fore:'+0.6% m/m → 6.3% y/y headline · core 5.5%',
+    why:'Upstream price pressure feeding directly into the Fed\'s inflation calculus. April PPI already ran +6.0% y/y. A hot print further entrenches the "no cuts, possible hike" scenario that crushed markets Friday.'},
+   {t:'Initial Jobless Claims', time:'8:30 ET', sens:'high', fore:'~232K',
+    why:'After the blockbuster payrolls, claims are scrutinized for any reversal. Still historically low — but an upside surprise (higher claims) could paradoxically relieve markets by softening rate-hike fears.'},
+   {t:'Adobe (ADBE) · Q2 FY2026', time:'After close', sens:'high', fore:'EPS $5.61–5.85 · rev ~$6.46B (guided $6.43–6.48B)',
+    why:'The other major tech bellwether this week. Software has been recovering on the thesis that AI agents drive MORE software demand. Adobe\'s Firefly AI monetization commentary will validate or undercut that recovery narrative — and the bar is high after an ~8% early-June rally.'}
+ ]},
+ {day:'Fri · Jun 12', hot:false, key:'fri', events:[
+   {t:'Michigan Consumer Sentiment (Jun preliminary)', time:'10:00 ET', sens:'high', fore:'Watching after record-low 44.8',
+    why:'May\'s final cratered to a record-low 44.8 despite a strong labor market. That divergence — strong jobs, collapsing confidence — suggests deep worry about inflation and purchasing power. With consumer spending ~70% of GDP, whether sentiment stabilizes or keeps falling is a critical leading indicator.'}
+ ]}
+];
+const SENSLABEL = {vhigh:'Very high', high:'High', med:'Medium'};
+function renderCal(filter){
+  const cont = document.getElementById('calendar');
+  cont.innerHTML = CAL.filter(d=>!filter||filter==='all'||d.key===filter).map(d=>
+   '<div class="dayblock"><div class="dayhead'+(d.hot?' hot':'')+'"><span class="dd">'+d.day+'</span>'+(d.tag?'<span style="color:'+(d.hot?'var(--red)':'var(--ink-2)')+'">'+d.tag+'</span>':'')+'</div>'
+   + d.events.map(e=>
+     '<details class="ev '+e.sens+'"><summary><span class="et">'+e.t+'</span>'
+     +(e.time?'<span class="etime">'+e.time+'</span>':'')
+     +'<span class="sens s-'+e.sens+'">'+SENSLABEL[e.sens]+'</span><span class="arrow">▾</span></summary>'
+     +'<div class="ebody">'+(e.fore&&e.fore!=='—'?'<span class="efore">Consensus / forecast: '+e.fore+'</span><br>':'')+e.why+'</div></details>').join('')
+   + '</div>').join('');
+}
+const FILTERS = [['all','Full week'],['mon','Tue 9'],['wed','Wed 10 🔴'],['thu','Thu 11'],['fri','Fri 12']];
+const df = document.getElementById('dayFilter');
+FILTERS.forEach((f,i)=>{
+  const b=document.createElement('button'); b.className='mbtn'+(i===0?' active':''); b.textContent=f[1];
+  b.onclick=()=>{[...df.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); renderCal(f[0]);};
+  df.appendChild(b);
+});
+renderCal('all');
+
+const FAULTS = [
+ ['AI capex fatigue vs the AI demand story','Broadcom\'s guidance miss cracked the "AI spending compounds forever" narrative. Oracle (Wed) then Adobe (Thu) are the immediate rebuttal — or confirmation. Strong pipelines make Friday look like an overreaction; weak ones force a deeper re-rating of NVDA, AMD and the whole complex.'],
+ ['The "good news is bad news" regime','172k jobs vs 85k expected caused a rout, not a rally — it removed the last chance of a cut and added hike probability. Next week\'s CPI and PPI either confirm the regime (inflation re-accelerating, tightening resumes) or offer relief (inflation stabilizing, Fed can hold).'],
+ ['Strait of Hormuz risk + oil','Crude near $93–95 on the effective Hormuz closure feeds energy and core-services inflation — the supply shock the Fed cannot control. Any weekend Middle East escalation or de-escalation could reprice oil and set Monday\'s tone ahead of the Jun 16–17 FOMC.']
+];
+document.getElementById('faultlines').innerHTML = FAULTS.map(f=>'<div class="fl"><b>'+f[0]+'</b>'+f[1]+'</div>').join('');
+
+const PLAYBOOK = [
+ ['Hot CPI / PPI','Hike odds firm toward a December move; 10Y pushes 4.60–4.70%. Another leg down in tech/growth; lean defensives, energy, short duration. Bearish.','c-bear'],
+ ['In-line / soft CPI','Yields ease, the oversold bounce off SPX 7,360 can stick, rate-cut hope partially revives. Tactical relief for RSP, IWM, beaten-down tech. Bullish.','c-bull'],
+ ['Oracle / Adobe beat + raise','Validates AI demand and the software recovery; stabilizes SMH/QQQ sentiment into the FOMC. Constructive.','c-bull'],
+ ['Oracle / Adobe miss or meet-only','Confirms AI-capex digestion fear; the multiple-compression cascade extends across semis and software. Bearish.','c-bear'],
+ ['Higher jobless claims / weak Michigan','Paradoxical relief — softer data trims hike fears, but flags the consumer crack beneath the strong headline. Mixed.','c-mix']
+];
+document.getElementById('playbook').innerHTML = PLAYBOOK.map(p=>
+ '<div class="fl"><span class="chip '+p[2]+'" style="margin-bottom:4px;">'+p[0]+'</span><div style="margin-top:4px;">'+p[1]+'</div></div>').join('');
+
+const FACTORS = [
+ {n:'VIX & volatility structure', sev:'f-vhigh', state:'21.51 · +39.7%',
+  body:'The VIX\'s sharpest single-day jump in months. A spike &gt;20% above its 10-day average has historically been a contrarian buy signal (seller exhaustion) — but 21.51 sits just over the key 20 line. The tell is direction from here, plus <b>Jun 18 Triple Witching</b> (index futures, index options and single-stock options all expire at once), which amplifies volatility into expiry and can force sharp reversals.',
+  bull:'Resolves downward, pulls back below 18 — stabilization', bear:'Breaks above 25 and holds — escalating institutional hedging, deeper correction'},
+ {n:'Oil & the Strait of Hormuz', sev:'f-vhigh', state:'Brent ~$109; EIA 2026 avg $96',
+  body:'The macro wildcard driving inflation AND growth fear at once. JPMorgan warns developed-world inventories could near "operational stress" by early June; UBS/Fortune model $130–140 in a worst case if the Strait stays shut. Oil is the supply shock rate hikes cannot fix — which is exactly what traps the Fed. A weekend Middle East development is the single highest-probability catalyst for a sharp reversal either way.',
+  bull:'Hormuz reopening / ceasefire headline — instant relief rally', bear:'Spike toward $120+ — stagflation panic, consumer squeeze'},
+ {n:'Technical levels — S&P 500 & Nasdaq', sev:'f-high', state:'SPX 50-DMA ~7,140',
+  body:'Friday\'s −2.64% dropped SPX to 7,383. The lines that matter: the <b>50-day (~7,140)</b> is the CTA "line in the sand" — a close below triggers systematic trend-following selling; the <b>200-day</b> (far below) would mark structural bull-market damage. The Nasdaq, after its ~4.8% plunge, is testing a 9-week support zone — failure to recover early next week invites momentum shorts.',
+  bull:'SPX holds above 7,140 and bounces; Nasdaq reclaims support', bear:'Close below 7,140 → CTA selling cascade'},
+ {n:'Hedge-fund positioning — squeeze vs forced selling', sev:'f-vhigh', state:'Record tech longs + 10-yr-high shorts',
+  body:'Two opposing forces are loaded at once. Short bets on US equities hit a <b>10-year high</b> (mostly ETF/index hedges), while hedge-fund <b>technology allocations sit at record highs</b> vs the MSCI World (highest since Goldman began tracking in 2016). That makes CPI a binary detonator: a soft print ignites a violent short-covering rally; a hot print turns record tech longs into forced selling with no offsetting buyers.',
+  bull:'Soft CPI → the huge short base fuels a short-squeeze rally', bear:'Hot CPI → record tech longs become forced liquidation'},
+ {n:'US Dollar (DXY)', sev:'f-high', state:'~98.5, firming (note: hit 100 Fri)',
+  body:'The dollar is catching a safe-haven and rate-differential bid. A rising DXY is a headwind for the megacaps that earn 40–60% of revenue overseas, for emerging markets, and for USD-priced commodities. With a December hike now in play, the bid may be structural — watch DXY versus its 200-day; sustained strength pressures earnings estimates for Apple, Microsoft and other export-heavy names. (Friday\'s recap had DXY through 100.06.)',
+  bull:'Rolls over on a soft CPI — relief for multinationals & EM', bear:'Breaks higher on hot CPI + hike bets — tightens global liquidity'},
+ {n:'China & geopolitical wildcards', sev:'f-med', state:'No Hormuz breakthrough',
+  body:'Diplomacy hasn\'t resolved the energy crisis — Beijing\'s leverage over Hormuz remains intact, and China is drawing down its own oil stockpiles rather than buying spot, dampening demand but offering no stabilizing bid. Any US–China trade/tariff or Taiwan signal moves markets; a US–Iran ceasefire update remains the highest-probability single catalyst for a sharp relief rally.',
+  bull:'Ceasefire / Hormuz mediation offer — sharp relief', bear:'Escalation or fresh oil-price spike — risk-off extends'}
+];
+document.getElementById('factorList').innerHTML = FACTORS.map(f=>
+ '<details class="factor '+f.sev+'"><summary><span class="fn">'+f.n+'</span><span class="fstate">'+f.state+'</span><span class="arrow">▾</span></summary>'
+ +'<div class="fbody">'+f.body
+ +'<div class="fsig"><div class="fbull"><b>Bullish trigger</b>'+f.bull+'</div><div class="fbear"><b>Bearish trigger</b>'+f.bear+'</div></div></div></details>').join('');
+
+const NAV = [
+ ['overview','Overview'],['days','By day'],['indices','Indices'],['macro','Macro'],['ratings','Ratings'],
+ ['nfp','NFP shock'],['sectors','Sectors'],['style','Style'],['cases','Bull / Bear'],['strategy','Strategy'],
+ ['deck','Deck'],['watch','Watchlist'],['ahead','Week ahead'],['factors','Other factors'],['verdict','Verdict']
+];
+const navInner = document.getElementById('navInner');
+navInner.innerHTML = NAV.map(n=>'<a href="#'+n[0]+'" data-sec="'+n[0]+'">'+n[1]+'</a>').join('');
+const navLinks = {};
+navInner.querySelectorAll('a').forEach(a=>navLinks[a.dataset.sec]=a);
+const spy = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      Object.values(navLinks).forEach(a=>a.classList.remove('active'));
+      const a = navLinks[e.target.id];
+      if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest', inline:'nearest'}); }
+    }
+  });
+}, {rootMargin:'-55px 0px -70% 0px', threshold:0});
+NAV.forEach(n=>{ const el=document.getElementById(n[0]); if(el) spy.observe(el); });
+</script>
+</body>
+</html>

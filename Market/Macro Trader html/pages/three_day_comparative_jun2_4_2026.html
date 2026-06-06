@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three-Day Comparative Analysis · Jun 2–4, 2026 · Macro Trader</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5C; --navy-2:#16314E; --navy-3:#0F2438;
+    --red:#C72E0B; --red-soft:#FFF4F1;
+    --bg:#F4F6F8; --surface:#FFFFFF; --surface-2:#F8FAFB;
+    --border:#E6E9ED; --border-2:#D4D9E0;
+    --ink:#18222E; --ink-2:#5A6675; --ink-3:#8B95A3;
+    --blue:#1E6FD0; --teal:#08808F; --amber:#B7791F; --purple:#6B4FA3; --green:#0B8A63;
+    --green-soft:#EBF7F2; --amber-soft:#FBF3E4; --red-soft2:#FDEEEA; --blue-soft:#EBF2FC;
+    --radius:14px; --radius-sm:9px;
+    --shadow:0 1px 2px rgba(20,40,65,.05), 0 4px 14px rgba(20,40,65,.06);
+    --font:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font); background:var(--bg); color:var(--ink); font-size:14px; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  .brandbar{height:3px; background:var(--red);}
+
+  .hero{background:
+      radial-gradient(900px 340px at 88% -120px, rgba(199,46,11,.30), transparent 60%),
+      linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 55%, var(--navy-3) 100%);
+    color:#fff; position:relative; overflow:hidden;}
+  .hero::after{content:''; position:absolute; inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size:34px 34px; mask-image:linear-gradient(180deg, rgba(0,0,0,.6), transparent 75%); pointer-events:none;}
+  .hero-inner{max-width:1080px; margin:0 auto; padding:36px 40px 32px; position:relative; z-index:1;}
+  .eyebrow{display:inline-flex; align-items:center; gap:7px; background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.22);
+    border-radius:100px; padding:4px 13px; font-size:11px; font-weight:600; letter-spacing:.6px; text-transform:uppercase; color:#EAF1F8; margin-bottom:14px;}
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:#FF6B4A;}
+  .hero h1{font-size:30px; font-weight:800; letter-spacing:-.02em; line-height:1.2; margin-bottom:10px;}
+  .hero .stand{font-size:15px; color:#C9D6E4; max-width:760px; margin-bottom:18px;}
+  .verdicts{display:flex; flex-wrap:wrap; gap:10px;}
+  .verdict{background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.20); border-radius:10px; padding:8px 14px;}
+  .verdict .vl{font-size:10px; font-weight:600; letter-spacing:.7px; text-transform:uppercase; color:#9FB4C9;}
+  .verdict .vv{font-size:13px; font-weight:700; color:#fff;}
+
+  .wrap{max-width:1080px; margin:0 auto; padding:26px 40px 60px;}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px 24px; margin-bottom:22px;}
+  .card h2{font-size:16px; font-weight:700; letter-spacing:-.01em; margin-bottom:4px;}
+  .card .sub{font-size:12.5px; color:var(--ink-2); margin-bottom:16px;}
+  .tag{display:inline-block; font-size:10px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--red); margin-bottom:6px;}
+
+  .tabs{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .tab{flex:1; min-width:160px; text-align:left; cursor:pointer; border:1px solid var(--border-2); background:var(--surface-2);
+    border-radius:var(--radius-sm); padding:10px 14px; font-family:var(--font); transition:all .15s;}
+  .tab .t1{font-size:12px; font-weight:700;}
+  .tab .t2{font-size:11px; color:var(--ink-2);}
+  .tab:hover{border-color:var(--navy);}
+  .tab.active{background:var(--navy); border-color:var(--navy); color:#fff;}
+  .tab.active .t2{color:#B9C9DA;}
+
+  .kpis{display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:12px; margin-bottom:14px;}
+  .kpi{background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px;}
+  .kpi .kl{font-size:10.5px; font-weight:600; letter-spacing:.5px; text-transform:uppercase; color:var(--ink-3);}
+  .kpi .kv{font-size:19px; font-weight:800; letter-spacing:-.01em; margin:2px 0 0;}
+  .kpi .kc{font-size:12px; font-weight:700;}
+  .pos{color:var(--green);} .neg{color:var(--red);} .neu{color:var(--amber);}
+  .daynote{font-size:13px; color:var(--ink-2); background:var(--blue-soft); border-left:3px solid var(--blue); padding:10px 14px; border-radius:0 8px 8px 0;}
+
+  .chart-legend{display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:var(--ink-2); margin-bottom:8px;}
+  .chart-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .sw{width:10px; height:10px; border-radius:3px; display:inline-block;}
+  #barTip{position:absolute; pointer-events:none; background:var(--navy-3); color:#fff; font-size:12px; padding:6px 10px; border-radius:7px; opacity:0; transition:opacity .12s; white-space:nowrap; z-index:5;}
+
+  table.mx{width:100%; border-collapse:collapse; font-size:12.5px;}
+  table.mx th{font-size:10.5px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--ink-3); text-align:left; padding:8px 10px; border-bottom:2px solid var(--border-2);}
+  table.mx td{padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top;}
+  tr.exp{cursor:pointer;}
+  tr.exp:hover td{background:var(--surface-2);}
+  tr.detail td{background:var(--surface-2); color:var(--ink-2); font-size:12.5px; border-left:3px solid var(--navy);}
+  .chip{display:inline-block; font-size:11px; font-weight:700; padding:2px 9px; border-radius:100px; white-space:nowrap;}
+  .c-bull{background:var(--green-soft); color:var(--green);}
+  .c-bear{background:var(--red-soft2); color:var(--red);}
+  .c-mix{background:var(--amber-soft); color:var(--amber);}
+  .c-info{background:var(--blue-soft); color:var(--blue);}
+  .arrow{font-size:11px; color:var(--ink-3); margin-left:6px;}
+
+  .sortbtns{display:flex; gap:8px; margin-bottom:12px;}
+  .sbtn{font-family:var(--font); font-size:11.5px; font-weight:600; padding:5px 12px; border-radius:100px; border:1px solid var(--border-2); background:var(--surface); cursor:pointer; color:var(--ink-2);}
+  .sbtn.active{background:var(--navy); color:#fff; border-color:var(--navy);}
+
+  .cols2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media (max-width:760px){.cols2{grid-template-columns:1fr;} .wrap,.hero-inner{padding-left:20px;padding-right:20px;}}
+  .stylebox{border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px;}
+  .stylebox h3{font-size:13px; font-weight:700; margin-bottom:10px;}
+  .srow{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:5px 0; font-size:12.5px; border-bottom:1px dashed var(--border);}
+  .srow:last-child{border-bottom:none;}
+  .bar-out{flex:0 0 90px; height:7px; background:var(--bg); border-radius:5px; overflow:hidden;}
+  .bar-in{height:100%; border-radius:5px;}
+
+  .toggle{display:inline-flex; background:var(--surface-2); border:1px solid var(--border-2); border-radius:100px; padding:3px; margin-bottom:14px;}
+  .toggle button{font-family:var(--font); font-size:12px; font-weight:700; border:none; background:transparent; padding:6px 18px; border-radius:100px; cursor:pointer; color:var(--ink-2);}
+  .toggle button.on-bull{background:var(--green); color:#fff;}
+  .toggle button.on-bear{background:var(--red); color:#fff;}
+  .case ul{list-style:none;}
+  .case li{padding:7px 0 7px 22px; position:relative; font-size:13px; border-bottom:1px dashed var(--border);}
+  .case li:last-child{border-bottom:none;}
+  .case li::before{content:'▸'; position:absolute; left:4px; font-weight:700;}
+  .case.bullc li::before{color:var(--green);} .case.bearc li::before{color:var(--red);}
+  .confirm{margin-top:12px; font-size:12.5px; background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px;}
+
+  details.sig{border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; background:var(--surface);}
+  details.sig summary{cursor:pointer; padding:11px 14px; font-size:13px; font-weight:600; list-style:none; display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  details.sig summary::-webkit-details-marker{display:none;}
+  details.sig[open] summary{border-bottom:1px solid var(--border);}
+  .sigbody{padding:10px 14px; font-size:12.5px; color:var(--ink-2); display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media (max-width:680px){.sigbody{grid-template-columns:1fr;}}
+  .sigcol{border-radius:8px; padding:9px 12px;}
+  .sig-bull{background:var(--green-soft);} .sig-bear{background:var(--red-soft2);}
+  .sigcol b{display:block; font-size:10.5px; letter-spacing:.6px; text-transform:uppercase; margin-bottom:3px;}
+  .sig-bull b{color:var(--green);} .sig-bear b{color:var(--red);}
+
+  .final{background:linear-gradient(160deg, var(--navy) 0%, var(--navy-3) 100%); color:#fff; border:none;}
+  .final h2{color:#fff;}
+  .final .sub{color:#AFC2D6;}
+  .fgrid{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:12px;}
+  .fitem{background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16); border-radius:var(--radius-sm); padding:11px 14px;}
+  .fitem .fl{font-size:10px; font-weight:700; letter-spacing:.7px; text-transform:uppercase; color:#9FB4C9; margin-bottom:3px;}
+  .fitem .fv{font-size:13px; font-weight:600; line-height:1.45;}
+
+  .deck-stage{position:relative; background:var(--navy-3); border-radius:var(--radius-sm); overflow:hidden; display:flex; align-items:center;}
+  .deck-stage img{width:100%; display:block; aspect-ratio:1514/845;}
+  .deck-nav{position:absolute; top:50%; transform:translateY(-50%); width:38px; height:56px; border:none; cursor:pointer;
+    background:rgba(15,36,56,.55); color:#fff; font-size:26px; line-height:1; border-radius:8px; transition:background .15s; z-index:2;}
+  .deck-nav:hover{background:rgba(15,36,56,.85);}
+  #deckPrev{left:10px;} #deckNext{right:10px;}
+  .deck-cap{display:flex; align-items:flex-start; gap:10px; font-size:12.5px; color:var(--ink-2); margin-top:10px; min-height:36px;}
+  .deck-dots{display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;}
+  .deck-dots button{width:26px; height:6px; border-radius:4px; border:none; background:var(--border-2); cursor:pointer; transition:background .15s;}
+  .deck-dots button.on{background:var(--navy);}
+  .foot{font-size:11.5px; color:var(--ink-3); margin-top:8px;}
+  .gap-note{font-size:11.5px; color:var(--ink-3); font-style:italic; margin-top:14px;}
+</style>
+</head>
+<body>
+<div class="brandbar"></div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow"><span class="dot"></span>Comparative Analysis · June 2–4, 2026 · Prepared Jun 5</div>
+    <h1>Flat on the Surface, a Regime Change Underneath</h1>
+    <div class="stand">The S&amp;P 500 lost just 0.33% across three sessions — while leadership flipped from narrow AI-hardware momentum to broad value, small-cap, and defensive rotation. Click through the days, sort the sectors, and weigh the bull case against the bear case below.</div>
+    <div class="verdicts">
+      <div class="verdict"><div class="vl">Strategy</div><div class="vv">Selective Sector Rotation</div></div>
+      <div class="verdict"><div class="vl">Leadership</div><div class="vv">Broadening</div></div>
+      <div class="verdict"><div class="vl">Preferred Style</div><div class="vv">Value · Quality · Small-Cap</div></div>
+      <div class="verdict"><div class="vl">Risk Level</div><div class="vv">Medium-High</div></div>
+      <div class="verdict"><div class="vl">Next Catalyst</div><div class="vv">Friday NFP + Wages</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="card">
+    <div class="tag">Day-by-day snapshot</div>
+    <h2>Three sessions, three different markets</h2>
+    <div class="sub">Select a day to load its closing data and regime read.</div>
+    <div class="tabs" id="dayTabs"></div>
+    <div class="kpis" id="kpiGrid"></div>
+    <div class="daynote" id="dayNote"></div>
+  </div>
+
+  <div class="card" style="position:relative;">
+    <div class="tag">Index performance</div>
+    <h2>Daily % change by index — the rotation in one picture</h2>
+    <div class="sub">Day 2 hit everything; Day 3 split the market: Dow and Russell surged while the Nasdaq stayed red. Hover any bar for detail.</div>
+    <div class="chart-legend">
+      <span><span class="sw" style="background:#B7791F"></span>Day 1 · Jun 2</span>
+      <span><span class="sw" style="background:#C72E0B"></span>Day 2 · Jun 3</span>
+      <span><span class="sw" style="background:#0B8A63"></span>Day 3 · Jun 4</span>
+    </div>
+    <div id="barWrap" style="position:relative;"><svg id="barChart" width="100%" height="280" role="img" aria-label="Grouped bar chart of daily percent change for S&P 500, Nasdaq Composite, Dow, Russell 2000 across June 2 to 4"></svg><div id="barTip"></div></div>
+    <div class="foot">Net over the window: SPX −0.33% · Nasdaq Comp −0.97% · Dow +0.50% (record) · Russell 2000 +0.12% (best YTD index, +18.3%).</div>
+  </div>
+
+  <div class="card">
+    <div class="tag">Condition ratings</div>
+    <h2>Seven-category rating matrix</h2>
+    <div class="sub">Click any row for the interpretation behind the rating.</div>
+    <table class="mx" id="ratingTable">
+      <thead><tr><th style="width:21%">Category</th><th>Day 1 · Jun 2</th><th>Day 2 · Jun 3</th><th>Day 3 · Jun 4</th><th style="width:22%">Direction</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="tag">Sector rotation board</div>
+    <h2>Eleven sectors plus semiconductors, across the window</h2>
+    <div class="sub">Energy led or co-led all three days; semis went from kingmakers to casualties in 72 hours.</div>
+    <div class="sortbtns">
+      <button class="sbtn active" data-sort="d3">Sort by Day 3 result</button>
+      <button class="sbtn" data-sort="dir">Sort by 3-day trajectory</button>
+    </div>
+    <table class="mx" id="sectorTable">
+      <thead><tr><th style="width:17%">Sector</th><th>Day 1</th><th>Day 2</th><th>Day 3</th><th style="width:13%">Trajectory</th><th style="width:24%">Signal</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="tag">Style rotation</div>
+    <h2>Who gained leadership, who lost it</h2>
+    <div class="sub">Bars show conviction of the 3-day shift as scored in the comparative report.</div>
+    <div class="cols2">
+      <div class="stylebox">
+        <h3 style="color:var(--green)">▲ Gained leadership</h3>
+        <div id="styleUp"></div>
+      </div>
+      <div class="stylebox">
+        <h3 style="color:var(--red)">▼ Lost leadership</h3>
+        <div id="styleDown"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tag">Two readings of the same tape</div>
+    <h2>Bull case vs bear case</h2>
+    <div class="sub">Toggle to stress-test the rotation thesis from both sides.</div>
+    <div class="toggle">
+      <button id="btnBull" class="on-bull">Bull case</button>
+      <button id="btnBear">Bear case</button>
+    </div>
+    <div id="caseBox"></div>
+  </div>
+
+  <div class="card">
+    <div class="tag">Strategy progression</div>
+    <h2>How the strategy signal evolved day to day</h2>
+    <div class="sub">All three daily reports converged on the same destination from different directions.</div>
+    <table class="mx" id="stratTable">
+      <thead><tr><th style="width:26%">Strategy question</th><th>Day 1</th><th>Day 2</th><th>Day 3</th><th style="width:24%">Final decision</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="tag">Strategic deck · 战略推演</div>
+    <h2>72-Hour Regime Change — the companion slide deck</h2>
+    <div class="sub">Ten-slide strategic briefing built on this analysis (Chinese). Navigate with the arrows, dots, or your keyboard · <a id="pdfLink" href="../assets/docs/Strategic_Market_Rotation.pdf" target="_blank" style="color:var(--blue); font-weight:600;">open the full PDF ↗</a></div>
+    <div class="deck">
+      <div class="deck-stage">
+        <button class="deck-nav" id="deckPrev" aria-label="Previous slide">‹</button>
+        <img id="deckImg" src="../assets/img/smr/slide01.jpg" alt="Slide 1" loading="lazy">
+        <button class="deck-nav" id="deckNext" aria-label="Next slide">›</button>
+      </div>
+      <div class="deck-cap"><span id="deckNum" class="chip c-info">1 / 10</span><span id="deckCap"></span></div>
+      <div class="deck-dots" id="deckDots"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tag">Watchlist</div>
+    <h2>Key signals to watch next</h2>
+    <div class="sub">Each signal expands into its bullish confirmation and bearish warning.</div>
+    <div id="signals"></div>
+  </div>
+
+  <div class="card final">
+    <div class="tag" style="color:#FF8A6B">Final conclusion</div>
+    <h2>The verdict</h2>
+    <div class="sub">Hold aggregate exposure, hedge through NFP, rotate from cap-weighted tech into equal-weight, value, and small-cap.</div>
+    <div class="fgrid">
+      <div class="fitem"><div class="fl">Market condition</div><div class="fv">Neutral (cap-weighted) / Bullish rotation beneath the surface</div></div>
+      <div class="fitem"><div class="fl">Risk appetite</div><div class="fv">Mixed — rotating within equities, not fleeing; speculative froth deflating (Bitcoin −13–14% wk)</div></div>
+      <div class="fitem"><div class="fl">Leadership</div><div class="fv">Broadening — from Mag-7 / semis to value, small-caps, energy, healthcare</div></div>
+      <div class="fitem"><div class="fl">Preferred style</div><div class="fv">Value / defensive-quality with small-cap momentum; avoid pure growth-momentum</div></div>
+      <div class="fitem"><div class="fl">Best ETF focus</div><div class="fv">RSP · IWM · DIA · XLE · XLV · XLP · GLD · SHY (+TIP)</div></div>
+      <div class="fitem"><div class="fl">Main risk</div><div class="fv">Hot NFP/wages → 10Y &gt; 4.60% + Dec hike priced → multiple compression that also breaks the small-cap rotation</div></div>
+      <div class="fitem"><div class="fl">Strategy</div><div class="fv">Selective sector rotation</div></div>
+      <div class="fitem"><div class="fl">Risk level</div><div class="fv">Medium-High</div></div>
+    </div>
+    <div class="gap-note" style="color:#8FA6BC">Data gaps in source reports: exact Day 2/3 RSP closes, day-by-day ETF flows, dealer gamma quantification, Day 2 A/D ratios, credit spread levels. Source dates: HPE surge reported Jun 2 (+26%) in Day 1 report, Jun 3 (+19.5%) in Day 2 report.</div>
+  </div>
+
+</div>
+
+<script>
+const DAYS = [
+ {key:'d1', t1:'Day 1 · Tue Jun 2', t2:'Records on negative breadth',
+  note:'<b>Narrow momentum regime.</b> Fresh all-time highs driven by AI hardware (Marvell +33%, HPE +26%) while NYSE decliners outpaced advancers 1.04:1 — a textbook late-stage divergence. XLK RSI at 82.9, CAPE 42.78, VIX asleep at 15.99. Strategy signal: "participate, but protect."',
+  kpis:[
+   {l:'S&P 500', v:'7,609.78', c:'+0.13%', s:'pos', x:'ATH · broke 7,600'},
+   {l:'Nasdaq Comp', v:'27,093.90', c:'+0.03%', s:'pos', x:'ATH'},
+   {l:'Dow Jones', v:'51,307.79', c:'+0.45%', s:'pos', x:'Record'},
+   {l:'Russell 2000', v:'2,931.96', c:'+0.90%', s:'pos', x:'Best major'},
+   {l:'VIX', v:'15.99', c:'Complacent', s:'neu', x:''},
+   {l:'10Y Yield', v:'4.43–4.45%', c:'Stable', s:'neu', x:''},
+   {l:'WTI Crude', v:'$91–93.5', c:'Elevated', s:'neu', x:'Brent ~$96'},
+   {l:'NYSE Breadth', v:'0.96 : 1', c:'Negative at ATHs', s:'neg', x:'519 new highs / 144 lows'}
+  ]},
+ {key:'d2', t1:'Day 2 · Wed Jun 3', t2:'Risk-off break — streak snapped',
+  note:'<b>Distribution day.</b> Hot ADP (122k) + ISM Services 54.5 + Iranian strikes pushed the 10Y to 4.50% and WTI to $96; the 9-day S&P streak snapped with a close at the lows. December hike odds jumped to 41.1%. After hours, Broadcom and CrowdStrike were sold hard on blowout results. Strategy signal: "hedge and rebalance, do not chase."',
+  kpis:[
+   {l:'S&P 500', v:'7,553.68', c:'−0.74%', s:'neg', x:'Closed at lows'},
+   {l:'Nasdaq Comp', v:'26,853.98', c:'−0.89%', s:'neg', x:''},
+   {l:'Dow Jones', v:'50,687.07', c:'−1.21%', s:'neg', x:'−620.72 pts'},
+   {l:'Russell 2000', v:'2,893.50', c:'−1.31%', s:'neg', x:'Worst major'},
+   {l:'VIX', v:'16.2–16.3', c:'+2.85%', s:'neg', x:'Hedging activated'},
+   {l:'10Y Yield', v:'4.49–4.50%', c:'Surging', s:'neg', x:'The pain threshold'},
+   {l:'WTI Crude', v:'$96.02', c:'+2.4%', s:'neg', x:'Iran escalation'},
+   {l:'NYSE Breadth', v:'Decliners led', c:'Broad selling', s:'neg', x:'New lows expanding'}
+  ]},
+ {key:'d3', t1:'Day 3 · Thu Jun 4', t2:'Violent — and healthy — rotation',
+  note:'<b>Rotation day.</b> The market absorbed Broadcom −12.47% and still pushed the Dow +874.86 to a record and the Russell within ~1% of all-time highs, on 2.19:1 NYSE breadth. Yields eased (10Y 4.451%), small caps and value caught the bid — tech did not. Strategy signal: "reduce risk in tech, buy the dip in value."',
+  kpis:[
+   {l:'S&P 500', v:'7,584.31', c:'+0.41%', s:'pos', x:'10th gain in 11'},
+   {l:'Nasdaq Comp', v:'26,830.96', c:'−0.09%', s:'neg', x:'QQQ −0.7%'},
+   {l:'Dow Jones', v:'51,561.93', c:'+1.73%', s:'pos', x:'Record · closed at highs'},
+   {l:'Russell 2000', v:'2,935.33', c:'+1.46%', s:'pos', x:'YTD +18.3%'},
+   {l:'VIX', v:'16.06', c:'1-day VIX +30%', s:'neu', x:'Front-end hedging'},
+   {l:'10Y Yield', v:'4.451%', c:'Easing', s:'pos', x:'2Y 4.048%'},
+   {l:'WTI Crude', v:'$92.82', c:'−3% · XLE still up', s:'neu', x:'Ceasefire headlines'},
+   {l:'NYSE Breadth', v:'2.19 : 1', c:'Strongly positive', s:'pos', x:'308 new highs / 145 lows'}
+  ]}
+];
+
+const tabsEl = document.getElementById('dayTabs');
+DAYS.forEach((d,i)=>{
+  const b = document.createElement('button');
+  b.className = 'tab'+(i===2?' active':'');
+  b.innerHTML = '<div class="t1">'+d.t1+'</div><div class="t2">'+d.t2+'</div>';
+  b.onclick = ()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); b.classList.add('active'); renderDay(i);};
+  tabsEl.appendChild(b);
+});
+function renderDay(i){
+  const d = DAYS[i];
+  document.getElementById('kpiGrid').innerHTML = d.kpis.map(k=>
+    '<div class="kpi"><div class="kl">'+k.l+'</div><div class="kv">'+k.v+'</div><div class="kc '+k.s+'">'+k.c+'</div>'+(k.x?'<div style="font-size:11px;color:var(--ink-3)">'+k.x+'</div>':'')+'</div>').join('');
+  document.getElementById('dayNote').innerHTML = d.note;
+}
+renderDay(2);
+
+const BARS = {
+  groups:['S&P 500','Nasdaq Comp','Dow Jones','Russell 2000'],
+  days:[
+    {label:'Day 1 · Jun 2', color:'#B7791F', vals:[0.13, 0.03, 0.45, 0.90]},
+    {label:'Day 2 · Jun 3', color:'#C72E0B', vals:[-0.74,-0.89,-1.21,-1.31]},
+    {label:'Day 3 · Jun 4', color:'#0B8A63', vals:[0.41,-0.09, 1.73, 1.46]}
+  ]
+};
+function drawBars(){
+  const svg = document.getElementById('barChart');
+  const W = svg.clientWidth || 980, H = 280, padL = 44, padR = 10, padT = 14, padB = 34;
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  const min=-1.6, max=2.0;
+  const y = v => padT + (max - v)/(max-min) * (H-padT-padB);
+  let s='';
+  for(let g=-1.5; g<=2.0; g+=0.5){
+    const yy=y(g);
+    s += '<line x1="'+padL+'" y1="'+yy+'" x2="'+(W-padR)+'" y2="'+yy+'" stroke="'+(Math.abs(g)<0.001?'#9AA6B5':'#E6E9ED')+'" stroke-width="'+(Math.abs(g)<0.001?1.5:1)+'"/>';
+    s += '<text x="'+(padL-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="10.5" fill="#8B95A3">'+(g>0?'+':'')+g.toFixed(1)+'%</text>';
+  }
+  const gw = (W-padL-padR)/BARS.groups.length, bw = Math.min(34, gw/4.6);
+  BARS.groups.forEach((name,gi)=>{
+    const cx = padL + gw*gi + gw/2;
+    s += '<text x="'+cx+'" y="'+(H-12)+'" text-anchor="middle" font-size="11.5" font-weight="600" fill="#5A6675">'+name+'</text>';
+    BARS.days.forEach((d,di)=>{
+      const v = d.vals[gi];
+      const x = cx + (di-1)*(bw+5) - bw/2;
+      const y0 = y(0), y1 = y(v);
+      const top = Math.min(y0,y1), h = Math.max(2, Math.abs(y0-y1));
+      s += '<rect class="bar" data-tip="'+d.label+' · '+name+': '+(v>0?'+':'')+v.toFixed(2)+'%" x="'+x+'" y="'+top+'" width="'+bw+'" height="'+h+'" rx="3" fill="'+d.color+'" opacity="0.92"/>';
+    });
+  });
+  svg.innerHTML = s;
+  const tip = document.getElementById('barTip'), wrap = document.getElementById('barWrap');
+  svg.querySelectorAll('.bar').forEach(r=>{
+    r.addEventListener('mousemove', e=>{
+      const b = wrap.getBoundingClientRect();
+      tip.textContent = r.getAttribute('data-tip');
+      tip.style.left = (e.clientX - b.left + 12)+'px';
+      tip.style.top = (e.clientY - b.top - 30)+'px';
+      tip.style.opacity = 1; r.setAttribute('opacity','1');
+    });
+    r.addEventListener('mouseleave', ()=>{tip.style.opacity=0; r.setAttribute('opacity','0.92');});
+  });
+}
+drawBars(); window.addEventListener('resize', drawBars);
+
+const RATINGS = [
+ {cat:'Market Trend', d:[['Bullish — narrow','c-bull'],['Bearish — streak snapped','c-bear'],['Mixed — Dow record, Nasdaq red','c-mix']], dir:'Trend intact; leadership replaced',
+  why:'SPX net −0.33% over the window yet never closed below its 20-day on a weekly basis; the repair on Day 3 came from different stocks than the Day 1 advance.'},
+ {cat:'Risk Appetite', d:[['Complacent risk-on','c-mix'],['Unambiguous risk-off','c-bear'],['Risk-on value / risk-off tech','c-mix']], dir:'Rotated, not restored',
+  why:'Capital migrated from long-duration growth to short-duration value. Bitcoin −13–14% on the week with record $3.4B ETF outflows shows genuine speculative deflation.'},
+ {cat:'Breadth', d:[['Negative at ATHs','c-bear'],['Broadly negative','c-bear'],['2.19:1 positive','c-bull']], dir:'Improved dramatically',
+  why:'From a late-stage divergence (decliners beating advancers at record highs) to the broadest participation of the window: 308 new NYSE highs vs 145 lows on Day 3.'},
+ {cat:'Sector Leadership', d:[['Tech + Energy','c-mix'],['Energy only','c-bear'],['Energy + HC + Staples + value','c-bull']], dir:'Growth → value/cyclical-defensive',
+  why:'Energy was the only sector to lead or co-lead all three sessions. Health Care emerged as the cleanest new leadership (UNH +5.2%, JNJ +4.6% on Day 3).'},
+ {cat:'Liquidity / Money Flow', d:[['HFs adding fastest in 6 mo','c-mix'],['Record bond inflows; distribution','c-bear'],['Rotation flows; BTC ETF exodus','c-mix']], dir:'Defensive migration within the market',
+  why:'May ETF inflows of $185B with a record $64B (29%) into bonds — the defensive undercurrent predated the selloff. Day 3: index put demand + a $1.9M IWM call spread.'},
+ {cat:'Technical Structure', d:[['Uptrend, RSI 82.9 extreme','c-mix'],['Bearish engulfing at 7,600','c-bear'],['SPX repaired; NDX divergence; IWM breakout','c-mix']], dir:'Bifurcated',
+  why:'Value charts (DIA, IWM, RSP) are bullish; the NDX carries a textbook bearish RSI divergence vulnerable to a 5–8% mean reversion toward the 50-day.'},
+ {cat:'Strategy Signal', d:[['Participate, but protect','c-mix'],['Hedge & rebalance, don\'t chase','c-bear'],['Trim tech, buy value dips','c-bull']], dir:'Converged: selective sector rotation',
+  why:'Three different daily conclusions, one destination: hold aggregate exposure, rotate composition into RSP / IWM / XLE / XLV / GLD, keep duration short via SHY.'}
+];
+const rtb = document.querySelector('#ratingTable tbody');
+RATINGS.forEach((r,i)=>{
+  const tr = document.createElement('tr');
+  tr.className='exp';
+  tr.innerHTML = '<td><b>'+r.cat+'</b><span class="arrow">▾</span></td>'
+    + r.d.map(x=>'<td><span class="chip '+x[1]+'">'+x[0]+'</span></td>').join('')
+    + '<td style="font-weight:600">'+r.dir+'</td>';
+  const det = document.createElement('tr');
+  det.className='detail'; det.style.display='none';
+  det.innerHTML = '<td colspan="5">'+r.why+'</td>';
+  tr.onclick = ()=>{det.style.display = det.style.display==='none'?'table-row':'none';};
+  rtb.appendChild(tr); rtb.appendChild(det);
+});
+
+const SECTORS = [
+ {n:'Energy (XLE)', d1:['Leader #2','c-bull'], d2:['Sole outperformer','c-bull'], d3:['+1.29% · #1','c-bull'], v3:1.29, dir:2, dirT:'↑↑ Leader', sig:'Most consistent leadership; rallied Day 3 despite WTI −3%. YTD >32%.'},
+ {n:'Health Care (XLV)', d1:['Lagging','c-bear'], d2:['Neutral / mixed','c-mix'], d3:['+0.79% · #2','c-bull'], v3:0.79, dir:2, dirT:'↑↑ Emerging', sig:'Cleanest new leadership: UNH +5.2%, JNJ +4.6%; inelastic demand at 16x forward.'},
+ {n:'Staples (XLP)', d1:['Lagging','c-bear'], d2:['Neutral / mixed','c-mix'], d3:['+0.40%','c-bull'], v3:0.40, dir:1, dirT:'↑ Improving', sig:'Classic defensive accumulation after Day 1 outflows.'},
+ {n:'Materials (XLB)', d1:['Flat','c-mix'], d2:['Underperform','c-bear'], d3:['+0.21%','c-bull'], v3:0.21, dir:0, dirT:'→ Neutral', sig:'Tracking factory orders (+4.8%) against a strong dollar.'},
+ {n:'Real Estate (XLRE)', d1:['Severe laggard','c-bear'], d2:['Underperform','c-bear'], d3:['+0.05%','c-mix'], v3:0.05, dir:0, dirT:'→/↑ Yield hostage', sig:'Bounced only when the 10Y eased; 6.52% mortgages cap upside.'},
+ {n:'Industrials (XLI)', d1:['Positive (CAT +4.6%)','c-bull'], d2:['Underperform','c-bear'], d3:['−0.08%','c-mix'], v3:-0.08, dir:0, dirT:'→ Neutral', sig:'Hard orders support; energy input costs squeeze.'},
+ {n:'Utilities (XLU)', d1:['Bid — AI power play','c-bull'], d2:['Relative strength','c-mix'], d3:['−0.43%','c-bear'], v3:-0.43, dir:-1, dirT:'↓ Fading', sig:'Identity split between bond-proxy and AI-power derivative; faded as yields eased.'},
+ {n:'Cons. Disc. (XLY)', d1:['Lagging','c-bear'], d2:['Severe underperform','c-bear'], d3:['−0.73%','c-bear'], v3:-0.73, dir:-2, dirT:'↓↓ Weak all 3 days', sig:'$92–96 oil is a regressive consumer tax; LULU margin collapse confirms the stress.'},
+ {n:'Technology (XLK)', d1:['#1 leader · RSI 82.9','c-bull'], d2:['Severe underperform','c-bear'], d3:['−1.00% · #9','c-bear'], v3:-1.00, dir:-2, dirT:'↓↓ Broken', sig:'Profit-taking after +36% YTD; multiple compression phase has begun.'},
+ {n:'Financials (XLF)', d1:['Lagging','c-bear'], d2:['Underperform','c-bear'], d3:['−1.15% ETF; JPM +3.3%, GS +4.9%','c-mix'], v3:-1.15, dir:1, dirT:'Bifurcated', sig:'Buy money-center quality; avoid regionals exposed to CRE and private credit.'},
+ {n:'Comm. Svcs (XLC)', d1:['Last (GOOGL −4%)','c-bear'], d2:['Mixed (META +4.2%)','c-mix'], d3:['−1.31% · last','c-bear'], v3:-1.31, dir:-1, dirT:'↓ Persistent laggard', sig:'Laggard on all three days; Alphabet dilution overhang, then mega-cap compression.'},
+ {n:'Semiconductors (SMH)', d1:['Euphoric: MRVL +33%','c-bull'], d2:['AVGO −6–12% after hours','c-bear'], d3:['AVGO −12.47%, MU −7.24%','c-bear'], v3:-12.47, dir:-3, dirT:'↓↓↓ Reversal', sig:'Top-to-bottom in 72 hours despite +143% AI revenue — avoid until a floor forms.'}
+];
+const stb = document.querySelector('#sectorTable tbody');
+function renderSectors(mode){
+  const rows = [...SECTORS].sort((a,b)=> mode==='d3' ? b.v3-a.v3 : b.dir-a.dir);
+  stb.innerHTML = rows.map(s=>
+    '<tr><td><b>'+s.n+'</b></td>'
+    +'<td><span class="chip '+s.d1[1]+'">'+s.d1[0]+'</span></td>'
+    +'<td><span class="chip '+s.d2[1]+'">'+s.d2[0]+'</span></td>'
+    +'<td><span class="chip '+s.d3[1]+'">'+s.d3[0]+'</span></td>'
+    +'<td style="font-weight:700">'+s.dirT+'</td><td style="color:var(--ink-2)">'+s.sig+'</td></tr>').join('');
+}
+renderSectors('d3');
+document.querySelectorAll('.sbtn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.sbtn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); renderSectors(b.dataset.sort);
+});
+
+const STYLES_UP = [
+ ['Value', 95, 'Dow record; JPM, GS, UNH led'],
+ ['Quality', 85, 'Fortress balance-sheet premium back'],
+ ['Defensive', 80, 'XLV +0.79%, XLP +0.40% on Day 3'],
+ ['Small-Cap', 75, 'Best YTD index (+18.3%), near ATH'],
+ ['Low Volatility', 65, 'Consistent bid from Day 2 onward']
+];
+const STYLES_DOWN = [
+ ['Momentum (tech)', 95, 'Baton passed from semis to IWM/XLE'],
+ ['High Beta', 90, 'SMCI/PLTR froth → avoided; BTC −13%'],
+ ['Growth', 85, 'Priced-for-perfection beats sold hard'],
+ ['Mega-Cap', 70, 'Mag-7 fractured; market now discriminates'],
+ ['Crypto / speculative', 90, 'Record $3.4B Bitcoin ETF outflow']
+];
+function styleRows(arr, color){
+  return arr.map(s=>'<div class="srow"><span style="font-weight:600; flex:0 0 130px">'+s[0]+'</span><span style="color:var(--ink-2); flex:1">'+s[2]+'</span><span class="bar-out"><span class="bar-in" style="width:'+s[1]+'%; background:'+color+'"></span></span></div>').join('');
+}
+document.getElementById('styleUp').innerHTML = styleRows(STYLES_UP, 'var(--green)');
+document.getElementById('styleDown').innerHTML = styleRows(STYLES_DOWN, 'var(--red)');
+
+const CASES = {
+ bull: {cls:'bullc', items:[
+   'A successful stress test: the market absorbed AVGO −12.5%, a 41.1% hike repricing, $96 oil, and a Bitcoin capitulation — and SPX lost only 0.33% while Dow and Russell made new highs.',
+   'Breadth improved exactly when needed: 52.95% of US equities above combined long-term MAs and rising; RSP outperforming on 2 of 3 days.',
+   'The rotation resolves the market\'s biggest structural flaw — Mag-7/semi concentration — without an index-level crash.',
+   'Early labor cooling (claims at a 4-month high of 225k, JOLTS hires falling) offers a path to a less hawkish Fed without recession; factory orders +4.8% say the real economy is fine.',
+   'Day 3 yield relief was instantly bought in small caps — enormous pent-up demand for broadening.'],
+  confirm:'<b>Confirmation:</b> Goldilocks NFP (~100k, muted wages) · 10Y &lt; 4.35% · SPX weekly close &gt; 7,700 on positive A/D · IWM at new all-time highs. <b>Beneficiaries:</b> IWM, RSP, DIA, XLF, XLV, XLRE.'},
+ bear: {cls:'bearc', items:[
+   'The leadership that built this bull market just broke — and what replaced it cannot carry a 42.78 CAPE (second-highest in history).',
+   'Classic top sequence visible: narrowness (Day 1) → heavy-volume distribution (Day 2) → blowout earnings sold ruthlessly (AVGO, CRWD, CIEN).',
+   'The macro is hostile: zero cuts priced for 2026, 41.1% December hike odds, unit labor costs +1.8% vs productivity +0.3%, oil +46% y/y, Hormuz paralyzed, dollar at multi-month highs.',
+   'NDX bearish RSI divergence + QQEW at its 200-day is how multi-month tech corrections begin; semis reversed top-to-bottom in 72 hours.',
+   'The rotation\'s beneficiaries are fragile: IWM is the most yield-sensitive index in the complex and was the worst performer the one day yields rose; the ceasefire under Day 3\'s oil dip was already rejected by Hezbollah.'],
+  confirm:'<b>Confirmation:</b> Hot NFP with rising wages · 10Y &gt; 4.60% · SPX &lt; 7,460 · WTI &gt; $100–105 · VIX &gt; 18. <b>Most vulnerable:</b> SMH/SOXX, QQQ, XLY, VNQ, TLT, IWM (on a yield spike), Bitcoin ETFs.'}
+};
+function renderCase(which){
+  const c = CASES[which];
+  document.getElementById('caseBox').innerHTML = '<div class="case '+c.cls+'"><ul>'+c.items.map(i=>'<li>'+i+'</li>').join('')+'</ul><div class="confirm">'+c.confirm+'</div></div>';
+  document.getElementById('btnBull').className = which==='bull'?'on-bull':'';
+  document.getElementById('btnBear').className = which==='bear'?'on-bear':'';
+}
+document.getElementById('btnBull').onclick = ()=>renderCase('bull');
+document.getElementById('btnBear').onclick = ()=>renderCase('bear');
+renderCase('bull');
+
+const STRAT = [
+ ['Increase equity exposure?', ['No — protect','c-mix'], ['No — reduce/hedge','c-bear'], ['Maintain, reallocate','c-mix'], 'Maintain aggregate; change composition'],
+ ['Increase QQQ?', ['No — overextended','c-bear'], ['Reduce / covered calls','c-bear'], ['Reduce / take profits','c-bear'], 'Reduce'],
+ ['Increase SPY / VOO?', ['Hold','c-mix'], ['Trim toward RSP','c-mix'], ['Hold / neutral','c-mix'], 'Hold; migrate increments to RSP'],
+ ['Increase defensives?', ['No — lagging','c-bear'], ['Yes — bid emerging','c-bull'], ['Yes — XLV/XLP leading','c-bull'], 'Increase'],
+ ['Increase small-caps?', ['Yes — breakout','c-bull'], ['No — avoid','c-bear'], ['Yes — buy momentum','c-bull'], 'Yes, sized for yield-spike risk'],
+ ['Increase bonds?', ['Short duration only','c-mix'], ['SHY/TIP yes; TLT no','c-mix'], ['Same','c-mix'], 'Short duration + TIPS only'],
+ ['Keep cash high?', ['Moderate','c-mix'], ['Elevated','c-bear'], ['Moderate','c-mix'], 'Moderate; deploy into rotation dips'],
+ ['Add hedges?', ['Yes — cheap tails','c-bull'], ['Yes — activate','c-bull'], ['Yes — front-end into NFP','c-bull'], 'Maintain through the jobs print']
+];
+document.querySelector('#stratTable tbody').innerHTML = STRAT.map(r=>
+ '<tr><td><b>'+r[0]+'</b></td>'
+ +[1,2,3].map(i=>'<td><span class="chip '+r[i][1]+'">'+r[i][0]+'</span></td>').join('')
+ +'<td style="font-weight:700">'+r[4]+'</td></tr>').join('');
+
+const SIGNALS = [
+ ['Nonfarm Payrolls + Average Hourly Earnings (Friday)', 'The single arbiter of the Fed-hike repricing — wages matter more than the headline.', '~100k jobs, muted wages → yields fall, rotation broadens', 'Hot jobs + hot wages → Dec hike odds >50%, yields spike'],
+ ['S&P 500: 7,460 support / 7,700 resistance', 'Defines the consolidation range that contains the whole window.', 'Weekly close >7,700 on positive A/D', 'Close <7,460 invites CTA selling toward the 50-day (~6,790–7,100)'],
+ ['Nasdaq 100 vs its 50-day MA', 'Tests whether the tech damage is contained or spreading.', 'Holds the 50-day; RSI divergence repairs', 'Breaks the 50-day → the 5–8% correction scenario activates'],
+ ['Russell 2000: 2,950–3,000 (ATH zone)', 'The rotation\'s credibility test — IWM is within ~1% of all-time highs.', 'New all-time high confirms the regime change', 'Failure plus a yield spike = the rotation was a one-day wonder'],
+ ['RSP vs SPY ratio', 'Distinguishes genuine broadening from churn.', 'Sustained RSP outperformance', 'RSP underperformance on down days (as on Day 2)'],
+ ['10-Year yield: 4.35 / 4.50 / 4.60%', 'The valuation discount rate for everything.', 'Below 4.35%', 'Above 4.50% pressures all equities; >4.60% = liquidation risk'],
+ ['VIX 18.00', 'The regime line between rotation and genuine de-risking.', 'Stays <16 with falling 1-day VIX', 'Close >18 = structural shift to risk-off'],
+ ['Sector leadership: XLE & XLV vs XLK', 'Tracks whether the rotation persists or unwinds.', 'New leaders hold gains while tech stabilizes', 'Everything falls together = distribution, not rotation'],
+ ['ETF flows: bond share & Bitcoin ETFs', 'Reveals the marginal dollar\'s true risk appetite.', 'BTC outflows stabilize; equity inflows broaden', 'Bond share >30% of inflows; BTC bleed continues'],
+ ['WTI crude: the $90–100 band', 'Inflation floor and regressive consumer tax.', 'Sustained break under $90 on real de-escalation', '>$100 = stagflation panic; XLY and IWM crushed']
+];
+const DECK = [
+ ['72-hour regime change — title', 'From tech hegemony to value rotation: Jun 2–4 market review plus NFP tactical deployment. Primary directive: rotate, don\'t retreat.'],
+ ['Surface vs core', 'SPX −0.33% masks a violent wash-and-rotate: QQQ/AVGO (−12.47%) and Bitcoin ETFs (−$3.4B) collapse below the waterline while 2.19:1 breadth, Dow +874.86 and the IWM breakout erupt above it.'],
+ ['Three-day panorama', 'Day 1: fragile euphoria — records on negative breadth, XLK RSI 82.9. Day 2: institutional distribution — streak snapped, record bond ETF inflows, 10Y hits 4.50%. Day 3: violent value relay — energy, healthcare, staples, value financials take the baton.'],
+ ['Macro pressure chamber', 'Stagflation inputs (JOLTS 7.618M, ADP wages +4.4%, ULC +1.8% vs productivity +0.3%; WTI +46% y/y, Hormuz risk) force a hawkish Fed repricing: zero cuts for 2026, December hike odds 41.1% (from 9.1%). Cash spills into XLE and DIA.'],
+ ['Earnings paradox', 'Fundamentals are flawless — AVGO AI semiconductor revenue +143% — yet the stock fell 12.47%; CRWD beat and dropped 10.6% at 137x forward. CAPE 42.78 is the valuation ceiling; LULU (gross margin −410bps, guidance cut) is the consumer stress test.'],
+ ['Capital migration map', 'Out of crowded mega-cap tech (XLK/SMH ~−$1.2B) and high beta (BTC ETFs −$3.4B) into duration-light value (RSP/DIA), defensive quality (XLV/XLP), inflation cyclicals (XLE) and sovereign-hedge gold (GLD $4,400+).'],
+ ['Technical bifurcation', 'QQQ, the former leader: bearish RSI divergence, 5–8% mean-reversion risk toward the 50-day. IWM, the new main force: breakout +2.3% above 20-day, +6.8% above 50-day, +18.3% YTD.'],
+ ['Tactical radar — ETF action matrix', 'Core adds: RSP, XLV/XLP, SHY. Tactical momentum: IWM, XLE. Hold/wait: SPY, VOO. Reduce/avoid: SMH/SOXX, TLT, Bitcoin ETFs.'],
+ ['NFP decision tree', 'Goldilocks (~100k jobs, soft wages → 10Y under 4.35%): add RSP/IWM/XLV, keep harvesting QQQ/SMH strength. Hawkish shock (hot jobs + wages → 10Y >4.60%, VIX >18): raise cash, hold XLE/GLD/SHY, no dip-buying in tech or small caps.'],
+ ['Final strategic directive', 'Hold total exposure, reshape the internals. Overweight RSP/XLV/XLE/GLD; tactical breakout in IWM; strict short duration (SHY+TIP, no TLT/VNQ); front-end hedges on through the NFP print.']
+];
+let deckI = 0;
+const deckImg = document.getElementById('deckImg'), deckCap = document.getElementById('deckCap'),
+      deckNum = document.getElementById('deckNum'), deckDots = document.getElementById('deckDots');
+DECK.forEach((_,i)=>{
+  const d=document.createElement('button');
+  d.setAttribute('aria-label','Slide '+(i+1));
+  d.onclick=()=>showDeck(i);
+  deckDots.appendChild(d);
+});
+function showDeck(i){
+  deckI = (i+DECK.length)%DECK.length;
+  deckImg.src = '../assets/img/smr/slide'+String(deckI+1).padStart(2,'0')+'.jpg';
+  deckImg.alt = 'Slide '+(deckI+1)+': '+DECK[deckI][0];
+  deckNum.textContent = (deckI+1)+' / '+DECK.length;
+  deckCap.innerHTML = '<b>'+DECK[deckI][0]+'.</b> '+DECK[deckI][1];
+  [...deckDots.children].forEach((d,j)=>d.classList.toggle('on', j===deckI));
+}
+document.getElementById('deckPrev').onclick = ()=>showDeck(deckI-1);
+document.getElementById('deckNext').onclick = ()=>showDeck(deckI+1);
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowLeft') showDeck(deckI-1);
+  if(e.key==='ArrowRight') showDeck(deckI+1);
+});
+showDeck(0);
+
+document.getElementById('signals').innerHTML = SIGNALS.map(s=>
+ '<details class="sig"><summary><span>'+s[0]+'</span><span class="arrow">▾</span></summary>'
+ +'<div style="padding:10px 14px 0; font-size:12.5px; color:var(--ink-2)">'+s[1]+'</div>'
+ +'<div class="sigbody"><div class="sigcol sig-bull"><b>Bullish confirmation</b>'+s[2]+'</div>'
+ +'<div class="sigcol sig-bear"><b>Bearish warning</b>'+s[3]+'</div></div></details>').join('');
+</script>
+</body>
+</html>

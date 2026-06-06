@@ -273,13 +273,34 @@
   <!-- 酒店信息 -->
   <div class="tab-content" id="campground">
 
-    <div class="card" style="margin-bottom:16px; border-left:4px solid var(--muted);">
+    <div class="card" style="margin-bottom:16px; border-left:4px solid var(--accent);">
       <div class="card-header">
-        <div class="card-title"><span class="card-icon">🏨</span>住宿 · 酒店待定</div>
-        <div class="card-count" style="color:var(--muted); font-weight:600;">待补充</div>
+        <div class="card-title"><span class="card-icon">🏨</span>The Latch Inn · 西德尼海滨历史旅馆</div>
+        <div class="card-count" style="color:var(--ok); font-weight:600;">已预订</div>
       </div>
+
+      <div class="note" style="margin:0 0 14px; background:var(--surface-3); border-color:var(--accent-soft);">
+        <strong>📅 入住：2026年6月8日(周一)　退房：2026年6月9日(周二)　共 1 晚</strong>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:14px;">
+        <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:12px;">
+          <div style="font-size:12px; color:var(--muted); margin-bottom:4px;">📍 地址</div>
+          <div style="font-size:13px; color:var(--text);">2328 Harbour Road, Sidney, BC, V8L 2P8, Canada</div>
+        </div>
+        <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:12px;">
+          <div style="font-size:12px; color:var(--muted); margin-bottom:4px;">🚗 交通</div>
+          <div style="font-size:13px; color:var(--text);">距西德尼镇中心约 1.8 km;距维多利亚国际机场(YYJ)约 10–15 分钟车程;邻近 Swartz Bay 渡轮与海湾群岛航线。</div>
+        </div>
+        <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:12px;">
+          <div style="font-size:12px; color:var(--muted); margin-bottom:4px;">⭐ 评分</div>
+          <div style="font-size:13px; color:var(--text);">订房网站约 9/10(低至中高分段),清洁、员工与位置评价尤佳。</div>
+        </div>
+      </div>
+
       <div class="note" style="margin:0;">
-        营地信息已移除。酒店预订确认后将在此填入酒店名称、地址、Check-In / Check-Out 时间及预订号。
+        <strong>关于这家旅馆：</strong>由 1920 年代为 BC 省副总督修建的避暑别墅改建而成,极富历史韵味,后改为 “The Latch” 旅馆。客房各具特色,采用古董/传统风格装潢并升级了现代酒店设施(并非全新精装风格)。<strong>入住含现做早餐</strong>,广受好评,天气好时常在露台供应。公共区域有花园、露台、酒吧/休息室及免费停车,提供免费 Wi-Fi。<br><br>
+        旅馆坐落于 Shoal Harbour 一处安静的海湾旁、紧邻码头,略在西德尼镇外,氛围更显幽静、住宅区感强。位于 Saanich 半岛、面向 Salish 海,晴日可远眺海湾群岛与贝克山(Mt. Baker),邻近鸟类保护区与海岸步道。适合 YYJ 航班或 BC 渡轮前后过夜,搭配悠闲早餐,短程驱车即可到西德尼海滨漫步。
       </div>
     </div>
 
@@ -288,7 +309,7 @@
   <!-- 钓鱼清单 -->
   <div class="tab-content" id="fishing">
     <div class="note">
-      <strong>💡 天气提示：</strong>6/8 ★★★★☆(4/5) · 6/9 ★★★☆☆(3/5) · 凉爽海洋型春季,气温 12-18°C,有阵雨(6/9 概率约 60%)。最佳钓鱼时间:两日均为黎明至上午(风弱海面平静);⚠️ 午后西/西南风增至 10-20kt、起浪,小船需近岸避风,出海前查海洋预报。
+      <strong>💡 天气提示：</strong>6/8 ★★★★☆(4/5) · 6/9 ★★★☆☆(3/5) · 凉爽海洋型春季,气温 10-18°C,水温约 14°C。6/8 全天风平浪静(0-6kt, 0ft),30% 阵雨;6/9 上午平静(2-4kt),⚠️ 正午后西风增至 10kt、浪高约 1ft,40% 阵雨(2-4mm)。最佳钓鱼时间:6/8 全天候、清晨为佳;6/9 赶在中午前。
     </div>
     <div class="grid" id="fishing-grid"></div>
   </div>
@@ -363,10 +384,10 @@
   <!-- 天气预报 -->
   <div class="tab-content" id="weather">
     <div class="note" style="background:#fff7e6; border-left:3px solid var(--warn,#d9920a);">
-      <strong>🌦️ 总评 · 凉爽海洋型春季天气 · 可钓但需防雨防风</strong><br>
-      <strong>6/8 (周日)</strong>:★★★★☆ 4/5 · 白天最高约 18°C,夜间约 12°C · 晴时多云,降雨概率低(20–30%) · 上午风弱、海面平静,午后西风 10–20kt 增强、起浪。
-      <strong>6/9 (周一)</strong>:★★★☆☆ 3/5 · 最高约 16°C,最低约 13°C · 云多、阵雨概率高(约 60%,1–3mm) · 仍可钓但更湿,需全套雨具。<br>
-      <span style="font-size:11px; color:var(--muted);">维多利亚 / Canoe Cove · Haro Strait / Juan de Fuca 海域 · 出海前务必查看 Environment Canada 海洋预报与潮汐/洋流表</span>
+      <strong>🌦️ 总评 · 凉爽海洋型春季天气 · 风平浪静、整体钓况良好</strong><br>
+      <strong>6/8 (周一)</strong>:★★★★☆ 4/5 · 最高 16°C / 最低 10°C · 多云,30% 阵雨 · 全天风平浪静(0–6kt 西北风、海面 0ft),非常适合岸钓与小船作钓。
+      <strong>6/9 (周二)</strong>:★★★☆☆ 3/5 · 最高 18°C / 最低 10°C · 多云,40% 阵雨(2–4mm) · 上午平静,正午后西风增至 10kt、浪高约 1ft,小船需谨慎。<br>
+      <span style="font-size:11px; color:var(--muted);">维多利亚 / Canoe Cove · 水温约 14°C · 出海前务必查看 Environment Canada 海洋预报与潮汐/洋流表</span>
     </div>
 
     <!-- 综合评级 -->
@@ -377,66 +398,60 @@
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
         <div style="background:var(--surface-2); padding:12px; border-radius:8px; border-left:3px solid var(--ok);">
-          <div style="font-weight:700; color:var(--text); margin-bottom:6px;">6/8 周日 · ★★★★☆ (4/5)</div>
+          <div style="font-weight:700; color:var(--text); margin-bottom:6px;">6/8 周一 · ★★★★☆ (4/5)</div>
           <div style="font-size:12px; color:var(--text-soft); line-height:1.7;">
-            🌡️ 12–18°C · 💨 上午弱风 → 午后西/西南 10–20kt<br>
-            🌊 上午海面平静 → 午后短周期涌浪起伏(小船注意)<br>
-            ⛅ 晴时多云 · ☔ 阵雨概率 20–30%(多数时段干燥)<br>
-            🎣 最佳:清晨至上午(风弱面静)
+            🌡️ 10–16°C · 💨 全天西北风 0–6kt(早 6 点几乎无风)<br>
+            🌊 海面平静 0ft · 涌浪 0ft(周期 1.6–2.2s)<br>
+            ⛅ 多云 · ☔ 阵雨概率 30%(整体干爽)<br>
+            🎣 推荐:全天候,清晨 6–10 点为黄金时段
           </div>
         </div>
         <div style="background:var(--surface-2); padding:12px; border-radius:8px; border-left:3px solid var(--warn,#d9920a);">
-          <div style="font-weight:700; color:var(--text); margin-bottom:6px;">6/9 周一 · ★★★☆☆ (3/5)</div>
+          <div style="font-weight:700; color:var(--text); margin-bottom:6px;">6/9 周二 · ★★★☆☆ (3/5)</div>
           <div style="font-size:12px; color:var(--text-soft); line-height:1.7;">
-            🌡️ 13–16°C · 💨 西/西南 10–20kt,Juan de Fuca 阵风更强<br>
-            🌊 海况较糙,午后浪涌增大<br>
-            🌧️ 云多 · 阵雨概率约 60%(全天 1–3mm)<br>
-            🎣 仍可钓但更湿 · 早–中午为最佳折中
+            🌡️ 10–18°C · 💨 上午西北 2–4kt → 正午后转西风 ~10kt<br>
+            🌊 上午 0ft 平静 → 午后约 1ft,轻微涌浪(周期 2.0–2.9s)<br>
+            🌧️ 多云 · 阵雨概率 40%(预计 2–4mm)<br>
+            🎣 推荐:清晨 0–9 点,赶在中午前结束
           </div>
         </div>
       </div>
     </div>
 
     <!-- 6月8日 逐小时表 -->
-    <h3 style="margin:20px 0 10px; font-size:15px;">📅 6月8日 (周日) · 逐小时(基于地面+海洋预报趋势)</h3>
+    <h3 style="margin:20px 0 10px; font-size:15px;">📅 6月8日 (周一) · 逐时预报(每 3 小时)</h3>
     <div style="overflow-x:auto;">
     <table class="ferry-table" style="font-size:12px;">
       <thead>
         <tr>
-          <th>时间</th><th>气温/露点</th><th>风速/阵风</th><th>风向</th><th>气压</th><th>云量</th><th>降雨</th><th>海浪</th><th>涌浪</th>
+          <th>时段</th><th>气温</th><th>风速/阵风</th><th>风向</th><th>海浪</th><th>天气</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>05:00</td><td>12°/10°</td><td>4/7kt</td><td>西</td><td>1016</td><td>多云</td><td>—</td><td>1ft</td><td>0ft</td></tr>
-        <tr class="booked"><td>06:00 🎣</td><td>12°/10°</td><td>4/8kt</td><td>西</td><td>1016</td><td>晴间多云</td><td>—</td><td>1ft</td><td>0ft</td></tr>
-        <tr class="booked"><td>07:00 🎣</td><td>13°/10°</td><td>5/9kt</td><td>西</td><td>1015</td><td>晴间多云</td><td>—</td><td>1ft</td><td>0ft</td></tr>
-        <tr class="booked"><td>08:00 ⭐</td><td>14°/10°</td><td>6/10kt</td><td>西</td><td>1015</td><td>晴间多云</td><td>—</td><td>2ft</td><td>0ft</td></tr>
-        <tr class="booked"><td>09:00 ⭐</td><td>15°/11°</td><td>7/12kt</td><td>西</td><td>1015</td><td>晴间多云</td><td>—</td><td>2ft</td><td>0ft</td></tr>
-        <tr class="booked"><td>10:00 ⭐</td><td>16°/11°</td><td>9/14kt</td><td>西</td><td>1014</td><td>多云</td><td>20%</td><td>3ft</td><td>1ft</td></tr>
-        <tr class="booked"><td>11:00 ⭐</td><td>17°/11°</td><td>11/16kt</td><td>西</td><td>1014</td><td>多云</td><td>20%</td><td>3ft</td><td>1ft</td></tr>
-        <tr><td>12:00</td><td>17°/11°</td><td>13/18kt</td><td>西</td><td>1013</td><td>多云</td><td>20%</td><td>4ft</td><td>1ft</td></tr>
-        <tr><td>13:00 ⚠️</td><td>18°/11°</td><td>14/20kt</td><td>西</td><td>1013</td><td>晴间多云</td><td>—</td><td>4ft</td><td>1ft</td></tr>
-        <tr><td>14:00 ⚠️</td><td>18°/11°</td><td>15/20kt</td><td>西南</td><td>1012</td><td>多云</td><td>30% <1mm</td><td>4ft</td><td>1ft</td></tr>
-        <tr><td>15:00 ⚠️</td><td>18°/11°</td><td>14/19kt</td><td>西南</td><td>1012</td><td>多云</td><td>30% <1mm</td><td>4ft</td><td>1ft</td></tr>
-        <tr><td>16:00 ⚠️</td><td>17°/11°</td><td>13/18kt</td><td>西南</td><td>1012</td><td>多云</td><td>20%</td><td>3ft</td><td>1ft</td></tr>
-        <tr><td>17:00</td><td>17°/12°</td><td>11/16kt</td><td>西南</td><td>1012</td><td>晴间多云</td><td>—</td><td>3ft</td><td>1ft</td></tr>
-        <tr><td>18:00</td><td>16°/12°</td><td>9/14kt</td><td>西南</td><td>1013</td><td>晴间多云</td><td>—</td><td>2ft</td><td>0ft</td></tr>
-        <tr><td>19:00</td><td>15°/12°</td><td>7/12kt</td><td>西</td><td>1013</td><td>晴间多云</td><td>—</td><td>2ft</td><td>0ft</td></tr>
-        <tr><td>20:00</td><td>14°/12°</td><td>5/10kt</td><td>西</td><td>1013</td><td>多云</td><td>—</td><td>1ft</td><td>0ft</td></tr>
+        <tr><td>0:00</td><td>12°C</td><td>3kt 阵风2kt</td><td>西北</td><td>0ft</td><td>多云</td></tr>
+        <tr><td>3:00</td><td>12°C</td><td>2kt 阵风1kt</td><td>西北</td><td>0ft</td><td>多云</td></tr>
+        <tr class="booked"><td>6:00 🎣</td><td>12°C</td><td>0kt 阵风2kt</td><td>无风</td><td>0ft</td><td>多云</td></tr>
+        <tr class="booked"><td>9:00 ⭐</td><td>13°C</td><td>4kt 阵风5kt</td><td>西北</td><td>0ft</td><td>多云</td></tr>
+        <tr><td>12:00</td><td>14°C</td><td>5kt 阵风6kt</td><td>西北</td><td>0ft</td><td>多云</td></tr>
+        <tr class="booked"><td>15:00 ⭐</td><td>14°C</td><td>4kt 阵风5kt</td><td>西北</td><td>0ft</td><td>多云间晴</td></tr>
+        <tr class="booked"><td>18:00 🎣</td><td>14°C</td><td>2kt 阵风3kt</td><td>西北</td><td>0ft</td><td>多云间晴</td></tr>
+        <tr><td>21:00</td><td>13°C</td><td>1kt 阵风2kt</td><td>西北</td><td>0ft</td><td>多云</td></tr>
       </tbody>
     </table>
     </div>
-    <div style="font-size:11px; color:var(--muted); margin-top:4px;">🎣 清晨钓鱼时段 · ⭐ 最佳窗口(风弱面静) · ⚠️ 午后西风增强、起浪</div>
+    <div style="font-size:11px; color:var(--muted); margin-top:4px;">🎣 钓鱼时段 · ⭐ 最佳窗口(风弱面静) · 最高 16°C / 最低 10°C · 水温 14°C · 30% 阵雨</div>
 
     <div class="grid" style="margin-top:14px;">
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="card-icon">🌊</span>6/8 潮汐 / 洋流</div>
-          <div class="card-count" style="color:var(--muted);">待查</div>
+          <div class="card-title"><span class="card-icon">🌊</span>6/8 潮汐 / 海况</div>
+          <div class="card-count" style="color:var(--ok); font-weight:600;">平静</div>
         </div>
-        <div class="item"><label>请查 DFO 潮汐表(Sidney / Swartz Bay 站)确认当日具体高低潮时刻</label></div>
-        <div class="item priority-high"><label>Haro Strait 洋流强,风与流相逆时浪明显加大</label></div>
-        <div class="item"><label>建议按高低潮转换前后安排垂钓时段</label></div>
+        <div class="item priority-high"><label><strong>0:14</strong> 高潮 9.9ft</label></div>
+        <div class="item"><label><strong>7:43</strong> 低潮 4.86ft</label></div>
+        <div class="item priority-high"><label><strong>10:17</strong> 高潮 6.2ft</label></div>
+        <div class="item"><label><strong>16:26</strong> 低潮 4.24ft</label></div>
+        <div class="item"><label>🌊 涌浪 0ft(周期 1.6–2.2s)· 海水温度 14°C</label></div>
       </div>
 
       <div class="card">
@@ -444,10 +459,10 @@
           <div class="card-title"><span class="card-icon">🎯</span>6/8 钓鱼适宜度分析</div>
           <div class="card-count" style="color:var(--ok); font-weight:600;">★★★★☆ 4/5</div>
         </div>
-        <div class="item priority-high"><label><strong>清晨 06–10:</strong> ⭐⭐⭐⭐ 风弱面静,首选</label></div>
-        <div class="item"><label><strong>上午 10–12:</strong> ⭐⭐⭐ 西风开始增强</label></div>
-        <div class="item"><label><strong>午后 13–16:</strong> ⚠️ 10–20kt 西风,小船宜近岸避风</label></div>
-        <div class="item"><label>✓ 降雨概率低,多数时段干燥</label></div>
+        <div class="item priority-high"><label><strong>清晨 6:00–10:00:</strong> ⭐⭐⭐⭐ 几乎无风 + 低潮转涨潮,黄金时段</label></div>
+        <div class="item"><label><strong>下午 15:00–18:00:</strong> ⭐⭐⭐ 微风 + 日照较好,气温舒适</label></div>
+        <div class="item"><label>📈 7:43 低潮后 10:17 涨潮至 6.2ft,涨潮期鱼活性较好</label></div>
+        <div class="item"><label>✓ 全天风平浪静(0–6kt, 0ft),30% 阵雨但整体干爽</label></div>
       </div>
 
       <div class="card">
@@ -455,52 +470,46 @@
           <div class="card-title"><span class="card-icon">🧥</span>6/8 装备提示</div>
         </div>
         <div class="item priority-high"><label>分层穿衣:底层 + 保暖中层 + 防风外壳</label></div>
-        <div class="item"><label>带雨具以防零星阵雨</label></div>
-        <div class="item"><label>海上比陆地体感更凉,高速航行戴帽/手套</label></div>
-        <div class="item"><label>午后前回到避风水域更稳妥</label></div>
+        <div class="item"><label>带雨具以防 30% 零星阵雨</label></div>
+        <div class="item"><label>夜间/清晨较凉(10–12°C),戴帽保暖</label></div>
+        <div class="item"><label>海况极佳,岸钓与小船均适宜</label></div>
       </div>
     </div>
 
     <!-- 6月9日 逐小时表 -->
-    <h3 style="margin:24px 0 10px; font-size:15px;">📅 6月9日 (周一) · 逐小时(基于地面+海洋预报趋势)</h3>
+    <h3 style="margin:24px 0 10px; font-size:15px;">📅 6月9日 (周二) · 逐时预报(每 3 小时)</h3>
     <div style="overflow-x:auto;">
     <table class="ferry-table" style="font-size:12px;">
       <thead>
         <tr>
-          <th>时间</th><th>气温/露点</th><th>风速/阵风</th><th>风向</th><th>气压</th><th>云量</th><th>降雨</th><th>海浪</th><th>涌浪</th>
+          <th>时段</th><th>气温</th><th>风速/阵风</th><th>风向</th><th>海浪</th><th>天气</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>05:00</td><td>13°/12°</td><td>5/9kt</td><td>西南</td><td>1012</td><td>阴</td><td>60%</td><td>1ft</td><td>0ft</td></tr>
-        <tr class="booked"><td>06:00 🎣</td><td>13°/12°</td><td>6/10kt</td><td>西南</td><td>1012</td><td>阴 有雨</td><td>~1mm</td><td>1ft</td><td>0ft</td></tr>
-        <tr class="booked"><td>07:00 🎣</td><td>13°/12°</td><td>7/11kt</td><td>西南</td><td>1011</td><td>阴 有雨</td><td>~1mm</td><td>2ft</td><td>1ft</td></tr>
-        <tr class="booked"><td>08:00 ⭐</td><td>14°/12°</td><td>8/13kt</td><td>西南</td><td>1011</td><td>多云 有雨</td><td>~1mm</td><td>2ft</td><td>1ft</td></tr>
-        <tr class="booked"><td>09:00 ⭐</td><td>14°/12°</td><td>9/14kt</td><td>西</td><td>1011</td><td>多云</td><td>阵雨</td><td>3ft</td><td>1ft</td></tr>
-        <tr class="booked"><td>10:00 ⭐</td><td>15°/12°</td><td>11/16kt</td><td>西</td><td>1010</td><td>多云</td><td>阵雨</td><td>3ft</td><td>1ft</td></tr>
-        <tr><td>11:00</td><td>15°/12°</td><td>12/18kt</td><td>西</td><td>1010</td><td>阴 有雨</td><td>1-2mm</td><td>4ft</td><td>1ft</td></tr>
-        <tr><td>12:00 ⚠️</td><td>16°/12°</td><td>14/19kt</td><td>西</td><td>1010</td><td>阴 有雨</td><td>1-2mm</td><td>4ft</td><td>1ft</td></tr>
-        <tr><td>13:00 ⚠️</td><td>16°/12°</td><td>15/20kt</td><td>西</td><td>1009</td><td>阴 有雨</td><td>1-2mm</td><td>5ft</td><td>1ft</td></tr>
-        <tr><td>14:00 ⚠️</td><td>16°/12°</td><td>15/21kt</td><td>西南</td><td>1009</td><td>阴</td><td>阵雨</td><td>5ft</td><td>1ft</td></tr>
-        <tr><td>15:00 ⚠️</td><td>15°/12°</td><td>14/20kt</td><td>西南</td><td>1009</td><td>阴</td><td>阵雨</td><td>5ft</td><td>1ft</td></tr>
-        <tr><td>16:00 ⚠️</td><td>15°/12°</td><td>12/18kt</td><td>西南</td><td>1010</td><td>阴</td><td>阵雨</td><td>4ft</td><td>1ft</td></tr>
-        <tr><td>17:00</td><td>14°/12°</td><td>10/16kt</td><td>西南</td><td>1010</td><td>阴</td><td><1mm</td><td>3ft</td><td>1ft</td></tr>
-        <tr><td>18:00</td><td>14°/12°</td><td>8/14kt</td><td>西南</td><td>1010</td><td>多云</td><td>—</td><td>3ft</td><td>1ft</td></tr>
-        <tr><td>19:00</td><td>13°/12°</td><td>7/12kt</td><td>西</td><td>1011</td><td>多云</td><td>—</td><td>2ft</td><td>0ft</td></tr>
-        <tr><td>20:00</td><td>13°/12°</td><td>6/10kt</td><td>西</td><td>1011</td><td>阴</td><td>—</td><td>2ft</td><td>0ft</td></tr>
+        <tr><td>0:00</td><td>13°C</td><td>2kt 阵风3kt</td><td>西北</td><td>0ft</td><td>多云</td></tr>
+        <tr class="booked"><td>3:00 🎣</td><td>13°C</td><td>3kt 阵风4kt</td><td>西北</td><td>0ft</td><td>多云</td></tr>
+        <tr class="booked"><td>6:00 ⭐</td><td>13°C</td><td>3kt 阵风3kt</td><td>西北</td><td>0ft</td><td>多云</td></tr>
+        <tr class="booked"><td>9:00 ⭐</td><td>12°C</td><td>2kt 阵风4kt</td><td>西北</td><td>0ft</td><td>多云</td></tr>
+        <tr><td>12:00 ⚠️</td><td>14°C</td><td>10kt 阵风10kt</td><td>西</td><td>1ft</td><td>多云</td></tr>
+        <tr><td>15:00 ⚠️</td><td>15°C</td><td>7kt 阵风7kt</td><td>西</td><td>1ft</td><td>多云</td></tr>
+        <tr><td>18:00 ⚠️</td><td>16°C</td><td>8kt 阵风8kt</td><td>西</td><td>1ft</td><td>多云间晴</td></tr>
+        <tr><td>21:00</td><td>15°C</td><td>4kt 阵风5kt</td><td>西</td><td>0ft</td><td>多云</td></tr>
       </tbody>
     </table>
     </div>
-    <div style="font-size:11px; color:var(--muted); margin-top:4px;">🎣 清晨钓鱼时段 · ⭐ 相对最佳窗口 · ⚠️ 午后风雨叠加、海况转糙</div>
+    <div style="font-size:11px; color:var(--muted); margin-top:4px;">🎣 钓鱼时段 · ⭐ 最佳窗口 · ⚠️ 正午后西风增至 10kt、浪高 1ft · 最高 18°C / 最低 10°C · 40% 阵雨(2–4mm)</div>
 
     <div class="grid" style="margin-top:14px;">
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="card-icon">🌊</span>6/9 潮汐 / 洋流</div>
-          <div class="card-count" style="color:var(--muted);">待查</div>
+          <div class="card-title"><span class="card-icon">🌊</span>6/9 潮汐 / 海况</div>
+          <div class="card-count" style="color:var(--warn,#d9920a); font-weight:600;">午后转糙</div>
         </div>
-        <div class="item"><label>出发当天上午务必查 Juan de Fuca East Entrance / Haro Strait 海洋预报更新</label></div>
-        <div class="item priority-high"><label>6 月偶有强西风内灌日,海况更糙,留意大风/烈风警告</label></div>
-        <div class="item"><label>查 DFO 潮汐表确认具体高低潮时刻</label></div>
+        <div class="item priority-high"><label><strong>0:14</strong> 高潮 9.9ft</label></div>
+        <div class="item"><label><strong>7:58</strong> 低潮 3.49ft(两天最低潮位)</label></div>
+        <div class="item priority-high"><label><strong>13:12</strong> 高潮 6.2ft</label></div>
+        <div class="item"><label><strong>17:10</strong> 低潮 5.48ft · <strong>18:06</strong> 高潮 6.76ft</label></div>
+        <div class="item"><label>🌊 正午后轻微涌浪约 1ft(周期 2.0–2.9s)· 水温 14°C</label></div>
       </div>
 
       <div class="card">
@@ -508,10 +517,10 @@
           <div class="card-title"><span class="card-icon">🎯</span>6/9 钓鱼适宜度分析</div>
           <div class="card-count" style="color:var(--warn,#d9920a); font-weight:600;">★★★☆☆ 3/5</div>
         </div>
-        <div class="item priority-high"><label><strong>清晨 06–10:</strong> ⭐⭐⭐ 雨较小、风较弱的最佳折中</label></div>
-        <div class="item"><label><strong>上午–午后 11–16:</strong> ⚠️ 阵雨 + 西风 10–20kt</label></div>
-        <div class="item"><label>若雨带正午到来,早–中午体感与咬口最佳</label></div>
-        <div class="item"><label>仍可钓,但需全套防水、所有物品装防水袋</label></div>
+        <div class="item priority-high"><label><strong>清晨 0:00–9:00:</strong> ⭐⭐⭐ 风平浪静(2–4kt),适合早钓</label></div>
+        <div class="item"><label><strong>正午 12:00 起:</strong> ⚠️ 西风增至 10kt、浪高 1ft,小船出海需谨慎</label></div>
+        <div class="item"><label>📉 7:58 低潮 3.49ft 退潮时,码头钓有利结构区集中鱼群;13:12 涨潮至 6.2ft</label></div>
+        <div class="item"><label>☔ 下午 40% 阵雨(2–4mm)· 日落约 21:10,日照充足</label></div>
       </div>
 
       <div class="card">
@@ -520,28 +529,35 @@
         </div>
         <div class="item priority-high"><label>全套防水(雨衣 + 雨裤),手机/电子设备防水</label></div>
         <div class="item"><label>防水袋、备用毛巾、保温杯热饮</label></div>
-        <div class="item"><label>保暖帽与手套,应对凉湿环境</label></div>
-        <div class="item"><label>密切关注当日早晨海洋预报更新</label></div>
+        <div class="item"><label>赶在中午前结束,避开午后风浪</label></div>
+        <div class="item"><label>关注当日早晨海洋预报更新</label></div>
       </div>
     </div>
 
-    <!-- 海况与安全 -->
+    <!-- 钓鱼要点汇总 -->
     <div class="card" style="margin-top:14px;">
       <div class="card-header">
-        <div class="card-title"><span class="card-icon">⚓</span>海况与安全(Canoe Cove / Haro / Juan de Fuca)</div>
+        <div class="card-title"><span class="card-icon">📌</span>钓鱼要点汇总</div>
       </div>
-      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:8px;">
-        <div class="item priority-high"><label>🌊 <strong>海况:</strong> 10–20kt 西风下短周期碎浪,比陆地预报看上去更大</label></div>
-        <div class="item priority-high"><label>🌀 <strong>潮流:</strong> Haro Strait 流强,风与流相逆时浪叠加,按潮汐/洋流表安排时段</label></div>
-        <div class="item priority-high"><label>🛟 <strong>安全:</strong> 出发前夜与当日早晨查 Haro Strait、Juan de Fuca East Entrance、Strait of Georgia(Nanaimo 以南)预报</label></div>
-        <div class="item"><label>🎣 <strong>时机:</strong> 两日均以黎明–上午为主钓时段,午后风/雨增强时灵活收线</label></div>
-        <div class="item"><label>🧥 <strong>着装:</strong> 底层+保暖中层+防风/防水外壳,帽与手套</label></div>
-        <div class="item"><label>🎒 <strong>装备:</strong> 防水袋、备用毛巾、热饮保温杯,电子设备防水</label></div>
+      <div style="overflow-x:auto;">
+      <table class="ferry-table" style="font-size:12px;">
+        <thead>
+          <tr><th>项目</th><th>周一 6/8</th><th>周二 6/9</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>整体钓况</td><td>⭐⭐⭐⭐ 良好</td><td>⭐⭐⭐ 尚可</td></tr>
+          <tr><td>风浪条件</td><td>极佳(0–6kt, 0ft)</td><td>上午佳 / 下午一般(10kt, 1ft)</td></tr>
+          <tr><td>降水风险</td><td>30% 阵雨</td><td>40% 阵雨(2–4mm)</td></tr>
+          <tr><td>推荐时段</td><td>全天候</td><td>上午 0–10 点</td></tr>
+          <tr><td>潮汐最佳</td><td>涨潮 7:43 → 10:17</td><td>涨潮 7:58 → 13:12,涨潮 17:10 → 18:06</td></tr>
+          <tr><td>水温</td><td>14°C</td><td>14°C</td></tr>
+        </tbody>
+      </table>
       </div>
     </div>
 
     <div class="note" style="margin-top:20px;font-size:11px;">
-      数据来源:Environment Canada(<a href="https://weather.gc.ca/marine/forecast_e.html?mapID=03&siteID=07003" target="_blank" style="color:var(--accent);">Haro Strait / Juan de Fuca 海洋预报</a>)、AccuWeather、The Weather Network、WeatherSpark · 逐小时为基于地面与海洋预报趋势的估算,出海前请以 Environment Canada 当日更新为准。
+      数据来源:Windy.com ECMWF 模型、Environment Canada(<a href="https://weather.gc.ca/en/location/index.html?coords=48.433%2C-123.362" target="_blank" style="color:var(--accent);">维多利亚预报</a>)、The Weather Network · 预报仅供参考,出海前请查阅最新的加拿大环境部 Marine Forecast 确认。
     </div>
   </div>
 
