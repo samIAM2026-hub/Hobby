@@ -50,6 +50,16 @@
   .icon { font-size: 1.5rem; line-height: 1; }
   .meta h2 { font-size: 1rem; font-weight: 600; }
   .meta .sub { color: var(--muted); font-size: .8rem; margin-top: 2px; }
+  .section-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 32px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title:first-of-type { margin-top: 8px; }
+  .section-title .tag { color: var(--muted); font-weight: 500; font-size: .85rem; }
   footer { color: var(--muted); margin-top: 36px; font-size: .8rem; }
 </style>
 </head>
@@ -60,6 +70,7 @@
       <p>My Pages · 点击进入各个板块</p>
     </header>
 
+    <div class="section-title">🌲 活动旅游 <span class="tag">Activities &amp; Travel</span></div>
     <div class="grid">
       <a class="card" href="Fishing/index.html">
         <div class="icon">🎣</div>
@@ -75,7 +86,10 @@
         <div class="icon">🐧</div>
         <div class="meta"><h2>南极 South Pole</h2><div class="sub">温哥华出发攻略</div></div>
       </a>
+    </div>
 
+    <div class="section-title">💹 金融市场 <span class="tag">Financial Markets</span></div>
+    <div class="grid">
       <a class="card" href="Market/Macro Trader html/index.html">
         <div class="icon">📈</div>
         <div class="meta"><h2>宏观交易 Macro</h2><div class="sub">行情研究与简报</div></div>
