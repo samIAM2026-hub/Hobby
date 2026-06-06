@@ -259,6 +259,7 @@
     <div class="tab active" data-tab="ferry">⛴️ 渡轮时刻</div>
     <div class="tab" data-tab="weather">🌤️ 天气预报</div>
     <div class="tab" data-tab="campground">🏨 住宿信息</div>
+    <div class="tab" data-tab="boat">🧳 家庭行李清单</div>
     <div class="tab" data-tab="fishing">🎣 钓鱼清单</div>
     <div class="tab" data-tab="camping">⛺ 露营清单</div>
   </div>
@@ -304,6 +305,14 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- 家庭行李清单 -->
+  <div class="tab-content" id="boat">
+    <div class="note">
+      <strong>🧳 家庭行李清单：</strong>2 大人 + 11 岁、9 岁孩子,住宾馆 1 晚(6/8–6/9),主活动为船上海钓。重点:<strong>合身的儿童救生衣</strong>、防寒防水分层衣物、<strong>晕船药</strong>、偏光镜防眩光/护眼,以及孩子的备用衣物与零食。BC 潮汐海钓:成人需购<strong>潮汐钓鱼牌照</strong>,16 岁以下儿童免牌。
+    </div>
+    <div class="grid" id="boat-grid"></div>
   </div>
 
   <!-- 钓鱼清单 -->
@@ -762,6 +771,114 @@ const campingData = [
   }
 ];
 
+const boatData = [
+  {
+    title: "证件 & 预订", icon: "📋",
+    items: [
+      { name: "BC 潮汐海钓牌照(成人)", qty: "2 张", priority: true },
+      { name: "鲑鱼保育印花(若留鲑鱼)", qty: "按需" },
+      { name: "身份证件 / 护照", qty: "随身", priority: true },
+      { name: "船只租赁 / 出海预订确认", qty: "电子+纸质", priority: true },
+      { name: "酒店 & 渡轮预订确认", qty: "电子+纸质", priority: true },
+      { name: "现金 & 信用卡", qty: "随身", priority: true },
+      { name: "16 岁以下儿童免牌(无需购买)", qty: "提示" }
+    ]
+  },
+  {
+    title: "船上安全", icon: "🛟",
+    items: [
+      { name: "救生衣(成人)", qty: "2 件", priority: true },
+      { name: "救生衣(11 岁 · 合身)", qty: "1 件", priority: true },
+      { name: "救生衣(9 岁 · 合身)", qty: "1 件", priority: true },
+      { name: "防滑船鞋 / 胶底鞋", qty: "每人 1 双" },
+      { name: "防水手机袋", qty: "每人 1 个", priority: true },
+      { name: "哨子 / 求救灯", qty: "随救生衣" }
+    ]
+  },
+  {
+    title: "钓鱼装备", icon: "🎣",
+    items: [
+      { name: "海钓竿", qty: "每人 1 支", priority: true },
+      { name: "渔轮 + 主线", qty: "每人 1 套", priority: true },
+      { name: "备用钓组 / 钩 / 坠", qty: "1 盒", priority: true },
+      { name: "路亚 / 假饵(海水)", qty: "若干" },
+      { name: "鱼饵(鲱鱼 / 虾)", qty: "现场购" },
+      { name: "抄网", qty: "1 把", priority: true },
+      { name: "控鱼器 / 鱼夹", qty: "1 个" },
+      { name: "尖嘴钳 / 剪线钳 / 去钩器", qty: "各 1" },
+      { name: "鱼获保温冰盒", qty: "1 个", priority: true },
+      { name: "量鱼尺 & 毛巾", qty: "1 套" }
+    ]
+  },
+  {
+    title: "防寒 & 防水衣物", icon: "🧥",
+    items: [
+      { name: "防风防水外套", qty: "每人 1 件", priority: true },
+      { name: "保暖中层(抓绒)", qty: "每人 1 件" },
+      { name: "雨裤", qty: "每人 1 条" },
+      { name: "速干长裤", qty: "每人 1 条" },
+      { name: "保暖帽 & 手套", qty: "每人 1 套" },
+      { name: "船上备用全套衣物(怕湿)", qty: "每人 1 套", priority: true },
+      { name: "备用袜子", qty: "每人 1-2 双" }
+    ]
+  },
+  {
+    title: "防晒 & 健康", icon: "🧴",
+    items: [
+      { name: "偏光太阳镜(防眩 & 护眼)", qty: "每人 1 副", priority: true },
+      { name: "遮阳帽", qty: "每人 1 顶" },
+      { name: "防晒霜 SPF50+", qty: "1 瓶", priority: true },
+      { name: "晕船药(成人)", qty: "1 盒", priority: true },
+      { name: "晕船药 / 防晕手环(儿童)", qty: "按年龄", priority: true },
+      { name: "急救包", qty: "1 套", priority: true },
+      { name: "个人处方药", qty: "按需" },
+      { name: "创可贴 & 湿巾", qty: "充足" }
+    ]
+  },
+  {
+    title: "食物 & 饮水", icon: "🥪",
+    items: [
+      { name: "饮用水", qty: "每人 1-2 瓶", priority: true },
+      { name: "保温杯热饮", qty: "1-2 个" },
+      { name: "三明治 / 便当", qty: "按人数" },
+      { name: "高能量零食(给孩子)", qty: "充足", priority: true },
+      { name: "水果", qty: "适量" },
+      { name: "垃圾袋", qty: "若干" }
+    ]
+  },
+  {
+    title: "儿童专属", icon: "🧒",
+    items: [
+      { name: "孩子岸上备用全套衣物", qty: "各 1 套", priority: true },
+      { name: "儿童零食 & 饮料", qty: "充足", priority: true },
+      { name: "小玩具 / 卡牌(候鱼解闷)", qty: "若干" },
+      { name: "儿童防晕手环 / 晕船药", qty: "按需", priority: true },
+      { name: "湿纸巾 & 备用毛巾", qty: "1 包" },
+      { name: "儿童防晒霜 & 唇膏", qty: "1 套" }
+    ]
+  },
+  {
+    title: "电子 & 随身", icon: "📱",
+    items: [
+      { name: "手机(防水袋)", qty: "随身", priority: true },
+      { name: "充电宝", qty: "1-2 个" },
+      { name: "充电线 & 插头", qty: "1 套" },
+      { name: "相机 / GoPro", qty: "1 台" },
+      { name: "干袋 / 防水袋(装贵重物)", qty: "1-2 个", priority: true }
+    ]
+  },
+  {
+    title: "宾馆过夜", icon: "🏨",
+    items: [
+      { name: "洗漱用品(每人)", qty: "1 套", priority: true },
+      { name: "换洗衣物(过夜)", qty: "每人 1 套" },
+      { name: "睡衣", qty: "每人 1 套" },
+      { name: "拖鞋", qty: "按需" },
+      { name: "保温瓶 / 水杯", qty: "随身" }
+    ]
+  }
+];
+
 const STORAGE_KEY = "fishing_camping_checklist_v1";
 
 function loadState() {
@@ -869,10 +986,12 @@ function resetAll() {
   if (!confirm("确定要清空所有勾选吗?")) return;
   state = {};
   saveState(state);
+  renderCards(boatData, "boat-grid", "b");
   renderCards(fishingData, "fishing-grid", "f");
   renderCards(campingData, "camping-grid", "c");
 }
 
+renderCards(boatData, "boat-grid", "b");
 renderCards(fishingData, "fishing-grid", "f");
 renderCards(campingData, "camping-grid", "c");
 </script>
