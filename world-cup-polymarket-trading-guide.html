@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 世界杯™ · Polymarket 交易指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* FIFA World Cup 2026 — rich black base, trophy gold + electric blue */
+    --bg:#080a10; --panel:#11141d; --panel2:#171b27; --line:#262b3a;
+    --ink:#ffffff; --muted:#9aa0b2; --accent:#1e9bff; --gold:#f4c84a;
+    --good:#16d796; --warn:#f4c84a; --bad:#ff4d5e; --chip:#1c2130;
+    --shadow:0 10px 40px rgba(0,0,0,.5);
+    --disp:"Archivo","Noto Sans SC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --body:"Noto Sans SC","Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--body);background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+  /* ---- FIFA top bar ---- */
+  .topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+    padding:14px 22px;background:rgba(8,10,16,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:12px;font-family:var(--disp);font-weight:900;letter-spacing:.04em;font-size:15px}
+  .brand .mark{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:7px;
+    background:linear-gradient(135deg,var(--gold),#e0a92e);color:#1a1205;font-size:16px;font-weight:900}
+  .brand .tm{color:var(--gold)}
+  .datechip{font-family:var(--disp);font-weight:700;letter-spacing:.06em;font-size:11px;
+    color:var(--gold);border:1px solid var(--line);border-radius:999px;padding:6px 14px;white-space:nowrap}
+  @media(max-width:600px){.datechip{display:none}}
+
+  /* ---- hero ---- */
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(1100px 500px at 78% -25%,rgba(30,155,255,.20),transparent 60%),
+      radial-gradient(800px 420px at 8% 120%,rgba(244,200,74,.12),transparent 55%),
+      linear-gradient(180deg,#0a0d15,#080a10)}
+  .hero:before{content:"";position:absolute;inset:0;opacity:.5;
+    background-image:repeating-linear-gradient(115deg,rgba(255,255,255,.03) 0 2px,transparent 2px 26px)}
+  .hero-in{position:relative;max-width:1080px;margin:0 auto;padding:46px 22px 38px}
+  .kicker{font-family:var(--disp);font-weight:700;letter-spacing:.18em;
+    font-size:12px;color:var(--gold);margin:0 0 10px}
+  h1{font-family:var(--disp);font-weight:900;letter-spacing:0;line-height:1.05;
+    font-size:clamp(28px,5.5vw,52px);margin:0}
+  h1 .l2{display:block;color:var(--gold)}
+  .sub{color:var(--muted);font-size:15px;margin:14px 0 0;max-width:680px}
+  .daterange{display:inline-flex;align-items:center;gap:10px;margin-top:18px;font-family:var(--disp);
+    font-weight:700;letter-spacing:.06em;font-size:13px;color:var(--ink)}
+  .daterange .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px 70px}
+
+  /* ---- tab nav (FIFA underline style) ---- */
+  nav{display:flex;gap:4px;flex-wrap:wrap;margin:0 0 24px;position:sticky;top:59px;z-index:30;
+    background:linear-gradient(var(--bg),rgba(8,10,16,.9));backdrop-filter:blur(8px);
+    padding:12px 0;border-bottom:1px solid var(--line)}
+  nav button{background:transparent;color:var(--muted);border:none;border-bottom:2px solid transparent;
+    padding:10px 16px;cursor:pointer;font-family:var(--disp);font-size:13px;font-weight:700;
+    letter-spacing:.02em;transition:.15s;border-radius:0}
+  nav button:hover{color:var(--ink)}
+  nav button.on{color:var(--ink);border-bottom-color:var(--gold)}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:var(--disp);font-weight:800;letter-spacing:.01em;margin:0 0 6px;font-size:20px}
+  .card h3{font-family:var(--disp);font-weight:700;letter-spacing:.03em;
+    margin:22px 0 10px;font-size:14px;color:var(--gold)}
+  .lead{color:var(--muted);font-size:14px;margin:0 0 16px}
+  label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px;font-weight:700;letter-spacing:.02em}
+  input[type=number],input[type=text],select{width:100%;background:var(--panel2);border:1px solid var(--line);
+    color:var(--ink);padding:12px;border-radius:9px;font-size:15px;outline:none;font-family:var(--body)}
+  input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(30,155,255,.15)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.grid,.grid3{grid-template-columns:1fr}}
+  button.act{background:var(--gold);color:#1a1205;border:none;padding:13px 22px;border-radius:9px;
+    font-family:var(--disp);font-weight:800;letter-spacing:.03em;cursor:pointer;font-size:14px;margin-top:18px}
+  button.act:hover{filter:brightness(1.08)}
+  button.ghost{background:transparent;border:1px solid var(--line);color:var(--muted);padding:11px 16px;
+    border-radius:9px;cursor:pointer;font-family:var(--disp);font-weight:700;letter-spacing:.02em;font-size:13px;margin-top:18px;margin-right:8px}
+  button.ghost:hover{color:var(--ink);border-color:var(--gold)}
+  .out{margin-top:18px;padding:18px;border-radius:12px;background:var(--panel2);border:1px solid var(--line)}
+  .metric{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);gap:12px}
+  .metric:last-child{border-bottom:none}
+  .metric .k{color:var(--muted);font-size:14px}
+  .metric .v{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+  .verdict{font-family:var(--disp);font-size:17px;font-weight:800;letter-spacing:.02em;
+    text-align:center;padding:16px;border-radius:11px;margin-top:16px}
+  .v-enter{background:rgba(22,215,150,.12);color:var(--good);border:1px solid var(--good)}
+  .v-avoid{background:rgba(255,77,94,.12);color:var(--bad);border:1px solid var(--bad)}
+  .v-watch{background:rgba(244,200,74,.12);color:var(--warn);border:1px solid var(--warn)}
+  .pos{color:var(--good)} .neg{color:var(--bad)} .neu{color:var(--warn)}
+  .pill{display:inline-block;background:var(--chip);color:var(--ink);padding:6px 13px;border-radius:999px;
+    font-size:13px;font-weight:500;margin:3px 5px 3px 0;border:1px solid var(--line)}
+  .steps{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+  .step{flex:1;min-width:96px;text-align:center;font-family:var(--disp);font-size:12px;font-weight:700;
+    letter-spacing:.02em;color:var(--muted);padding:10px;border-radius:9px;
+    background:var(--panel2);border:1px solid var(--line)}
+  .step.cur{border-color:var(--gold);color:var(--ink)}
+  .step b{display:block;font-size:20px;color:var(--gold);font-weight:900;margin-bottom:3px}
+  details{background:var(--panel2);border:1px solid var(--line);border-radius:11px;margin:10px 0;padding:2px 16px}
+  details summary{cursor:pointer;font-family:var(--disp);font-weight:700;padding:14px 0;font-size:15px;list-style:none;letter-spacing:.01em}
+  details summary::-webkit-details-marker{display:none}
+  details summary:before{content:"+ ";color:var(--gold);font-weight:900}
+  details[open] summary:before{content:"– "}
+  details .body{padding:0 0 16px;color:var(--muted);font-size:14px}
+  details .body strong{color:var(--ink)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px}
+  th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line)}
+  th{color:var(--gold);font-family:var(--disp);font-size:12px;letter-spacing:.04em;font-weight:700}
+  td{color:var(--muted)}
+  tr:hover td{background:rgba(255,255,255,.02)}
+  .chk{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:10px;margin:7px 0;background:var(--panel2);border:1px solid var(--line)}
+  .chk input{width:20px;height:20px;margin-top:2px;accent-color:var(--gold);flex-shrink:0}
+  .chk label{margin:0;color:var(--ink);font-weight:600;font-size:14px;letter-spacing:0}
+  .chk .hint{display:block;color:var(--muted);font-weight:400;font-size:12.5px;margin-top:3px}
+  .bar{height:10px;background:var(--panel2);border-radius:6px;overflow:hidden;border:1px solid var(--line);margin-top:8px}
+  .bar > div{height:100%;background:linear-gradient(90deg,var(--gold),var(--accent));transition:.3s}
+  .note{font-size:12.5px;color:var(--muted);margin-top:8px}
+  .hide{display:none}
+  .warnbox{background:rgba(244,200,74,.08);border:1px solid var(--warn);border-radius:10px;padding:13px;font-size:13px;color:#f6dd9a;margin-top:14px}
+  .tracker-row{display:grid;grid-template-columns:1.4fr 1fr .8fr .8fr .8fr auto;gap:8px;align-items:center;margin:6px 0}
+  @media(max-width:640px){.tracker-row{grid-template-columns:1fr 1fr}}
+  .tracker-row input{padding:9px}
+  .disclaimer{font-size:11.5px;color:var(--muted);text-align:center;margin-top:34px;line-height:1.7}
+
+  /* ---- help button + modal ---- */
+  .cardhead{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+  .help-btn{flex-shrink:0;background:transparent;border:1px solid var(--gold);color:var(--gold);
+    font-family:var(--disp);font-weight:700;letter-spacing:.02em;font-size:12px;
+    padding:7px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:.15s}
+  .help-btn:hover{background:var(--gold);color:#1a1205}
+  .modal-ov{position:fixed;inset:0;z-index:100;background:rgba(4,5,9,.78);backdrop-filter:blur(4px);
+    display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-ov.show{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:560px;width:100%;
+    max-height:86vh;overflow-y:auto;box-shadow:var(--shadow);animation:pop .2s ease}
+  @keyframes pop{from{transform:translateY(14px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+  .modal-top{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:18px 22px;background:linear-gradient(135deg,rgba(244,200,74,.14),transparent);border-bottom:1px solid var(--line)}
+  .modal-top h3{font-family:var(--disp);font-weight:800;letter-spacing:.01em;margin:0;font-size:17px;color:var(--ink)}
+  .modal-x{background:var(--panel2);border:1px solid var(--line);color:var(--muted);width:34px;height:34px;
+    border-radius:9px;cursor:pointer;font-size:18px;line-height:1;flex-shrink:0}
+  .modal-x:hover{color:var(--ink);border-color:var(--gold)}
+  .modal-body{padding:20px 22px 24px}
+  .modal-body p{margin:0 0 14px;color:var(--muted);font-size:14px}
+  .modal-step{display:flex;gap:13px;margin:0 0 15px}
+  .modal-step .num{flex-shrink:0;width:26px;height:26px;border-radius:8px;background:var(--gold);color:#1a1205;
+    font-family:var(--disp);font-weight:900;font-size:13px;display:grid;place-items:center}
+  .modal-step .txt{font-size:14px;color:var(--ink)}
+  .modal-step .txt b{color:var(--gold)}
+  .modal-step .txt span{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+  .modal-tip{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:8px;padding:12px 14px;font-size:13px;color:#f6dd9a;margin-top:6px}
+
+  /* ---- per-field tooltips ---- */
+  label{position:relative}
+  .tip{display:inline-grid;place-items:center;width:16px;height:16px;margin-left:7px;border-radius:50%;
+    background:var(--chip);border:1px solid var(--gold);color:var(--gold);font-size:11px;font-weight:800;
+    cursor:pointer;vertical-align:middle;font-family:var(--disp);line-height:1;user-select:none;transition:.15s}
+  .tip:hover{background:var(--gold);color:#1a1205}
+  .tip .pop{position:absolute;left:0;top:calc(100% + 8px);z-index:60;width:min(290px,82vw);
+    background:#0d1018;border:1px solid var(--gold);border-radius:10px;padding:12px 13px;
+    box-shadow:0 12px 34px rgba(0,0,0,.55);text-align:left;cursor:default;
+    font-size:13px;font-weight:400;letter-spacing:0;color:var(--muted);line-height:1.6;
+    display:none;animation:pop .15s ease}
+  .tip .pop.open{display:block}
+  .tip .pop b{display:block;color:var(--gold);font-family:var(--disp);font-weight:700;
+    letter-spacing:.02em;font-size:13px;margin-bottom:5px}
+  .tip .pop .ex{display:block;margin-top:7px;color:var(--ink);font-size:12.5px}
+  .tip .pop .ex i{color:var(--gold);font-style:normal}
+  .tip .pop:before{content:"";position:absolute;left:14px;top:-6px;width:11px;height:11px;
+    background:#0d1018;border-left:1px solid var(--gold);border-top:1px solid var(--gold);transform:rotate(45deg)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand"><span class="mark">26</span>国际足联世界杯<span class="tm">™</span></div>
+  <div class="datechip">6月11日 – 7月19日 · 2026</div>
+</div>
+
+<section class="hero">
+  <div class="hero-in">
+    <p class="kicker">Polymarket · 预测市场交易</p>
+    <h1>世界杯交易<span class="l2">2026 市场实战指南</span></h1>
+    <p class="sub">一个完整自洽的决策系统——把你的策略框架转化为有纪律、以期望值为核心的交易。监控优势（Edge）、用分数凯利公式定仓位、在投入资金前清空每一道风控关卡。</p>
+    <div class="daterange"><span class="dot"></span>美国 · 墨西哥 · 加拿大</div>
+  </div>
+</section>
+
+<div class="wrap">
+  <nav>
+    <button class="on" data-tab="wizard">🧭 决策向导</button>
+    <button data-tab="calc">🧮 计算器</button>
+    <button data-tab="ref">📘 策略参考</button>
+    <button data-tab="check">✅ 交易前清单</button>
+  </nav>
+
+  <!-- ============ WIZARD ============ -->
+  <section id="wizard">
+    <div class="card">
+      <div class="cardhead"><h2>逐步交易评估</h2><button class="help-btn" onclick="openHelp('wizard')">ⓘ 使用说明</button></div>
+      <p class="lead">把单个市场从调研走到结论。向导会计算你的优势、期望值和分数凯利仓位，然后告诉你应该<b>进场、观望，还是回避</b>。</p>
+
+      <div class="steps">
+        <div class="step cur" id="st1"><b>1</b>市场</div>
+        <div class="step" id="st2"><b>2</b>价格</div>
+        <div class="step" id="st3"><b>3</b>公允价值</div>
+        <div class="step" id="st4"><b>4</b>资金</div>
+        <div class="step" id="st5"><b>5</b>结论</div>
+      </div>
+
+      <!-- pane 1 -->
+      <div class="pane" data-pane="1">
+        <label>你要交易哪种市场？</label>
+        <select id="w_market">
+          <option value="outright">夺冠盘（最终冠军）</option>
+          <option value="group">小组赛盘（小组第一 / 出线 / 垫底）</option>
+          <option value="match">单场比赛结果（适用 90 分钟规则）</option>
+          <option value="player">球员 / 奖项盘（金靴等）</option>
+          <option value="toqualify">淘汰赛“晋级”盘（含加时/点球）</option>
+        </select>
+        <label>球队 / 事件描述</label>
+        <input type="text" id="w_desc" placeholder="例如：挪威晋级八强">
+        <div id="w_marketnote" class="warnbox hide"></div>
+        <button class="act" onclick="wgo(2)">下一步 →</button>
+      </div>
+
+      <!-- pane 2 -->
+      <div class="pane hide" data-pane="2">
+        <label>你买的是哪一边？</label>
+        <select id="w_side"><option value="yes">YES（是）份额</option><option value="no">NO（否）份额</option></select>
+        <label>该份额的 Polymarket 价格（美元，0.01–0.99）</label>
+        <input type="number" id="w_price" step="0.01" min="0.01" max="0.99" placeholder="例如：0.08">
+        <p class="note">价格 = 隐含概率。$0.08 表示市场认为有 8% 的概率发生。</p>
+        <button class="ghost" onclick="wgo(1)">← 上一步</button>
+        <button class="act" onclick="wgo(3)">下一步 →</button>
+      </div>
+
+      <!-- pane 3 -->
+      <div class="pane hide" data-pane="3">
+        <label>你对所买这一边的公允价值概率（%）</label>
+        <input type="number" id="w_fair" step="0.5" min="0" max="100" placeholder="例如：15">
+        <p class="note">这个数字要来自模型 / 去除水位后的专业赔率，而不是叙事或感觉。如果你只有体育博彩赔率，请用“计算器”里的去水位工具。</p>
+        <details>
+          <summary>我该如何得出站得住脚的公允价值？</summary>
+          <div class="body">先把专业体育博彩盘口的水位（vig）去掉，再结合 Elo/FIFA 排名与近期预期进球（xG），然后针对 2026 年的特定因素调整：8 场夺冠路径、签表抽签、旅行/海拔、休息天数和阵容深度。这个数字与价格之间的差距，就是你的优势（Edge）。</div>
+        </details>
+        <button class="ghost" onclick="wgo(2)">← 上一步</button>
+        <button class="act" onclick="wgo(4)">下一步 →</button>
+      </div>
+
+      <!-- pane 4 -->
+      <div class="pane hide" data-pane="4">
+        <label>总资金（$）</label>
+        <input type="number" id="w_bank" step="50" min="1" placeholder="例如：5000">
+        <label>该球队在所有市场上已有的持仓敞口（$）</label>
+        <input type="number" id="w_teamexp" step="10" min="0" value="0">
+        <label>当前世界杯总敞口（$）</label>
+        <input type="number" id="w_totexp" step="10" min="0" value="0">
+        <label>流动性 / 数据可信度</label>
+        <select id="w_conf">
+          <option value="high">高 — 订单簿深、数据已核实</option>
+          <option value="med" selected>中 — 标准波动</option>
+          <option value="low">低 — 流动性薄 / 伤病消息未核实</option>
+        </select>
+        <button class="ghost" onclick="wgo(3)">← 上一步</button>
+        <button class="act" onclick="wverdict()">得出结论 →</button>
+      </div>
+
+      <!-- pane 5 -->
+      <div class="pane hide" data-pane="5">
+        <div id="w_result"></div>
+        <button class="ghost" onclick="wgo(1)">↺ 评估下一个</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CALCULATORS ============ -->
+  <section id="calc" class="hide">
+    <div class="card">
+      <div class="cardhead"><h2>🧮 优势与期望值</h2><button class="help-btn" onclick="openHelp('calc')">ⓘ 使用说明</button></div>
+      <p class="lead">核心检验：只有当你的概率高于价格、且期望值为正时，才投入资金。</p>
+      <div class="grid3">
+        <div><label>份额价格（$）</label><input type="number" id="e_price" step="0.01" value="0.42" oninput="edge()"></div>
+        <div><label>你的真实概率（%）</label><input type="number" id="e_fair" step="0.5" value="50" oninput="edge()"></div>
+        <div><label>买入份额数</label><input type="number" id="e_n" step="10" value="100" oninput="edge()"></div>
+      </div>
+      <div class="out" id="e_out"></div>
+    </div>
+
+    <div class="card">
+      <h2>📉 去水位工具（从体育博彩赔率求公允价值）</h2>
+      <p class="lead">去掉庄家的超额赔率（overround），得出可与 Polymarket 对比的真实概率。</p>
+      <label>赔率格式</label>
+      <select id="v_fmt" onchange="vig()"><option value="american">美式（-110、+250）</option><option value="decimal">欧式小数（1.91、3.50）</option></select>
+      <div class="grid3" id="v_inputs">
+        <div><label>结果 A 赔率</label><input type="number" id="v_a" step="1" value="-110" oninput="vig()"></div>
+        <div><label>结果 B 赔率</label><input type="number" id="v_b" step="1" value="-110" oninput="vig()"></div>
+        <div><label>结果 C（可选）</label><input type="number" id="v_c" step="1" placeholder="两选盘留空" oninput="vig()"></div>
+      </div>
+      <div class="out" id="v_out"></div>
+    </div>
+
+    <div class="card">
+      <h2>🎯 分数凯利仓位</h2>
+      <p class="lead">这里必须用半凯利——全凯利假设你的模型毫无误差。按规则手册，输出已硬性封顶在资金的 3%。</p>
+      <div class="grid">
+        <div><label>份额价格（$）</label><input type="number" id="k_price" step="0.01" value="0.08" oninput="kelly()"></div>
+        <div><label>你的真实概率（%）</label><input type="number" id="k_fair" step="0.5" value="15" oninput="kelly()"></div>
+        <div><label>总资金（$）</label><input type="number" id="k_bank" step="50" value="5000" oninput="kelly()"></div>
+        <div><label>凯利系数</label><select id="k_frac" onchange="kelly()">
+          <option value="0.5" selected>半凯利（推荐）</option>
+          <option value="0.25">四分之一凯利（保守）</option>
+          <option value="1">全凯利（不建议）</option>
+        </select></div>
+      </div>
+      <div class="out" id="k_out"></div>
+    </div>
+
+    <div class="card">
+      <h2>📊 敞口 / 资金追踪器</h2>
+      <p class="lead">框架中的上限：每笔 ≤3%、每队 ≤10%、总计 ≤30%。添加未平仓持仓以监控相关性风险。</p>
+      <label>总资金（$）</label><input type="number" id="t_bank" step="50" value="5000" oninput="trk()">
+      <div id="t_rows"></div>
+      <button class="ghost" onclick="addRow()">+ 添加持仓</button>
+      <div class="out" id="t_out"></div>
+    </div>
+  </section>
+
+  <!-- ============ REFERENCE ============ -->
+  <section id="ref" class="hide">
+    <div class="card">
+      <div class="cardhead"><h2>📘 策略参考</h2><button class="help-btn" onclick="openHelp('ref')">ⓘ 使用说明</button></div>
+      <p class="lead">浓缩自你的策略框架。点击任意条目展开。</p>
+
+      <h3>市场类型——各自的驱动因素</h3>
+      <details><summary>夺冠盘（最终冠军）</summary><div class="body">流动性最高的市场。在 48 队 / 8 场的赛制下，<strong>阵容深度、签表抽签和疲劳</strong>比单纯的首发实力更重要。要给过度依赖单一巨星的球队打折。买入前先把签表理清——好球队若身处死亡半区，就是个坏价格。</div></details>
+      <details><summary>小组赛盘</summary><div class="body">建模更干净（只有 3 场）。由于<strong>每组前 2 名加 8 个最佳第三名出线（48 队中 32 队晋级）</strong>，拿到 3–4 分通常就能出线。第三轮要预期出现互利的平局和轮换。</div></details>
+      <details><summary>单场结果——⚠ 90 分钟规则</summary><div class="body">标准的单场盘以<strong>常规时间+补时结束、不含加时和点球</strong>的比分结算。买“某队取胜”若进入加时，会结算为“否”（或在三选盘里结算为平局）。只有标注<strong>“晋级（To Qualify）”</strong>的市场才涵盖整场淘汰赛。要权衡 xG、战术对位、旅行/海拔、休息天数和首发消息。</div></details>
+      <details><summary>球员与奖项盘</summary><div class="body">高波动——单次受伤就可能让交易作废。金靴在很大程度上由<strong>小组签表</strong>决定；价值在于身处弱组、又在有竞争力球队里的世界级前锋。仓位务必比球队盘更小。</div></details>
+
+      <h3>按赛事阶段的策略</h3>
+      <details><summary>赛前</summary><div class="body">回避被散户资金炒高的热门球队。寻找结构扎实、签表路径有利、便于后续对冲的黑马。</div></details>
+      <details><summary>小组赛阶段</summary><div class="body">在首轮后交易<strong>过度反应</strong>——一场惜败往往让一个模型仍看好的出线价格崩盘。到第三轮，要把不对称的动机计入价格：已出线的球队会轮换、被高估。</div></details>
+      <details><summary>16 强与八强</summary><div class="body">单场淘汰制下波动剧增。疲劳和旅行成为主导。开始<strong>积极对冲</strong>已大幅升值的夺冠持仓。</div></details>
+      <details><summary>半决赛与决赛</summary><div class="body">流动性见顶，但价值极稀缺。首要任务是<strong>保护本金</strong>：锁定价差并对冲。绝不把未对冲的夺冠持仓带进五五开的决赛。</div></details>
+
+      <h3>进场触发条件</h3>
+      <div class="body" style="color:var(--muted);font-size:14px">
+        <span class="pill">在消息被完全计入价格之前</span>
+        <span class="pill">在市场过度反应之后</span>
+        <span class="pill">当情绪一边倒时（做空 No 一边）</span>
+        <span class="pill">当 Polymarket 偏离去水位后的专业赔率</span>
+        <span class="pill">当某条签表路径变得通畅</span>
+      </div>
+
+      <h3>离场触发条件</h3>
+      <div class="body" style="color:var(--muted);font-size:14px">
+        <span class="pill">价格达到公允价值（优势 = 0）</span>
+        <span class="pill">伤病摧毁了交易逻辑</span>
+        <span class="pill">流动性恶化</span>
+        <span class="pill">出现更好机会需要资金</span>
+        <span class="pill">价格逼近 $0.40+ 时风险回报变差</span>
+        <span class="pill">在高波动的点球大战之前</span>
+        <span class="pill">达到利润目标（卖 50%，剩余无风险持有）</span>
+      </div>
+
+      <h3>仓位规模对照表</h3>
+      <table>
+        <tr><th>优势</th><th>可信度</th><th>建议仓位</th></tr>
+        <tr><td>1–3%</td><td>低</td><td>回避，或 &lt;0.5%</td></tr>
+        <tr><td>4–7%</td><td>中</td><td>1.0–1.5%</td></tr>
+        <tr><td>8–12%</td><td>强</td><td>1.5–2.5%</td></tr>
+        <tr><td>13%+</td><td>非常强</td><td>封顶 3.0%</td></tr>
+      </table>
+
+      <h3>需要避免的常见错误</h3>
+      <details><summary>十大陷阱</summary><div class="body">凭情绪押注热门球队 · 把“好球队”当成“好价格” · 忽视签表 · 大胜后追高买入 · 一场失利就恐慌 · 忽视伤病与首发消息 · 仓位过大（违反凯利） · 交易流动性差的盘口 · 把风险带进点球大战 · 以为实力更强的球队在淘汰赛里总能晋级。</div></details>
+
+      <h3>最终规则手册</h3>
+      <table>
+        <tr><th>#</th><th>规则</th></tr>
+        <tr><td>1</td><td>尊重 90 分钟规则——投入前先确认结算条款。</td></tr>
+        <tr><td>2</td><td>严格只做正期望值——绝不凭叙事交易。</td></tr>
+        <tr><td>3</td><td>对专业盘口去水位，建立客观基准。</td></tr>
+        <tr><td>4</td><td>分数仓位——最多半凯利，每笔硬性封顶 1–3%。</td></tr>
+        <tr><td>5</td><td>敞口上限——总计 ≤30%，单一国家 ≤10%。</td></tr>
+        <tr><td>6</td><td>做空被炒高叙事的 No 一边。</td></tr>
+        <tr><td>7</td><td>任何夺冠/晋级押注前，先理清签表路径。</td></tr>
+        <tr><td>8</td><td>执行动态离场——优势消失就锁定利润。</td></tr>
+        <tr><td>9</td><td>半决赛/决赛前对冲——规避二元的点球风险。</td></tr>
+        <tr><td>10</td><td>在第三轮建模中利用不对称的动机。</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ CHECKLIST ============ -->
+  <section id="check" class="hide">
+    <div class="card">
+      <div class="cardhead"><h2>✅ 交易前清单</h2><button class="help-btn" onclick="openHelp('check')">ⓘ 使用说明</button></div>
+      <p class="lead">任何资金投入前先清空这份清单。进度实时更新。</p>
+      <div class="bar"><div id="chkbar" style="width:0%"></div></div>
+      <div class="note" id="chkpct">已完成 0 / 0</div>
+
+      <h3>结算与机制</h3>
+      <div id="grp_mech"></div>
+      <h3>公允价值与优势</h3>
+      <div id="grp_edge"></div>
+      <h3>调研输入</h3>
+      <div id="grp_research"></div>
+      <h3>风险护栏</h3>
+      <div id="grp_risk"></div>
+
+      <div class="warnbox" id="chkverdict">完成清单后才会亮起绿灯。</div>
+    </div>
+  </section>
+
+  <div class="modal-ov" id="helpModal" onclick="if(event.target===this)closeHelp()">
+    <div class="modal">
+      <div class="modal-top"><h3 id="helpTitle"></h3><button class="modal-x" onclick="closeHelp()">✕</button></div>
+      <div class="modal-body" id="helpBody"></div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    本工具是对你自己策略文档的教育性实现。它不下单、不提供投资建议、也不保证任何结果——预测市场合约可能到期归零，且 Polymarket 在部分司法辖区受地域限制。所有概率均为你自己的输入。只用你能承受损失的资金交易。
+  </div>
+</div>
+
+<script>
+/* ---------- nav ---------- */
+const seenHelp=new Set();
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  ['wizard','calc','ref','check'].forEach(id=>document.getElementById(id).classList.add('hide'));
+  document.getElementById(b.dataset.tab).classList.remove('hide');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(!seenHelp.has(b.dataset.tab)){seenHelp.add(b.dataset.tab);openHelp(b.dataset.tab);}
+});
+
+/* ---------- HELP MODAL ---------- */
+const helpData={
+  wizard:{title:'🧭 如何使用决策向导',html:
+    '<p>这是核心工作流——针对单个市场，告诉你应进场、观望还是回避，以及投入多少。</p>'+
+    '<div class="modal-step"><div class="num">1</div><div class="txt"><b>选择市场与方向</b><span>选择类型（夺冠、小组、单场、球员、晋级），以及你买的是 YES 还是 NO 份额。留意弹出的 ⚠ 规则提示。</span></div></div>'+
+    '<div class="modal-step"><div class="num">2</div><div class="txt"><b>输入 Polymarket 价格</b><span>填入份额价格（0.01–0.99）。这个价格就是市场的隐含概率——$0.08 = 8%。</span></div></div>'+
+    '<div class="modal-step"><div class="num">3</div><div class="txt"><b>输入你的公允价值</b><span>你自己对该结果的概率。用去水位工具+模型得出，而非凭直觉。它与价格之差就是你的优势。</span></div></div>'+
+    '<div class="modal-step"><div class="num">4</div><div class="txt"><b>填入资金与敞口</b><span>你的总资金、该球队已有持仓、世界杯总敞口，以及流动性/可信度等级。</span></div></div>'+
+    '<div class="modal-step"><div class="num">5</div><div class="txt"><b>查看结论</b><span>会给出优势、期望值、半凯利仓位（封顶 3%）、份额数，以及带风险提示的 进场 / 观望 / 回避 判断。</span></div></div>'+
+    '<div class="modal-tip">💡 若结论是“进场”，下单前先定好离场计划——绿色提示框会告诉你怎么做。</div>'},
+  calc:{title:'🧮 如何使用计算器',html:
+    '<p>四个独立工具。在任意输入框输入，结果即时更新——无需点按钮。</p>'+
+    '<div class="modal-step"><div class="num">A</div><div class="txt"><b>优势与期望值</b><span>输入价格、你的概率和份额数，查看风险本金、期望值，以及是否值得交易。</span></div></div>'+
+    '<div class="modal-step"><div class="num">B</div><div class="txt"><b>去水位工具</b><span>粘贴体育博彩的赔率（美式或欧式小数），2–3 个结果。它会去掉庄家水位，给出可与 Polymarket 对比的真实公允价格。</span></div></div>'+
+    '<div class="modal-step"><div class="num">C</div><div class="txt"><b>分数凯利</b><span>输入价格、你的概率和资金。保持半凯利——按规则手册输出硬封顶 3%。</span></div></div>'+
+    '<div class="modal-step"><div class="num">D</div><div class="txt"><b>敞口追踪器</b><span>逐笔添加持仓及其风险金额。任何单一球队超过 10% 或总计超过 30% 都会被标红。</span></div></div>'+
+    '<div class="modal-tip">💡 常规顺序：去水位求公允价值 → 检查优势/期望值 → 用凯利定仓位 → 用追踪器复核。</div>'},
+  ref:{title:'📘 如何使用策略参考',html:
+    '<p>一份只读手册，浓缩自你的策略文档——是你每笔交易背后的“为什么”。</p>'+
+    '<div class="modal-step"><div class="num">1</div><div class="txt"><b>点击任意条目展开</b><span>市场类型、各阶段战术、常见错误都是可折叠的——点 + 展开。</span></div></div>'+
+    '<div class="modal-step"><div class="num">2</div><div class="txt"><b>速览触发标签</b><span>进场与离场触发条件是快速参考的标签——动手前先扫一眼。</span></div></div>'+
+    '<div class="modal-step"><div class="num">3</div><div class="txt"><b>用对照表与规则手册</b><span>把算出的优势对应到仓位区间，并在每笔交易前核对十条规则。</span></div></div>'+
+    '<div class="modal-tip">💡 当向导提示某种市场类型（如 90 分钟规则）时，回到这里阅读完整背景。</div>'},
+  check:{title:'✅ 如何使用交易前清单',html:
+    '<p>这是你的最后一道关卡。所有项目打勾前，任何交易都不应进行。</p>'+
+    '<div class="modal-step"><div class="num">1</div><div class="txt"><b>自上而下逐项确认</b><span>四组：机制、优势、调研、风险。每项确实核实后再打勾。</span></div></div>'+
+    '<div class="modal-step"><div class="num">2</div><div class="txt"><b>关注进度条</b><span>它随你推进而填充，并显示还剩多少项。</span></div></div>'+
+    '<div class="modal-step"><div class="num">3</div><div class="txt"><b>等待绿灯</b><span>底部提示框只有在 100% 时才变绿。那就是“这笔交易足够有纪律、可以下单”的信号。</span></div></div>'+
+    '<div class="modal-tip">💡 每一笔交易都要重新走一遍——绝不复用上一笔的核对结果。</div>'}
+};
+function openHelp(key){
+  const d=helpData[key]; if(!d)return;
+  document.getElementById('helpTitle').textContent=d.title;
+  document.getElementById('helpBody').innerHTML=d.html;
+  document.getElementById('helpModal').classList.add('show');
+}
+function closeHelp(){document.getElementById('helpModal').classList.remove('show');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeHelp();});
+
+/* ---------- PER-FIELD TOOLTIPS ---------- */
+const fieldTips={
+  /* wizard */
+  w_market:['你要交易哪种市场？','每种市场类型有不同的驱动因素和规则。选择与你正在看的 Polymarket 合约相符的那一种。','夺冠=最终冠军 · 小组=出线/小组第一 · 单场=单场比赛（90分钟！）· 球员=金靴等'],
+  w_desc:['描述这笔押注','给你自己看的标签——把 Polymarket 上确切的市场问题复制过来，避免混淆持仓。','例如：<i>挪威晋级八强</i>'],
+  w_side:['YES 还是 NO 份额','你买的是哪一边。YES 在事件发生时获赔；NO 在不发生时获赔。做空被炒高热门的 NO 一边是核心战术。','买法国的 NO = 押注法国“不会”夺冠。'],
+  w_price:['Polymarket 份额价格','该份额当前价格，0.01–0.99。它等于市场的隐含概率。直接从订单簿读取即可。','<i>$0.08</i> 表示市场隐含 8% 的概率。'],
+  w_fair:['你的公允价值概率','你对真实概率的估计——整个系统的核心。用去水位后的专业赔率 + Elo/xG + 2026 因素（签表、疲劳、旅行）得出。它与价格之差 = 你的优势。','若你认为真实是 15%，而价格是 $0.08，你就有 +7% 的优势。'],
+  w_bank:['总资金','你投入世界杯交易的全部资金。所有仓位规模都是这个数字的百分比。','例如：<i>$5,000</i>'],
+  w_teamexp:['该球队的已有敞口','你在该国家队所有市场（夺冠+小组+球员）上已经押注的总金额。用于执行“每队 10%”上限。','若这是你在该队的第一笔持仓，则填 $0。'],
+  w_totexp:['世界杯总敞口','你当前持有的所有世界杯持仓的在险总金额。用于执行 30% 的总敞口上限。','所有未平仓持仓的风险金额之和。'],
+  w_conf:['流动性 / 数据可信度','订单簿有多深、你的数据有多扎实。低可信度会缩小你的仓位，并提示离场时的滑点风险。','薄市场 + 未核实的伤病传闻 = 低。'],
+  /* edge & EV */
+  e_price:['份额价格','你将买入的份额价格（0.01–0.99）= 隐含概率。','<i>$0.42</i> = 隐含 42%。'],
+  e_fair:['你的真实概率','你对该结果建模得出的概率，以百分比表示。','输入 <i>50</i> 表示 50%。'],
+  e_n:['份额数量','你将买入多少份合约。每份获胜份额赔付 $1；在险本金 = 份额数 × 价格。','100 份 @ $0.42 = 在险 $42。'],
+  /* vig */
+  v_fmt:['赔率格式','在输入数字前，把这里设为与你的体育博彩显示一致的格式。','美式（−110）或欧式小数（1.91）。'],
+  v_a:['结果 A 赔率','第一个结果的体育博彩赔率。对单场比赛而言通常是主队获胜。','美式 <i>−110</i> 或小数 <i>1.91</i>。'],
+  v_b:['结果 B 赔率','第二个结果的赔率（如客队获胜，或“否”）。','—'],
+  v_c:['结果 C（可选）','仅用于三选盘（如 主胜 / 平局 / 客胜）。两选盘请留空。','留空 = 两选盘。'],
+  /* kelly */
+  k_price:['份额价格','你将为每份支付的价格（0.01–0.99）。','<i>$0.08</i>'],
+  k_fair:['你的真实概率','你建模得出的获胜概率，以百分比表示。','<i>15</i> = 15%。'],
+  k_bank:['总资金','全部资金——凯利百分比会按此计算。','<i>$5,000</i>'],
+  k_frac:['凯利系数','激进程度。全凯利假设模型完美——务必用半（或四分之一）凯利来降低波动。','坚持使用<i>半凯利</i>。'],
+  /* tracker */
+  t_bank:['总资金','你的全部资金。敞口上限（每队 10%、总计 30%）以此为基准衡量。','<i>$5,000</i>']
+};
+function injectTips(){
+  Object.keys(fieldTips).forEach(id=>{
+    const el=document.getElementById(id); if(!el)return;
+    let lab=el.previousElementSibling;
+    while(lab && lab.tagName!=='LABEL') lab=lab.previousElementSibling;
+    if(!lab || lab.querySelector('.tip'))return;
+    const[title,desc,ex]=fieldTips[id];
+    const t=document.createElement('span');
+    t.className='tip';t.textContent='?';
+    t.innerHTML+='<span class="pop"><b>'+title+'</b>'+desc+(ex&&ex!=='—'?'<span class="ex">'+ex+'</span>':'')+'</span>';
+    t.onclick=ev=>{ev.preventDefault();ev.stopPropagation();
+      const pop=t.querySelector('.pop');const wasOpen=pop.classList.contains('open');
+      document.querySelectorAll('.tip .pop.open').forEach(p=>p.classList.remove('open'));
+      if(!wasOpen)pop.classList.add('open');};
+    lab.appendChild(t);
+  });
+}
+document.addEventListener('click',()=>document.querySelectorAll('.tip .pop.open').forEach(p=>p.classList.remove('open')));
+
+/* ---------- helpers ---------- */
+const pct=x=>(x*100).toFixed(1)+'%';
+const usd=x=>'$'+x.toLocaleString(undefined,{maximumFractionDigits:2});
+const cls=x=>x>0?'pos':(x<0?'neg':'neu');
+
+/* ---------- WIZARD ---------- */
+let wstep=1;
+const marketNotes={
+  match:"⚠ 90 分钟规则：本盘只按常规时间+补时结束的比分结算。加时和点球不计入。",
+  player:"⚠ 高波动：单次受伤就可能让其作废。仓位务必比球队盘更小。",
+  outright:"投入前先理清完整签表路径——好球队抽到死亡签就是个坏价格。",
+  group:"记住 48 队中有 32 队出线；3–4 分通常即可晋级。留意第三轮的轮换。",
+  toqualify:"本“晋级”盘“包含”该淘汰赛的加时和点球。"
+};
+document.getElementById('w_market').onchange=function(){
+  const n=document.getElementById('w_marketnote');
+  n.textContent=marketNotes[this.value]; n.classList.remove('hide');
+};
+function wgo(s){
+  wstep=s;
+  document.querySelectorAll('.pane').forEach(p=>p.classList.add('hide'));
+  document.querySelector('[data-pane="'+s+'"]').classList.remove('hide');
+  for(let i=1;i<=5;i++)document.getElementById('st'+i).classList.toggle('cur',i===s);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function sizeFromEdge(edge,conf){
+  // edge as fraction; returns {pct,label} % of bankroll
+  const e=edge*100;
+  if(e<3) return {pct:conf==='low'?0:0.5,label:'低 — 回避或极小'};
+  if(e<7) return {pct:conf==='low'?0.8:1.5,label:'中'};
+  if(e<12) return {pct:conf==='low'?1.2:2.5,label:'强'};
+  return {pct:3.0,label:'非常强（已封顶）'};
+}
+function wverdict(){
+  const market=document.getElementById('w_market').value;
+  const desc=document.getElementById('w_desc').value||'本市场';
+  const price=parseFloat(document.getElementById('w_price').value);
+  const fair=parseFloat(document.getElementById('w_fair').value)/100;
+  const bank=parseFloat(document.getElementById('w_bank').value);
+  const teamExp=parseFloat(document.getElementById('w_teamexp').value)||0;
+  const totExp=parseFloat(document.getElementById('w_totexp').value)||0;
+  const conf=document.getElementById('w_conf').value;
+  if(isNaN(price)||isNaN(fair)||isNaN(bank)||price<=0||price>=1){
+    alert('请输入有效的价格（0.01–0.99）、公允概率和总资金。');return;
+  }
+  const edge=fair-price;                      // probability edge
+  const evPerShare=fair-price;                // $ EV per $1-payout share
+  const evPctStake=evPerShare/price;          // EV as % of capital risked
+  const b=(1/price)-1;                        // payout ratio
+  const fullK=(b*fair-(1-fair))/b;            // Kelly fraction of bankroll
+  const halfK=Math.max(0,fullK*0.5);
+  const tbl=sizeFromEdge(edge,conf);
+  // final recommended % = min(halfKelly, table cap, 3% hard cap)
+  let recPct=Math.min(halfK*100, tbl.pct, 3.0);
+  if(edge<=0) recPct=0;
+  const recDollars=bank*recPct/100;
+
+  // exposure checks
+  const teamCapPct=((teamExp+recDollars)/bank)*100;
+  const totCapPct=((totExp+recDollars)/bank)*100;
+  let flags=[];
+  if(teamCapPct>10) flags.push('⚠ 加上这笔会让单一球队敞口升至 '+teamCapPct.toFixed(1)+'%（上限 10%）。');
+  if(totCapPct>30) flags.push('⚠ 加上这笔会让世界杯总敞口升至 '+totCapPct.toFixed(1)+'%（上限 30%）。');
+  if(conf==='low') flags.push('⚠ 流动性/可信度低——缩小仓位并警惕离场滑点。');
+  if(market==='match') flags.push('⚠ 适用 90 分钟规则——加时/点球不计入。');
+  if(market==='player') flags.push('⚠ 球员盘——单次受伤风险；仓位务必小。');
+
+  let verdict,vcls;
+  if(edge<=0){verdict='回避 — 你选的 YES/NO 一边价格过高（无优势）。';vcls='v-avoid';}
+  else if(edge<0.02){verdict='回避 — 优势低于 2%，统计上不显著。';vcls='v-avoid';}
+  else if(flags.some(f=>f.includes('上限'))){verdict='观望 — 有优势，但已触及敞口上限。请先腾出空间。';vcls='v-watch';}
+  else if(edge<0.04){verdict='观望 — 优势偏薄；等更好的价格或更高的把握。';vcls='v-watch';}
+  else {verdict='进场 — 正优势且正期望值。仓位见下；下单前先设好离场。';vcls='v-enter';}
+
+  let html='<div class="metric"><span class="k">市场</span><span class="v">'+desc+'</span></div>';
+  html+='<div class="metric"><span class="k">隐含概率（价格）</span><span class="v">'+pct(price)+'</span></div>';
+  html+='<div class="metric"><span class="k">你的公允价值</span><span class="v">'+pct(fair)+'</span></div>';
+  html+='<div class="metric"><span class="k">优势（Edge）</span><span class="v '+cls(edge)+'">'+(edge>=0?'+':'')+pct(edge)+'</span></div>';
+  html+='<div class="metric"><span class="k">每份期望值</span><span class="v '+cls(evPerShare)+'">'+(evPerShare>=0?'+':'')+usd(evPerShare)+'</span></div>';
+  html+='<div class="metric"><span class="k">按在险本金的期望值</span><span class="v '+cls(evPctStake)+'">'+(evPctStake>=0?'+':'')+pct(evPctStake)+'</span></div>';
+  html+='<div class="metric"><span class="k">半凯利比例</span><span class="v">'+(halfK>0?pct(halfK):'0%')+'</span></div>';
+  html+='<div class="metric"><span class="k">仓位区间（'+tbl.label+'）</span><span class="v">'+tbl.pct+'%</span></div>';
+  html+='<div class="metric"><span class="k">建议仓位</span><span class="v pos">'+recPct.toFixed(2)+'% · '+usd(recDollars)+'</span></div>';
+  if(recDollars>0){
+    const shares=Math.floor(recDollars/price);
+    html+='<div class="metric"><span class="k">≈ 按 '+usd(price)+' 可买份额</span><span class="v">'+shares.toLocaleString()+' 份</span></div>';
+  }
+  html='<div class="out">'+html+'</div>';
+  html+='<div class="verdict '+vcls+'">'+verdict+'</div>';
+  if(flags.length) html+='<div class="warnbox">'+flags.join('<br>')+'</div>';
+  if(vcls==='v-enter'){
+    html+='<div class="warnbox" style="background:rgba(39,209,139,.08);border-color:var(--good);color:#9fe9c6">'+
+      '✔ 现在就设好离场：价格达到你的公允价值时止盈约 50%；若关键球员受伤打破逻辑就立即止损；在任何可能的点球大战前对冲。</div>';
+  }
+  document.getElementById('w_result').innerHTML=html;
+  wgo(5);
+}
+
+/* ---------- EDGE/EV CALC ---------- */
+function edge(){
+  const p=parseFloat(document.getElementById('e_price').value);
+  const f=parseFloat(document.getElementById('e_fair').value)/100;
+  const n=parseFloat(document.getElementById('e_n').value);
+  const o=document.getElementById('e_out');
+  if(isNaN(p)||isNaN(f)||isNaN(n)||p<=0||p>=1){o.innerHTML='<span class="neu">请输入价格 0.01–0.99、概率和份额数。</span>';return;}
+  const edge=f-p;
+  const risk=n*p;
+  const win=n*(1-p);
+  const ev=f*win-(1-f)*risk;
+  let html='<div class="metric"><span class="k">隐含概率</span><span class="v">'+pct(p)+'</span></div>';
+  html+='<div class="metric"><span class="k">优势（Edge）</span><span class="v '+cls(edge)+'">'+(edge>=0?'+':'')+pct(edge)+'</span></div>';
+  html+='<div class="metric"><span class="k">在险本金</span><span class="v">'+usd(risk)+'</span></div>';
+  html+='<div class="metric"><span class="k">命中时利润</span><span class="v">'+usd(win)+'</span></div>';
+  html+='<div class="metric"><span class="k">期望值</span><span class="v '+cls(ev)+'">'+(ev>=0?'+':'')+usd(ev)+'</span></div>';
+  html+='<div class="metric"><span class="k">期望值占本金比</span><span class="v '+cls(ev)+'">'+(ev>=0?'+':'')+pct(ev/risk)+'</span></div>';
+  html+='<div class="verdict '+(edge>0.02?'v-enter':(edge>0?'v-watch':'v-avoid'))+'">'+
+    (edge>0.02?'正期望值 — 可交易':(edge>0?'优势不足 2% — 略过':'负优势 — 回避'))+'</div>';
+  o.innerHTML=html;
+}
+
+/* ---------- VIG STRIPPER ---------- */
+function toProb(odds,fmt){
+  if(fmt==='american'){ return odds<0 ? (-odds)/((-odds)+100) : 100/(odds+100); }
+  return 1/odds; // decimal
+}
+function vig(){
+  const fmt=document.getElementById('v_fmt').value;
+  const a=parseFloat(document.getElementById('v_a').value);
+  const b=parseFloat(document.getElementById('v_b').value);
+  const c=parseFloat(document.getElementById('v_c').value);
+  const o=document.getElementById('v_out');
+  let raw=[],names=['A','B','C'];
+  [a,b,c].forEach((x,i)=>{ if(!isNaN(x)) raw.push({n:names[i],p:toProb(x,fmt)}); });
+  if(raw.length<2){o.innerHTML='<span class="neu">请至少输入两个赔率。</span>';return;}
+  const overround=raw.reduce((s,r)=>s+r.p,0);
+  let html='<div class="metric"><span class="k">超额赔率（庄家利润）</span><span class="v '+(overround>1?'neg':'pos')+'">'+pct(overround-1)+'</span></div>';
+  raw.forEach(r=>{
+    const fair=r.p/overround;
+    html+='<div class="metric"><span class="k">结果 '+r.n+' — 原始 '+pct(r.p)+'</span><span class="v pos">公允 '+pct(fair)+' · '+usd(fair)+'</span></div>';
+  });
+  html+='<p class="note">把每个公允价格与 Polymarket 的份额价格对比。若 Polymarket 比公允价值更便宜，那就是你的结构性优势。</p>';
+  o.innerHTML=html;
+}
+
+/* ---------- KELLY ---------- */
+function kelly(){
+  const p=parseFloat(document.getElementById('k_price').value);
+  const f=parseFloat(document.getElementById('k_fair').value)/100;
+  const bank=parseFloat(document.getElementById('k_bank').value);
+  const frac=parseFloat(document.getElementById('k_frac').value);
+  const o=document.getElementById('k_out');
+  if(isNaN(p)||isNaN(f)||isNaN(bank)||p<=0||p>=1){o.innerHTML='<span class="neu">请输入有效的价格、概率和资金。</span>';return;}
+  const b=(1/p)-1;
+  const fullK=(b*f-(1-f))/b;
+  const used=Math.max(0,fullK*frac);
+  const capped=Math.min(used,0.03); // 3% hard cap
+  const dollars=bank*capped;
+  let html='<div class="metric"><span class="k">赔付比（b）</span><span class="v">'+b.toFixed(2)+':1</span></div>';
+  html+='<div class="metric"><span class="k">优势（Edge）</span><span class="v '+cls(f-p)+'">'+((f-p)>=0?'+':'')+pct(f-p)+'</span></div>';
+  html+='<div class="metric"><span class="k">全凯利</span><span class="v">'+(fullK>0?pct(fullK):'0%（不下注）')+'</span></div>';
+  html+='<div class="metric"><span class="k">所选系数</span><span class="v">'+pct(used)+'</span></div>';
+  html+='<div class="metric"><span class="k">3% 硬封顶后</span><span class="v pos">'+pct(capped)+' · '+usd(dollars)+'</span></div>';
+  if(fullK<=0) html+='<div class="verdict v-avoid">无优势 — 凯利建议不下注。</div>';
+  else if(used>0.03) html+='<div class="warnbox">凯利建议 '+pct(used)+'，按你的规则手册已封顶至 3%。</div>';
+  o.innerHTML=html;
+}
+
+/* ---------- TRACKER ---------- */
+let rowId=0;
+function addRow(team,mkt,amt){
+  rowId++;
+  const div=document.createElement('div');
+  div.className='tracker-row';
+  div.innerHTML='<input placeholder="球队" value="'+(team||'')+'" oninput="trk()">'+
+    '<input placeholder="市场" value="'+(mkt||'')+'" oninput="trk()">'+
+    '<input type="number" placeholder="风险金额 $" value="'+(amt||'')+'" oninput="trk()" class="amt">'+
+    '<button class="ghost" onclick="this.parentNode.remove();trk()">✕</button>';
+  document.getElementById('t_rows').appendChild(div);
+  trk();
+}
+function trk(){
+  const bank=parseFloat(document.getElementById('t_bank').value)||0;
+  const rows=[...document.querySelectorAll('#t_rows .tracker-row')];
+  let total=0; const byTeam={};
+  rows.forEach(r=>{
+    const team=(r.children[0].value||'?').trim().toLowerCase();
+    const amt=parseFloat(r.children[2].value)||0;
+    total+=amt; byTeam[team]=(byTeam[team]||0)+amt;
+  });
+  const o=document.getElementById('t_out');
+  if(!bank){o.innerHTML='<span class="neu">请输入总资金。</span>';return;}
+  let html='<div class="metric"><span class="k">世界杯总敞口</span><span class="v '+(total/bank>0.30?'neg':'pos')+'">'+usd(total)+' · '+pct(total/bank)+'（上限 30%）</span></div>';
+  Object.keys(byTeam).filter(t=>t!=='?').forEach(t=>{
+    const e=byTeam[t]/bank;
+    html+='<div class="metric"><span class="k">球队：'+t+'</span><span class="v '+(e>0.10?'neg':'pos')+'">'+usd(byTeam[t])+' · '+pct(e)+'（上限 10%）</span></div>';
+  });
+  if(total/bank>0.30) html+='<div class="verdict v-avoid">超出总敞口上限 — 请削减持仓。</div>';
+  else if(Object.values(byTeam).some(v=>v/bank>0.10)) html+='<div class="verdict v-watch">单一球队超过 10% — 相关性风险过高。</div>';
+  else html+='<div class="verdict v-enter">在所有敞口限额之内。</div>';
+  o.innerHTML=html;
+}
+
+/* ---------- CHECKLIST ---------- */
+const checklist={
+  grp_mech:[
+    ['已确认结算规则','本市场是否包含加时/点球，还是仅按 90 分钟结算？'],
+    ['已核实市场流动性','订单簿深度和买卖价差不会在离场时吃掉优势。']
+  ],
+  grp_edge:[
+    ['基于数据得出了公允价值','用去水位后的专业赔率 + Elo/xG，而非叙事。'],
+    ['优势为正且 ≥2%','低于 2% 是噪音 — 略过。'],
+    ['期望值计算为正','已确认风险回报值得投入资金。'],
+    ['进场前已定好离场价','现在就清楚你的止盈目标和逻辑被打破的位置。']
+  ],
+  grp_research:[
+    ['已查看伤病与首发消息','关键球员状态已核实，而非假设。'],
+    ['已理清签表路径','针对夺冠/淘汰赛 — 已推演穿过签表的路线。'],
+    ['已计入旅行/休息/天气','海拔、湿度、休息天数差异已计入价格。'],
+    ['已考虑不对称的动机','第三轮轮换 / 无关紧要比赛的影响。']
+  ],
+  grp_risk:[
+    ['仓位 ≤ 资金的 3%','半凯利，每笔硬性封顶。'],
+    ['单一球队敞口 ≤10%','涵盖所有相关市场。'],
+    ['世界杯总敞口 ≤30%','整体组合检查。'],
+    ['不追单 / 不情绪化','不加倍摊平、不带球迷情绪、不全仓。']
+  ]
+};
+let totalChk=0;
+Object.keys(checklist).forEach(grp=>{
+  const c=document.getElementById(grp);
+  checklist[grp].forEach((item,i)=>{
+    totalChk++;
+    const id=grp+i;
+    const d=document.createElement('div');
+    d.className='chk';
+    d.innerHTML='<input type="checkbox" id="'+id+'" onchange="chkUpd()"><label for="'+id+'">'+item[0]+'<span class="hint">'+item[1]+'</span></label>';
+    c.appendChild(d);
+  });
+});
+function chkUpd(){
+  const boxes=[...document.querySelectorAll('.chk input')];
+  const done=boxes.filter(b=>b.checked).length;
+  const p=Math.round(done/totalChk*100);
+  document.getElementById('chkbar').style.width=p+'%';
+  document.getElementById('chkpct').textContent='已完成 '+done+' / '+totalChk;
+  const v=document.getElementById('chkverdict');
+  if(done===totalChk){v.className='warnbox';v.style.background='rgba(39,209,139,.12)';v.style.borderColor='var(--good)';v.style.color='#9fe9c6';v.textContent='🟢 全部通过 — 这是有纪律的进场。定好仓位、设好离场，然后下单。';}
+  else if(done>=totalChk-3){v.className='warnbox';v.style.background='';v.style.borderColor='';v.style.color='';v.textContent='快好了 — 还剩 '+(totalChk-done)+' 项。每一项打勾前都不要投入资金。';}
+  else {v.className='warnbox';v.style.background='';v.style.borderColor='';v.style.color='';v.textContent='完成清单后才会亮起绿灯。';}
+}
+
+/* init */
+edge();vig();kelly();
+addRow('挪威','晋级八强','100');addRow('墨西哥','A组第一','150');
+chkUpd();
+injectTips();
+/* first-load welcome: show wizard help once */
+seenHelp.add('wizard');
+window.addEventListener('load',()=>setTimeout(()=>openHelp('wizard'),450));
+</script>
+</body>
+</html>

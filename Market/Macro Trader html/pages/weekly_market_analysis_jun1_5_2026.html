@@ -165,6 +165,20 @@
   .ev .etime{font-size:11px; color:var(--ink-3);}
   .ev .ebody{padding:0 13px 11px; font-size:12.5px; color:var(--ink-2);}
   .ev .efore{font-size:11.5px; color:var(--ink-2); background:var(--surface-2); border-radius:6px; padding:6px 10px; margin-bottom:8px; display:inline-block;}
+  .elead{font-size:13px; font-weight:600; color:var(--ink); margin-bottom:10px;}
+  .efacts{display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:8px; margin-bottom:12px;}
+  .efact{background:var(--surface-2); border-radius:7px; padding:7px 10px;}
+  .efact b{display:block; font-size:9.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--ink-3); margin-bottom:2px;}
+  .efact span{font-size:12px; color:var(--ink);}
+  .elabel{font-size:10.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--ink-3); margin:2px 0 6px;}
+  .elevels{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;}
+  .elevel{font-size:11.5px; font-weight:600; border-radius:6px; padding:3px 10px;}
+  .escen{font-size:12px; color:var(--ink-2); background:var(--surface-2); border-radius:7px; padding:8px 11px;}
+  .escentbl{display:flex; flex-direction:column; gap:5px; margin-bottom:11px;}
+  .escenrow{display:flex; gap:10px; align-items:flex-start; font-size:12px;}
+  .escenrow .sc-tag{flex:0 0 116px; font-weight:700; font-size:10px; letter-spacing:.3px; text-transform:uppercase; padding:3px 8px; border-radius:6px; text-align:center;}
+  .escenrow .sc-txt{color:var(--ink-2); flex:1; padding-top:1px;}
+  .esub{font-size:12px; color:var(--ink-2); margin-bottom:8px;}
   .sens{font-size:9.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; padding:2px 8px; border-radius:100px; white-space:nowrap;}
   .s-vhigh{background:var(--red-soft2); color:var(--red);}
   .s-high{background:var(--amber-soft); color:var(--amber);}
@@ -390,7 +404,8 @@
   <div class="card" id="ahead">
     <div class="tag">The week ahead · Jun 9–13</div>
     <h2>The data runway before the FOMC runway</h2>
-    <div class="sub">Friday's rout turned next week into a minefield — CPI and PPI feed straight into the Jun 16–17 FOMC, and the largest IPO in history (SpaceX) prices Thu and debuts Fri. Click any event for why it matters.</div>
+    <div class="sub">Friday's rout turned next week into a minefield — CPI and PPI feed straight into the Jun 16–17 FOMC, marquee tech earnings (Oracle, Adobe) test the AI story, and the largest IPO in history (SpaceX) prices Thu and debuts Fri. Click any event for why it matters.</div>
+    <div class="daynote" style="margin-bottom:14px;"><b>The earnings bar is brutally high.</b> S&amp;P 500 Q1 2026 earnings growth is tracked near +28.4% y/y (FactSet) — the strongest since Q4 2021. With expectations that elevated, even solid beats that don't dramatically clear the bar get sold, exactly as Broadcom (−15%, ~$320B wiped) showed Friday. The week's theme: <b>AI monetization credibility</b> — revenue, not capex promises.</div>
     <div class="kpis" id="aheadKpis" style="margin-bottom:18px;"></div>
     <div class="metricbtns" id="dayFilter" style="margin-bottom:14px;"></div>
     <div id="calendar"></div>
@@ -415,23 +430,7 @@
     <div class="daynote" style="margin-top:14px;"><b>The binary that defines the week:</b> the dominant regime is "good data = bad market." A soft CPI (≤3.8% y/y) could trigger a sharp short-covering relief rally given record hedge-fund shorts; a hot print (≥4.2% as RBC forecasts) validates a new leg down with oil, the dollar, and yields all working against equities at once. One more structural marker: <b>Jun 18 is Triple Witching</b> (moved up from the 19th for Juneteenth) — expect gamma-amplified swings into expiry.</div>
   </div>
 
-  <div class="card final" id="verdict">
-    <div class="tag" style="color:#FF8A6B">Final conclusion · week of Jun 1–5</div>
-    <h2>The verdict</h2>
-    <div class="sub">The week began pricing an AI-led no-landing boom and ended pricing stagflation and a possible Fed hike. Reduce risk; anchor in cash, short duration, and defensives.</div>
-    <div class="fgrid">
-      <div class="fitem"><div class="fl">Market bias</div><div class="fv">Bearish — the structural underpinnings fractured Friday</div></div>
-      <div class="fitem"><div class="fl">Risk appetite</div><div class="fv">Weak — broad risk-off; VIX 21.51, gold and Bitcoin both liquidated</div></div>
-      <div class="fitem"><div class="fl">Leadership</div><div class="fv">Deteriorating → defensive: Staples, Utilities, Health Care, Real Estate the only green Friday</div></div>
-      <div class="fitem"><div class="fl">Preferred style</div><div class="fv">Defensive / low-volatility / equal-weight; avoid growth-momentum and high-beta small caps</div></div>
-      <div class="fitem"><div class="fl">Best ETF focus</div><div class="fv">SGOV · SHY · RSP · XLV · XLU · XLP · DIA</div></div>
-      <div class="fitem"><div class="fl">Avoid / distribute</div><div class="fv">QQQ · SMH/SOXX · XLK · XLY · IWM · TLT · GLD · Bitcoin ETFs</div></div>
-      <div class="fitem"><div class="fl">Main risk</div><div class="fv">10Y &gt; 4.60% triggering systematic liquidation; short-gamma dealer feedback loop; sticky CPI Jun 10 forcing the Fed to acknowledge hikes</div></div>
-      <div class="fitem"><div class="fl">Strategy</div><div class="fv">Reduce risk — defensive rotation, not buy-the-dip</div></div>
-      <div class="fitem"><div class="fl">Risk level</div><div class="fv">High</div></div>
-    </div>
-    <div class="gap-note" style="color:#8FA6BC">Source inconsistencies across the daily reports: Russell 2000 Jun 1 close (2,817.36) does not reconcile with Jun 2's +0.90% to 2,931.96; Nasdaq is reported as Composite some days and NDX/QQQ others; AVGO's earnings reaction and LULU's guidance cut appear on both Jun 4 and Jun 5. Directional conclusions are unaffected. Daily % changes are each cited within their own report; weekly figures derived from those closes.</div>
-  </div>
+  <div style="font-size:11.5px; color:var(--ink-3); font-style:italic; padding:4px 2px 0;">Source notes: Russell 2000 Jun 1 close (2,817.36) does not reconcile with Jun 2's +0.90% to 2,931.96; Nasdaq is reported as Composite some days and NDX/QQQ others; AVGO's earnings reaction and LULU's guidance cut appear on both Jun 4 and Jun 5. Directional conclusions are unaffected; daily % changes are each cited within their own report.</div>
 
 </div>
 
@@ -837,29 +836,66 @@ document.getElementById('aheadKpis').innerHTML = AHEAD_KPIS.map(k=>
  '<div class="kpi"><div class="kl">'+k.l+'</div><div class="kv">'+k.v+'</div><div class="kc '+k.s+'">'+k.c+'</div></div>').join('');
 
 const CAL = [
+ {day:'Mon · Jun 8', hot:false, key:'mon8', events:[
+   {t:'Campbell Soup (CPB) · Q3', time:'Pre-market', sens:'med', fore:'EPS $0.51 · rev $2.4B',
+    why:'Consumer-staples gauge. After XLP led Friday\'s defensive bid, CPB tests whether that safety trade is backed by real demand — or whether shoppers are trading down even on soup.'},
+   {t:'Vail Resorts (MTN)', time:'After close', sens:'med', fore:'EPS $9.58 (vs $10.54 y/y) · rev $1.29B',
+    why:'High-end leisure/travel gauge. The y/y EPS decline is the question: is the affluent consumer finally pulling back amid $90+ oil and higher-for-longer rates?'}
+ ]},
  {day:'Tue · Jun 9', hot:false, key:'mon', events:[
    {t:'US Trade Balance (Apr)', time:'', sens:'med', fore:'—',
     why:'Shows how the strong dollar and geopolitical energy costs are reshaping import/export flows. A wider deficit would add to growth concerns just as the market is already nervous about a slowdown.'},
    {t:'Existing Home Sales (May)', time:'', sens:'med', fore:'~4.01M',
     why:'Expected to stay sluggish. Mortgage rates reset higher after Friday\'s yield surge, so affordability keeps biting — a read on whether the rate shock is reaching the real economy.'},
    {t:'NY Fed Survey of Consumer Expectations', time:'11:00 ET', sens:'high', fore:'Inflation-expectations focus',
-    why:'Watched for inflation expectations. After Michigan sentiment crashed to a record-low 44.8 in May, any further deterioration signals consumer stress is accelerating — the soft underbelly beneath the strong jobs headline.'}
+    why:'Watched for inflation expectations. After Michigan sentiment crashed to a record-low 44.8 in May, any further deterioration signals consumer stress is accelerating — the soft underbelly beneath the strong jobs headline.'},
+   {t:'J.M. Smucker (SJM)', time:'Pre-market', sens:'med', fore:'EPS $2.66 · rev $2.27B',
+    why:'Packaged-food staple. Pricing power vs volume as input costs and a stretched consumer collide — another check on whether the defensive-staples bid is fundamentally justified.'},
+   {t:'Casey\'s General (CASY)', time:'After close', sens:'med', fore:'EPS $3.25 · rev $4.14B',
+    why:'Convenience-store and fuel retailer — a direct read on the consumer at the pump with WTI elevated. Fuel margins and store traffic are the tells.'}
  ]},
  {day:'Wed · Jun 10', hot:true, key:'wed', tag:'🔴 Triple threat — the most important single day of June', events:[
    {t:'US CPI (May)', time:'8:30 ET', sens:'vhigh', fore:'+0.5% m/m → 4.2% y/y headline · core +0.3% → 2.9%',
     why:'The single most market-moving print of the week. April CPI already hit 3.8% y/y (hottest in three years) and PPI ran +6.0%. A hot read this close to the Jun 16–17 FOMC would all but cement rate-hike expectations for later in 2026. The 2-year is already at a one-year high of 4.16%; an upside surprise sends already-shattered tech/growth lower while financials and energy may catch a bid.'},
-   {t:'Bank of Canada Rate Decision', time:'9:45 ET', sens:'high', fore:'Hold at 2.25% expected',
-    why:'Canada is in a technical recession (two straight quarters of GDP contraction) with unemployment 6.5–7%, caught between weak growth and ~3% oil-driven inflation. A hold is expected, but the statement tone on US spillover and energy prices moves CAD, Canadian bonds, and rate-sensitive TSX sectors.'},
-   {t:'Oracle (ORCL) · Q4 FY2026', time:'After close', sens:'vhigh', fore:'EPS $1.96–2.00 · rev $18.9–19.2B · Street "Moderate Buy", $263.62 PT',
-    why:'After Broadcom\'s rout, Oracle is the next stress test for the AI-capex narrative. Strong cloud + AI demand and a guidance raise could stabilize battered AI names; a disappointment — or merely meeting without raising — extends the selloff. The market is on a knife\'s edge.'}
+   {t:'Bank of Canada Rate Decision', time:'9:45 ET', sens:'high', fore:'Hold at 2.25% near-certain',
+    why:'<div class="elead">Near-certain hold — the actionable trade is in USD/CAD, not the rate.</div>'
+      +'<div class="efacts">'
+      +'<div class="efact"><b>Rate</b><span>2.25% · held since Oct 2025</span></div>'
+      +'<div class="efact"><b>Odds</b><span>~29% hike · ~0% cut (OIS ~2.31%)</span></div>'
+      +'<div class="efact"><b>Apr CPI</b><span>2.8% y/y — gas +28.6%, core soft</span></div>'
+      +'<div class="efact"><b>Growth</b><span>Technical recession · unemp 6.5–7%</span></div>'
+      +'<div class="efact"><b>Data gap</b><span>May CPI only Jun 22 — acts blind</span></div>'
+      +'<div class="efact"><b>Guidance</b><span>Apr: cited trade/geopolitical risk, no clear path</span></div>'
+      +'<div class="efact"><b>House views</b><span>RBC/BMO/CIBC hold thru 2026; next move a 2027 hike</span></div>'
+      +'<div class="efact"><b>Wild card</b><span>ECB same day · Fed Jun 16 → cross-FX vol</span></div>'
+      +'</div>'
+      +'<div class="elabel">USD/CAD ~1.393 · key levels</div>'
+      +'<div class="esub">Jumped from 1.3854 (Jun 3), +0.7% in two sessions on USD strength into the Fed; MTFX sees a sideways 1.36–1.39 for June.</div>'
+      +'<div class="elevels">'
+      +'<span class="elevel" style="background:var(--red-soft2); color:var(--red);">Resistance 1.3924–1.3965 → 1.4149</span>'
+      +'<span class="elevel" style="background:var(--green-soft); color:var(--green);">Support 1.3769 → 1.3549</span>'
+      +'<span class="elevel" style="background:var(--blue-soft); color:var(--blue);">USD-bearish → 1.3069 (61.8% Fib of the 1.4791 move)</span>'
+      +'</div>'
+      +'<div class="elabel">Scenarios around 9:45 ET</div>'
+      +'<div class="escentbl">'
+      +'<div class="escenrow"><span class="sc-tag c-bull">Hawkish hold</span><span class="sc-txt">Hold + hike signal → CAD strengthens; pair breaks below 1.38.</span></div>'
+      +'<div class="escenrow"><span class="sc-tag c-info">Base case</span><span class="sc-txt">Hold, steady tone → modest CAD support; pair eases toward 1.38–1.39.</span></div>'
+      +'<div class="escenrow"><span class="sc-tag c-mix">Dovish hold</span><span class="sc-txt">Hold + growth concern or cut hint → CAD weakens; pair tests 1.40+.</span></div>'
+      +'<div class="escenrow"><span class="sc-tag c-bear">Cut (unlikely)</span><span class="sc-txt">25 bps cut → sharp CAD selloff; pair surges above 1.40.</span></div>'
+      +'</div>'
+      +'<div class="escen"><b>Trade:</b> fade / short USD/CAD into 1.392–1.397 resistance — aligns with the technical setup and a steady-hand BoC. Key risk: a dovish Macklem tone on the Canadian growth outlook.</div>'},
+   {t:'Oracle (ORCL) · Q4 FY2026', time:'After close', sens:'vhigh', fore:'EPS ~$1.93 (+13.5% y/y) · rev ~$19.1B (+20% y/y) · Street "Moderate Buy", $263.62 PT',
+    why:'The flagship tech print of the week. After Broadcom\'s rout, Oracle is the next stress test for the AI-capex narrative — the market will scrutinize OCI cloud-revenue acceleration and AI-database deal flow. Strong demand and a guidance raise could stabilize battered AI names; a disappointment — or merely meeting without raising — extends the selloff. The market is on a knife\'s edge.'}
  ]},
  {day:'Thu · Jun 11', hot:false, key:'thu', events:[
    {t:'US PPI (May)', time:'8:30 ET', sens:'vhigh', fore:'+0.6% m/m → 6.3% y/y headline · core 5.5%',
     why:'Upstream price pressure feeding directly into the Fed\'s inflation calculus. April PPI already ran +6.0% y/y. A hot print further entrenches the "no cuts, possible hike" scenario that crushed markets Friday.'},
    {t:'Initial Jobless Claims', time:'8:30 ET', sens:'high', fore:'~232K',
     why:'After the blockbuster payrolls, claims are scrutinized for any reversal. Still historically low — but an upside surprise (higher claims) could paradoxically relieve markets by softening rate-hike fears.'},
-   {t:'Adobe (ADBE) · Q2 FY2026', time:'After close', sens:'high', fore:'EPS $5.61–5.85 · rev ~$6.46B (guided $6.43–6.48B)',
-    why:'The other major tech bellwether this week. Software has been recovering on the thesis that AI agents drive MORE software demand. Adobe\'s Firefly AI monetization commentary will validate or undercut that recovery narrative — and the bar is high after an ~8% early-June rally.'},
+   {t:'Adobe (ADBE) · Q2 FY2026', time:'After close', sens:'high', fore:'EPS ~$5.83 (+15.2% y/y) · rev ~$6.46B (+9.9%) · beat 4/4 quarters · $25B buyback',
+    why:'The other major tech bellwether. Software has been recovering on the thesis that AI agents drive MORE demand; Adobe\'s Firefly monetization and AI Creative Cloud are the central themes. It has beaten consensus EPS four straight quarters and a $25B buyback puts a floor under the stock (Michael Burry reportedly bullish) — but the bar is high after an ~8% early-June rally.'},
+   {t:'Lennar (LEN) · Q2', time:'After close', sens:'high', fore:'EPS $1.52 (vs $1.90 y/y) · rev $8.08B',
+    why:'Homebuilder bellwether. With mortgage rates back near 6.5%+ after Friday\'s yield spike, the guidance on housing demand and buyer incentives is the key read-through for real estate (XLRE) and the broader consumer.'},
    {t:'🚀 SpaceX (SPCX) · IPO pricing', time:'Evening', sens:'vhigh', fore:'555.6M shares @ $135 → ~$75B raise · ~$1.75T market cap',
     why:'The largest IPO ever, shattering Saudi Aramco\'s $26B record. The roadshow began Jun 4; shares price tonight ahead of Friday\'s debut. Only ~3–5% of stock is floated (a tiny public float) with an unusually large 30% retail tranche (~$25–26B) some analysts call "worrying." 2025 revenue was $18.67B (Starlink $11.39B, +50% y/y), so ~$1.75T implies ~94x price-to-revenue — Morningstar pegs fair value at $780B, ~55% below the target. A $75B single-day raise drains liquidity and historically forces the market to "make room," pressuring existing holdings.'}
  ]},
@@ -882,7 +918,7 @@ function renderCal(filter){
      +'<div class="ebody">'+(e.fore&&e.fore!=='—'?'<span class="efore">Consensus / forecast: '+e.fore+'</span><br>':'')+e.why+'</div></details>').join('')
    + '</div>').join('');
 }
-const FILTERS = [['all','Full week'],['mon','Tue 9'],['wed','Wed 10 🔴'],['thu','Thu 11'],['fri','Fri 12']];
+const FILTERS = [['all','Full week'],['mon8','Mon 8'],['mon','Tue 9'],['wed','Wed 10 🔴'],['thu','Thu 11'],['fri','Fri 12']];
 const df = document.getElementById('dayFilter');
 FILTERS.forEach((f,i)=>{
   const b=document.createElement('button'); b.className='mbtn'+(i===0?' active':''); b.textContent=f[1];
@@ -988,25 +1024,28 @@ document.getElementById('valDca').innerHTML = [
 ].map(r=>'<div class="fl"><span class="chip '+r[1]+'" style="margin-bottom:4px;">'+r[0]+'</span><div style="margin-top:4px;">'+r[2]+'</div></div>').join('');
 renderVal();
 
-const NAV = [
- ['overview','Overview'],['days','By day'],['indices','Indices'],['macro','Macro'],['ratings','Ratings'],
- ['nfp','NFP shock'],['sectors','Sectors'],['style','Style'],['cases','Bull / Bear'],['valuation','Valuation'],['strategy','Strategy'],
- ['deck','Deck'],['watch','Watchlist'],['ahead','Week ahead'],['factors','Other factors'],['verdict','Verdict']
+const NAVGROUPS = [
+ ['overview','Market Recap', ['overview','days','indices','macro','ratings','nfp','sectors','style']],
+ ['cases','Valuation & Strategy', ['cases','valuation','strategy']],
+ ['deck','Slide Deck', ['deck']],
+ ['watch','Week Ahead', ['watch','ahead','factors']]
 ];
 const navInner = document.getElementById('navInner');
-navInner.innerHTML = NAV.map(n=>'<a href="#'+n[0]+'" data-sec="'+n[0]+'">'+n[1]+'</a>').join('');
-const navLinks = {};
-navInner.querySelectorAll('a').forEach(a=>navLinks[a.dataset.sec]=a);
+navInner.innerHTML = NAVGROUPS.map(g=>'<a href="#'+g[0]+'" data-group="'+g[0]+'">'+g[1]+'</a>').join('');
+const groupLinks = {}, secToGroup = {};
+navInner.querySelectorAll('a').forEach(a=>groupLinks[a.dataset.group]=a);
+NAVGROUPS.forEach(g=>g[2].forEach(s=>secToGroup[s]=g[0]));
 const spy = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
-      Object.values(navLinks).forEach(a=>a.classList.remove('active'));
-      const a = navLinks[e.target.id];
+      const grp = secToGroup[e.target.id];
+      Object.values(groupLinks).forEach(a=>a.classList.remove('active'));
+      const a = groupLinks[grp];
       if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest', inline:'nearest'}); }
     }
   });
 }, {rootMargin:'-55px 0px -70% 0px', threshold:0});
-NAV.forEach(n=>{ const el=document.getElementById(n[0]); if(el) spy.observe(el); });
+Object.keys(secToGroup).forEach(s=>{ const el=document.getElementById(s); if(el) spy.observe(el); });
 </script>
 </body>
 </html>
