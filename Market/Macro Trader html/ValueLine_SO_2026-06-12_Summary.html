@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Value Line Selection &amp; Opinion — June 12, 2026 Summary</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --navy:#1a2f55; --navy2:#24407a; --blue:#2563eb; --gold:#b8923d;
+    --bg:#f6f4ee; --card:#ffffff; --ink:#23272f; --muted:#6b7280;
+    --green:#0f7b4d; --red:#b3362c; --line:#e3ded2;
+    /* template vars (portfolio module) */
+    --accent:#1a2f55; --accent2:#2563eb;
+    --text:#23272f; --text2:#5b5b5b; --text3:#8a8a8a;
+    --bg2:#ffffff; --bg3:#f0ede4; --border:#e3ded2; --border2:#c9c2b2;
+    --buy:#0E7C4A; --buybg:#E6F4EC; --hold:#A07C00; --holdbg:#FFF6DD; --sell:#B11226; --sellbg:#FBE7EA;
+    --q1:#E8F5EC; --q1b:#1B7340; --q2:#F1F7EA; --q2b:#5E8A2C;
+    --q3:#FFF7E0; --q3b:#A07C00; --q4:#FCEBE6; --q4b:#A52414;
+    --sansfont:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(--ink);line-height:1.55}
+  .sans{font-family:var(--sansfont)}
+  header{background:var(--navy);color:#fff;padding:28px 24px 0}
+  .hwrap{max-width:1180px;margin:0 auto}
+  .kicker{font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  h1{font-weight:600;font-size:30px;letter-spacing:.01em}
+  .sub{color:#c7d0e4;font-size:14px;margin:8px 0 18px}
+  nav{display:flex;gap:4px;flex-wrap:wrap}
+  nav button{font-family:Helvetica,Arial,sans-serif;font-size:13px;padding:10px 16px;border:none;background:transparent;color:#c7d0e4;cursor:pointer;border-radius:8px 8px 0 0}
+  nav button.active{background:var(--bg);color:var(--navy);font-weight:700}
+  nav button:hover:not(.active){background:rgba(255,255,255,.08);color:#fff}
+  main{max-width:1180px;margin:0 auto;padding:24px 24px 60px}
+  main>section{display:none}
+  main>section.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .g4{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(26,47,85,.06)}
+  .card h3{font-size:17px;color:var(--navy);margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--gold)}
+  .card h4{font-size:14px;color:var(--navy);margin:12px 0 4px}
+  .card p{font-size:14px;margin-bottom:8px}
+  .kpi{text-align:center;padding:16px}
+  .kpi .v{font-size:26px;font-weight:700;color:var(--navy)}
+  .kpi .l{font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+  .kpi .d{font-size:12px;margin-top:4px}
+  .up{color:var(--green)} .dn{color:var(--red)}
+  table{width:100%;border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;font-size:12.5px}
+  table.simple th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;font-weight:600;cursor:pointer;user-select:none;white-space:nowrap}
+  table.simple th .arr{opacity:.6;font-size:10px}
+  table.simple td{padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.simple tr:nth-child(even) td{background:#faf8f3}
+  table.simple tr:hover td{background:#eef2fb}
+  .tag{display:inline-block;font-family:Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px}
+  .tag.buy{background:#e1f0e8;color:var(--green)}
+  .tag.hold{background:#f5e9d6;color:var(--gold)}
+  input.search{font-family:Helvetica,Arial,sans-serif;width:100%;max-width:320px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px;margin-bottom:10px}
+  .note{font-size:12px;color:var(--muted);font-style:italic;margin-top:8px}
+  .chartbox{position:relative;height:300px}
+  .chartbox.tall{height:380px}
+  .scroll{overflow-x:auto}
+  .quote{border-left:3px solid var(--gold);padding:10px 14px;background:#faf6ec;font-style:italic;font-size:14px;margin:10px 0;border-radius:0 8px 8px 0}
+  footer{text-align:center;font-family:Helvetica,Arial,sans-serif;font-size:11px;color:var(--muted);padding:20px;border-top:1px solid var(--line)}
+
+  /* ===== PORTFOLIO MODULE (ported from selection_opinion_explorer template) ===== */
+  #portfolios{font-family:var(--sansfont)}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--accent);flex-wrap:wrap;gap:8px}
+  .section-head h2{font-size:21px;font-weight:700;color:var(--accent);letter-spacing:-.3px}
+  .section-head .shsub{font-size:12.5px;color:var(--text3)}
+  .read{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:0 5px 5px 0;padding:15px 19px 17px;margin-bottom:20px}
+  .read-tldr{display:flex;gap:11px;align-items:flex-start;padding-bottom:13px;margin-bottom:13px;border-bottom:1px dashed var(--border)}
+  .read-tldr .tldr-tag{flex:none;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:4px 9px;border-radius:3px;letter-spacing:.5px;text-transform:uppercase;margin-top:1px}
+  .read-tldr .tldr-text{font-size:14.5px;font-weight:600;color:var(--text);line-height:1.45}
+  .read-points{display:grid;grid-template-columns:repeat(2,1fr);gap:11px 22px}
+  .read-point{display:flex;gap:11px;align-items:flex-start;font-size:13px;color:var(--text2);line-height:1.5}
+  .read-point .num{flex:none;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .read-point .pt-body strong{color:var(--text);font-weight:700;display:block;font-size:13px;margin-bottom:2px}
+  .chip{font-size:11px;padding:2px 8px;border-radius:11px;background:var(--bg3);color:var(--text2);font-weight:600;display:inline-flex;align-items:center;gap:4px}
+  .chip.up{color:var(--green)} .chip.up::before{content:'▲';font-size:9px}
+  .chip.down{color:var(--red)} .chip.down::before{content:'▼';font-size:9px}
+  @media(max-width:920px){.read-points{grid-template-columns:1fr}}
+  .tile-grid{display:grid;gap:14px}
+  .tg-5{grid-template-columns:repeat(5,1fr)}
+  .tile{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px 18px;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  .tile-label{font-size:11.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+  .tile-value{font-size:21px;font-weight:700;color:var(--text);margin:6px 0 3px;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
+  .tile-sub{font-size:12.5px;color:var(--text2);line-height:1.45}
+  .tile-note{font-size:11.5px;color:var(--text3);margin-top:9px;padding-top:9px;border-top:1px dashed var(--border);line-height:1.45}
+  .tile-note strong{color:var(--text)}
+  .tile.sel{border-color:var(--accent);box-shadow:0 0 0 2px rgba(26,47,85,.18)}
+  @media(max-width:1000px){.tg-5{grid-template-columns:repeat(2,1fr)}}
+  .tabs{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:14px}
+  .tab{padding:8px 15px;font-size:12.5px;font-weight:600;color:var(--text2);background:var(--bg3);border:1px solid var(--border);border-radius:5px;cursor:pointer;user-select:none}
+  .tab:hover{background:#E6E8EB}
+  .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .tab .tcount{font-size:10px;opacity:.7;margin-left:5px;font-weight:700}
+  .pane-desc{font-size:13px;color:var(--text2);background:#F3F7FB;border:1px solid #DCE7F1;border-left:3px solid var(--accent2);border-radius:0 6px 6px 0;padding:13px 17px;margin-bottom:15px;line-height:1.55}
+  .pane-desc strong{color:var(--text)}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:13px}
+  .controls input[type=text]{padding:9px 13px;border:1px solid var(--border2);border-radius:6px;font-size:13.5px;font-family:var(--sansfont);min-width:240px}
+  .controls input[type=text]:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+  .controls select{padding:9px 12px;border:1px solid var(--border2);border-radius:6px;font-size:13px;background:var(--bg2);font-family:var(--sansfont)}
+  .controls .count{font-size:12.5px;color:var(--text3);margin-left:auto;font-weight:600}
+  table.dt{width:100%;border-collapse:collapse;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:13px;font-variant-numeric:tabular-nums;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  table.dt th{background:var(--bg3);text-align:right;padding:11px 12px;font-weight:700;color:var(--accent);border-bottom:2px solid var(--border2);cursor:pointer;user-select:none;font-size:10.5px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap}
+  table.dt th:first-child,table.dt th.l{text-align:left}
+  table.dt th:hover{background:#E3E7EC}
+  table.dt th.sort-asc,table.dt th.sort-desc{color:var(--red)}
+  table.dt th.sort-asc::after{content:' ▲';color:var(--red);font-size:9px}
+  table.dt th.sort-desc::after{content:' ▼';color:var(--red);font-size:9px}
+  table.dt td{padding:9px 12px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+  table.dt td.l{text-align:left}
+  table.dt tbody tr:nth-child(even) td{background:#FAFBFC}
+  table.dt tbody tr:hover td{background:#EEF4FB}
+  table.dt tbody tr:last-child td{border-bottom:none}
+  table.dt tr.grp td{background:#E7ECF2 !important;color:var(--accent);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:7px 12px}
+  table.dt tr.grp td .gcount{color:var(--text3);font-weight:600;margin-left:6px}
+  table.dt td.alpha{font-variant-numeric:tabular-nums;min-width:74px}
+  td.alpha .alrow{display:flex;gap:8px;justify-content:space-between;align-items:center;font-size:12.5px;line-height:1.55}
+  td.alpha .allbl{color:var(--text3);font-weight:700;font-size:9.5px;letter-spacing:.3px}
+  td.alpha .amuted{color:var(--text3)}
+  table.dt .tkr{font-weight:700;color:var(--accent)}
+  table.dt .co{color:var(--text);font-weight:500}
+  table.dt .ind{color:var(--text2);font-size:12px}
+  .rec{display:inline-block;min-width:42px;text-align:center;padding:2px 8px;border-radius:11px;font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.3px}
+  .rec.buy{background:var(--buybg);color:var(--buy)} .rec.hold{background:var(--holdbg);color:var(--hold)} .rec.sell{background:var(--sellbg);color:var(--sell)}
+  .pill{display:inline-block;min-width:26px;text-align:center;padding:2px 7px;border-radius:11px;font-weight:700;font-size:11px}
+  .pill.r1{background:var(--q1);color:var(--q1b)} .pill.r2{background:var(--q2);color:var(--q2b)}
+  .pill.r3{background:var(--q3);color:var(--q3b)} .pill.r4{background:var(--q4);color:var(--q4b)} .pill.r5{background:var(--q4);color:var(--q4b)}
+  .gain{color:var(--green);font-weight:700} .loss{color:var(--red);font-weight:700}
+
+  @media(max-width:640px){h1{font-size:22px} main{padding:16px 12px 40px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <div class="kicker">The Value Line Investment Survey · Part 2 · Issue 6 · Pages 1649–1660</div>
+    <h1>Selection &amp; Opinion — Interactive Summary</h1>
+    <div class="sub">June 12, 2026 · Economic &amp; stock market commentary, five model portfolios, dividend screen, and market data · Prices as of press time, 6/2/2026</div>
+    <nav class="sans" id="nav">
+      <button data-t="overview" class="active">Overview</button>
+      <button data-t="markets">Markets</button>
+      <button data-t="portfolios">Model Portfolios</button>
+      <button data-t="feature">Feature: Iran War &amp; Green Energy</button>
+      <button data-t="screen">Dividend Screen</button>
+      <button data-t="flows">Institutional &amp; Insider</button>
+      <button data-t="rates">Rates &amp; Monitor</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ OVERVIEW ============ -->
+<section id="overview" class="active">
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="card kpi"><div class="v">1.6%</div><div class="l">Q1 GDP (annualized)</div><div class="d dn">revised down from 2.0%</div></div>
+    <div class="card kpi"><div class="v">3.8%</div><div class="l">PCE Inflation (Apr, y/y)</div><div class="d dn">well above Fed comfort</div></div>
+    <div class="card kpi"><div class="v">~25%</div><div class="l">2026 S&amp;P 500 EPS Growth (cons.)</div><div class="d up">AI ≈ half of profit gains</div></div>
+    <div class="card kpi"><div class="v">65 / 10 / 25</div><div class="l">Asset Allocation: Stocks/Bonds/Cash</div><div class="d up">stocks raised from 60%</div></div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3>The Value Line View</h3>
+      <p><strong>Growth is cooling.</strong> Q1 GDP was revised down to 1.6% (from 2.0%) on slower inventory restocking and weaker consumer demand. Reaccelerating inflation is eroding purchasing power, and higher mortgage rates are hurting residential construction.</p>
+      <p><strong>But pockets of strength remain.</strong> May ISM manufacturing rose to 54.0% (up over a full point), and April durable-goods orders jumped 7.9% — more than double expectations. The question is durability, given higher energy prices.</p>
+      <p><strong>Earnings carry the market.</strong> S&amp;P 500 profit growth is seen averaging ~25% this year, with AI-infrastructure beneficiaries accounting for nearly half the Index's gains — a support for stocks, but also a concentration risk if AI spending fails to convert into recurring profits.</p>
+      <div class="quote">Conclusion: Major averages hit record highs in May on strong earnings. The economy is more mixed — softening consumer spending, elevated input costs, fading fiscal stimulus — but near-term profit growth should continue to support equities.</div>
+    </div>
+    <div class="card">
+      <h3>One-Week Index Performance (5/26 → 6/2)</h3>
+      <div class="chartbox tall"><canvas id="chWeek"></canvas></div>
+      <p class="note">Nikkei led (+2.7%); London FTSE-100 was the only decliner (−1.1%).</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>This Week at a Glance</h3>
+    <div class="grid g3">
+      <div><h4>Portfolio action</h4><p>No trades in any of the five model portfolios this week — a notably quiet issue after a busy spring.</p></div>
+      <div><h4>Stock of the week: Dell</h4><p>EPS of $4.86 beat by $1.90; revenue +88% y/y to $43.8B on AI-optimized servers (AI server sales +757% y/y). Stock +57% in five days; ~+200% since added to Portfolio V in late March.</p></div>
+      <div><h4>Macro overhang</h4><p>The Iran war keeps Brent near $98/bbl (vs. $72 at war start, ~$130 peak). Sticky inflation leaves the Fed little room to cut if payrolls disappoint.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARKETS ============ -->
+<section id="markets">
+  <div class="card">
+    <h3>Closing Stock Market Averages (as of press time)</h3>
+    <div class="scroll"><table class="simple" id="tblIdx"></table></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h3>12-Month Performance</h3>
+      <div class="chartbox tall"><canvas id="chYear"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Industry Price Performance — 6 Weeks to 6/1/26</h3>
+      <div class="chartbox tall"><canvas id="chInd"></canvas></div>
+      <p class="note">Value Line Arithmetic Average over the same span: +2.1%. AI-adjacent groups dominate; consumer retail and Cable TV lag badly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MODEL PORTFOLIOS (explorer template) ============ -->
+<section id="portfolios">
+  <div class="section-head">
+    <h2>Model Portfolios</h2>
+    <div class="shsub">Five editor-run model books · holdings + statistics · pp.1650–1654 · prices 6/2/26</div>
+  </div>
+
+  <!-- selection-skill commentary -->
+  <div class="read">
+    <div class="read-tldr">
+      <span class="tldr-tag">Skill read</span>
+      <span class="tldr-text">Against the S&amp;P 500 (<strong>+11.6% YTD</strong>), genuine selection alpha again sits in <strong>Book&nbsp;I</strong> and <strong>Book&nbsp;V</strong> — and this week it widened: Dell's +57% surge lifted both. But across all five books the <strong>median since-purchase alpha is −2.5pp</strong> and only <strong>46%</strong> of holdings have beaten the index — the excess return is still a concentrated AI/semis trade, not breadth.</span>
+    </div>
+    <div class="read-points">
+      <div class="read-point"><span class="num">1</span><div class="pt-body"><strong>I · Aggressive — strongest, true α</strong>YTD alpha <strong>+38.3pp</strong> avg, beats SPX <strong>74%</strong> of the time; P/L alpha +51.9pp avg. Concentration is extreme — the book's α is an AI-compute bet. <span class="chip up">DELL</span> <span class="chip up">AMD</span> <span class="chip up">MRVL</span> <span class="chip up">SANM</span></div></div>
+      <div class="read-point"><span class="num">2</span><div class="pt-body"><strong>V · Quality Growth — cleanest</strong>+17.1pp avg YTD α (median +4.2), 60% beat since purchase. Dell again the engine; FTNT/AVGO support. <span class="chip up">DELL</span> <span class="chip up">FTNT</span> <span class="chip up">AVGO</span></div></div>
+      <div class="read-point"><span class="num">3</span><div class="pt-body"><strong>II · Income+Growth — thin</strong>Avg YTD α +7.5pp but median just <strong>+2.7pp</strong> — a few winners (LRCX +85pp P/L α) carry the book; HPE's post-earnings pop helps. <span class="chip up">LRCX</span> <span class="chip up">AVGO</span> <span class="chip up">HPE</span></div></div>
+      <div class="read-point"><span class="num">4</span><div class="pt-body"><strong>III · Long-Term — legacy, not current</strong>Avg YTD α <strong>−2.5pp</strong> (median +1.3). The +30.6pp avg P/L α is historical compounding inflated by holding period, <em>not</em> present-day skill. NFLX's slide ($135→$85) drags. <span class="chip down">NFLX</span> <span class="chip up">AAPL</span> <span class="chip up">META</span></div></div>
+      <div class="read-point"><span class="num">5</span><div class="pt-body"><strong>IV · High Yield — negative selection</strong>Only <strong>10%</strong> beat SPX since purchase (median −18.2pp). Low-β income by design lags an +11.6% tape — this book is income/defense, not excess return. <span class="chip down">MDT</span> <span class="chip down">PEP</span> <span class="chip down">USB</span></div></div>
+      <div class="read-point"><span class="num">6</span><div class="pt-body"><strong>Caveat</strong>P/L alpha mixes entry timing + holding length (long holds accumulate big α); SPX benchmark uses month-end levels to 6/2/26. AAPL (2012) lacks benchmark data and Everpure lacks a 2025 close → &ldquo;—&rdquo;.</div></div>
+    </div>
+  </div>
+  <div class="read" style="border-left-color:var(--accent)">
+    <div class="read-tldr" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+      <span class="tldr-tag" style="background:var(--accent)">Macro read</span>
+      <span class="tldr-text" style="font-weight:500;font-size:13.5px">For an index lens, the editors' excess return remains a single <strong>AI-capex exposure</strong> — and this issue's Dell blowout (+88% revenue, AI servers +757%) made the concentration <em>more</em> extreme, not less. If the theme cools, Books I/II/V converge to the index fast. Book IV's lag is a <em>style</em> outcome (low-β, high-yield), echoed by the worst-industries list (Med Supp Invasive, retail). No trades in any book this week — the editors are letting the AI winners run.</span>
+    </div>
+  </div>
+
+  <!-- portfolio statistics tiles -->
+  <div class="tile-grid tg-5" id="pfStats" style="margin-bottom:18px"></div>
+
+  <div class="tabs" id="pfTabs">
+    <div class="tab active" data-pf="I">I · Aggressive<span class="tcount">20</span></div>
+    <div class="tab" data-pf="II">II · Income+Growth<span class="tcount">20</span></div>
+    <div class="tab" data-pf="III">III · Long-Term<span class="tcount">20</span></div>
+    <div class="tab" data-pf="IV">IV · High Yield<span class="tcount">20</span></div>
+    <div class="tab" data-pf="V">V · Quality Growth<span class="tcount">20</span></div>
+  </div>
+  <div class="pane-desc" id="pfDesc"></div>
+  <div class="controls">
+    <input type="text" id="pfSearch" placeholder="Filter ticker / company / industry…">
+    <select id="pfRec"><option value="">All recs</option><option>Buy</option><option>Hold</option><option>Sell</option></select>
+    <label style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--text2);font-weight:600;cursor:pointer"><input type="checkbox" id="pfGroup" checked> Group by sector</label>
+    <span class="count" id="pfCount"></span>
+  </div>
+  <div class="scroll">
+  <table class="dt" id="pfTable">
+    <thead id="pfHead"></thead>
+    <tbody id="pfBody"></tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ FEATURE ============ -->
+<section id="feature">
+  <div class="card" style="margin-bottom:16px">
+    <h3>The Iran War and the Green Energy Transition <span class="sans" style="font-size:12px;color:var(--muted)">— Nathaniel Eakman, Analyst</span></h3>
+    <p>After U.S. strikes on Iran in late February closed shipping through the Strait of Hormuz and sent oil prices surging, a popular thesis held that the war would <strong>accelerate</strong> the move to green energy. So far, it has: demand for Chinese solar panels <strong>doubled in March</strong>, and EV and battery exports hit record highs.</p>
+    <p><strong>Why that's surprising:</strong> historically, conflict slows the energy transition. A 2025 study in <em>Renewable and Sustainable Energy Reviews</em> found greater geopolitical risk has a <em>negative</em> effect on renewable development — crises usually push countries to secure more fossil fuels (e.g., China ramping coal after Russia invaded Ukraine), not fewer.</p>
+  </div>
+  <div class="grid g3">
+    <div class="card"><h4 style="margin-top:0">1 · A tipping point on cost &amp; speed</h4><p>Renewables keep getting cheaper to build and run, and projects already in progress can be finished fast — reducing the need for short-term fossil-fuel fixes. Countries early in their transition remain the most vulnerable to conflict-driven setbacks.</p></div>
+    <div class="card"><h4 style="margin-top:0">2 · A new geopolitical landscape</h4><p>Unlike 2022, the U.S. is now a direct participant in the conflict and has stepped back from climate and security commitments. Energy independence is becoming a priority — and for countries without domestic fossil fuels, that means renewables.</p></div>
+    <div class="card"><h4 style="margin-top:0">3 · China is the winner</h4><p>China leads in producing green technology <em>and</em> in mining/processing the rare earths it requires — so even relocated production stays dependent on Chinese supply chains. A durable shift could alter the balance of international power.</p></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h4 style="margin-top:0">Remaining obstacles</h4>
+    <p>Battery-technology limits, reliability questions for some renewable sources, and the continued need for fossil fuels in aviation and fertilizer production. The key question: is this boost a permanent change or a temporary aberration?</p>
+  </div>
+</section>
+
+<!-- ============ SCREEN ============ -->
+<section id="screen">
+  <div class="grid g2" style="margin-bottom:16px">
+    <div class="card">
+      <h3>Screen: Stocks for Dividend Growth with Low Risk</h3>
+      <p>Criteria: dividend CAGR ≥ 5% over the last 5 years; projected dividend growth ≥ 5% (3–5 yrs); estimated year-ahead yield ≥ 3.1% (100 bp above the 2.1% median); Safety Rank ≥ 2; Financial Strength ≥ B++.</p>
+      <p class="note">Low-risk profiles tend to outperform in down markets but may lag in a rising one. Review full Ratings &amp; Reports analyses before committing funds.</p>
+    </div>
+    <div class="card">
+      <h3>Yield vs. Projected Dividend Growth</h3>
+      <div class="chartbox"><canvas id="chScreen"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>The 16 Stocks That Made the Cut</h3>
+    <div class="scroll"><table class="simple" id="tblScreen"></table></div>
+  </div>
+</section>
+
+<!-- ============ FLOWS ============ -->
+<section id="flows">
+  <div class="card" style="margin-bottom:16px">
+    <h3>Major Institutional Stock Transactions — Q1 2026 (13F filings)</h3>
+    <p>Asset managers stayed on the <strong>"Magnificent Seven" bandwagon</strong> — all seven (Alphabet, Amazon, Apple, Meta, Microsoft, NVIDIA, Tesla) appear on the purchases list. Big-box retailers Costco, Walmart and Home Depot were also popular. Views on financials were mixed: buying Berkshire Hathaway and Visa while trimming rivals Travelers and Mastercard.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3 class="up">Top Institutional Purchases</h3>
+      <div class="scroll"><table class="simple" id="tblBuys"></table></div>
+    </div>
+    <div class="card">
+      <h3 class="dn">Top Institutional Sales</h3>
+      <div class="scroll"><table class="simple" id="tblSells"></table></div>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h3 class="up">Major Insider Purchases</h3>
+      <div class="scroll"><table class="simple" id="tblInsB"></table></div>
+    </div>
+    <div class="card">
+      <h3 class="dn">Major Insider Sales</h3>
+      <div class="scroll"><table class="simple" id="tblInsS"></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RATES ============ -->
+<section id="rates">
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="card kpi"><div class="v">3.50–3.75</div><div class="l">Fed Funds %</div><div class="d">unchanged vs 3 mo ago</div></div>
+    <div class="card kpi"><div class="v">4.47%</div><div class="l">10-Yr Treasury</div><div class="d dn">+42 bp vs 3 mo ago</div></div>
+    <div class="card kpi"><div class="v">4.99%</div><div class="l">30-Yr Treasury</div><div class="d">flat vs year ago</div></div>
+    <div class="card kpi"><div class="v">17.7×</div><div class="l">VL Median P/E</div><div class="d">at the 6/2/26 market top</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Treasury Yield Curve (6/1/26 vs 3 months / 1 year ago)</h3>
+      <div class="chartbox tall"><canvas id="chCurve"></canvas></div>
+      <p class="note">The curve has shifted up at the long end since March; short rates are well below year-ago levels after Fed cuts.</p>
+    </div>
+    <div class="card">
+      <h3>Market Monitor &amp; Allocation</h3>
+      <div class="scroll"><table class="simple" id="tblMon"></table></div>
+      <h4>Value Line Asset Allocation Model (as of 2/9/26)</h4>
+      <p>Common stocks <strong>65%</strong> (up from 60%) · Bonds <strong>10%</strong> · Cash <strong>25%</strong> (down from 30%). Based only on economic and financial factors.</p>
+      <h4>Breadth</h4>
+      <p>New highs 186 (vs 168 prior week) · New lows 74 (vs 32) — highs still lead, but lows more than doubled.</p>
+      <h4>Financial Strength downgrades cluster in housing/retail</h4>
+      <p class="sans" style="font-size:13px">Home Depot (A++→A+), Lowe's (A+→A), Ferguson, Pool Corp, Tractor Supply, Watsco, AptarGroup, Avery Dennison (A→B++), Mohawk, Tecnoglass (B++→B+), Ethan Allen (B+→B). 11 downgrades, no upgrades.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer>Summary of Value Line Selection &amp; Opinion, June 12, 2026 (Vol. LXXXI, No. 45, pages 1649–1660). Portfolio module follows the Selection &amp; Opinion Explorer template; YTD% computed vs 12/31/25 closes, alpha vs S&amp;P 500. For personal reference only — not investment advice. Source: Value Line Publishing LLC.</footer>
+
+<script>
+/* ================= DATA ================= */
+const idx=[
+ ["Dow Jones Industrial Average",50461.68,51307.79,1.7,21.3],
+ ["Standard & Poor's 500",7519.12,7609.78,1.2,28.2],
+ ["NYSE Composite",23295.50,23480.92,0.8,18.4],
+ ["NASDAQ Composite",26656.18,27093.90,1.6,40.8],
+ ["NASDAQ 100",30001.32,30660.60,2.2,42.7],
+ ["Value Line (Geometric)",664.18,671.17,1.1,15.9],
+ ["Value Line (Arithmetic)",13420.89,13598.52,1.3,25.7],
+ ["London (FT-SE 100)",10491.39,10373.51,-1.1,18.2],
+ ["Tokyo (Nikkei)",64996.09,66734.24,2.7,78.1],
+ ["Russell 2000",2920.54,2931.96,0.4,41.6]];
+
+const industries=[["Computers/Peripherals",48.8],["Cyber Security",38.2],["Semiconductor",34.0],["Digital Infrastructure",27.7],["Human Resources",21.4],["Power",19.9],["Steel",16.2],
+ ["Packaging & Container",-9.5],["Med Supp Invasive",-9.8],["Precious Metals",-10.3],["Retail (Softlines)",-14.0],["Retail (Hardlines)",-16.2],["Retail Building Supply",-17.0],["Cable TV",-27.2]];
+
+const screen=[["ACN","Accenture Plc","IT Services",3.3,2,45,12,5,"A+"],
+ ["DOX","Amdocs Ltd.","IT Services",3.2,1,40,11,5,"A"],
+ ["AMH","Amer. Homes 4 Rent","R.E.I.T.",4.1,2,96,35,10,"B++"],
+ ["CMCSA","Comcast Corp.","Cable TV",5.3,2,31,8,6,"A"],
+ ["FDP","Fresh Del Monte Prod.","Food Processing",4.1,2,32,23,11,"A"],
+ ["GWO.TO","Great-West Lifeco","Reinsurance",3.5,1,52,7,10,"A"],
+ ["HSY","Hershey Co.","Food Processing",3.2,2,85,12,5,"A"],
+ ["INFY","Infosys Ltd. ADR","IT Services",3.9,2,63,8,7,"A"],
+ ["MPLX","MPLX LP","Pipeline MLPs",7.9,2,86,6,8,"B++"],
+ ["MFC","Manulife Fin'l","Insurance (Life)",3.7,2,44,10,7,"A"],
+ ["NSRGY","Nestle SA ADS","Food Processing",4.0,1,89,7,6,"A+"],
+ ["NJR","New Jersey Resources","Natural Gas Utility",3.7,2,54,8,6,"A"],
+ ["ORI","Old Republic","Insurance (Prop/Cas.)",3.4,2,37,6,6,"A"],
+ ["PAYX","Paychex, Inc.","Human Resources",4.2,2,87,10,7,"B++"],
+ ["TROW","Price (T. Rowe) Group","Asset Management",5.0,2,52,10,6,"A+"],
+ ["USB","U.S. Bancorp","Bank",4.0,2,46,5,7,"A+"]];
+
+const instBuys=[["NVDA","NVIDIA Corp.",5887,76.0,8.1],["AAPL","Apple Inc.",6121,73.8,8.9],["MSFT","Microsoft Corp.",6235,81.7,8.1],["AMZN","Amazon.com",6041,72.4,6.3],["AVGO","Broadcom Inc.",4760,86.3,9.1],["TSLA","Tesla, Inc.",4338,48.7,6.1],["GOOG","Alphabet Inc.",5191,29.7,2.3],["BRKB","Berkshire Hathaway 'B'",4983,49.7,7.8],["XOM","Exxon Mobil Corp.",4858,77.1,10.4],["META","Meta Platforms",5273,73.0,5.0],["JPM","JPMorgan Chase",5144,83.0,8.5],["LLY","Lilly (Eli)",4517,91.6,7.5],["JNJ","Johnson & Johnson",4746,84.3,10.3],["COST","Costco Wholesale",4406,80.4,10.5],["V","Visa Inc.",4632,91.3,7.5],["WMT","Walmart Inc.",4531,40.9,4.0],["ABBV","AbbVie Inc.",4220,84.4,9.6],["CAT","Caterpillar Inc.",3864,82.4,10.8],["PG","Procter & Gamble",4272,79.5,10.5],["HD","Home Depot",4381,83.7,10.6],["CVX","Chevron Corp.",4403,81.8,8.1]];
+const instSells=[["RTX","RTX Corp.",3553,78.9,5.4],["MA","Mastercard Inc.",3799,96.6,1.5],["ETN","Eaton Corp. plc",2716,94.2,4.1],["TSM","Taiwan Semic. ADR",3392,15.1,0.3],["TMO","Thermo Fisher Sci.",2862,99.3,1.6],["MELI","MercadoLibre, Inc.",1704,76.2,3.1],["XYL","Xylem Inc.",1263,104.6,8.0],["TRV","Travelers Cos.",1944,84.5,2.6],["BABA","Alibaba Group ADS",1704,10.1,0.5],["ICE","Intercontinental Exch.",1945,101.7,1.5],["PWR","Quanta Services",1865,91.3,1.6],["FTNT","Fortinet Inc.",1620,66.0,1.8],["SYM","Symbotic Inc.",485,20.0,3.2],["INFY","Infosys Ltd. ADR",575,11.4,1.6],["GSK","GSK plc ADR",1164,18.9,0.7],["EQH","Equitable Holdings",694,93.8,6.3],["SNY","Sanofi ADR",906,8.6,0.6],["ARGX","argenx SE",573,46.8,1.4],["CHKP","Check Point Software",919,70.0,3.8],["CRBG","Corebridge Financial",558,104.5,5.6],["DKNG","DraftKings Hldgs.",986,81.6,5.2]];
+
+const insB=[["CDW Corp.","D.W. Nelms, Dir.","5/27/26","18,000","$111.43",140.98],["Hamilton Lane Inc.","H.R. Rogers*","5/26–27/26","55,466","$89.99–92.76",88.40],["Hims & Hers Health","D.B. Wells, Dir.","5/26/26","48,400","$24.24",27.76],["Liberty Latin Amer.","J.C. Malone, Dir.","5/22/26","12,406,463","$8.63",8.03],["Norwegian Cruise Line","J. Chidsey, CEO","5/22/26","153,000","$16.37",18.06],["Schwab (Charles)","R.A. Wurster, CEO","5/28/26","21,959","$84.23",88.74]];
+const insS=[["Airbnb, Inc.","B. Chesky*","5/27–28/26","495,296","$129.82–134.44",137.87],["Apple Inc.","A.D. Levinson, Dir.","5/27/26","50,000","$311.02",306.31],["Datadog, Inc.","O. Pomel, Dir.","5/26/26","84,698","$219.24–225.65",277.49],["Flex Ltd.","R. Advaithi, Dir.","5/22/26","83,500","$129.18–134.03",148.01],["Monolithic Power Sys.","S. Tseng, EVP","5/22–27/26","12,565","$1586–1700",1542.39],["Palo Alto Networks","L. Klarich, EVP","5/22/26","62,904","$250.03–261.25",300.48]];
+
+const curve={labels:["3-mo","6-mo","1-yr","5-yr","10-yr","30-yr"],
+ now:[3.78,3.79,3.83,4.18,4.47,4.99], m3:[3.72,3.68,3.54,3.62,4.05,4.70], y1:[4.44,4.31,4.12,4.01,4.46,4.99]};
+
+const monitor=[["Median P/E of VL stocks","17.7","17.7","11.0 at 3/23/20 bottom"],
+ ["DJIA P/E (12-mo est. EPS)","23.0","22.6","14.1"],
+ ["Median dividend yield (VL)","2.1%","2.0%","3.7%"],
+ ["Prime rate","6.8%","6.8%","3.3%"],
+ ["Fed funds","3.6%","3.6%","0.2%"],
+ ["30-yr Treasury yield","5.0%","5.1%","1.3%"],
+ ["Bond yield − earnings yield","−0.3%","−0.3%","−5.5%"],
+ ["CBOE put/call","0.71","0.84","1.05"]];
+
+/* ================= HELPERS (simple tables) ================= */
+const fmt=n=>typeof n==="number"?n.toLocaleString("en-US",{minimumFractionDigits:(n%1?2:0),maximumFractionDigits:2}):n;
+const pct=n=>`<span class="${n>=0?'up':'dn'}">${n>0?'+':''}${n.toFixed(1)}%</span>`;
+function buildTable(el,cols,rows,opts={}){
+  const t=document.getElementById(el);
+  let dir={},data=rows.slice();
+  function render(){
+    t.innerHTML="<thead><tr>"+cols.map((c,i)=>`<th data-i="${i}">${c} <span class="arr">⇅</span></th>`).join("")+"</tr></thead><tbody>"+
+    data.map(r=>"<tr>"+r.map((v,i)=>{
+      if(opts.pctCols&&opts.pctCols.includes(i)&&typeof v==="number")return`<td>${pct(v)}</td>`;
+      return`<td>${fmt(v)}</td>`;}).join("")+"</tr>").join("")+"</tbody>";
+    t.querySelectorAll("th").forEach(th=>th.onclick=()=>{
+      const i=+th.dataset.i;dir[i]=!dir[i];
+      data.sort((a,b)=>{const x=a[i],y=b[i];
+        const nx=parseFloat(x),ny=parseFloat(y);
+        const cmp=(!isNaN(nx)&&!isNaN(ny))?nx-ny:String(x).localeCompare(String(y));
+        return dir[i]?cmp:-cmp;});
+      render();});
+  }
+  render();
+}
+
+/* ================= TABS (page nav) ================= */
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("#nav button").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll("main>section").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");document.getElementById(b.dataset.t).classList.add("active");
+});
+
+/* ================= SIMPLE TABLES ================= */
+buildTable("tblIdx",["Index","5/26/26","6/2/26","1 Week","12 Months"],
+  idx.map(r=>[r[0],r[1],r[2],r[3],r[4]]),{pctCols:[3,4]});
+buildTable("tblScreen",["Ticker","Company","Industry","Yield %","Safety","Payout %","Div Gr last 5y %","Proj 3-5y %","Fin. Strength"],screen);
+buildTable("tblBuys",["Ticker","Company","# Holders","% Held","% Increase"],instBuys);
+buildTable("tblSells",["Ticker","Company","# Holders","% Held","% Decrease"],instSells);
+buildTable("tblInsB",["Company","Insider","Date","Shares","Price Range","Recent"],insB);
+buildTable("tblInsS",["Company","Insider","Date","Shares","Price Range","Recent"],insS);
+(function(){const t=document.getElementById("tblMon");
+ t.innerHTML="<thead><tr><th>Market Monitor</th><th>6/2 (market top)</th><th>5/26</th><th>At 3/20 bottom</th></tr></thead><tbody>"+
+ monitor.map(r=>`<tr><td>${r[0]}</td><td><strong>${r[1]}</strong></td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("")+"</tbody>";})();
+
+/* =====================================================================
+   MODEL PORTFOLIOS — explorer template module (June 12, 2026 data)
+   ===================================================================== */
+const $=s=>document.querySelector(s);
+const $$=s=>Array.from(document.querySelectorAll(s));
+const fmtN=(v,d=2)=>v==null?"—":Number(v).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
+const recClass=r=>r==="Buy"?"buy":r==="Sell"?"sell":"hold";
+
+const PF_DESC={
+ I:"<strong>Portfolio I — above-average year-ahead price appreciation.</strong> For more aggressive investors. Requires Timeliness 1–3, Financial Strength ≥ B+, above-median 18-month appreciation potential; auto-removed if Timeliness falls below 3. Editor: Anthony J. Glennon. <em>This week:</em> Everpure beat ($0.47 EPS +60%, rev $1.05B +35%) but sold off on a cautious H2 outlook (30% 18-mo potential); Dell blew out ($4.86 EPS, +$1.90 surprise, rev +88%, guide raised to +75% EPS); Marvell +30% EPS — Jensen Huang called it possibly the next trillion-dollar chip company (NVIDIA invested $2B). No trades.",
+ II:"<strong>Portfolio II — income with potential price appreciation.</strong> For more conservative investors. Requires median-or-above 18-month appreciation potential, a dividend, and Safety ≤ 3. Editor: Charles Moran. <em>This week:</em> SAIC raised FY26 guidance ($9.60→$10.00 midpoint) at ~10× forward; HPE doubled EPS y/y, +30% since early June, Juniper integration on schedule; Thermo Fisher jumped on decent results and an undemanding valuation. No changes.",
+ III:"<strong>Portfolio III — long-term price-growth potential.</strong> For 3–5 year horizons. Requires above-median 3–5 year projected appreciation. Editor: James A. Flood. <em>This week:</em> semis lead; Netflix slid from ~$135 to ~$85 since last June's trim despite two strong quarters — the editors see strategic victory in walking away from the Warner Bros. Discovery bidding war (plus a breakup fee). Brent near $98/bbl is the macro overhang. No trades.",
+ IV:"<strong>Portfolio IV — above-average dividend yields.</strong> For current income. Requires a yield ≥ 1% above the VL-universe median and Financial Strength ≥ B+. Editor: Adam Rosner. <em>This week:</em> tech leadership helps Cisco; energy (Chevron, EPD, WES, MPLX) supported by demand and pricing; healthcare soft — Medtronic challenged; banks PNC/USB muted on rate uncertainty and private-credit worries. No trades.",
+ V:"<strong>Portfolio V — growth with favorable risk profiles.</strong> (Formerly Quality Growth.) Requires Timeliness & Safety ≤ 3, Financial Strength ≥ B++ at selection, ≥7% sales / ≥9% EPS growth over 3–5 yrs. Editor: Thomas Mulle CFA. <em>This week:</em> book +3% vs S&P +1% — Dell +57% in five sessions (AI server sales +757% y/y; editors see EPS nearing $20); Broadcom & Fortinet ~+10%; Erie −5% (CFO transition seen as a positive catalyst) and Ball −5% (aluminum costs are passed through; “looks like a bargain”). No changes."
+};
+
+const PF={
+ I:[
+  ["AMD","Advanced Micro Dev.","Semiconductor",510.13,1,91.3,"Hold",114.74,"5/19/25",315.00],
+  ["GOOG","Alphabet Inc.","Internet",372.58,2,34.5,"Buy",176.63,"6/10/24",265.00],
+  ["AMZN","Amazon.com","E-Commerce",261.26,2,34.4,"Buy",188.39,"10/28/24",190.00],
+  ["AR","Antero Resources","Natural Gas (Div.)",36.76,2,8.5,"Buy",44.23,"3/30/26",30.00],
+  ["ANET","Arista Networks","Telecom. Equipment",170.68,2,50.2,"Buy",126.25,"4/6/26",105.00],
+  ["BP","BP PLC ADR","Petroleum (Integrated)",42.94,3,9.5,"Buy",42.65,"5/26/26",35.00],
+  ["DELL","Dell Technologies","Computers/Peripherals",465.96,1,36.1,"Hold",114.82,"12/30/24",270.00],
+  ["ETN","Eaton Corp. plc","Diversified Co.",400.08,2,29.9,"Buy",403.36,"4/13/26",290.00],
+  ["P","Everpure, Inc.","Computers/Peripherals",84.45,3,35.2,"Buy",88.35,"5/26/26",55.00],
+  ["GS","Goldman Sachs","Investment Banking",1048.58,1,17.7,"Buy",503.98,"4/14/25",725.00],
+  ["JLL","Jones Lang LaSalle","Industrial Services",284.86,2,12.5,"Buy",353.47,"4/20/26",260.00],
+  ["MRVL","Marvell Technology","Semiconductor",219.43,1,65.3,"Hold",75.53,"9/22/25",170.00],
+  ["META","Meta Platforms","Internet",600.47,3,18.5,"Buy",531.48,"4/14/25",485.00],
+  ["MSFT","Microsoft Corp.","Computer Software",460.52,2,26.3,"Buy",442.94,"7/22/24",320.00],
+  ["NVT","nVent Electric plc","Electrical Equipment",171.55,2,41.8,"Buy",141.71,"4/27/26",115.00],
+  ["NVDA","NVIDIA Corp.","Semiconductor",224.36,2,27.2,"Buy",140.52,"10/28/24",145.00],
+  ["PBR","Petroleo Brasileiro ADR","Petroleum (Integrated)",18.86,2,4.4,"Buy",11.59,"12/29/25",13.00],
+  ["SANM","Sanmina Corp.","Electronics",264.88,1,25.8,"Buy",153.30,"1/5/26",170.00],
+  ["FTI","TechnipFMC plc","Oilfield Svcs/Equip.",68.43,2,23.2,"Buy",34.44,"6/30/25",55.00],
+  ["VST","Vistra Corp.","Power",154.76,3,16.3,"Buy",160.85,"5/4/26",110.00]
+ ],
+ II:[
+  ["APH","Amphenol Corp.","Electrical Equipment",146.34,0.7,3,2,"Buy",65.59,"3/31/25",104.00],
+  ["AVGO","Broadcom Inc.","Semiconductor",459.97,0.6,2,3,"Buy",168.55,"11/4/24",258.00],
+  ["CVS","CVS Health","Medical Services",90.62,3.1,2,3,"Buy",66.81,"6/23/25",57.00],
+  ["LNG","Cheniere Energy Inc.","Oil/Gas Distribution",227.88,1.0,2,3,"Buy",272.85,"5/4/26",215.00],
+  ["COST","Costco Wholesale","Retail Store",946.11,0.6,3,1,"Buy",910.94,"10/6/25",774.00],
+  ["DKS","Dick's Sporting Goods","Retail (Hardlines)",216.96,2.2,3,3,"Buy",230.62,"4/20/26",174.00],
+  ["EOG","EOG Resources","Natural Gas (Div.)",136.62,3.1,2,3,"Buy",107.64,"4/14/25",112.00],
+  ["ETN","Eaton Corp. plc","Diversified Co.",400.08,1.0,2,2,"Buy",343.75,"9/2/25",288.00],
+  ["ET","Energy Transfer LP","Pipeline MLPs",19.27,7.0,3,3,"Buy",12.51,"5/15/23",15.00],
+  ["FCX","Freep't-McMoRan Inc.","Metals & Mining (Div.)",67.04,0.9,3,3,"Buy",43.79,"7/28/25",44.00],
+  ["GS","Goldman Sachs","Investment Banking",1048.58,1.7,1,2,"Buy",866.05,"4/6/26",620.00],
+  ["HPE","Hewlett Packard Ent.","Computers/Peripherals",47.00,1.2,2,3,"Buy",33.00,"5/18/26",25.00],
+  ["HII","Huntington Ingalls","Aerospace/Defense",296.41,1.9,3,3,"Buy",320.95,"5/26/26",260.00],
+  ["KMI","Kinder Morgan Inc.","Oil/Gas Distribution",30.85,3.9,3,3,"Buy",18.36,"4/8/24",27.00],
+  ["LRCX","Lam Research","Semiconductor Equip",317.12,0.3,1,3,"Buy",74.17,"11/4/24",186.00],
+  ["LLY","Lilly (Eli)","Drug",1082.20,0.6,2,2,"Buy",832.44,"11/11/24",729.00],
+  ["META","Meta Platforms","Internet",600.47,0.4,3,3,"Hold",578.16,"10/28/24",483.00],
+  ["MSFT","Microsoft Corp.","Computer Software",460.52,0.8,2,1,"Buy",426.59,"10/28/24",275.00],
+  ["SAIC","Science Applications","Industrial Services",115.08,1.3,1,3,"Buy",92.49,"3/2/26",78.00],
+  ["TMO","Thermo Fisher Sci.","Med Supp Non-Invasive",494.04,0.3,2,2,"Buy",516.44,"2/23/26",382.00]
+ ],
+ III:[
+  ["GOOG","Alphabet Inc.","Internet",372.58,14.0,34.5,20,"Buy",168.34,"10/28/24",200.00],
+  ["MO","Altria Group","Tobacco",68.65,4.5,12.2,5,"Buy",42.20,"12/18/23",45.00],
+  ["AMZN","Amazon.com","E-Commerce",261.26,17.0,34.4,80,"Buy",182.12,"4/14/25",155.00],
+  ["AMCR","Amcor plc","Packaging & Container",37.73,7.0,12.3,60,"Hold",49.45,"1/27/25",35.00],
+  ["AAPL","Apple Inc.","Computers/Peripherals",306.31,11.0,34.8,30,"Buy",20.05,"5/21/12",185.00],
+  ["BRKB","Berkshire Hathaway 'B'","Insurance (Prop/Cas.)",470.29,9.5,20.3,70,"Buy",480.17,"3/2/26",360.00],
+  ["CVX","Chevron Corp.","Petroleum (Integrated)",185.83,6.5,19.6,45,"Hold",150.88,"10/21/24",120.00],
+  ["EPD","Enterprise Products","Pipeline MLPs",37.21,7.5,12.8,50,"Buy",32.55,"5/19/25",24.00],
+  ["ES","Eversource Energy","Electric Utility (East)",66.61,4.5,13.7,50,"Buy",58.50,"2/3/25",44.00],
+  ["FSLR","First Solar, Inc.","Power",303.00,17.0,17.4,55,"Buy",128.82,"3/24/25",115.00],
+  ["MCD","McDonald's Corp.","Restaurant",276.11,8.5,20.8,65,"Buy",292.17,"6/30/25",219.00],
+  ["META","Meta Platforms","Internet",600.47,16.0,18.5,110,"Buy",152.87,"6/19/17",425.00],
+  ["MSFT","Microsoft Corp.","Computer Software",460.52,12.0,26.3,65,"Buy",426.59,"10/28/24",315.00],
+  ["NFLX","Netflix, Inc.","Entertainment",85.85,18.5,27.3,110,"Buy",18.65,"5/16/22",70.00],
+  ["NEM","Newmont Corp.","Precious Metals",108.19,23.5,12.3,95,"Buy",39.46,"8/14/23",85.00],
+  ["NVDA","NVIDIA Corp.","Semiconductor",224.36,29.0,27.2,55,"Buy",110.71,"4/14/25",136.00],
+  ["PAGP","Plains GP Hldgs. L.P.","Pipeline MLPs",24.78,16.5,20.7,30,"Buy",17.84,"11/4/24",14.00],
+  ["RIO","Rio Tinto plc","Metals & Mining (Div.)",108.96,3.5,15.8,-25,"Buy",69.37,"3/14/22",52.00],
+  ["RGLD","Royal Gold","Precious Metals",217.86,21.0,18.6,150,"Hold",140.88,"2/3/25",150.00],
+  ["TRN","Trinity Inds.","Railroad",31.92,8.5,13.9,65,"Buy",27.65,"8/11/25",21.00]
+ ],
+ IV:[
+  ["T","AT&T Inc.","Telecom. Services",24.55,3,5.1,1.5,"Buy",24.25,"2/3/25",23.00],
+  ["MO","Altria Group","Tobacco",68.65,1,6.2,6.0,"Buy",60.49,"6/23/25",52.00],
+  ["AEP","Amer. Elec. Power","Electric Util. (Central)",123.79,1,3.1,3.5,"Buy",99.11,"10/28/24",102.00],
+  ["AMGN","Amgen","Biotechnology",329.13,2,3.1,5.5,"Buy",274.81,"1/21/25",280.00],
+  ["BMY","Bristol-Myers Squibb","Drug",54.95,2,4.6,2.5,"Buy",51.34,"4/14/25",45.00],
+  ["CVX","Chevron Corp.","Petroleum (Integrated)",185.83,1,3.9,4.5,"Buy",156.60,"7/29/24",164.00],
+  ["CSCO","Cisco Systems","Telecom. Equipment",121.33,1,1.4,3.0,"Buy",49.41,"3/15/21",85.00],
+  ["DRI","Darden Restaurants","Restaurant",201.91,3,3.0,7.0,"Buy",162.20,"10/28/24",156.00],
+  ["DUK","Duke Energy","Electric Utility (East)",119.89,1,3.6,4.0,"Hold",108.56,"12/23/24",101.00],
+  ["EPD","Enterprise Products","Pipeline MLPs",37.21,1,6.2,6.5,"Buy",33.64,"2/24/25",30.00],
+  ["JNJ","Johnson & Johnson","Drug",223.51,1,2.3,6.0,"Buy",149.24,"7/15/24",188.00],
+  ["MPLX","MPLX LP","Pipeline MLPs",54.99,2,7.9,7.5,"Buy",50.97,"9/2/25",47.00],
+  ["MDT","Medtronic plc","Med Supp Invasive",73.98,1,3.9,3.5,"Buy",92.46,"1/27/25",69.00],
+  ["ORI","Old Republic","Insurance (Prop/Cas.)",36.66,2,3.4,6.0,"Buy",37.12,"7/14/25",30.00],
+  ["PNC","PNC Financial Serv.","Bank",216.07,3,3.3,8.5,"Buy",197.28,"2/10/25",162.00],
+  ["PKG","Packaging Corp.","Packaging & Container",221.67,2,2.3,6.5,"Buy",131.34,"11/21/22",168.00],
+  ["PEP","PepsiCo, Inc.","Beverage",141.52,1,4.2,4.5,"Hold",161.53,"3/9/26",120.00],
+  ["PSA","Public Storage","R.E.I.T.",295.80,2,4.1,null,"Buy",269.30,"12/4/23",220.00],
+  ["USB","U.S. Bancorp","Bank",53.55,2,4.0,6.5,"Buy",47.12,"3/6/23",40.00],
+  ["WES","Western Midstream","Pipeline MLPs",43.24,3,8.8,7.0,"Hold",38.70,"6/30/25",33.00]
+ ],
+ V:[
+  ["GOOG","Alphabet Inc.","Internet",372.58,0.2,"Hold",176.62,"6/27/25",225.00],
+  ["AMZN","Amazon.com","E-Commerce",261.26,null,"Buy",139.57,"8/4/23",155.00],
+  ["ASML","ASML Holdings","Semicond. Equip.",1628.57,0.4,"Buy",730.33,"3/17/25",985.00],
+  ["BALL","Ball Corp.","Packaging & Container",53.70,1.4,"Buy",55.62,"1/9/26",43.00],
+  ["BP","BP PLC ADR","Petroleum (Integrated)",42.94,4.6,"Hold",35.90,"12/8/25",31.00],
+  ["AVGO","Broadcom Inc.","Semiconductor",459.97,0.6,"Buy",352.13,"12/29/25",232.00],
+  ["CACI","CACI Int'l","Industrial Services",524.92,null,"Buy",610.17,"2/27/26",454.00],
+  ["DELL","Dell Technologies","Computers/Peripherals",465.96,0.7,"Buy",157.67,"3/23/26",118.00],
+  ["DD","DuPont de Nemours","Chemical (Basic)",47.59,1.7,"Buy",33.56,"11/2/25",32.00],
+  ["ETN","Eaton Corp. plc","Diversified Co.",400.08,1.0,"Buy",381.56,"11/3/25",267.00],
+  ["ERIE","Erie Indemnity","Insurance (Prop/Cas.)",211.61,2.7,"Buy",217.09,"5/11/26",172.00],
+  ["FTNT","Fortinet Inc.","Cyber Security",147.14,null,"Buy",76.51,"8/8/25",61.00],
+  ["GD","Gen'l Dynamics","Aerospace/Defense",339.20,1.8,"Buy",278.45,"5/30/25",259.00],
+  ["GS","Goldman Sachs","Investment Banking",1048.58,1.8,"Hold",709.57,"8/1/25",610.00],
+  ["IHG","InterCont'l Hotels Grp","Hotel/Gaming",155.01,1.1,"Buy",124.05,"10/20/25",100.00],
+  ["TROW","Price (T. Rowe) Group","Asset Management",103.92,5.0,"Buy",87.22,"3/16/26",65.00],
+  ["RSG","Republic Services","Environmental",200.83,1.1,"Hold",228.27,"9/29/25",165.00],
+  ["TXT","Textron, Inc.","Diversified Co.",89.59,0.1,"Buy",71.02,"5/2/25",66.00],
+  ["UTHR","United Therapeutics","Biotechnology",544.62,null,"Buy",544.62,"6/1/26",425.00],
+  ["WAB","Wabtec Corp.","Railroad",256.01,0.5,"Buy",199.32,"5/23/25",177.00]
+ ]
+};
+
+const PF_STATS={
+ I:{rev:"20%",eps:"24%",ev:"22×",pe:"26×",roe:"21%",mc:"$191.5B",dy:"0.6%"},
+ II:{rev:"14%",eps:"21%",ev:"16×",pe:"27×",roe:"21%",mc:"$138.2B",dy:"0.9%"},
+ III:{rev:"8%",eps:"20%",ev:"13×",pe:"22×",roe:"22%",mc:"$193.8B",dy:"3.1%"},
+ IV:{rev:"5%",eps:"9%",ev:"11×",pe:"19×",roe:"23%",mc:"$91.6B",dy:"3.8%"},
+ V:{rev:"6%",eps:"11%",ev:"15×",pe:"22×",roe:"18%",mc:"$34.2B",dy:"1.2%"}
+};
+
+/* 2025 year-end closes (split-adjusted, NOT dividend-adjusted), 12/31/2025.
+   YTD% = Recent ÷ this − 1, computed live. Everpure (P) listed 5/26/26 → no YE close. */
+const YE2025={
+ AMD:214.16, GOOG:313.80, AMZN:230.82, AR:34.46, ANET:131.03, BP:34.73, DELL:125.88,
+ ETN:318.51, GS:879, JLL:336.47, MRVL:84.98, META:660.09, MSFT:483.62, NVT:101.97,
+ NVDA:186.50, PBR:11.85, SANM:150.07, FTI:44.56, VST:161.33,
+ APH:135.14, AVGO:346.10, CVS:79.36, LNG:194.39, COST:862.34, DKS:197.97, EOG:105.01,
+ ET:16.49, FCX:50.79, HPE:24.02, HII:340.07, KMI:27.49, LRCX:171.18, LLY:1074.68,
+ SAIC:100.66, TMO:579.45,
+ MO:57.66, AMCR:41.70, AAPL:271.86, BRKB:502.65, CVX:152.41, EPD:32.06, ES:67.33,
+ FSLR:261.23, MCD:305.63, NFLX:93.76, NEM:99.85, PAGP:19.14, RIO:80.03, RGLD:222.29, TRN:26.44,
+ T:24.84, AEP:115.31, AMGN:327.31, BMY:53.94, CSCO:77.03, DRI:184.02, DUK:117.21, JNJ:206.95,
+ MPLX:53.37, MDT:96.06, ORI:45.64, PNC:208.73, PKG:206.23, PEP:143.52, PSA:259.50, USB:53.36, WES:39.50,
+ ASML:1069.86, BALL:52.97, CACI:532.81, DD:40.20, ERIE:286.65, FTNT:79.41, GD:336.66, IHG:140.83,
+ TROW:102.38, RSG:211.93, TXT:87.17, UTHR:487.25, WAB:213.45
+};
+const ytdPct=(tkr,price)=>(YE2025[tkr]!=null&&price!=null)?(price/YE2025[tkr]-1)*100:null;
+
+/* ===== ALPHA vs S&P 500 =====
+   YTD alpha = holding YTD% − SPX YTD%. P/L alpha = holding P/L% − SPX from the
+   month-end of the purchase month to 6/2/26.
+   SPX 12/31/25 close 6819.20, SPX 6/2/26 close 7609.78 (= SPX_END). */
+const SPX_END=7609.78;
+const SPX_YE_2025=6819.20;
+const SPX_YTD=(SPX_END/SPX_YE_2025-1)*100;   // ≈ +11.6%
+const SPX_ME={ // month-end S&P 500 closes; 2026-05 proxied by 5/26 close; 2026-06 = 6/2 so current buys read ~0
+ "2017-06":2418.00,"2021-03":3963.30,"2022-03":4516.40,"2022-05":4129.30,"2022-11":4076.80,
+ "2023-03":4093.90,"2023-05":4178.50,"2023-08":4503.50,"2023-12":4753.10,
+ "2024-04":5019.80,"2024-06":5442.20,"2024-07":5508.10,"2024-10":5686.40,"2024-11":6025.50,"2024-12":5860.80,
+ "2025-01":6018.20,"2025-02":5941.80,"2025-03":5593.90,"2025-04":5545.40,"2025-05":5893.90,"2025-06":6178.50,
+ "2025-07":6320.80,"2025-08":6450.50,"2025-09":6661.80,"2025-10":6820.60,"2025-11":6833.90,"2025-12":6819.20,
+ "2026-01":6919.70,"2026-02":6859.90,"2026-03":6503.40,"2026-04":7186.60,"2026-05":7519.12,"2026-06":7609.78
+};
+function spxSinceBuy(pd){
+  if(!pd)return null;
+  const m=String(pd).split("/"); if(m.length<3)return null;
+  const key="20"+m[2].padStart(2,"0")+"-"+String(+m[0]).padStart(2,"0");
+  const s=SPX_ME[key];
+  return s!=null?(SPX_END/s-1)*100:null;
+}
+function alphaCell(r){
+  const line=(val,lbl)=>`<div class="alrow"><span class="allbl">${lbl}</span>${val==null?'<span class="amuted">—</span>':`<span class="${val>=0?'gain':'loss'}">${(val>0?"+":"")+val.toFixed(1)}</span>`}</div>`;
+  let h=line(r.aYtd,"YTD");
+  h+=line(r.aPl,"P/L");
+  return `<td class="l alpha">${h}</td>`;
+}
+const ALPHA_NOTE='<div style="margin-top:8px;font-size:11.5px;color:var(--text3)">↳ <strong>Alpha</strong> = holding return − S&amp;P 500 index over the same window. <strong>YTD</strong> vs SPX <strong>+11.6%</strong> YTD; <strong>P/L</strong> vs SPX from the purchase month to 6/2/26 (AAPL\'s 2012 buy predates available SPX data, Everpure has no 2025 close → —).</div>';
+
+/* Value Line industries → broad sectors for grouping */
+const SECTOR={
+ "Semiconductor":"Information Technology","Semiconductor Equip":"Information Technology","Semicond. Equip.":"Information Technology",
+ "Computers/Peripherals":"Information Technology","Computer Software":"Information Technology","Telecom. Equipment":"Information Technology",
+ "Electronics":"Information Technology","Cyber Security":"Information Technology",
+ "Electrical Equipment":"Industrials","Diversified Co.":"Industrials","Industrial Services":"Industrials",
+ "Aerospace/Defense":"Industrials","Railroad":"Industrials","Environmental":"Industrials",
+ "Internet":"Communication Services","Entertainment":"Communication Services","Telecom. Services":"Communication Services",
+ "E-Commerce":"Consumer Discretionary","Retail (Hardlines)":"Consumer Discretionary","Restaurant":"Consumer Discretionary","Hotel/Gaming":"Consumer Discretionary",
+ "Retail Store":"Consumer Staples","Tobacco":"Consumer Staples","Beverage":"Consumer Staples",
+ "Natural Gas (Div.)":"Energy","Petroleum (Integrated)":"Energy","Oilfield Svcs/Equip.":"Energy","Oil/Gas Distribution":"Energy","Pipeline MLPs":"Energy",
+ "Investment Banking":"Financials","Insurance (Prop/Cas.)":"Financials","Bank":"Financials","Asset Management":"Financials",
+ "Medical Services":"Health Care","Drug":"Health Care","Med Supp Non-Invasive":"Health Care","Med Supp Invasive":"Health Care","Biotechnology":"Health Care",
+ "Power":"Utilities","Electric Utility (East)":"Utilities","Electric Util. (Central)":"Utilities",
+ "Metals & Mining (Div.)":"Materials","Precious Metals":"Materials","Packaging & Container":"Materials","Chemical (Basic)":"Materials",
+ "R.E.I.T.":"Real Estate"
+};
+const sectorOf=ind=>SECTOR[ind]||"Other";
+
+const PF_COLS={
+ I:[["tkr","Ticker","s"],["co","Company","s"],["ind","Industry","s"],["price","Recent","n"],["ytd","YTD%","n"],["pl","P/L%","n"],["alpha","Alpha vs SPX","n"],["tl","Timely","n"],["pe","P/E","n"],["rec","Rec","s"],["pp","Buy Px","n"],["pd","Date","s"],["sl","Stop","n"]],
+ II:[["tkr","Ticker","s"],["co","Company","s"],["ind","Industry","s"],["price","Recent","n"],["ytd","YTD%","n"],["pl","P/L%","n"],["alpha","Alpha vs SPX","n"],["dy","Yield%","n"],["tl","Timely","n"],["sf","Safety","n"],["rec","Rec","s"],["pp","Buy Px","n"],["pd","Date","s"],["sl","Stop","n"]],
+ III:[["tkr","Ticker","s"],["co","Company","s"],["ind","Industry","s"],["price","Recent","n"],["ytd","YTD%","n"],["pl","P/L%","n"],["alpha","Alpha vs SPX","n"],["gr","EPS Gr%","n"],["pe","P/E","n"],["ap","3-5y Appr%","n"],["rec","Rec","s"],["pp","Buy Px","n"],["pd","Date","s"],["sl","Stop","n"]],
+ IV:[["tkr","Ticker","s"],["co","Company","s"],["ind","Industry","s"],["price","Recent","n"],["ytd","YTD%","n"],["pl","P/L%","n"],["alpha","Alpha vs SPX","n"],["sf","Safety","n"],["dy","Yield%","n"],["dg","Div Gr%","n"],["rec","Rec","s"],["pp","Buy Px","n"],["pd","Date","s"],["sl","Stop","n"]],
+ V:[["tkr","Ticker","s"],["co","Company","s"],["ind","Industry","s"],["price","Recent","n"],["ytd","YTD%","n"],["pl","P/L%","n"],["alpha","Alpha vs SPX","n"],["dy","Yield%","n"],["rec","Rec","s"],["pp","Buy Px","n"],["pd","Date","s"],["sl","Stop","n"]]
+};
+function pfRowObjs(pf){
+  return PF[pf].map(a=>{
+    let o;
+    if(pf==="I") o={tkr:a[0],co:a[1],ind:a[2],price:a[3],tl:a[4],pe:a[5],rec:a[6],pp:a[7],pd:a[8],sl:a[9]};
+    else if(pf==="V") o={tkr:a[0],co:a[1],ind:a[2],price:a[3],dy:a[4],rec:a[5],pp:a[6],pd:a[7],sl:a[8]};
+    else if(pf==="II") o={tkr:a[0],co:a[1],ind:a[2],price:a[3],dy:a[4],tl:a[5],sf:a[6],rec:a[7],pp:a[8],pd:a[9],sl:a[10]};
+    else if(pf==="III") o={tkr:a[0],co:a[1],ind:a[2],price:a[3],gr:a[4],pe:a[5],ap:a[6],rec:a[7],pp:a[8],pd:a[9],sl:a[10]};
+    else o={tkr:a[0],co:a[1],ind:a[2],price:a[3],sf:a[4],dy:a[5],dg:a[6],rec:a[7],pp:a[8],pd:a[9],sl:a[10]};
+    o.ytd=ytdPct(o.tkr,o.price);
+    o.pl=(o.price!=null&&o.pp)?(o.price/o.pp-1)*100:null;
+    o.aYtd=o.ytd!=null?o.ytd-SPX_YTD:null;
+    const sret=spxSinceBuy(o.pd);
+    o.aPl=(o.pl!=null&&sret!=null)?o.pl-sret:null;
+    o.alpha=o.aYtd;
+    return o;
+  });
+}
+let pfState={pf:"I",sortK:null,sortDir:1};
+function cellPF(k,v,r){
+  if(k==="alpha")return alphaCell(r);
+  if(k==="tkr")return `<td class="l tkr">${v}</td>`;
+  if(k==="co")return `<td class="l co">${v}</td>`;
+  if(k==="ind")return `<td class="l ind">${v}</td>`;
+  if(k==="rec")return `<td class="l"><span class="rec ${recClass(v)}">${v}</span></td>`;
+  if(k==="tl"||k==="sf")return `<td><span class="pill r${v}">${v}</span></td>`;
+  if(k==="pd")return `<td>${v}</td>`;
+  if(k==="dy")return `<td>${v==null?"—":v.toFixed(1)}</td>`;
+  if(k==="gr"||k==="dg")return `<td>${v==null?"NMF":v.toFixed(1)}</td>`;
+  if(k==="ap")return `<td class="${v>=0?'gain':'loss'}">${v==null?"—":(v>0?"+":"")+v}</td>`;
+  if(k==="ytd"||k==="pl")return `<td class="${v==null?'':v>=0?'gain':'loss'}">${v==null?"—":(v>0?"+":"")+v.toFixed(1)+"%"}</td>`;
+  if(k==="pe")return `<td>${v==null?"—":v.toFixed(1)}</td>`;
+  return `<td>${v==null?"—":fmtN(v)}</td>`;
+}
+function renderPF(){
+  const pf=pfState.pf;
+  const cdef=PF_COLS[pf];
+  $("#pfDesc").innerHTML=PF_DESC[pf]+ALPHA_NOTE;
+  $("#pfHead").innerHTML="<tr>"+cdef.map(c=>`<th class="${['tkr','co','ind','rec','alpha'].includes(c[0])?'l':''}" data-k="${c[0]}" data-t="${c[2]}">${c[1]}</th>`).join("")+"</tr>";
+  let rows=pfRowObjs(pf);
+  const q=$("#pfSearch").value.toLowerCase().trim();
+  const recF=$("#pfRec").value;
+  if(q)rows=rows.filter(r=>(r.tkr+" "+r.co+" "+r.ind).toLowerCase().includes(q));
+  if(recF)rows=rows.filter(r=>r.rec===recF);
+  if(pfState.sortK){
+    const k=pfState.sortK,t=cdef.find(c=>c[0]===k)[2];
+    rows.sort((a,b)=>{let x=a[k],y=b[k];if(t==="n"){x=x==null?-1e9:x;y=y==null?-1e9:y;return(x-y)*pfState.sortDir;}return String(x).localeCompare(String(y))*pfState.sortDir;});
+  }
+  const rowHTML=r=>"<tr>"+cdef.map(c=>cellPF(c[0],r[c[0]],r)).join("")+"</tr>";
+  const grouped=$("#pfGroup").checked;
+  if(grouped){
+    const colspan=cdef.length;
+    const groups={};
+    rows.forEach(r=>{const s=sectorOf(r.ind);(groups[s]=groups[s]||[]).push(r);});
+    const order=Object.keys(groups).sort((a,b)=>groups[b].length-groups[a].length||a.localeCompare(b));
+    $("#pfBody").innerHTML=order.map(s=>
+      `<tr class="grp"><td colspan="${colspan}">${s}<span class="gcount">${groups[s].length} ${groups[s].length===1?"holding":"holdings"}</span></td></tr>`
+      +groups[s].map(rowHTML).join("")
+    ).join("");
+  }else{
+    $("#pfBody").innerHTML=rows.map(rowHTML).join("");
+  }
+  $("#pfCount").textContent=rows.length+" holdings";
+  bindSort("#pfTable",k=>{pfState.sortDir=(pfState.sortK===k)?-pfState.sortDir:1;pfState.sortK=k;renderPF();},pfState);
+}
+function renderPFStats(){
+  const order=["I","II","III","IV","V"];
+  const names={I:"Aggressive",II:"Income+Growth",III:"Long-Term",IV:"High Yield",V:"Quality Growth"};
+  $("#pfStats").innerHTML=order.map(p=>{
+    const s=PF_STATS[p];
+    return `<div class="tile${p===pfState.pf?' sel':''}" style="cursor:pointer" data-pfstat="${p}">
+      <div class="tile-label">Portfolio ${p} · ${names[p]}</div>
+      <div class="tile-value">${s.pe} <span style="font-size:12px;color:var(--text3);font-weight:600">P/E</span></div>
+      <div class="tile-sub">EPS gr <strong>${s.eps}</strong> · ROE <strong>${s.roe}</strong> · Yield <strong>${s.dy}</strong></div>
+      <div class="tile-note">Median mkt cap <strong>${s.mc}</strong> · Rev gr ${s.rev} · EV/EBITDA ${s.ev}</div>
+    </div>`;
+  }).join("");
+  $$("#pfStats [data-pfstat]").forEach(t=>t.addEventListener("click",()=>selectPF(t.dataset.pfstat)));
+}
+function selectPF(pf){
+  pfState.pf=pf;pfState.sortK=null;pfState.sortDir=1;
+  $$("#pfTabs .tab").forEach(t=>t.classList.toggle("active",t.dataset.pf===pf));
+  renderPFStats();renderPF();
+}
+function bindSort(tableSel,cb,state){
+  $$(tableSel+" thead th").forEach(th=>{
+    th.classList.remove("sort-asc","sort-desc");
+    if(state.sortK===th.dataset.k)th.classList.add(state.sortDir>0?"sort-asc":"sort-desc");
+    th.onclick=()=>cb(th.dataset.k);
+  });
+}
+renderPFStats();renderPF();
+$$("#pfTabs .tab").forEach(t=>t.addEventListener("click",()=>selectPF(t.dataset.pf)));
+$("#pfSearch").addEventListener("input",renderPF);
+$("#pfRec").addEventListener("change",renderPF);
+$("#pfGroup").addEventListener("change",renderPF);
+
+/* ================= CHARTS ================= */
+const names=idx.map(r=>r[0].replace("Standard & Poor's 500","S&P 500").replace("Dow Jones Industrial Average","Dow Jones").replace("NASDAQ Composite","NASDAQ").replace(" (FT-SE 100)","").replace(" (Nikkei)"," Nikkei"));
+new Chart(document.getElementById("chWeek"),{type:"bar",
+ data:{labels:names,datasets:[{label:"% change, 1 week",data:idx.map(r=>r[3]),
+  backgroundColor:idx.map(r=>r[3]>=0?"#0f7b4d":"#b3362c"),borderRadius:4}]},
+ options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x.toFixed(1)+"%"}}},scales:{x:{ticks:{callback:v=>v+"%"}}}}});
+new Chart(document.getElementById("chYear"),{type:"bar",
+ data:{labels:names,datasets:[{label:"% change, 12 months",data:idx.map(r=>r[4]),backgroundColor:"#24407a",borderRadius:4}]},
+ options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>"+"+c.parsed.x.toFixed(1)+"%"}}},scales:{x:{ticks:{callback:v=>v+"%"}}}}});
+new Chart(document.getElementById("chInd"),{type:"bar",
+ data:{labels:industries.map(r=>r[0]),datasets:[{data:industries.map(r=>r[1]),
+  backgroundColor:industries.map(r=>r[1]>=0?"#0f7b4d":"#b3362c"),borderRadius:4}]},
+ options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.parsed.x>0?"+":"")+c.parsed.x.toFixed(1)+"%"}}},scales:{x:{ticks:{callback:v=>v+"%"}}}}});
+new Chart(document.getElementById("chCurve"),{type:"line",
+ data:{labels:curve.labels,datasets:[
+  {label:"6/1/26",data:curve.now,borderColor:"#1a2f55",backgroundColor:"#1a2f55",tension:.3,borderWidth:3},
+  {label:"3 months ago",data:curve.m3,borderColor:"#b8923d",backgroundColor:"#b8923d",tension:.3,borderDash:[6,4]},
+  {label:"Year ago",data:curve.y1,borderColor:"#9aa3b5",backgroundColor:"#9aa3b5",tension:.3,borderDash:[2,3]}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"}},scales:{y:{ticks:{callback:v=>v.toFixed(1)+"%"}}}}});
+new Chart(document.getElementById("chScreen"),{type:"scatter",
+ data:{datasets:[{label:"Screen stocks",data:screen.map(s=>({x:s[3],y:s[7],t:s[0]})),
+  backgroundColor:"#24407a",pointRadius:6,pointHoverRadius:8}]},
+ options:{responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw.t}: ${c.raw.x}% yield, ${c.raw.y}% proj. growth`}}},
+  scales:{x:{title:{display:true,text:"Dividend yield %"}},y:{title:{display:true,text:"Projected 3–5 yr dividend growth %"}}}}});
+</script>
+</body>
+</html>
