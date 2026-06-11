@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSFT Investment Dashboard — June 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0f1420; --card:#1a2233; --card2:#212b40; --border:#2e3a52;
+    --text:#e8edf5; --muted:#94a3b8; --accent:#4f8ef7; --green:#34d399; --red:#f87171; --amber:#fbbf24;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px}
+  header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;border-bottom:2px solid var(--accent);padding-bottom:16px;margin-bottom:20px}
+  h1{font-size:26px}
+  h1 span{color:var(--accent)}
+  .sub{color:var(--muted);font-size:13px;margin-top:4px}
+  .price-block{text-align:right}
+  .price{font-size:34px;font-weight:700}
+  .chg{color:var(--red);font-size:14px;font-weight:600}
+  .badge{display:inline-block;background:var(--green);color:#06281c;font-weight:700;padding:4px 14px;border-radius:20px;font-size:14px;margin-top:6px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+  .kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:default;transition:transform .15s,border-color .15s}
+  .kpi:hover{transform:translateY(-3px);border-color:var(--accent)}
+  .kpi .l{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+  .kpi .v{font-size:21px;font-weight:700;margin-top:4px}
+  .kpi .s{font-size:11px;color:var(--muted);margin-top:2px}
+  .green{color:var(--green)} .red{color:var(--red)} .amber{color:var(--amber)} .blue{color:var(--accent)}
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  nav button{background:var(--card);color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:9px 16px;font-size:14px;cursor:pointer;font-weight:600;transition:all .15s}
+  nav button:hover{color:var(--text);border-color:var(--accent)}
+  nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .tab{display:none;animation:fade .25s ease}
+  .tab.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+  .card h2{font-size:17px;margin-bottom:12px;color:#cfe0ff}
+  .card h2 .tag{font-size:11px;color:var(--muted);font-weight:400;margin-left:8px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .chart-box{position:relative;height:300px}
+  .chart-box.tall{height:340px}
+  ul.clean{list-style:none}
+  ul.clean li{padding:8px 0 8px 22px;position:relative;border-bottom:1px solid var(--border);font-size:14px}
+  ul.clean li:last-child{border-bottom:none}
+  ul.clean li::before{content:"▸";position:absolute;left:2px;color:var(--accent)}
+  ul.bull li::before{content:"▲";color:var(--green);font-size:11px;top:11px}
+  ul.bear li::before{content:"▼";color:var(--red);font-size:11px;top:11px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--border)}
+  th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .pill{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--muted)}
+  .pill b{color:var(--text)}
+  .gauge-wrap{display:flex;flex-direction:column;gap:14px}
+  .gauge{background:var(--card2);border-radius:10px;padding:14px}
+  .gauge .top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}
+  .bar{height:10px;background:#0c111c;border-radius:6px;position:relative;overflow:visible}
+  .bar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#2563eb,#4f8ef7)}
+  .bar .marker{position:absolute;top:-5px;width:3px;height:20px;background:#fff;border-radius:2px}
+  .bar .mlabel{position:absolute;top:-26px;transform:translateX(-50%);font-size:10px;color:var(--muted);white-space:nowrap}
+  .slider-row{display:flex;align-items:center;gap:14px;margin:10px 0}
+  .slider-row label{width:230px;font-size:13px;color:var(--muted)}
+  .slider-row input[type=range]{flex:1;accent-color:var(--accent)}
+  .slider-row .val{width:80px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .result-box{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;margin-top:12px}
+  .result-box .big{font-size:30px;font-weight:800}
+  .risk-item{background:var(--card2);border-left:4px solid var(--amber);border-radius:8px;padding:12px 14px;margin-bottom:10px;cursor:pointer;transition:background .15s}
+  .risk-item:hover{background:#283453}
+  .risk-item h3{font-size:14px;display:flex;justify-content:space-between;align-items:center}
+  .risk-item .sev{font-size:11px;padding:2px 10px;border-radius:12px;font-weight:700}
+  .sev.high{background:#7f1d1d;color:#fecaca}
+  .sev.med{background:#78350f;color:#fde68a}
+  .risk-item p{font-size:13px;color:var(--muted);margin-top:8px;display:none}
+  .risk-item.open p{display:block}
+  .tl{position:relative;margin-left:14px;padding-left:26px;border-left:2px solid var(--border)}
+  .tl-item{position:relative;padding-bottom:22px}
+  .tl-item::before{content:"";position:absolute;left:-34px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid var(--bg)}
+  .tl-item.down::before{background:var(--red)}
+  .tl-item.up::before{background:var(--green)}
+  .tl-item .when{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  .tl-item .what{font-size:14px;font-weight:700;margin:2px 0 4px}
+  .tl-item .det{font-size:13px;color:var(--muted)}
+  .tl-item .px{font-size:12px;font-weight:700;margin-top:4px}
+  .foot{margin-top:30px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:14px;font-style:italic}
+  .src{font-size:11px;color:var(--muted);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <h1>Microsoft <span>MSFT</span> — Investment Dashboard</h1>
+    <div class="sub">Synthesis of Morningstar (Apr 30 / May 29, 2026), CFRA (Jun 6, 2026) &amp; Value Line (May 1, 2026) · Market data Jun 10, 2026</div>
+  </div>
+  <div class="price-block">
+    <div class="price">$397.36</div>
+    <div class="chg">▼ -$6.05 (-1.50%) today</div>
+    <div class="badge">RECOMMENDATION: BUY</div>
+  </div>
+</header>
+
+<div class="kpis">
+  <div class="kpi"><div class="l">Morningstar Fair Value</div><div class="v blue">$600</div><div class="s green">+51.0% upside · ★★★★</div></div>
+  <div class="kpi"><div class="l">CFRA 12-Mo Target</div><div class="v blue">$480</div><div class="s green">+20.8% upside · Strong Buy</div></div>
+  <div class="kpi"><div class="l">Value Line 18-Mo Midpoint</div><div class="v blue">$532</div><div class="s green">+33.9% upside · range $363-700</div></div>
+  <div class="kpi"><div class="l">Market Cap</div><div class="v">$2.95T</div><div class="s">7.43B shares</div></div>
+  <div class="kpi"><div class="l">P/E (FY27E)</div><div class="v">20.7x</div><div class="s">vs ~31x hist. fwd avg</div></div>
+  <div class="kpi"><div class="l">Azure Growth (cc)</div><div class="v green">+39%</div><div class="s">vs 37.5% guidance</div></div>
+  <div class="kpi"><div class="l">AI Run Rate</div><div class="v green">$37B</div><div class="s">+123% y/y</div></div>
+  <div class="kpi"><div class="l">RPO Backlog</div><div class="v green">$627B</div><div class="s">+99% y/y</div></div>
+  <div class="kpi"><div class="l">Moat / Quality</div><div class="v amber">Wide · A+</div><div class="s">Exemplary capital alloc.</div></div>
+</div>
+
+<nav>
+  <button class="active" data-tab="overview">Overview</button>
+  <button data-tab="business">Business Model</button>
+  <button data-tab="results">Q3 FY26 Results</button>
+  <button data-tab="financials">Financials</button>
+  <button data-tab="valuation">Valuation</button>
+  <button data-tab="bullbear">Bulls vs Bears</button>
+  <button data-tab="decline">Why the Decline</button>
+  <button data-tab="risks">Risks</button>
+  <button data-tab="calc">Return Calculator</button>
+</nav>
+
+<!-- OVERVIEW -->
+<div class="tab active" id="overview">
+  <div class="card">
+    <h2>Thesis in One Paragraph</h2>
+    <p style="font-size:14.5px">Three independent research houses — Morningstar ($600 fair value, wide moat, "top pick"), CFRA (Strong Buy, $480 target, A+ quality) and Value Line ($532 18-month midpoint, A++ Financial Strength, 65-100% appreciation projected by 2029-31) — all see Microsoft as undervalued. The stock has fallen to $397 (~28% below its 52-week high of $555) since these reports were published, driven by anxiety over a ~$190B capex plan, Azure deceleration headlines, and the Musk/OpenAI lawsuit rather than weak results: Q3 FY26 beat the high end of guidance on every line, Azure grew 39%+ while capacity-constrained, and backlog (RPO) doubled to $627B. The bet: AI infrastructure spend is demand-driven, and the market is mispricing long-term cash flows. Value Line's neutral near-term Timeliness rank (3) is the one cautionary note on timing.</p>
+    <div class="pillrow">
+      <div class="pill">Sector: <b>Technology / Systems Software</b></div>
+      <div class="pill">Uncertainty: <b>Medium (both firms)</b></div>
+      <div class="pill">Dividend Yield: <b>0.9%</b> ($3.64/sh)</div>
+      <div class="pill">Balance Sheet: <b>$89B cash vs $123B total debt (12/31/25) · A++ Fin. Strength</b></div>
+      <div class="pill">52-Wk Range: <b>$356 – $555</b></div>
+      <div class="pill">Beta: <b>0.95-1.11</b></div>
+      <div class="pill">VL Earnings Predictability: <b>95/100</b></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Price vs. Analyst Targets</h2>
+    <div class="gauge-wrap">
+      <div class="gauge">
+        <div class="top"><span>Where the stock sits today</span><span>$397.36</span></div>
+        <div class="bar" style="margin-top:30px">
+          <div class="fill" id="rangeFill"></div>
+          <div class="marker" id="mkPrice"></div><div class="mlabel" id="lbPrice">Now $397</div>
+          <div class="marker" id="mkCfra" style="background:var(--amber)"></div><div class="mlabel" id="lbCfra">CFRA $480</div>
+          <div class="marker" id="mkVl" style="background:#a78bfa"></div><div class="mlabel" id="lbVl" style="top:24px">VL $532</div>
+          <div class="marker" id="mkMs" style="background:var(--green)"></div><div class="mlabel" id="lbMs">M* $600</div>
+        </div>
+        <div class="top" style="margin-top:14px;color:var(--muted)"><span>52-wk low $356</span><span>VL 2029-31 high $835</span></div>
+      </div>
+    </div>
+    <div class="chart-box tall" style="margin-top:16px"><canvas id="targetChart"></canvas></div>
+  </div>
+  <div class="card">
+    <h2>Three Firms Compared</h2>
+    <table>
+      <tr><th></th><th>Morningstar</th><th>CFRA</th><th>Value Line</th></tr>
+      <tr><td>Rating</td><td class="green">★★★★ (4-star) — "one of our top picks"</td><td class="green">★★★★★ Strong Buy</td><td class="amber">Timeliness 3 (Neutral) · Safety 1 (highest)</td></tr>
+      <tr><td>Target / Fair Value</td><td>$600 FVE</td><td>$480 12-mo target</td><td>$532 18-mo midpoint ($363-700); $685-835 by 2029-31</td></tr>
+      <tr><td>Method</td><td>DCF; implies ~39x adj. P/E, 14x EV/sales FY26</td><td>23x CY27 EPS $20.70 + DCF (8.1% WACC, 4.5% terminal)</td><td>~33x avg annual P/E on $23.00 EPS by 2029-31</td></tr>
+      <tr><td>Quality view</td><td>Wide moat · Exemplary capital allocation</td><td>A+ SPGMI Quality Ranking · Low-Medium risk</td><td>A++ Financial Strength · Earnings Predictability 95</td></tr>
+      <tr><td>Analyst</td><td>Dan Romanoff, CPA</td><td>Angelo Zino, CFA</td><td>Kathleen Uckert</td></tr>
+    </table>
+    <p class="src">Value Line's neutral Timeliness rank reflects near-term momentum (stock down 9% since its prior review, Azure decelerating sequentially), but it projects 14-20% annualized total returns over 3-5 years — "worthwhile appeal."</p>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<!-- BUSINESS MODEL -->
+<div class="tab" id="business">
+  <div class="card">
+    <h2>Company Introduction — How Microsoft Makes Money</h2>
+    <p style="font-size:14px">Microsoft is the world's largest enterprise software company, selling productivity software, cloud infrastructure, operating systems, gaming, and advertising. The model is dominated by <b>recurring, subscription- and consumption-based revenue sold to businesses</b>: roughly two-thirds of revenue comes from commercial customers paying ongoing fees for Microsoft 365 seats, Azure cloud consumption, Dynamics, and server licenses. That recurring annuity — ~69% gross margin, sticky, increasingly metered by AI usage — is why the market pays a premium multiple, and why the capex debate (see Risks) matters: Microsoft is spending unprecedented capital to convert its software annuity into an AI-compute annuity.</p>
+    <div class="pillrow">
+      <div class="pill">FY25 Revenue <b>$281.7B (+14.9%)</b></div>
+      <div class="pill">Gross margin <b>68.8%</b></div>
+      <div class="pill">Operating margin <b>45.6%</b></div>
+      <div class="pill">Net income <b>$101.8B</b></div>
+      <div class="pill">FCF <b>$71.6B</b></div>
+      <div class="pill">FY26 Q1–Q3 revenue <b>$241.8B</b></div>
+    </div>
+    <div class="src">Financials: FY2025 10-K (fiscal year ended Jun 30, 2025) and FY26 quarterly filings through Q3 (Mar 31, 2026), via FMP.</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h2>FY2025 Revenue by Product Segment <span class="tag">$281.7B total</span></h2>
+      <div class="chart-box tall"><canvas id="bmSegChart"></canvas></div>
+      <p style="font-size:12px;color:var(--muted);margin-top:8px">The two engines — Server Products &amp; Cloud Services (Azure) and Microsoft 365 Commercial — are <b>66% of total revenue</b>.</p>
+    </div>
+    <div class="card">
+      <h2>Where the Money Comes From</h2>
+      <table>
+        <thead><tr><th>Segment</th><th class="num">FY25</th><th class="num">Share</th><th>What it is</th></tr></thead>
+        <tbody>
+          <tr><td><b>Server &amp; Cloud (Azure)</b></td><td class="num">$98.4B</td><td class="num">35%</td><td>Azure consumption billing + SQL/Windows Server. The AI growth engine</td></tr>
+          <tr><td><b>Microsoft 365 Commercial</b></td><td class="num">$87.8B</td><td class="num">31%</td><td>Per-seat subscriptions: Office, Teams, security, Copilot add-ons</td></tr>
+          <tr><td>Gaming</td><td class="num">$23.5B</td><td class="num">8%</td><td>Xbox content/services + Activision; Game Pass</td></tr>
+          <tr><td>LinkedIn</td><td class="num">$17.8B</td><td class="num">6%</td><td>Recruiting subscriptions + ads</td></tr>
+          <tr><td>Windows</td><td class="num">$17.3B</td><td class="num">6%</td><td>OEM + commercial licenses; PC-cycle dependent</td></tr>
+          <tr><td>Search Advertising</td><td class="num">$13.9B</td><td class="num">5%</td><td>Bing/Edge ads (Copilot-boosted)</td></tr>
+          <tr><td>Dynamics</td><td class="num">$7.8B</td><td class="num">3%</td><td>ERP/CRM cloud suite</td></tr>
+          <tr><td>Enterprise Services</td><td class="num">$7.8B</td><td class="num">3%</td><td>Consulting &amp; support</td></tr>
+          <tr><td>M365 Consumer</td><td class="num">$7.4B</td><td class="num">3%</td><td>Consumer subscriptions</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h2>Where the Money Goes — FY2025 Large Expenses</h2>
+      <div class="chart-box tall"><canvas id="bmExpChart"></canvas></div>
+      <p style="font-size:12px;color:var(--muted);margin-top:8px">Blue = P&amp;L expenses; amber = cash outlays. <b>Capex of $64.6B (+45% y/y)</b> — mostly AI datacenters/GPUs — is now the single largest cash outlay and the core of the de-rating debate. D&amp;A of $34.2B (+53% y/y) is that capex arriving in the P&amp;L.</p>
+    </div>
+    <div class="card">
+      <h2>Expense Detail &amp; FY26 Quarterly Trend</h2>
+      <table>
+        <thead><tr><th>FY25 Expense</th><th class="num">Amount</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Cost of revenue</td><td class="num">$87.8B</td><td>Datacenter ops, hardware, content royalties — rising with AI compute mix</td></tr>
+          <tr><td>Capex (cash)</td><td class="num">$64.6B</td><td>AI datacenters; up from $44.5B FY24; ~$190B planned next year</td></tr>
+          <tr><td>Dividends + buybacks</td><td class="num">$42.5B</td><td>$24.1B dividends + $18.4B repurchases</td></tr>
+          <tr><td>R&amp;D</td><td class="num">$32.5B</td><td>11.5% of revenue — AI models, infrastructure, product engineering</td></tr>
+          <tr><td>Sales &amp; marketing</td><td class="num">$25.7B</td><td>Enterprise salesforce + partner channel</td></tr>
+          <tr><td>Income taxes</td><td class="num">$21.8B</td><td>17.6% effective rate</td></tr>
+          <tr><td>Stock-based comp</td><td class="num">$12.0B</td><td>Non-cash but real dilution</td></tr>
+          <tr><td>G&amp;A</td><td class="num">$7.2B</td><td>Lean: 2.6% of revenue</td></tr>
+        </tbody>
+      </table>
+      <div class="chart-box" style="margin-top:12px;height:220px"><canvas id="bmQChart"></canvas></div>
+      <p style="font-size:12px;color:var(--muted);margin-top:8px"><b>Takeaway:</b> margins are elite, but FCF fell y/y ($74.1B → $71.6B) despite +$15B of net income — capex is consuming the incremental cash. That trade-off is exactly what the market is repricing across the AI complex (see "Why the Decline").</p>
+    </div>
+  </div>
+</div>
+
+<div class="tab" id="results">
+  <div class="grid2">
+    <div class="card">
+      <h2>Q3 FY2026 (March Quarter) — Beat Across the Board</h2>
+      <ul class="clean">
+        <li><b>Revenue $82.9B</b> — +15% cc / +18% reported, above the $81.75B high end of guidance</li>
+        <li><b>Operating margin 46.3%</b> — vs 46.1% high-end guide; up from 45.7% a year ago</li>
+        <li><b>All three segments</b> beat the high end of guidance</li>
+        <li><b>Azure +39-40% cc</b> vs 37.5% guidance — while capacity-constrained</li>
+        <li><b>Microsoft Cloud $54.5B</b> (+29%)</li>
+        <li><b>Copilot paid seats &gt;20M</b> (+250%); GitHub Copilot moves to consumption pricing June 2026</li>
+        <li><b>Commercial bookings +7% cc</b> ex-OpenAI (-6% incl. OpenAI)</li>
+        <li><b>Capital returns:</b> $10.2B dividends + buybacks in the quarter</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Guidance &amp; Capex Plan</h2>
+      <ul class="clean">
+        <li><b>Q4 FY26 guide:</b> $87.4B revenue · 44.1% op margin · $4.18 EPS (midpoints) — just shy of consensus, in line with Morningstar's model</li>
+        <li><b>~$190B capex</b> planned over the next three quarters / calendar 2026 — the key controversy</li>
+        <li><b>~$25B</b> of that from elevated component costs (CFRA)</li>
+        <li><b>Capacity-constrained through FY27;</b> Azure acceleration expected H2 calendar 2026</li>
+        <li><b>~2/3 of AI capex</b> in short-lived assets — lets MSFT pace spend to AI revenue</li>
+      </ul>
+      <div class="chart-box" style="margin-top:14px"><canvas id="segChart"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Demand Signals <span class="tag">why the capex looks demand-driven, not speculative</span></h2>
+    <div class="chart-box"><canvas id="signalChart"></canvas></div>
+  </div>
+</div>
+
+<!-- FINANCIALS -->
+<div class="tab" id="financials">
+  <div class="card">
+    <h2>Revenue Trajectory <span class="tag">FY ends June 30 · CFRA actuals &amp; estimates, $B</span></h2>
+    <div class="chart-box tall"><canvas id="revChart"></canvas></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h2>EPS Growth <span class="tag">CFRA operating EPS, USD</span></h2>
+      <div class="chart-box"><canvas id="epsChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Key Figures</h2>
+      <table>
+        <tr><th>Metric</th><th class="num">Value</th></tr>
+        <tr><td>FY26E Revenue / growth</td><td class="num">$329.4B · +17%</td></tr>
+        <tr><td>FY27E Revenue / growth</td><td class="num">$380.0B · +15%</td></tr>
+        <tr><td>FY28E Revenue / growth</td><td class="num">$439.2B · +16%</td></tr>
+        <tr><td>3-yr projected EPS CAGR</td><td class="num green">22%</td></tr>
+        <tr><td>Cash / Debt</td><td class="num">$95B / $43B</td></tr>
+        <tr><td>Gross leverage</td><td class="num">&lt;1x EBITDA</td></tr>
+        <tr><td>Dividend (paid since 2003)</td><td class="num">$3.64/yr · 0.9%</td></tr>
+        <tr><td>Mar-Q capex incl. leases</td><td class="num amber">$31.9B · +49%</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- VALUATION -->
+<div class="tab" id="valuation">
+  <div class="grid2">
+    <div class="card">
+      <h2>P/E Multiple Context</h2>
+      <div class="chart-box"><canvas id="peChart"></canvas></div>
+      <p class="src">At $397.36: 23.7x FY26E ($16.78) · 20.7x FY27E ($19.15) · 17.7x FY28E ($22.43). CFRA's 23x target multiple is itself below the ~31x historical forward average.</p>
+    </div>
+    <div class="card">
+      <h2>Upside Scenarios from $397.36</h2>
+      <div class="chart-box"><canvas id="upsideChart"></canvas></div>
+      <p class="src">Morningstar 5-star (buy) price: $420 — the stock already trades below it. 1-star (sell) price: $810.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h2>How Each Firm Gets There</h2>
+    <table>
+      <tr><th>Assumption</th><th>Morningstar ($600)</th><th>CFRA ($480)</th><th>Value Line ($532 / $685-835)</th></tr>
+      <tr><td>Revenue growth</td><td>~13% 5-yr CAGR</td><td>17% FY26, mid-teens FY27-28</td><td>~11%/yr to 2029-31 ($460B revenue)</td></tr>
+      <tr><td>Margins / EPS</td><td>Op margin 45% → 46% by FY29</td><td>+1pt FY26 despite capex; COGS +20%, opex +7%</td><td>EPS $16.55 (FY26) → $18.90 (FY27) → $23.00 (2029-31)</td></tr>
+      <tr><td>Multiple / discount</td><td>Implies 39x adj. P/E, 14x EV/sales</td><td>23x CY27 EPS; 8.1% WACC, 4.5% terminal growth, 1.0 beta</td><td>~33x avg annual P/E; 14-20% projected annual total return</td></tr>
+      <tr><td>Key driver</td><td>Azure — "single most critical revenue driver over the next 10 years"</td><td>Full AI stack monetization: cloud, Copilots, OpenAI stake (27%), search</td><td>Cloud/productivity demand; ROE ~24-30%; book value compounding ~19%/yr</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- BULLS VS BEARS -->
+<div class="tab" id="bullbear">
+  <div class="grid2">
+    <div class="card">
+      <h2 class="green">▲ Bull Case</h2>
+      <ul class="clean bull">
+        <li>Azure is a top-2 hyperscaler riding the shift to hybrid, then public cloud — still growing ~30-40% at $75B+ scale</li>
+        <li>Office 365 quasi-monopoly with E5/Copilot upsell driving ARPU; Teams Phone &amp; security premium SKUs</li>
+        <li>Monopoly-like cash cows (Windows, Office) fund AI/cloud expansion</li>
+        <li>Most complete AI stack: infrastructure → models (OpenAI + in-house) → applications (Copilot, Agent 365)</li>
+        <li>OpenAI restructure: no more revenue-share payments, keeps IP access + 27% stake — margin accretive</li>
+        <li>RPO +99% and Azure beating guidance while supply-constrained = demand exceeds capacity</li>
+        <li>Elite quality scores: VL Financial Strength A++, Earnings Predictability 95/100, Price Growth Persistence 100/100, Safety 1</li>
+        <li>Dividend growing ~10-13%/yr (paid since 2003); VL projects $6.20/sh by 2029-31</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2 class="red">▼ Bear Case</h2>
+      <ul class="clean bear">
+        <li>~$190B capex: if AI adoption lags, depreciation crushes margins and returns on capital</li>
+        <li>Subscription momentum slowing in mature Office; enterprise seat growth challenged</li>
+        <li>No meaningful mobile presence; Bing has no durable moat</li>
+        <li>Not #1 in key growth markets — AWS leads IaaS; Salesforce leads CRM</li>
+        <li>OpenAI customer-concentration risk (bookings swing from +7% to -6% with/without it)</li>
+        <li>Law of large numbers: sustaining mid-teens growth on a $330B base gets harder every year</li>
+        <li>Azure decelerating sequentially (40% → 39% → 37-38% guided); Value Line cut Timeliness to 3 (Neutral) on momentum</li>
+        <li>Capex +66% y/y to $37.5B in Dec-Q alone; debt rising to fund buildout ($123B total at 12/31/25)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Moat Scorecard <span class="tag">Morningstar segment-level ratings</span></h2>
+    <div class="chart-box"><canvas id="moatChart"></canvas></div>
+  </div>
+</div>
+
+<!-- WHY THE DECLINE -->
+<div class="tab" id="decline">
+  <div class="card">
+    <h2>The Slide: $555 → $397 (~-28%) <span class="tag">reconstructed from three Value Line reviews (Oct 2025, Jan 2026, May 2026) + Morningstar, CFRA &amp; market data</span></h2>
+    <div class="chart-box tall"><canvas id="declineChart"></canvas></div>
+    <p class="src">Points marked * are approximate (inferred from Value Line's "-5% since October" and "-9% since previous review" notes). Others are report-dated prices.</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h2>Timeline of Events</h2>
+      <div class="tl">
+        <div class="tl-item up"><div class="when">Mid-2025</div><div class="what">Peak optimism</div><div class="det">Stock hits all-time high $555.45. Morningstar sets $600 fair value (Jul 31). VL (Oct 31): "timely shares," strong FY25 finish — Azure $75B+, +34%; $368B in cloud/AI bookings.</div><div class="px green">~$555 high · VL rates shares Timely</div></div>
+        <div class="tl-item down"><div class="when">Oct 29-30, 2025 · Q1 FY26 earnings</div><div class="what">Leg 1 begins: AI payback doubts</div><div class="det">Strong quarter (+18% revenue) but the OpenAI stake cut net income by $3.1B and capex guidance moved higher. VL (Jan 30): the decline reflects "concern that AI investments are not paying off as quickly as hoped."</div><div class="px red">~-5% Oct → Jan (~$483* → ~$459*)</div></div>
+        <div class="tl-item down"><div class="when">Late Jan 2026 · Q2 FY26 earnings</div><div class="what">Leg 2: deceleration + capex shock</div><div class="det">Azure +39% vs 40% prior quarter; Q3 guided to 37-38% — first clear deceleration narrative. Capex +66% y/y to $37.5B in one quarter. Investors saw AI spend outpacing near-term revenue.</div><div class="px red">~-9% Jan → May (to $418)</div></div>
+        <div class="tl-item down"><div class="when">Feb 27, 2026</div><div class="what">Value Line cuts Timeliness to 3 (Neutral)</div><div class="det">Momentum rank lowered; Technical rank later cut to 4 (May 1). Quality scores unchanged (A++, Safety 1).</div><div class="px">$418.07 at May 1 review</div></div>
+        <div class="tl-item down"><div class="when">Spring 2026</div><div class="what">Musk lawsuit headline risk</div><div class="det">Musk sues Microsoft/OpenAI alleging $13-25B of improper gains from OpenAI's restructuring. VL: unlikely to be material vs $3T market cap and ~$80B half-year cash flow — but it weighed on sentiment.</div></div>
+        <div class="tl-item"><div class="when">Apr 30, 2026 · Q3 FY26 earnings</div><div class="what">Great quarter, no rebound</div><div class="det">Beat high end of guidance on every line; Azure +39% cc; RPO +99% to $627B. But the headline became the ~$190B capex plan for the next three quarters. Morningstar reiterated $600 FVE; CFRA kept Strong Buy.</div><div class="px">$427 (May 28) → $417 (Jun 5)</div></div>
+        <div class="tl-item down"><div class="when">Jun 10, 2026</div><div class="what">Today</div><div class="det">$397.36 — ~28% below the high, below the 50- and 200-day averages, and below Morningstar's $420 5-star buy price.</div><div class="px red">$397.36 · P/FVE 0.66</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Root Causes, Ranked</h2>
+      <div class="chart-box"><canvas id="causeChart"></canvas></div>
+      <ul class="clean" style="margin-top:10px">
+        <li><b>1. Capex vs. AI monetization gap</b> — the through-line of all three legs: $37.5B/quarter rising to a ~$190B annual plan, against AI revenue that, while growing 123%, is still only a $37B run rate.</li>
+        <li><b>2. Azure deceleration optics</b> — 40% → 39% → 37-38% guided. Modest in absolute terms, but at a premium multiple any second-derivative slowdown gets punished.</li>
+        <li><b>3. OpenAI drag &amp; concentration</b> — equity-method losses ($3.1B in one quarter), bookings swinging ±13pts with one customer, plus lawsuit noise.</li>
+        <li><b>4. Multiple compression</b> — no earnings miss occurred; trailing P/E compressed from ~32x to ~25x while EPS kept growing. This was a de-rating, not a downgrade.</li>
+      </ul>
+      <p class="src">The counter-view (Morningstar, CFRA): $627B RPO and a capacity-constrained Azure indicate demand exceeds supply — i.e., the capex is chasing booked demand, and the de-rating is the entry opportunity.</p>
+    </div>
+  </div>
+</div>
+
+<!-- RISKS -->
+<div class="tab" id="risks">
+  <div class="card">
+    <h2>Key Risks <span class="tag">click each to expand</span></h2>
+    <div class="risk-item"><h3>Capex / AI monetization gap <span class="sev high">HIGH</span></h3><p>~$190B planned capex over the next year is the central controversy and the main reason the stock de-rated. If AI revenue ramps slower than infrastructure spend, depreciation compresses margins and ROIC. Mitigant: ~2/3 of spend is in short-lived assets, letting MSFT throttle capex to demand; RPO and Azure overage suggest demand currently exceeds supply.</p></div>
+    <div class="risk-item"><h3>Margin pressure &amp; capacity constraints <span class="sev med">MEDIUM</span></h3><p>COGS growing 20%+ vs 7% opex; capacity-constrained through FY27; ~$25B of calendar-2026 capex is elevated component costs. CFRA still expects ~1pt of FY26 operating margin expansion, but the buffer is thinner.</p></div>
+    <div class="risk-item"><h3>OpenAI concentration <span class="sev med">MEDIUM</span></h3><p>Commercial bookings were +7% cc excluding OpenAI but -6% including it — a single counterparty materially swings reported demand. Relationship changes, OpenAI's own capital needs, or competitive divergence are risks to both Azure revenue and the 27% equity stake.</p></div>
+    <div class="risk-item"><h3>Competition <span class="sev med">MEDIUM</span></h3><p>AWS leads public cloud and competes on aggressive pricing; Google pushes hard on price and frontier models. Microsoft is not the top player in several growth markets (IaaS, CRM/ERP). Rapidly evolving market requires constant stack expansion.</p></div>
+    <div class="risk-item"><h3>Legacy erosion / law of large numbers <span class="sev med">MEDIUM</span></h3><p>High-margin on-premises revenue (OS, Office, Server) must decline slower than cloud grows. Office is mature; seat growth is challenged. At ~$330B revenue and ~$3T market cap, every incremental point of growth requires enormous absolute dollars.</p></div>
+    <div class="risk-item"><h3>Musk / OpenAI lawsuit <span class="sev med">LOW-MED</span></h3><p>Elon Musk is suing Microsoft and OpenAI, alleging OpenAI breached its nonprofit mission and that Microsoft benefited by an alleged $13-25B from the restructuring. Value Line views a material impact as unlikely — even the $25B high end is small relative to a ~$3T market cap and ~$80B of first-half FY26 cash flow — but it adds headline risk and could complicate the OpenAI relationship.</p></div>
+    <div class="risk-item"><h3>Other <span class="sev med">LOW-MED</span></h3><p>Acquisition record is mixed (Nokia, aQuantive flops vs LinkedIn, GitHub, Activision successes). Talent competition for AI engineers. Data-center breach risk. M* uncertainty: Medium; CFRA risk: Low-Medium.</p></div>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<div class="tab" id="calc">
+  <div class="card">
+    <h2>Interactive Return Calculator</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Set your own assumptions and see the implied price and return. Default = CFRA-style framework (EPS × exit multiple).</p>
+    <div class="slider-row"><label>FY28 EPS estimate (CFRA: $22.43)</label><input type="range" id="sEps" min="16" max="28" step="0.25" value="22.43"><div class="val" id="vEps">$22.43</div></div>
+    <div class="slider-row"><label>Exit P/E multiple (CFRA target: 23x · hist: ~31x)</label><input type="range" id="sPe" min="15" max="35" step="0.5" value="23"><div class="val" id="vPe">23.0x</div></div>
+    <div class="slider-row"><label>Investment amount</label><input type="range" id="sAmt" min="1000" max="100000" step="1000" value="10000"><div class="val" id="vAmt">$10,000</div></div>
+    <div class="grid2">
+      <div class="result-box"><div style="color:var(--muted);font-size:12px">IMPLIED PRICE (~2-YR HORIZON)</div><div class="big blue" id="rPrice">$515.89</div><div style="font-size:12px;color:var(--muted)" id="rVs">vs $397.36 today</div></div>
+      <div class="result-box"><div style="color:var(--muted);font-size:12px">TOTAL RETURN (INCL. ~0.9%/YR DIVIDEND)</div><div class="big" id="rRet">+31.7%</div><div style="font-size:12px;color:var(--muted)" id="rDollar">$10,000 → $13,170</div></div>
+    </div>
+    <div class="chart-box" style="margin-top:16px"><canvas id="calcChart"></canvas></div>
+  </div>
+  <div class="card">
+    <h2>Suggested Approach</h2>
+    <ul class="clean">
+      <li><b>Accumulate</b> at current levels (~$397) — already below Morningstar's $420 5-star "buy" threshold</li>
+      <li><b>Stage the entry</b> (e.g., thirds) given capex-headline volatility; $356 52-week low is a reference for adding on weakness</li>
+      <li><b>Watch:</b> Azure growth vs guidance, AI run-rate trajectory, capex pacing commentary, FY27 margin guide</li>
+    </ul>
+  </div>
+</div>
+
+<div class="foot">
+  This dashboard synthesizes third-party research (Morningstar Equity Analyst Report, Apr 30/May 29 2026; CFRA Stock Report, Jun 6 2026; Value Line, May 1 2026) and market data (Jun 10, 2026) for informational purposes only. It is not personalized investment advice; the preparer is not a licensed financial advisor. Estimates and targets may not be realized. Past performance is not indicative of future results.
+</div>
+</div>
+
+<script>
+// ---------- Tabs ----------
+document.querySelectorAll('nav button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.tab).classList.add('active');
+  });
+});
+// ---------- Risk expanders ----------
+document.querySelectorAll('.risk-item').forEach(r=>r.addEventListener('click',()=>r.classList.toggle('open')));
+
+// ---------- Range bar markers ----------
+(function(){
+  const lo=356.28, hi=835; // 52wk low to VL 2029-31 high
+  const pos=v=>((v-lo)/(hi-lo)*100).toFixed(1)+'%';
+  document.getElementById('rangeFill').style.width=pos(397.36);
+  [['mkPrice','lbPrice',397.36],['mkCfra','lbCfra',480],['mkVl','lbVl',532],['mkMs','lbMs',600]].forEach(([m,l,v])=>{
+    document.getElementById(m).style.left=pos(v);
+    document.getElementById(l).style.left=pos(v);
+  });
+})();
+
+// ---------- Chart defaults ----------
+Chart.defaults.color='#94a3b8';
+Chart.defaults.borderColor='#2e3a52';
+Chart.defaults.font.family="'Segoe UI',system-ui,sans-serif";
+const gridOpt={grid:{color:'#243049'}};
+
+// Targets bar
+new Chart(document.getElementById('targetChart'),{
+  type:'bar',
+  data:{labels:['52-Wk Low','Current Price','M* 5-Star Buy','CFRA Target','VL 18-Mo Midpoint','52-Wk High','M* Fair Value','VL 2029-31 Low','M* 1-Star Sell','VL 2029-31 High'],
+    datasets:[{data:[356.28,397.36,420,480,532,555.45,600,685,810,835],
+      backgroundColor:['#475569','#4f8ef7','#34d399','#fbbf24','#a78bfa','#64748b','#34d399','#a78bfa','#f87171','#a78bfa'],borderRadius:6}]},
+  options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.raw.toFixed(2)+'  ('+((c.raw/397.36-1)*100).toFixed(1)+'% vs current)'}}},
+    scales:{x:{...gridOpt,title:{display:true,text:'USD per share'}},y:gridOpt},maintainAspectRatio:false}
+});
+
+// Segment mix doughnut
+new Chart(document.getElementById('segChart'),{
+  type:'doughnut',
+  data:{labels:['Productivity & Business Processes (54%)','Intelligent Cloud (36%)','More Personal Computing (10%)'],
+    datasets:[{data:[54,36,10],backgroundColor:['#4f8ef7','#34d399','#fbbf24'],borderColor:'#1a2233',borderWidth:3}]},
+  options:{plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},title:{display:true,text:'Mar-Q Revenue Mix by Segment',color:'#cfe0ff'}},maintainAspectRatio:false}
+});
+
+// Demand signals
+new Chart(document.getElementById('signalChart'),{
+  type:'bar',
+  data:{labels:['Azure growth (cc)','AI revenue run-rate','Copilot paid seats','RPO backlog','Microsoft Cloud','Capex (Mar-Q)'],
+    datasets:[{label:'Y/Y growth %',data:[39,123,250,99,29,49],
+      backgroundColor:c=>c.dataIndex===5?'#fbbf24':'#34d399',borderRadius:6}]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'+'+c.raw+'% y/y'}}},
+    scales:{y:{...gridOpt,title:{display:true,text:'% growth y/y'}},x:gridOpt},maintainAspectRatio:false}
+});
+
+// Revenue chart
+new Chart(document.getElementById('revChart'),{
+  type:'bar',
+  data:{labels:['FY23','FY24','FY25','FY26E','FY27E','FY28E'],
+    datasets:[{type:'bar',label:'Revenue ($B)',data:[211.9,245.1,281.7,329.4,380.0,439.2],
+      backgroundColor:c=>c.dataIndex>=3?'rgba(79,142,247,.55)':'#4f8ef7',borderRadius:6,order:2},
+    {type:'line',label:'Growth %',data:[6.9,15.7,14.9,16.9,15.4,15.6],yAxisID:'y1',borderColor:'#34d399',
+      backgroundColor:'#34d399',tension:.3,pointRadius:4,order:1}]},
+  options:{plugins:{legend:{position:'bottom'}},
+    scales:{y:{...gridOpt,title:{display:true,text:'$B'}},
+      y1:{position:'right',grid:{display:false},title:{display:true,text:'Growth %'},min:0,max:25},x:gridOpt},
+    maintainAspectRatio:false}
+});
+
+// EPS chart
+new Chart(document.getElementById('epsChart'),{
+  type:'line',
+  data:{labels:['FY23','FY24','FY25','FY26E','FY27E','FY28E'],
+    datasets:[{label:'CFRA est.',data:[9.81,11.80,13.64,16.78,19.15,22.43],
+      borderColor:'#4f8ef7',backgroundColor:'rgba(79,142,247,.18)',fill:true,tension:.3,pointRadius:5,
+      segment:{borderDash:c=>c.p0DataIndex>=2?[6,4]:undefined}},
+    {label:'Value Line est.',data:[9.81,11.80,13.64,16.55,18.90,null],
+      borderColor:'#a78bfa',borderDash:[6,4],tension:.3,pointRadius:4,fill:false}]},
+  options:{plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.raw.toFixed(2)}}},
+    scales:{y:{...gridOpt,title:{display:true,text:'USD'}},x:gridOpt},maintainAspectRatio:false}
+});
+
+// PE chart
+new Chart(document.getElementById('peChart'),{
+  type:'bar',
+  data:{labels:['P/E on FY26E','P/E on FY27E','P/E on FY28E','CFRA target multiple','Historical fwd avg'],
+    datasets:[{data:[23.7,20.7,17.7,23,31],backgroundColor:['#4f8ef7','#4f8ef7','#4f8ef7','#fbbf24','#64748b'],borderRadius:6}]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'x'}}},
+    scales:{y:{...gridOpt,title:{display:true,text:'multiple (x)'}},x:gridOpt},maintainAspectRatio:false}
+});
+
+// Upside chart
+new Chart(document.getElementById('upsideChart'),{
+  type:'bar',
+  data:{labels:['To CFRA $480','To VL 18-mo mid $532','To M* FVE $600','To VL 2029-31 high $835','Downside to 52-wk low $356'],
+    datasets:[{data:[20.8,33.9,51.0,110.1,-10.3],
+      backgroundColor:c=>c.raw>=0?'#34d399':'#f87171',borderRadius:6}]},
+  options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.raw>0?'+':'')+c.raw+'%'}}},
+    scales:{x:{...gridOpt,title:{display:true,text:'% from $397.36'}},y:gridOpt},maintainAspectRatio:false}
+});
+
+// Moat radar
+new Chart(document.getElementById('moatChart'),{
+  type:'bar',
+  data:{labels:['Productivity & Biz Processes','Intelligent Cloud (Azure)','Gaming (post-Activision)','Devices / Surface','Bing Search'],
+    datasets:[{label:'Moat strength (3=Wide, 2=Narrow, 1=None)',data:[3,3,2,1,1],
+      backgroundColor:['#34d399','#34d399','#fbbf24','#f87171','#f87171'],borderRadius:6}]},
+  options:{indexAxis:'y',plugins:{legend:{display:false},
+    tooltip:{callbacks:{label:c=>['','None','Narrow','Wide'][c.raw]+' moat'}}},
+    scales:{x:{...gridOpt,min:0,max:3,ticks:{stepSize:1,callback:v=>['None','None','Narrow','Wide'][v]||''}},y:gridOpt},
+    maintainAspectRatio:false}
+});
+
+// Decline price path
+new Chart(document.getElementById('declineChart'),{
+  type:'line',
+  data:{labels:['Mid-2025 high','Oct 2025*','Q1 earnings (Oct 30)','Jan 2026*','Q2 earnings (late Jan)','May 1 (VL review)','May 28 (M* report)','Jun 5 (CFRA report)','Jun 10 (today)'],
+    datasets:[{label:'MSFT price',data:[555.45,483,470,459,440,418.07,426.99,416.67,397.36],
+      borderColor:'#f87171',backgroundColor:'rgba(248,113,113,.12)',fill:true,tension:.25,pointRadius:5,
+      pointBackgroundColor:c=>[2,4].includes(c.dataIndex)?'#fbbf24':'#f87171'}]},
+  options:{plugins:{legend:{display:false},
+    tooltip:{callbacks:{
+      label:c=>'$'+c.raw.toFixed(2)+'  ('+((c.raw/555.45-1)*100).toFixed(1)+'% from high)',
+      afterLabel:c=>['All-time high; M* FVE $600','Approx. (VL: -5% by Jan)','OpenAI hit to income ($3.1B) + higher capex guide','Approx. (VL note)','Azure decel (39%, guide 37-38%); capex +66%','VL Timeliness cut to 3; $418.07','Q3 beat everything; $190B capex plan','CFRA reiterates Strong Buy $480','Below M* 5-star buy price $420'][c.dataIndex]}}},
+    scales:{y:{...gridOpt,title:{display:true,text:'USD'},min:350},x:{...gridOpt,ticks:{font:{size:10}}}},maintainAspectRatio:false}
+});
+
+// Cause attribution
+new Chart(document.getElementById('causeChart'),{
+  type:'bar',
+  data:{labels:['Capex / AI payback fears','Azure deceleration optics','OpenAI drag & lawsuit','General de-rating'],
+    datasets:[{label:'Relative contribution (qualitative)',data:[40,25,15,20],
+      backgroundColor:['#f87171','#fbbf24','#a78bfa','#64748b'],borderRadius:6}]},
+  options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'~'+c.raw+'% of the narrative (qualitative weighting)'}}},
+    scales:{x:{...gridOpt,max:50,title:{display:true,text:'% (qualitative, based on report emphasis)'}},y:gridOpt},maintainAspectRatio:false}
+});
+
+// ---------- Calculator ----------
+const PRICE=397.36, DIV_YIELD=0.009, YEARS=2;
+let calcChart=new Chart(document.getElementById('calcChart'),{
+  type:'bar',
+  data:{labels:['Today','Implied (your assumptions)','CFRA $480','Value Line $532','Morningstar $600'],
+    datasets:[{data:[PRICE,515.89,480,532,600],backgroundColor:['#64748b','#4f8ef7','#fbbf24','#a78bfa','#34d399'],borderRadius:6}]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.raw.toFixed(2)}}},
+    scales:{y:{...gridOpt,title:{display:true,text:'USD'}},x:gridOpt},maintainAspectRatio:false}
+});
+// ---------- Business Model charts ----------
+const bmSegs=[['Server & Cloud (Azure)',98.4],['M365 Commercial',87.8],['Gaming',23.5],['LinkedIn',17.8],['Windows',17.3],['Search Ads',13.9],['Dynamics',7.8],['Enterprise Services',7.8],['M365 Consumer',7.4]];
+new Chart(document.getElementById('bmSegChart'),{
+  type:'doughnut',
+  data:{labels:bmSegs.map(s=>s[0]),datasets:[{data:bmSegs.map(s=>s[1]),
+    backgroundColor:['#4f8ef7','#7aa6f9','#34d399','#fbbf24','#f87171','#b48ead','#88c0d0','#d08770','#a3be8c'],
+    borderColor:'#1a2233',borderWidth:2}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'55%',
+    plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11},color:'#94a3b8'}},
+      tooltip:{callbacks:{label:c=>` ${c.label}: $${c.parsed}B (${(c.parsed/281.7*100).toFixed(1)}%)`}}}}
+});
+const bmExp=[['Cost of revenue',87.8,'pl'],['Capex (cash)',64.6,'cash'],['Dividends + buybacks',42.5,'cash'],['R&D',32.5,'pl'],['Sales & marketing',25.7,'pl'],['Income taxes',21.8,'pl'],['Stock-based comp',12.0,'pl'],['G&A',7.2,'pl']];
+new Chart(document.getElementById('bmExpChart'),{
+  type:'bar',
+  data:{labels:bmExp.map(e=>e[0]),datasets:[{data:bmExp.map(e=>e[1]),
+    backgroundColor:bmExp.map(e=>e[2]==='cash'?'rgba(251,191,36,.8)':'rgba(79,142,247,.75)'),borderRadius:4}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` $${c.parsed.x}B FY2025${bmExp[c.dataIndex][2]==='cash'?' (cash outlay)':' (P&L)'}`}}},
+    scales:{x:{title:{display:true,text:'$ billions, FY2025 (ended 6/30/25)',color:'#94a3b8'},ticks:{color:'#94a3b8'},grid:{color:'rgba(148,163,184,.12)'}},y:{ticks:{color:'#94a3b8'},grid:{display:false}}}}
+});
+new Chart(document.getElementById('bmQChart'),{
+  type:'bar',
+  data:{labels:['Q1 (Sep 25)','Q2 (Dec 25)','Q3 (Mar 26)'],datasets:[
+    {label:'Revenue',data:[77.7,81.3,82.9],backgroundColor:'rgba(79,142,247,.75)',borderRadius:4},
+    {label:'Operating income',data:[38.0,38.3,38.4],backgroundColor:'rgba(52,211,153,.75)',borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{boxWidth:14,font:{size:11},color:'#94a3b8'}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.parsed.y}B`}}},
+    scales:{y:{title:{display:true,text:'$B — FY2026',color:'#94a3b8'},ticks:{color:'#94a3b8'},grid:{color:'rgba(148,163,184,.12)'}},x:{ticks:{color:'#94a3b8'},grid:{display:false}}}}
+});
+
+function fmt(n){return n.toLocaleString('en-US',{maximumFractionDigits:0})}
+function recalc(){
+  const eps=+document.getElementById('sEps').value;
+  const pe=+document.getElementById('sPe').value;
+  const amt=+document.getElementById('sAmt').value;
+  document.getElementById('vEps').textContent='$'+eps.toFixed(2);
+  document.getElementById('vPe').textContent=pe.toFixed(1)+'x';
+  document.getElementById('vAmt').textContent='$'+fmt(amt);
+  const implied=eps*pe;
+  const ret=(implied/PRICE-1)+DIV_YIELD*YEARS;
+  const endVal=amt*(1+ret);
+  document.getElementById('rPrice').textContent='$'+implied.toFixed(2);
+  document.getElementById('rVs').textContent='vs $'+PRICE.toFixed(2)+' today ('+((implied/PRICE-1)*100).toFixed(1)+'% price move)';
+  const rEl=document.getElementById('rRet');
+  rEl.textContent=(ret>=0?'+':'')+(ret*100).toFixed(1)+'%';
+  rEl.className='big '+(ret>=0?'green':'red');
+  document.getElementById('rDollar').textContent='$'+fmt(amt)+' → $'+fmt(endVal);
+  calcChart.data.datasets[0].data[1]=implied;
+  calcChart.update('none');
+}
+['sEps','sPe','sAmt'].forEach(id=>document.getElementById(id).addEventListener('input',recalc));
+recalc();
+</script>
+</body>
+</html>
