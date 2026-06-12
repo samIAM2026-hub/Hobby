@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMZN Investment Memo — June 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0f1420; --card:#1a2233; --card2:#212b40; --border:#2e3a52;
+    --text:#e8edf5; --muted:#94a3b8; --accent:#4f8ef7; --green:#34d399; --red:#f87171; --amber:#fbbf24;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px}
+  header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;border-bottom:2px solid var(--accent);padding-bottom:16px;margin-bottom:20px}
+  h1{font-size:26px}
+  h1 span{color:var(--accent)}
+  .sub{color:var(--muted);font-size:13px;margin-top:4px}
+  .price-block{text-align:right}
+  .price{font-size:34px;font-weight:700}
+  .chg{color:var(--muted);font-size:13px;font-weight:600}
+  .badge{display:inline-block;background:var(--green);color:#06281c;font-weight:700;padding:4px 14px;border-radius:20px;font-size:14px;margin-top:6px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+  .kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:default;transition:transform .15s,border-color .15s}
+  .kpi:hover{transform:translateY(-3px);border-color:var(--accent)}
+  .kpi .l{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+  .kpi .v{font-size:21px;font-weight:700;margin-top:4px}
+  .kpi .s{font-size:11px;color:var(--muted);margin-top:2px}
+  .green{color:var(--green)} .red{color:var(--red)} .amber{color:var(--amber)} .blue{color:var(--accent)}
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  nav button{background:var(--card);color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:9px 16px;font-size:14px;cursor:pointer;font-weight:600;transition:all .15s}
+  nav button:hover{color:var(--text);border-color:var(--accent)}
+  nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .tab{display:none;animation:fade .25s ease}
+  .tab.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+  .card h2{font-size:17px;margin-bottom:12px;color:#cfe0ff}
+  .card h2 .tag{font-size:11px;color:var(--muted);font-weight:400;margin-left:8px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .chart-box{position:relative;height:300px}
+  .chart-box.tall{height:340px}
+  ul.clean{list-style:none}
+  ul.clean li{padding:8px 0 8px 22px;position:relative;border-bottom:1px solid var(--border);font-size:14px}
+  ul.clean li:last-child{border-bottom:none}
+  ul.clean li::before{content:"▸";position:absolute;left:2px;color:var(--accent)}
+  ul.bull li::before{content:"▲";color:var(--green);font-size:11px;top:11px}
+  ul.bear li::before{content:"▼";color:var(--red);font-size:11px;top:11px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--border)}
+  th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .pill{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--muted)}
+  .pill b{color:var(--text)}
+  .range-bar{position:relative;height:10px;background:linear-gradient(90deg,#2e3a52,#3a4a6b);border-radius:6px;margin:26px 6px 6px}
+  .range-bar .dot{position:absolute;top:-5px;width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid #0f1420;transform:translateX(-50%)}
+  .range-bar .lbl{position:absolute;top:-24px;transform:translateX(-50%);font-size:11px;color:var(--muted);white-space:nowrap}
+  .range-ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin:6px 6px 0}
+  .verdict{background:linear-gradient(135deg,#15351f,#1a2233);border:1px solid var(--green);border-radius:12px;padding:22px;margin-bottom:16px}
+  .verdict h2{color:var(--green);font-size:20px;margin-bottom:8px}
+  .verdict p{font-size:14px;margin-bottom:8px}
+  .scorebars .row{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:13px}
+  .scorebars .name{width:130px;color:var(--muted)}
+  .scorebars .bar{flex:1;height:14px;background:var(--card2);border-radius:7px;overflow:hidden}
+  .scorebars .fill{height:100%;border-radius:7px}
+  .scorebars .val{width:34px;text-align:right;font-weight:700}
+  .note{font-size:12px;color:var(--muted);margin-top:10px}
+  .footer{color:var(--muted);font-size:12px;margin-top:30px;border-top:1px solid var(--border);padding-top:14px}
+  .timeline{list-style:none}
+  .timeline li{padding:10px 0 10px 26px;position:relative;border-left:2px solid var(--border);margin-left:8px;font-size:14px}
+  .timeline li::before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+  .timeline li b{color:#cfe0ff}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <h1>Amazon.com Inc <span>NASDAQ: AMZN</span></h1>
+    <div class="sub">Interactive Investment Memo · Compiled 10 Jun 2026 · Sources: CFRA, Argus, Morningstar, LSEG/I-B-E-S, INK Research (10 reports)</div>
+  </div>
+  <div class="price-block">
+    <div class="price">$244.19</div>
+    <div class="chg">Close 9 Jun 2026 · 52-wk: $196.00 – $278.56</div>
+    <div class="badge">CONSENSUS: BUY / ACCUMULATE</div>
+  </div>
+</header>
+
+<div class="kpis">
+  <div class="kpi"><div class="l">Street Mean Target</div><div class="v blue">$308.77</div><div class="s green">+26.4% upside · 64 analysts</div></div>
+  <div class="kpi"><div class="l">I/B/E/S Rating</div><div class="v green">Buy (1.8)</div><div class="s">20 Strong Buy · 46 Buy · 4 Hold · 0 Sell</div></div>
+  <div class="kpi"><div class="l">FY26E EPS</div><div class="v">$8.83</div><div class="s green">+23.2% y/y · FY27E $10.06</div></div>
+  <div class="kpi"><div class="l">FY26E Revenue</div><div class="v">$824B</div><div class="s green">+15.0% y/y</div></div>
+  <div class="kpi"><div class="l">Forward P/E</div><div class="v">29.0×</div><div class="s">5-yr avg 51.3× → 44% discount</div></div>
+  <div class="kpi"><div class="l">Market Cap</div><div class="v">$2.6T</div><div class="s">Wide moat (Morningstar)</div></div>
+</div>
+
+<nav>
+  <button class="active" data-tab="t1">Overview</button>
+  <button data-tab="t2">Business & Q1</button>
+  <button data-tab="t3">Valuation</button>
+  <button data-tab="t4">Analyst Views</button>
+  <button data-tab="t5">Risks & Insiders</button>
+  <button data-tab="t6">Recommendation</button>
+</nav>
+
+<!-- ============ TAB 1: OVERVIEW ============ -->
+<div class="tab active" id="t1">
+  <div class="card">
+    <h2>Investment Thesis <span class="tag">synthesized from all sources</span></h2>
+    <p style="font-size:14px;margin-bottom:10px">
+      Amazon enters mid-2026 with its fastest AWS growth in 15 quarters (+28% y/y, $150B run-rate), a record 13.1% operating
+      margin, and an AI order book that includes a $364B AWS backlog plus $100B+ decade-long commitments from both Anthropic and
+      OpenAI. The retail engine keeps expanding margins through automation and same-day logistics, while advertising (~50%+
+      estimated EBITDA margins per CFRA) compounds at 20%+. The trade-off: a planned ~$200B capex year pushes free cash flow
+      negative in 2026, debt has nearly doubled to $119B, and insiders have sold heavily. Every fundamental analyst in this
+      packet still lands bullish — CFRA Strong Buy ($325), Argus Buy ($325), Morningstar 4-star ($280 FVE, wide moat) — with
+      monetization of AI investments expected in 2027–2028.
+    </p>
+    <div class="pillrow">
+      <div class="pill">AWS run-rate <b>$150B</b> (+28%)</div>
+      <div class="pill">AWS backlog <b>$364B</b> (+49% q/q)</div>
+      <div class="pill">2026 capex <b>~$200B</b></div>
+      <div class="pill">Custom silicon run-rate <b>$20B+</b></div>
+      <div class="pill">AI revenue run-rate <b>$15B+</b></div>
+      <div class="pill">Op margin Q1'26 <b>13.1%</b> (record)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Ratings Snapshot <span class="tag">all 6 rating sources in the packet</span></h2>
+    <table>
+      <thead><tr><th>Source</th><th>Rating</th><th class="num">Target / Fair Value</th><th class="num">vs $244.19</th><th>As of</th></tr></thead>
+      <tbody>
+        <tr><td>CFRA (Sundaram)</td><td class="green">Strong Buy ★★★★★</td><td class="num">$325.00</td><td class="num green">+33.1%</td><td>6 Jun 2026</td></tr>
+        <tr><td>Argus (Kelleher)</td><td class="green">BUY (12-mo & 5-yr)</td><td class="num">$325.00</td><td class="num green">+33.1%</td><td>30 Apr 2026</td></tr>
+        <tr><td>Argus A6 Quant</td><td class="green">BUY (since 08/24)</td><td class="num">$290.00</td><td class="num green">+18.8%</td><td>3 Jun 2026</td></tr>
+        <tr><td>Morningstar Analyst (Romanoff)</td><td class="green">★★★★ · Wide Moat</td><td class="num">$280.00 FVE</td><td class="num green">+14.7%</td><td>10 Jun 2026</td></tr>
+        <tr><td>Morningstar Quant</td><td class="amber">★★★ Fairly Valued</td><td class="num">$257.69 FVE</td><td class="num green">+5.5%</td><td>6 Jun 2026</td></tr>
+        <tr><td>LSEG StarMine Average Score</td><td class="green">9 / 10 (top 15%)</td><td class="num">—</td><td class="num">—</td><td>10 Jun 2026</td></tr>
+        <tr><td>Wall Street consensus (70 analysts)</td><td class="green">Buy (1.8 / 5)</td><td class="num">$308.77 mean</td><td class="num green">+26.4%</td><td>9 Jun 2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Revenue & EPS Trajectory <span class="tag">actuals + consensus, $B / $</span></h2>
+      <div class="chart-box tall"><canvas id="chRevEps"></canvas></div>
+      <div class="note">2026–27 = LSEG I/B/E/S consensus (824.1B / 931.5B; EPS 8.83 / 10.06); 2028 = consensus EPS $13.02, revenue per Morningstar model $1,007B.</div>
+    </div>
+    <div class="card">
+      <h2>52-Week Price Position</h2>
+      <div class="range-bar">
+        <div class="lbl" style="left:58.6%">$244.19 now</div>
+        <div class="dot" style="left:58.6%"></div>
+      </div>
+      <div class="range-ends"><span>$196.00 low</span><span>$278.56 high</span></div>
+      <ul class="clean" style="margin-top:18px">
+        <li>12.3% below 52-week high, 24.6% above the low (LSEG)</li>
+        <li>1-month return −10.4% · 3-month +14.4% · 1-year +12.5%</li>
+        <li>Trading 3.9% below 50-day MA ($254.15), 5.1% above 200-day MA ($232.38)</li>
+        <li>LSEG Price Momentum score 10/10 (3-yr high); strong Jun–Jul seasonality (avg +3.4% / +5.3% last 10 yrs)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TAB 2: BUSINESS & Q1 ============ -->
+<div class="tab" id="t2">
+  <div class="grid2">
+    <div class="card">
+      <h2>2025 Revenue Mix by Channel <span class="tag">CFRA</span></h2>
+      <div class="chart-box"><canvas id="chMix"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>2025 Operating Income by Segment <span class="tag">$B · CFRA</span></h2>
+      <div class="chart-box"><canvas id="chSegOp"></canvas></div>
+      <div class="note">AWS = 18% of revenue but ~57% of segment operating income (35% margin vs 6.9% North America).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Q1 2026 Results — Big Beat <span class="tag">reported 29 Apr 2026</span></h2>
+    <div class="grid2">
+      <ul class="clean">
+        <li>Revenue <b>$181.5B</b> (+17% y/y) vs $177.1B consensus and above the $173.5–178.5B guide</li>
+        <li>GAAP EPS <b>$2.78</b> vs $1.64 consensus (+69.7% surprise); includes a one-time $15.6B gain — ex-gain ≈ $1.85 (Argus)</li>
+        <li>Operating income <b>$23.9B</b>, margin <b>13.1%</b> — all-time record (11.8% a year ago)</li>
+        <li>AWS revenue <b>$37.6B</b> +28% y/y — fastest since 2Q22; operating margin 37.7%</li>
+        <li>Retail: NA +12% (7.9% margin, +160bps); International +19% (3.6% margin); units +15%</li>
+      </ul>
+      <ul class="clean">
+        <li>Q2'26 guide: revenue <b>$194–199B</b> (cons. $188.9B), op income $20–24B — both above Street</li>
+        <li>Free cash flow turned <b>negative −$17.2B</b> in Q1 on $43B net capex</li>
+        <li>Total debt jumped to <b>$119.1B</b> (from $65.6B at YE25); cash & securities $143.1B</li>
+        <li>11 positive EPS surprises in the last 12 quarters (avg +24.8% last 4 qtrs)</li>
+        <li>Next earnings: <b>29 Jul 2026</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Capex Supercycle vs Free Cash Flow <span class="tag">$B</span></h2>
+      <div class="chart-box tall"><canvas id="chCapex"></canvas></div>
+      <div class="note">2026E capex ≈ $200B (company guide). 2026E FCFF −$39.4B per Morningstar model; recovery modeled from 2027 ($19.4B) to $135.6B by 2030.</div>
+    </div>
+    <div class="card">
+      <h2>AI & Strategic Catalysts</h2>
+      <ul class="timeline">
+        <li><b>Feb 2026:</b> $50B investment in OpenAI; AWS compute deal expanded by $100B (atop $38B), ~2GW Trainium commitment</li>
+        <li><b>Apr 2026:</b> Anthropic commits $100B+ over a decade to AWS/Trainium (up to 5GW); AMZN invests $5B more (+up to $20B milestone-linked, atop prior $8B)</li>
+        <li><b>Apr 2026:</b> Globalstar acquisition agreed, $11.6B — direct-to-device satellite + Apple deal; closes ~2027</li>
+        <li><b>May 2026:</b> Amazon Supply Chain Services launched (freight, fulfilment, parcel) — "AWS playbook" for logistics</li>
+        <li><b>Mid-2026:</b> Amazon Leo satellite broadband commercial launch; costs shift from P&L to balance sheet in 2H26</li>
+        <li><b>Oct 2026:</b> FTC monopolization trial begins — key headline risk</li>
+        <li><b>2027–28:</b> Management's stated window for monetizing the ~$200B AI capex (backed by customer commitments)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TAB 3: VALUATION ============ -->
+<div class="tab" id="t3">
+  <div class="grid2">
+    <div class="card">
+      <h2>Price Targets & Fair Values <span class="tag">$ per share</span></h2>
+      <div class="chart-box tall"><canvas id="chTargets"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Street Target Range <span class="tag">LSEG, 64 analysts</span></h2>
+      <div class="chart-box tall"><canvas id="chRange"></canvas></div>
+      <div class="note">Consensus target rose 10.7% in 90 days ($278.83 → $308.77). Even the Street-low $207 implies only −15% downside; the high is $370 (+52%).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Multiples vs History <span class="tag">LSEG Stock Reports Plus, 9 Jun 2026</span></h2>
+    <table>
+      <thead><tr><th>Metric</th><th class="num">Current</th><th class="num">5-Yr Avg</th><th class="num">vs 5-Yr</th><th class="num">S&P 500</th><th class="num">Industry</th></tr></thead>
+      <tbody>
+        <tr><td>Trailing P/E</td><td class="num">29.2×</td><td class="num">58.7×</td><td class="num green">−50%</td><td class="num">28.8×</td><td class="num">32.2×</td></tr>
+        <tr><td>Forward P/E</td><td class="num">29.0×</td><td class="num">51.3×</td><td class="num green">−44%</td><td class="num">21.4×</td><td class="num">27.8×</td></tr>
+        <tr><td>Price / Sales</td><td class="num">3.6×</td><td class="num">3.1×</td><td class="num red">+15%</td><td class="num">3.4×</td><td class="num">2.6×</td></tr>
+        <tr><td>Forward PEG</td><td class="num">1.4×</td><td class="num">1.8×</td><td class="num green">−22%</td><td class="num">1.5×</td><td class="num">1.0×</td></tr>
+      </tbody>
+    </table>
+    <div class="note">LSEG: trailing P/E, forward P/E and PEG are all at or near 5-year lows. CFRA's $325 target = 30× 2027 EPS ($10.78), a premium to the 25× peer average justified by a 25% 3-yr EPS CAGR vs 15% for peers (PEG 1.2× vs 1.9×). Argus blended valuation model points to ~$510; its DCF alone reaches low-$600s.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Valuation Methodologies</h2>
+      <ul class="clean">
+        <li><b>CFRA DCF:</b> 8.2% WACC, 2.5% terminal growth → supports $325</li>
+        <li><b>Morningstar DCF:</b> 8.4% WACC; firm value $2.92T → $280/share; implies 4× 2026 EV/Sales</li>
+        <li><b>Morningstar model:</b> revenue 11% CAGR to $1.23T by 2030; op margin 11% → 13.9%</li>
+        <li><b>Argus blend:</b> historical comps low-$400s + peer value $400s + DCF low-$600s → ~$510 blended; conservative $325 published target</li>
+        <li><b>Morningstar Quant:</b> $257.69 FVE — only "fairly valued" voice in the packet (3-star)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Peer Comparison <span class="tag">LSEG peer set</span></h2>
+      <table>
+        <thead><tr><th>Ticker</th><th class="num">Fwd P/E</th><th class="num">Net Margin</th><th class="num">LTG</th><th>Rating</th></tr></thead>
+        <tbody>
+          <tr><td><b>AMZN</b></td><td class="num">29.0×</td><td class="num">12.2%</td><td class="num">20.5%</td><td class="green">Buy (score 9)</td></tr>
+          <tr><td>GOOGL</td><td class="num">29.2×</td><td class="num">37.9%</td><td class="num">16.9%</td><td>Buy (7)</td></tr>
+          <tr><td>META</td><td class="num">19.0×</td><td class="num">32.8%</td><td class="num">18.3%</td><td>Buy (5)</td></tr>
+          <tr><td>COST</td><td class="num">44.1×</td><td class="num">3.0%</td><td class="num">11.7%</td><td>Buy (9)</td></tr>
+          <tr><td>TGT</td><td class="num">14.9×</td><td class="num">3.2%</td><td class="num">6.1%</td><td>Hold (7)</td></tr>
+        </tbody>
+      </table>
+      <div class="note">AMZN's 20.5% five-year growth forecast is the highest of the mega-cap peer set at a forward multiple in line with GOOGL.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TAB 4: ANALYST VIEWS ============ -->
+<div class="tab" id="t4">
+  <div class="grid2">
+    <div class="card">
+      <h2>Recommendation Distribution <span class="tag">I/B/E/S, 70 analysts</span></h2>
+      <div class="chart-box"><canvas id="chRecs"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>LSEG StarMine Component Scores <span class="tag">1–10 scale</span></h2>
+      <div class="scorebars" style="margin-top:14px">
+        <div class="row"><div class="name">Average Score</div><div class="bar"><div class="fill" style="width:90%;background:var(--green)"></div></div><div class="val green">9</div></div>
+        <div class="row"><div class="name">Price Momentum</div><div class="bar"><div class="fill" style="width:100%;background:var(--green)"></div></div><div class="val green">10</div></div>
+        <div class="row"><div class="name">Risk</div><div class="bar"><div class="fill" style="width:100%;background:var(--green)"></div></div><div class="val green">10</div></div>
+        <div class="row"><div class="name">Fundamental</div><div class="bar"><div class="fill" style="width:90%;background:var(--green)"></div></div><div class="val green">9</div></div>
+        <div class="row"><div class="name">Earnings</div><div class="bar"><div class="fill" style="width:70%;background:var(--accent)"></div></div><div class="val">7</div></div>
+        <div class="row"><div class="name">Relative Valuation</div><div class="bar"><div class="fill" style="width:40%;background:var(--amber)"></div></div><div class="val amber">4</div></div>
+        <div class="row"><div class="name">Insider Trading</div><div class="bar"><div class="fill" style="width:10%;background:var(--red)"></div></div><div class="val red">1</div></div>
+      </div>
+      <div class="note">Score of 9 = top 15% of all stocks; best reading of the past year. The one red flag is insider selling (see Risks tab).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Estimate Momentum <span class="tag">consensus revisions, LSEG</span></h2>
+    <table>
+      <thead><tr><th></th><th class="num">Q2'26 EPS</th><th class="num">FY26 EPS</th><th class="num">FY27 EPS</th><th class="num">Price Target</th></tr></thead>
+      <tbody>
+        <tr><td>Current</td><td class="num">$1.82</td><td class="num">$8.83</td><td class="num">$10.06</td><td class="num">$308.77</td></tr>
+        <tr><td>90 days ago</td><td class="num">$1.81</td><td class="num">$7.80</td><td class="num">$9.45</td><td class="num">$278.83</td></tr>
+        <tr><td>Change</td><td class="num green">+0.6%</td><td class="num green">+13.3%</td><td class="num green">+6.5%</td><td class="num green">+10.7%</td></tr>
+      </tbody>
+    </table>
+    <div class="note">FY28 consensus EPS $13.02 (+29.4% y/y, 27 brokers, range $9.67–20.35). Post-Q1, CFRA raised 2026/2027 EPS to $9.34/$10.78 and its target $40 to $325; Argus raised to $9.36/$10.21; Morningstar raised FVE $260 → $280.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Earnings Surprise History <span class="tag">% vs consensus</span></h2>
+      <div class="chart-box"><canvas id="chSurp"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>House Views in One Line</h2>
+      <ul class="clean">
+        <li><b>CFRA:</b> "Well positioned to grow earnings above peers" — AWS may exit 2026 growing high-30s%; margin inflection in 2H26 as Leo costs capitalize</li>
+        <li><b>Argus:</b> "Warrants long-term accumulation in most equity accounts… establish or dollar-average into positions"</li>
+        <li><b>Morningstar:</b> Wide moat, exemplary capital allocation; "AWS is booming, e-commerce resilient"; supply-chain launch echoes the 2006 AWS playbook</li>
+        <li><b>LSEG quant:</b> Top-15% composite; positive outlook driven by fundamentals + momentum; valuation neutral</li>
+        <li><b>Morningstar quant:</b> The lone caution — only ~5% below fair value, "balanced choice"</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TAB 5: RISKS & INSIDERS ============ -->
+<div class="tab" id="t5">
+  <div class="grid2">
+    <div class="card">
+      <h2>Bull Case</h2>
+      <ul class="clean bull">
+        <li>AWS re-acceleration with visibility: $364B backlog (pre-Anthropic deal) + OpenAI/Anthropic GW-scale Trainium commitments</li>
+        <li>Custom silicon (Trainium/Graviton) doubled to $20B+ run-rate in under a year — structural cost edge vs NVIDIA-only rivals</li>
+        <li>Retail margin flywheel: robotics, same-day expansion, 16k job cuts ($5–6B annual savings), ads mix shift</li>
+        <li>EPS power: ~25% 3-yr CAGR (CFRA) vs 15% peers; FY28 consensus already at $13</li>
+        <li>Optionality: advertising in Prime Video/live sports, grocery (#2 US grocer, $150B gross sales), Leo + Globalstar connectivity stack, supply-chain services</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Bear Case</h2>
+      <ul class="clean bear">
+        <li>FCF negative in 2026 (−$39B FCFF est.); ROI on ~$200B AI capex unproven; "circular financing / AI bubble" concerns (CFRA flagged)</li>
+        <li>Debt nearly doubled in one quarter ($65.6B → $119.1B); Argus monitoring its financial-strength rating</li>
+        <li>FTC monopolization trial (Oct 2026) plus broader antitrust/regulatory pressure</li>
+        <li>Macro-cyclical exposure in ads and AWS; tariffs and consumer softness</li>
+        <li>Valuation premium to market (forward P/E 29× vs S&P 21.4×); P/S above its own 5-yr average</li>
+        <li>Satellite bets: Leo well behind Starlink (240 satellites vs 10,000+); Globalstar bought at ~40× forward revenue</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Insider Activity — The Red Flag <span class="tag">INK Research + LSEG, 12 months</span></h2>
+    <div class="grid2">
+      <div>
+        <div class="chart-box"><canvas id="chInsider"></canvas></div>
+      </div>
+      <ul class="clean">
+        <li>Net insider selling of <b class="red">−$5.77B</b> over the past year; zero open-market buying</li>
+        <li>Bulk is Jeff Bezos' planned program (~$5.7B officer sales incl. ~24M shares Jun–Jul 2025) plus regular gifts</li>
+        <li>Routine RSU-linked sales by Jassy, Olsavsky, Garman, Herrington, Zapolsky — many near $260–275 in Apr–May 2026</li>
+        <li>LSEG: this quarter's $51.6M sell total (ex-Bezos screen) is the highest in five years; Insider score 1/10</li>
+        <li>Director Rubinstein — historically a "predictive seller" (avg −4.2% in 6 months after his sales) — sold again in April</li>
+        <li>Counterpoint: heavy planned selling by founders is common; no analyst in the packet changed a rating because of it</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Risk Profile <span class="tag">LSEG Risk score 10/10 = low risk vs market</span></h2>
+    <div class="pillrow">
+      <div class="pill">Beta vs S&P <b>1.43</b></div>
+      <div class="pill">90-day stdev <b>1.86</b> (in line with index)</div>
+      <div class="pill">Worst month (5 yr) <b>−26.6%</b></div>
+      <div class="pill">Best month <b>+27.3%</b></div>
+      <div class="pill">CFRA risk assessment <b>Medium</b></div>
+      <div class="pill">Morningstar uncertainty <b>Medium</b></div>
+      <div class="pill">Argus financial strength <b>Medium-High</b></div>
+      <div class="pill">S&P credit <b>AA−</b> / Moody's <b>Baa1</b></div>
+      <div class="pill">ESG risk (Sustainalytics) <b>16.6 Low</b></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TAB 6: RECOMMENDATION ============ -->
+<div class="tab" id="t6">
+  <div class="verdict">
+    <h2>Verdict: BUY / ACCUMULATE — 12-month target zone $280–325</h2>
+    <p><b>Weight of evidence:</b> 5 of 6 rating sources are outright bullish; the most cautious (Morningstar Quant) still sees the stock slightly below fair value. The Street's mean target of $308.77 implies ~26% upside, and estimate momentum is strongly positive (FY26 consensus EPS +13% in 90 days).</p>
+    <p><b>Why now:</b> Growth is re-accelerating across every segment, margins are at records, and the forward P/E (29×) sits at roughly half its 5-year average while EPS compounds ~20–25% — a PEG of ~1.2–1.4×, cheaper than the mega-cap peer set on growth-adjusted terms.</p>
+    <p><b>How:</b> Per Argus, establish or dollar-average into positions, using weakness (the stock is −10% over the past month) as entry. Suitable for long-term growth allocations; expect volatility around the Oct 2026 FTC trial and quarterly capex headlines.</p>
+    <p><b>What would change the thesis:</b> AWS growth decelerating below ~20% while capex stays at $200B; FCF still deeply negative into 2027; an adverse FTC outcome forcing structural remedies; or AI customers (OpenAI/Anthropic) failing to honor compute commitments.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Scenario Map <span class="tag">12-month, derived from packet</span></h2>
+      <table>
+        <thead><tr><th>Scenario</th><th class="num">Price</th><th class="num">Return</th><th>Anchor</th></tr></thead>
+        <tbody>
+          <tr><td class="green">Bull</td><td class="num">$370</td><td class="num green">+51.5%</td><td>Street-high target; AWS exits 2026 at high-30s% growth</td></tr>
+          <tr><td>Base</td><td class="num">$309</td><td class="num green">+26.4%</td><td>Street mean; CFRA/Argus $325, Morningstar $280</td></tr>
+          <tr><td class="amber">Conservative</td><td class="num">$258</td><td class="num">+5.5%</td><td>Morningstar Quant FVE</td></tr>
+          <tr><td class="red">Bear</td><td class="num">$207</td><td class="num red">−15.2%</td><td>Street-low target; capex ROI fears + FTC overhang</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Monitoring Checklist</h2>
+      <ul class="clean">
+        <li><b>29 Jul 2026:</b> Q2 earnings — guide was $194–199B rev / $20–24B op income; watch AWS growth ≥30%?</li>
+        <li>AWS backlog trajectory (was $364B +49% q/q) and Trainium 3 capacity ramp in 2H26</li>
+        <li>FCF path — does 2H26 show the Leo cost capitalization margin boost CFRA expects?</li>
+        <li>Debt issuance pace vs the $200B capex plan; credit-rating outlooks (AA−/Baa1, both stable)</li>
+        <li>FTC trial newsflow from October 2026</li>
+        <li>Any insider open-market <i>buying</i> would be a notable signal change</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Source Documents</h2>
+    <table>
+      <thead><tr><th>Document</th><th>Publisher</th><th>Date</th><th>Stance</th></tr></thead>
+      <tbody>
+        <tr><td>Stock Report (STARS ★★★★★)</td><td>CFRA</td><td>6 Jun 2026</td><td class="green">Strong Buy, $325</td></tr>
+        <tr><td>Analyst Report</td><td>Argus Research</td><td>30 Apr 2026</td><td class="green">Buy, $325</td></tr>
+        <tr><td>A6 Quantitative Report</td><td>Argus Research</td><td>3 Jun 2026</td><td class="green">Buy, $290</td></tr>
+        <tr><td>Equity Analyst Report (Supply Chain Services note)</td><td>Morningstar</td><td>10 Jun 2026</td><td class="green">★★★★, FVE $280, Wide Moat</td></tr>
+        <tr><td>Quantitative Equity Report</td><td>Morningstar</td><td>6 Jun 2026</td><td class="amber">★★★, FVE $257.69</td></tr>
+        <tr><td>Quantitative Report — AMZN CDR (TSX, CAD)</td><td>Morningstar</td><td>10 Jun 2026</td><td class="amber">★★★, FVE C$28.80</td></tr>
+        <tr><td>Detailed Stock Report (Average Score 9)</td><td>LSEG Stock Reports Plus</td><td>10 Jun 2026</td><td class="green">Positive outlook</td></tr>
+        <tr><td>I/B/E/S Estimates</td><td>LSEG</td><td>9 Jun 2026</td><td class="green">Buy (1.8), 70 analysts</td></tr>
+        <tr><td>Insider Activity Report</td><td>INK Research</td><td>10 Jun 2026</td><td class="red">Net selling −$5.77B</td></tr>
+        <tr><td>Best Books 2026 So Far (news release)</td><td>Amazon / Business Wire</td><td>10 Jun 2026</td><td>Color only</td></tr>
+      </tbody>
+    </table>
+    <div class="note">This memo aggregates third-party research for personal use. It is not investment advice; figures are as reported by each publisher and may differ in methodology (e.g., GAAP vs adjusted EPS, FCF definitions).</div>
+  </div>
+</div>
+
+<div class="footer">
+  AMZN Interactive Investment Memo · built 10 Jun 2026 · price data as of 9 Jun 2026 close · All figures sourced from the 10 uploaded research documents (CFRA, Argus, Morningstar, LSEG, INK Research, Business Wire).
+</div>
+</div>
+
+<script>
+const C = {muted:'#94a3b8', border:'#2e3a52', accent:'#4f8ef7', green:'#34d399', red:'#f87171', amber:'#fbbf24'};
+Chart.defaults.color = C.muted;
+Chart.defaults.borderColor = C.border;
+Chart.defaults.font.family = "'Segoe UI',system-ui,sans-serif";
+
+// Tabs
+document.querySelectorAll('nav button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.tab).classList.add('active');
+  });
+});
+
+// Revenue & EPS
+new Chart(chRevEps,{
+  data:{labels:['2022','2023','2024','2025','2026E','2027E','2028E'],
+    datasets:[
+      {type:'bar',label:'Revenue $B',data:[514.0,574.8,638.0,716.9,824.1,931.5,1006.7],
+       backgroundColor:['#3a4a6b','#3a4a6b','#3a4a6b','#3a4a6b','rgba(79,142,247,.55)','rgba(79,142,247,.55)','rgba(79,142,247,.4)'],yAxisID:'y'},
+      {type:'line',label:'GAAP EPS $',data:[-0.27,2.90,5.53,7.17,8.83,10.06,13.02],
+       borderColor:C.green,backgroundColor:C.green,yAxisID:'y1',tension:.3,pointRadius:4}
+    ]},
+  options:{maintainAspectRatio:false,
+    scales:{y:{title:{display:true,text:'Revenue $B'},grid:{color:C.border}},
+            y1:{position:'right',title:{display:true,text:'EPS $'},grid:{drawOnChartArea:false}}},
+    plugins:{legend:{labels:{boxWidth:12}}}}
+});
+
+// Revenue mix donut
+new Chart(chMix,{type:'doughnut',
+  data:{labels:['Online stores 37%','3P seller services 24%','AWS 18%','Advertising 10%','Subscriptions 7%','Physical stores 3%','Other 1%'],
+    datasets:[{data:[37,24,18,10,7,3,1],
+      backgroundColor:['#4f8ef7','#34d399','#fbbf24','#f87171','#a78bfa','#22d3ee','#64748b'],borderColor:'#1a2233',borderWidth:2}]},
+  options:{maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11}}}}}
+});
+
+// Segment op income
+new Chart(chSegOp,{type:'bar',
+  data:{labels:['AWS','North America','International'],
+    datasets:[{label:'2025 Op Income $B',data:[45.6,29.6,4.8],
+      backgroundColor:[C.amber,C.accent,C.green],borderRadius:6}]},
+  options:{maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.raw+'B'}}},
+    scales:{x:{grid:{color:C.border},title:{display:true,text:'$B'}}}}
+});
+
+// Capex vs FCF
+new Chart(chCapex,{type:'bar',
+  data:{labels:['2023','2024','2025','2026E','2027E','2028E'],
+    datasets:[
+      {label:'Capex $B',data:[52.7,83.0,131.8,200,null,null],backgroundColor:'rgba(79,142,247,.6)',borderRadius:4},
+      {label:'Free cash flow $B (M*)',data:[43.8,48.4,27.7,-39.4,19.4,47.8],backgroundColor:ctx=>ctx.raw<0?C.red:C.green,borderRadius:4}
+    ]},
+  options:{maintainAspectRatio:false,
+    scales:{y:{grid:{color:C.border},title:{display:true,text:'$B'}}},
+    plugins:{legend:{labels:{boxWidth:12}}}}
+});
+
+// Targets bar
+new Chart(chTargets,{type:'bar',
+  data:{labels:['M* Quant FVE','M* Analyst FVE','CFRA Quant FV','Argus A6','Street Mean','CFRA Target','Argus Target'],
+    datasets:[{label:'$/share',data:[257.69,280,283.26,290,308.77,325,325],
+      backgroundColor:['#fbbf24','#34d399','#34d399','#34d399','#4f8ef7','#34d399','#34d399'],borderRadius:5}]},
+  options:{maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false},
+      annotation:undefined,
+      tooltip:{callbacks:{label:c=>'$'+c.raw+' ('+((c.raw/244.19-1)*100).toFixed(1)+'% vs price)'}}},
+    scales:{x:{min:200,max:380,grid:{color:C.border},title:{display:true,text:'Current price: $244.19'}}}}
+});
+
+// Street range
+new Chart(chRange,{type:'bar',
+  data:{labels:['Low','Mean','High'],
+    datasets:[{label:'12-mo target $',data:[207,308.77,370],
+      backgroundColor:[C.red,C.accent,C.green],borderRadius:6,barPercentage:.55}]},
+  options:{maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>'$'+c.raw+' → '+((c.raw/244.19-1)*100).toFixed(1)+'%'}}},
+    scales:{y:{min:180,grid:{color:C.border}}}}
+});
+
+// Recommendations
+new Chart(chRecs,{type:'bar',
+  data:{labels:['Strong Buy','Buy','Hold','Sell','Strong Sell'],
+    datasets:[{data:[20,46,4,0,0],
+      backgroundColor:['#15803d','#34d399','#94a3b8','#f87171','#b91c1c'],borderRadius:5}]},
+  options:{maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:C.border},title:{display:true,text:'# of analysts (70 total)'}}}}
+});
+
+// Surprise history
+new Chart(chSurp,{type:'bar',
+  data:{labels:['Q4 24','Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+    datasets:[{label:'EPS surprise %',data:[24.5,16.7,26.5,23.9,-1.1,69.7],
+      backgroundColor:ctx=>ctx.raw<0?C.amber:C.green,borderRadius:4}]},
+  options:{maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'% vs consensus'}}},
+    scales:{y:{grid:{color:C.border},title:{display:true,text:'%'}}}}
+});
+
+// Insider selling by role
+new Chart(chInsider,{type:'bar',
+  data:{labels:['Officers (incl. Bezos)','CEO Jassy','CFO Olsavsky','Directors'],
+    datasets:[{label:'12-mo net selling $M',data:[-5725.0,-34.6,-4.0,-4.7],
+      backgroundColor:C.red,borderRadius:4}]},
+  options:{maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+Math.abs(c.raw).toLocaleString()+'M sold'}}},
+    scales:{x:{grid:{color:C.border},title:{display:true,text:'$ millions (log-scale feel: officers dominated by Bezos program)'}}}}
+});
+</script>
+</body>
+</html>

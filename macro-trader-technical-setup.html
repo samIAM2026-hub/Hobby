@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Macro Trader's Technical Setup — Interactive Study Guide</title>
+<style>
+  :root{
+    --bg:#0b0f17;
+    --panel:#121826;
+    --panel-2:#0f1420;
+    --ink:#e6edf6;
+    --muted:#94a3b8;
+    --line:#1f2a3c;
+    --accent:#4ea1ff;
+    --accent-2:#37e0a0;
+    --gold:#f5c451;
+    --red:#ff6b6b;
+    --amber:#ffb454;
+    --green:#3ddc84;
+    --violet:#b58cff;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 600px at 80% -10%,#15203400,#0b0f17),var(--bg);
+    color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+
+  /* HEADER */
+  header.hero{padding:54px 0 30px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#101725,#0b0f17)}
+  .kicker{color:var(--accent-2);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+  h1{font-size:34px;line-height:1.15;margin:10px 0 8px;font-weight:800;letter-spacing:-.02em}
+  .lead{color:var(--muted);font-size:17px;max-width:760px}
+  .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .pill{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:12.5px;color:var(--muted)}
+  .pill b{color:var(--ink)}
+
+  /* NAV */
+  nav.toc{position:sticky;top:0;z-index:40;background:rgba(11,15,23,.86);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line)}
+  nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding:10px 22px}
+  nav.toc a{color:var(--muted);font-size:13px;font-weight:600;padding:7px 12px;border-radius:9px;white-space:nowrap}
+  nav.toc a:hover{color:var(--ink);background:var(--panel)}
+
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:25px;font-weight:800;letter-spacing:-.01em;margin:0 0 6px;display:flex;align-items:center;gap:11px}
+  h2 .num{font-size:13px;color:var(--bg);background:var(--accent);width:26px;height:26px;border-radius:8px;
+    display:inline-flex;align-items:center;justify-content:center;font-weight:800;flex:none}
+  .sub{color:var(--muted);margin:0 0 22px;font-size:15.5px;max-width:780px}
+  h3{font-size:17px;margin:26px 0 10px;font-weight:700}
+  p{margin:12px 0}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:1fr 1fr}
+  @media(max-width:760px){.g2{grid-template-columns:1fr}}
+
+  /* TEACHING CALLOUT */
+  .teach{border-left:3px solid var(--accent-2);background:linear-gradient(90deg,rgba(55,224,160,.07),transparent);
+    padding:13px 16px;border-radius:0 10px 10px 0;margin:16px 0;font-size:14.5px}
+  .teach .t-label{color:var(--accent-2);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px}
+
+  /* TABLES */
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;overflow:hidden;border-radius:10px}
+  th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--panel-2);color:var(--accent);font-weight:700;font-size:12.5px;letter-spacing:.03em;text-transform:uppercase}
+  tr:hover td{background:rgba(78,161,255,.04)}
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+
+  /* GLOSSARY TOOLTIP */
+  .gl{border-bottom:1px dotted var(--gold);cursor:help;color:var(--ink);position:relative}
+  .gl:hover::after{content:attr(data-def);position:absolute;left:0;top:130%;z-index:60;width:260px;
+    background:#1b2436;border:1px solid var(--line);color:var(--ink);padding:9px 11px;border-radius:9px;
+    font-size:12.5px;line-height:1.45;font-weight:400;box-shadow:var(--shadow);white-space:normal;letter-spacing:0}
+  .gl:hover::before{content:"";position:absolute;left:14px;top:118%;border:6px solid transparent;border-bottom-color:#1b2436;z-index:61}
+
+  /* TIMEFRAME ZOOM LADDER */
+  .tf-tool{display:grid;grid-template-columns:300px 1fr;gap:18px;margin:20px 0;align-items:start}
+  @media(max-width:780px){.tf-tool{grid-template-columns:1fr}}
+  .tf-ladder{position:relative;display:flex;flex-direction:column;gap:9px}
+  .tf-ladder::before{content:"";position:absolute;left:14px;top:8px;bottom:8px;width:2px;
+    background:linear-gradient(180deg,#b58cff,#4ea1ff,#37e0a0,#f5c451,#ffb454);border-radius:2px;opacity:.5}
+  .tf-control{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:2px;padding-left:2px}
+  .tf-control .arrowdn{color:var(--accent-2)}
+  .tf-rung{position:relative;display:flex;align-items:center;gap:13px;padding:11px 14px 11px 13px;
+    border:1px solid var(--line);border-radius:12px;background:var(--panel);cursor:pointer;
+    transition:all .15s;text-align:left;z-index:1}
+  .tf-rung:hover{border-color:var(--muted);transform:translateX(3px)}
+  .tf-rung.active{background:var(--panel-2);box-shadow:0 0 0 1px rgba(255,255,255,.04)}
+  .tf-dot{width:18px;height:18px;border-radius:50%;flex:none;border:3px solid var(--bg);box-shadow:0 0 0 1px var(--line)}
+  .tf-rung.active .tf-dot{box-shadow:0 0 0 2px currentColor,0 0 14px -2px currentColor}
+  .tf-rung .tf-name{font-weight:800;font-size:15px;color:var(--ink)}
+  .tf-rung .tf-role{font-size:11.5px;color:var(--muted);font-weight:600}
+  .tf-weight{margin-left:auto;display:flex;gap:2px;align-items:center}
+  .tf-weight i{width:4px;border-radius:2px;background:currentColor;opacity:.85}
+
+  .tf-detail{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#10182a,#0d1320);
+    padding:22px 24px;min-height:240px;position:relative;overflow:hidden}
+  .tf-detail::before{content:"";position:absolute;inset:0;background:radial-gradient(420px 200px at 90% -20%,var(--glowc,#4ea1ff22),transparent)}
+  .tf-detail>*{position:relative}
+  .tf-d-top{display:flex;align-items:center;gap:13px;margin-bottom:4px}
+  .tf-badge{font-size:24px;font-weight:900;letter-spacing:-.02em}
+  .tf-tag{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;padding:4px 10px;border-radius:7px}
+  .tf-auth{margin-left:auto;font-size:11px;color:var(--muted);font-weight:700;text-align:right;line-height:1.3}
+  .tf-q{font-size:16px;color:var(--ink);font-weight:600;margin:12px 0 16px;line-height:1.45}
+  .tf-q .qmark{color:var(--accent-2);font-weight:800}
+  .tf-rows{display:grid;gap:11px}
+  .tf-r{display:grid;grid-template-columns:130px 1fr;gap:12px;font-size:13.5px;align-items:start}
+  @media(max-width:480px){.tf-r{grid-template-columns:1fr;gap:2px}}
+  .tf-r .k{color:var(--accent-2);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;padding-top:1px}
+  .tf-r .v{color:var(--muted)}
+  .tf-r .v b{color:var(--ink)}
+  .tf-trap{margin-top:15px;border-left:3px solid var(--amber);background:rgba(255,180,84,.07);
+    padding:9px 13px;border-radius:0 9px 9px 0;font-size:13px;color:#ecdcbf}
+  .tf-trap b{color:var(--amber)}
+  .tf-hint{font-size:11.5px;color:var(--muted);margin-top:6px;padding-left:2px}
+
+  /* INDICATOR STACK */
+  .stack{display:grid;gap:12px;margin-top:18px}
+  .layer{display:grid;grid-template-columns:150px 1fr;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  @media(max-width:680px){.layer{grid-template-columns:1fr}}
+  .layer-h{padding:15px 16px;display:flex;flex-direction:column;justify-content:center;color:#08101c;font-weight:800}
+  .layer-h small{font-weight:600;opacity:.8;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+  .layer-b{padding:15px 17px;background:var(--panel)}
+  .layer-b .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+  .chip{font-size:11.5px;background:var(--panel-2);border:1px solid var(--line);border-radius:7px;padding:3px 9px;color:var(--ink);font-weight:600}
+  .layer-b p{margin:0;font-size:13.5px;color:var(--muted)}
+
+  /* REGIME CLASSIFIER */
+  .classifier{background:linear-gradient(180deg,#10182a,#0d1320);border:1px solid var(--line);border-radius:18px;padding:22px;margin-top:6px}
+  .q-block{margin-bottom:18px}
+  .q-label{font-weight:700;font-size:14px;margin-bottom:9px;display:flex;align-items:center;gap:8px}
+  .q-label .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .opt{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:10px;padding:9px 13px;
+    font-size:13px;cursor:pointer;transition:all .12s;font-weight:600;user-select:none}
+  .opt:hover{border-color:var(--accent);color:var(--ink)}
+  .opt.sel{background:var(--accent);border-color:var(--accent);color:#08101c}
+  .result-box{margin-top:20px;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-height:90px}
+  .result-head{padding:16px 20px;color:#08101c;font-weight:800;font-size:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  .result-head .score{font-size:12px;font-weight:700;opacity:.85}
+  .result-body{padding:16px 20px;background:var(--panel)}
+  .result-body .row{display:flex;gap:10px;margin:8px 0;font-size:14px}
+  .result-body .row .lab{color:var(--accent-2);font-weight:700;min-width:96px;flex:none}
+  .result-empty{padding:26px 20px;color:var(--muted);text-align:center;font-size:14px}
+  .reset-btn{margin-top:14px;background:transparent;border:1px solid var(--line);color:var(--muted);
+    padding:8px 14px;border-radius:9px;font-size:12.5px;cursor:pointer;font-weight:600}
+  .reset-btn:hover{color:var(--ink);border-color:var(--muted)}
+
+  /* CROSS ASSET FLOW */
+  .flowmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:16px}
+  .node{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--panel)}
+  .node .nh{font-weight:800;font-size:13.5px;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .node .nh .ic{width:24px;height:24px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex:none;color:#08101c;font-weight:900}
+  .node p{margin:0;font-size:12.5px;color:var(--muted)}
+
+  /* REGIME CARDS */
+  .regime-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  @media(max-width:760px){.regime-grid{grid-template-columns:1fr}}
+  .rcard{border:1px solid var(--line);border-radius:12px;padding:15px 16px;background:var(--panel);border-left-width:4px}
+  .rcard h4{margin:0 0 6px;font-size:15px;display:flex;align-items:center;gap:8px}
+  .rcard .tag{font-size:10px;text-transform:uppercase;letter-spacing:.08em;padding:2px 7px;border-radius:6px;font-weight:800}
+  .rcard p{margin:5px 0;font-size:13px;color:var(--muted)}
+  .rcard p b{color:var(--ink)}
+  .rcard .act{color:var(--accent-2);font-weight:700;font-size:13px;margin-top:8px}
+
+  /* ROUTINE CHECKLIST */
+  .routine{display:grid;gap:9px;margin-top:14px}
+  .step{display:flex;gap:13px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px 15px;cursor:pointer;transition:all .12s}
+  .step:hover{border-color:var(--accent)}
+  .step .chk{width:22px;height:22px;border-radius:6px;border:2px solid var(--line);flex:none;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;transition:all .12s}
+  .step.done .chk{background:var(--accent-2);border-color:var(--accent-2);color:#08101c}
+  .step.done .s-txt{opacity:.5;text-decoration:line-through}
+  .step .s-txt b{color:var(--ink)}
+  .step .s-txt{font-size:13.5px;color:var(--muted)}
+  .step .num-b{font-size:11px;font-weight:800;color:var(--accent);min-width:18px}
+  .progress-wrap{height:8px;background:var(--panel-2);border-radius:99px;overflow:hidden;margin:14px 0 4px;border:1px solid var(--line)}
+  .progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .25s}
+
+  .tabs{display:flex;gap:6px;margin-bottom:4px}
+  .tab{padding:8px 16px;border:1px solid var(--line);border-bottom:none;border-radius:10px 10px 0 0;cursor:pointer;font-size:13.5px;font-weight:700;color:var(--muted);background:var(--panel-2)}
+  .tab.active{color:var(--ink);background:var(--panel);border-color:var(--accent)}
+
+  /* worked example */
+  .quote-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;margin:16px 0}
+  .qcard{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .qcard .qn{font-size:12px;color:var(--muted);font-weight:600}
+  .qcard .qv{font-size:21px;font-weight:800;margin-top:2px}
+  .qcard .qc{font-size:12.5px;font-weight:700;margin-top:2px}
+  .up{color:var(--green)} .down{color:var(--red)}
+  .qcard .qv.neutral{color:var(--ink)}
+
+  /* LIVE SNAPSHOT */
+  .snap-asof{font-size:13px;font-weight:600;color:var(--muted);margin-left:6px}
+  .snap-auto{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;
+    background:rgba(55,224,160,.16);color:var(--accent-2);padding:3px 8px;border-radius:6px;margin-left:8px;vertical-align:middle}
+  .snap-loading{color:var(--muted);font-size:14px}
+  .snap-agent{border-left:4px solid var(--violet);margin-top:16px}
+  .snap-agent p{color:var(--muted);font-size:14px}
+  .snap-banner{background:rgba(255,180,84,.1);border:1px solid rgba(255,180,84,.32);border-radius:10px;
+    padding:10px 14px;font-size:12.5px;color:#ecdcbf;margin-bottom:16px}
+  .snap-banner code{color:#fff}
+  .snap-regime-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 14px}
+  .snap-chip{font-weight:800;font-size:16px;padding:5px 13px;border-radius:9px}
+  .snap-conf{font-size:12px;color:var(--muted);font-weight:700}
+  .snap-inputs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 16px}
+  .snap-inp{font-size:11.5px;background:var(--panel-2);border:1px solid var(--line);border-radius:7px;padding:3px 9px;color:var(--muted)}
+  .snap-inp b{color:var(--ink)}
+  #snap-computed-body p{font-size:14px;margin:10px 0}
+  #snap-computed-body .act-line{color:var(--accent-2);font-weight:700}
+  .snap-headline{font-size:15px;color:var(--ink);background:var(--panel);border:1px solid var(--line);
+    border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:11px 15px;margin:4px 0 6px;font-weight:600}
+  /* evidence bar */
+  .evibar{display:flex;height:34px;border-radius:9px;overflow:hidden;border:1px solid var(--line);font-size:12px;font-weight:800;color:#08101c}
+  .evibar span{display:flex;align-items:center;justify-content:center;min-width:30px;transition:flex .3s}
+  .snap-evnote{font-size:12.5px;color:var(--muted);margin:8px 0 4px}
+  /* dashboard panels */
+  .dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(252px,1fr));gap:12px;margin:6px 0 4px}
+  .dpanel{border:1px solid var(--line);border-radius:13px;background:var(--panel);overflow:hidden}
+  .dpanel-h{padding:10px 14px;font-weight:800;font-size:13px;display:flex;align-items:center;gap:8px;
+    border-bottom:1px solid var(--line);background:var(--panel-2)}
+  .dpanel-h .pi{font-size:15px}
+  .drow{display:flex;justify-content:space-between;gap:10px;padding:8px 14px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.03)}
+  .drow:last-child{border-bottom:none}
+  .drow .dn{color:var(--muted);display:flex;align-items:center;gap:8px}
+  .drow .dn .td{width:8px;height:8px;border-radius:50%;flex:none}
+  .drow .dv{text-align:right;font-weight:700;color:var(--ink);line-height:1.25}
+  .drow .dv small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+  .drow .dv .up{color:var(--green)} .drow .dv .down{color:var(--red)}
+  /* indicator readings */
+  .ind-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:640px){.ind-wrap{grid-template-columns:1fr;gap:16px}}
+  .ind-title{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:800;margin-bottom:10px}
+  .ma-pills{display:flex;gap:8px;flex-wrap:wrap}
+  .ma-pill{border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:12.5px;font-weight:800;
+    display:flex;flex-direction:column;gap:2px;min-width:80px;border-top-width:3px}
+  .ma-pill small{font-weight:600;font-size:11px;color:var(--muted);text-transform:capitalize}
+  .mom-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .mom-row:last-child{border-bottom:none}
+  .mom-row .mn{color:var(--muted);font-weight:600}
+  .mom-row .mv{text-align:right;font-weight:700}
+  .mom-row .mv small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+  /* decision */
+  .decision{border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:13px;
+    background:linear-gradient(180deg,#16140c,#0f1220);padding:18px 20px}
+  .dec-bias{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:4px 11px;border-radius:7px}
+  .dec-stance{font-size:18px;font-weight:800;margin:10px 0 4px;color:var(--ink)}
+  .dec-row{margin:9px 0;font-size:13.5px;color:var(--muted)}
+  .dec-row b{color:var(--accent-2)}
+  .dec-watch{margin:10px 0 0;padding:0;list-style:none}
+  .dec-watch li{padding:7px 0 7px 22px;position:relative;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+  .dec-watch li::before{content:"▸";position:absolute;left:4px;color:var(--gold);font-weight:800}
+  code{background:var(--panel-2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12.5px;color:var(--gold);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+
+  footer{padding:40px 0;color:var(--muted);font-size:13px}
+  .disclaim{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);border-radius:12px;padding:14px 17px;font-size:13px;color:#e9d9bd;margin-top:18px}
+  .src{font-size:12px;color:var(--muted);margin-top:8px}
+  ::selection{background:var(--accent);color:#08101c}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Interactive Study Guide</div>
+    <h1>The Macro Trader's Technical Setup</h1>
+    <p class="lead">Read equity beta, rates, FX, commodities, volatility, credit, and leadership as <b>one integrated system</b> — not isolated charts. This page turns the research report into something you can click, test, and actually learn.</p>
+    <div class="pill-row">
+      <div class="pill"><b>8</b>-panel workspace</div>
+      <div class="pill"><b>5</b> timeframes</div>
+      <div class="pill"><b>4</b> indicator layers</div>
+      <div class="pill"><b>8</b> market regimes</div>
+      <div class="pill">Live <b>regime classifier</b> ↓</div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#why">Why</a>
+    <a href="#timeframes">Timeframes</a>
+    <a href="#stack">Indicator Stack</a>
+    <a href="#breadth">Breadth & Cross-Asset</a>
+    <a href="#classifier">Regime Classifier</a>
+    <a href="#regimes">8 Regimes</a>
+    <a href="#example">Worked Example</a>
+    <a href="#routine">Daily Routine</a>
+  </div>
+</nav>
+
+<!-- WHY -->
+<section id="why">
+  <div class="wrap">
+    <h2><span class="num">1</span>The purpose of the setup</h2>
+    <p class="sub">A macro dashboard exists to answer a tight set of questions in order — not to predict every tick.</p>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-top:0">The four questions, in order</h3>
+        <table>
+          <tr><th>#</th><th>Question</th><th>Timeframe that answers it</th></tr>
+          <tr><td>1</td><td>What is the <b>secular trend</b>?</td><td>Monthly</td></tr>
+          <tr><td>2</td><td>What is the current <b>macro regime</b>?</td><td>Weekly</td></tr>
+          <tr><td>3</td><td>Is <b>risk appetite</b> broad or narrow?</td><td>Daily + breadth</td></tr>
+          <tr><td>4</td><td>Where are <b>entry/exit zones</b>?</td><td>4H / 1H</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">What the core instruments tell you</h3>
+        <p style="font-size:13.5px;color:var(--muted);margin-top:0">Each symbol is a sensor for one part of the machine:</p>
+        <table>
+          <tr><td><b>S&P 500 / Nasdaq-100</b></td><td>Equity beta (~80% of US market cap)</td></tr>
+          <tr><td><b>ES, NQ, YM, RTY</b></td><td>24-hr price discovery (real volume)</td></tr>
+          <tr><td><b><span class="gl" data-def="Cboe's options-based measure of expected 30-day S&P 500 volatility. The 'fear gauge.'">VIX</span></b></td><td>Expected volatility / fear</td></tr>
+          <tr><td><b><span class="gl" data-def="ICE U.S. Dollar Index — a basket measuring USD against major currencies. Proxy for dollar liquidity.">DXY</span></b></td><td>Dollar liquidity</td></tr>
+          <tr><td><b><span class="gl" data-def="HYG = high-yield (junk) corporate bond ETF. LQD = investment-grade corporate bond ETF.">HYG / LQD</span></b></td><td>Credit risk appetite</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="teach">
+      <span class="t-label">Why this matters</span>
+      Any single chart can lie. A market can rise on just five mega-cap names while the other 495 quietly fall apart. The whole point of a cross-asset dashboard is to <b>cross-examine price</b>: is this move <i>confirmed</i> by liquidity, credit and breadth — or is it being rejected by them? When confirmation and price disagree, the disagreement is the signal.
+    </div>
+  </div>
+</section>
+
+<!-- TIMEFRAMES -->
+<section id="timeframes">
+  <div class="wrap">
+    <h2><span class="num">2</span>The timeframe hierarchy</h2>
+    <p class="sub">Five lenses on the same market, each with one job. <b>Authority flows downward</b> — the higher timeframe sets the rules; the lower ones only choose the moment. Click a lens to study its role.</p>
+
+    <div class="tf-tool">
+      <div>
+        <div class="tf-control"><span class="arrowdn">▼</span> More authority at top</div>
+        <div class="tf-ladder" id="tf-ladder"></div>
+        <div class="tf-hint">Tip: read top→bottom. If two lenses disagree, the higher one wins.</div>
+      </div>
+      <div class="tf-detail" id="tf-detail"></div>
+    </div>
+
+    <div class="teach">
+      <span class="t-label">Mental model</span>
+      Think of it like a GPS. The monthly is the country you're in; the weekly is the city; the daily is the neighborhood; the 4H and 1H are the actual turn-by-turn directions. You'd never decide which country to drive to based on a single turn signal — yet that's exactly what traders do when they let a 5-minute candle flip their conviction.
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h3 style="margin-top:0">⚠️ The volume nuance most beginners miss</h3>
+      <p style="margin-bottom:0">For <b>VWAP</b>, <b>anchored VWAP</b>, and <b>volume profile</b>, use the <b>traded instruments</b> — ES/NQ futures or SPY/QQQ ETFs — <u>not</u> the SPX/NDX spot indexes. Indexes are calculated numbers with <b>no real volume</b>, so any volume-based tool computed on them is meaningless. The futures and ETFs solve this because they actually trade.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INDICATOR STACK -->
+<section id="stack">
+  <div class="wrap">
+    <h2><span class="num">3</span>The indicator stack</h2>
+    <p class="sub">Four layers, each with a distinct job. The cardinal rule: <b>be consistent</b> — don't switch EMA↔SMA chart-by-chart just because one "looks cleaner."</p>
+
+    <div class="stack">
+      <div class="layer">
+        <div class="layer-h" style="background:linear-gradient(135deg,#4ea1ff,#3d7ddb)">Trend<small>Moving averages</small></div>
+        <div class="layer-b">
+          <div class="chips"><span class="chip">EMA 20</span><span class="chip">EMA 50</span><span class="chip">MA 100</span><span class="chip">MA 200</span></div>
+          <p>EMAs react faster than SMAs. Use <b>20 & 50</b> for tactical timing and pullback structure; <b>100 & 200</b> to define the medium- and long-term state. Stacked and rising = strong bull.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-h" style="background:linear-gradient(135deg,#37e0a0,#2bbd87)">Momentum<small>Speed & exhaustion</small></div>
+        <div class="layer-b">
+          <div class="chips"><span class="chip"><span class="gl" data-def="Relative Strength Index (14-period). Measures momentum 0–100. In strong uptrends it often holds 40–50; classic overbought 70 / oversold 30.">RSI 14</span></span><span class="chip"><span class="gl" data-def="Moving Average Convergence Divergence. Best for trend continuation and crossover structure, not pure overbought/oversold.">MACD</span></span><span class="chip"><span class="gl" data-def="Rate of Change. Tracks acceleration/deceleration around the zero line.">ROC</span></span><span class="chip"><span class="gl" data-def="Stochastic RSI. The fast trigger — good for tactical turns but too noisy to drive the macro view.">StochRSI</span></span></div>
+          <p><b>RSI</b> = first-pass regime filter. <b>MACD</b> = trend continuation. <b>ROC</b> = acceleration around zero. <b>StochRSI</b> = fast trigger for exhaustion (noisy — never lead with it alone).</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-h" style="background:linear-gradient(135deg,#f5c451,#e0aa33)">Volatility<small>Risk & sizing</small></div>
+        <div class="layer-b">
+          <div class="chips"><span class="chip">VIX</span><span class="chip"><span class="gl" data-def="Volatility of the VIX itself. Helps tell an orderly rise in risk from a disorderly one.">VVIX</span></span><span class="chip"><span class="gl" data-def="Bands at ±2 std-dev around a moving average. Contraction can precede big moves; very wide bands can signal late-stage stress.">Bollinger</span></span><span class="chip"><span class="gl" data-def="Average True Range. Converts 'this feels volatile' into an actual stop distance and position size.">ATR</span></span><span class="chip"><span class="gl" data-def="Ratio of put to call option volume. A sentiment context measure — not a standalone timing tool.">Put/Call</span></span></div>
+          <p><b>ATR</b> is the most practical tool here: it turns volatility into a concrete stop and position size. VVIX distinguishes orderly from disorderly risk rises.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-h" style="background:linear-gradient(135deg,#b58cff,#9a6cf0)">Confirmation<small>Breadth & cross-asset</small></div>
+        <div class="layer-b">
+          <div class="chips"><span class="chip"><span class="gl" data-def="Advance-Decline line: cumulative net advancing minus declining stocks. Should confirm the index; divergences warn.">AD line</span></span><span class="chip">% &gt; 50/200-day</span><span class="chip"><span class="gl" data-def="Equal-weight S&P ETF vs cap-weight SPY. Tells you if the average stock is keeping up with the mega-caps.">RSP/SPY</span></span><span class="chip">IWM/SPY</span><span class="chip">HYG, DXY, 2s10s</span></div>
+          <p>This layer answers "<b>is the move real?</b>" A rising index with a stalling AD line and lagging RSP is the classic signature of a narrow, fragile rally.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Reading the moving-average state</h3>
+    <p class="sub" style="margin-bottom:10px">Click a row to highlight where you are. This is the single most-used read on the whole dashboard.</p>
+    <div class="tbl-scroll">
+      <table id="ma-table">
+        <tr><th>Configuration</th><th>What it means</th></tr>
+        <tr data-c="#3ddc84"><td>Price &gt; 20 &gt; 50 &gt; 100 &gt; 200, all rising</td><td><b>Strong bull trend</b></td></tr>
+        <tr data-c="#7ee0a8"><td>Price &gt; 200, but 20 or 50 temporarily lost</td><td>Bull trend under correction</td></tr>
+        <tr data-c="#f5c451"><td>Price chopping around 20 & 50, both flattening</td><td>Consolidation / range</td></tr>
+        <tr data-c="#ffb454"><td>Price &lt; 50 but &gt; 200</td><td>Correction — not yet a structural bear</td></tr>
+        <tr data-c="#ff6b6b"><td>Price &lt; 200, and 50 &lt; 200</td><td><b>Bear trend / breakdown</b></td></tr>
+        <tr data-c="#4ea1ff"><td>Reclaims 20 then 50 while 50 & 200 still rising</td><td>Rebound with trend-resumption potential</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- BREADTH & CROSS ASSET -->
+<section id="breadth">
+  <div class="wrap">
+    <h2><span class="num">4</span>Breadth, rotation & cross-asset</h2>
+    <p class="sub">Breadth tells you whether an index move is real, narrow, or fragile. Cross-asset is where charting becomes actual regime work.</p>
+
+    <div class="grid g2">
+      <div class="card" style="border-left:4px solid var(--green)">
+        <h3 style="margin-top:0;color:var(--green)">✓ Healthy rally</h3>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:0">Index rising · AD line rising · &gt;50% of stocks above intermediate MAs · net new highs positive · equal-weight & small-caps keeping pace.</p>
+      </div>
+      <div class="card" style="border-left:4px solid var(--red)">
+        <h3 style="margin-top:0;color:var(--red)">✕ Narrow rally</h3>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:0">SPX/NDX advances but AD line stalls · fewer stocks above 50-day · new highs dry up · RSP & small-caps lag badly. Classic distribution-risk signature.</p>
+      </div>
+    </div>
+
+    <h3>Cross-asset: the four sensors</h3>
+    <div class="flowmap">
+      <div class="node" style="border-top:3px solid #4ea1ff">
+        <div class="nh"><span class="ic" style="background:#4ea1ff">R</span>Rates</div>
+        <p>2Y, 10Y, the 2s10s curve. Is the market repricing policy & term premium?</p>
+      </div>
+      <div class="node" style="border-top:3px solid #37e0a0">
+        <div class="nh"><span class="ic" style="background:#37e0a0">$</span>Dollar (DXY)</div>
+        <p>Is dollar liquidity tightening or easing? A stronger dollar tends to tighten financial conditions.</p>
+      </div>
+      <div class="node" style="border-top:3px solid #f5c451">
+        <div class="nh"><span class="ic" style="background:#f5c451">C</span>Commodities</div>
+        <p>WTI, gold, copper. Inflation scare vs growth scare vs geopolitics.</p>
+      </div>
+      <div class="node" style="border-top:3px solid #b58cff">
+        <div class="nh"><span class="ic" style="background:#b58cff">H</span>Credit</div>
+        <p>HYG vs LQD. Is credit <i>absorbing</i> the shock or <i>amplifying</i> it?</p>
+      </div>
+    </div>
+
+    <h3>The macro read-map</h3>
+    <p class="sub" style="margin-bottom:8px">A synthesis of how the sensors line up into recognizable regimes.</p>
+    <div class="tbl-scroll">
+      <table>
+        <tr><th>Cross-asset pattern</th><th>Most consistent read</th></tr>
+        <tr><td>10Y up, curve steepening, DXY firm, oil up, semis pressured, VIX rising</td><td style="color:var(--amber);font-weight:700">Inflation scare / duration unwind</td></tr>
+        <tr><td>Yields down hard, copper & oil down, gold firm, defensives lead, credit weakening</td><td style="color:var(--red);font-weight:700">Growth scare</td></tr>
+        <tr><td>DXY softer, VIX falling, HYG firm, cyclicals & semis lead, breadth improving</td><td style="color:var(--green);font-weight:700">Liquidity rally / risk-on</td></tr>
+        <tr><td>VIX & VVIX up, DXY up, HYG underperforming LQD, breadth weak, defensives outperform</td><td style="color:var(--red);font-weight:700">Hard risk-off</td></tr>
+      </table>
+    </div>
+
+    <div class="teach">
+      <span class="t-label">Sector rotation in one breath</span>
+      Map relative strength vs SPY onto the business cycle. <b>Early/recovery:</b> discretionary, financials, real estate, industrials, materials. <b>Mid-cycle:</b> tech & semis lead as capex recovers. <b>Late-cycle:</b> energy and selective defensives as inflation/rates dominate. <b>Recession/scare:</b> staples, utilities, health care — demand that doesn't flinch. Watch XLK/SMH for growth leadership, XLF/XLI for cyclical confirmation, XLP/XLU/XLV as the defensive tell.
+    </div>
+  </div>
+</section>
+
+<!-- REGIME CLASSIFIER -->
+<section id="classifier">
+  <div class="wrap">
+    <h2><span class="num">5</span>Interactive regime classifier</h2>
+    <p class="sub">Pick what your charts are actually showing. The tool scores all 8 regimes and returns the best match plus the macro-trader action. This is the report's decision logic, made clickable.</p>
+
+    <div class="classifier">
+      <div class="q-block" data-q="ma">
+        <div class="q-label"><span class="dot" style="background:#4ea1ff"></span>Moving-average state</div>
+        <div class="opts">
+          <div class="opt" data-v="stacked">Above 20/50/100/200, all rising</div>
+          <div class="opt" data-v="above200">Above 50 & 200, occasional 20 breaks</div>
+          <div class="opt" data-v="stretched">Stretched far above bands</div>
+          <div class="opt" data-v="lost20">Lost 20, holding 50/200</div>
+          <div class="opt" data-v="below50">Below 50, 20 rolling over, 200 in play</div>
+          <div class="opt" data-v="below200">Below 200, 50 ≤ 200</div>
+          <div class="opt" data-v="washed">Deeply stretched lower, washed out</div>
+          <div class="opt" data-v="flat">20 & 50 flat, whipsawing</div>
+        </div>
+      </div>
+
+      <div class="q-block" data-q="breadth">
+        <div class="q-label"><span class="dot" style="background:#37e0a0"></span>Breadth / participation</div>
+        <div class="opts">
+          <div class="opt" data-v="broad">Broad — AD line rising, &gt;50% above MAs</div>
+          <div class="opt" data-v="positive">Positive but not euphoric</div>
+          <div class="opt" data-v="crowded">Strong but crowded / euphoric</div>
+          <div class="opt" data-v="weak">Weakening — semis lag, new highs dry up</div>
+          <div class="opt" data-v="mixed">Mixed / signals failing</div>
+        </div>
+      </div>
+
+      <div class="q-block" data-q="vol">
+        <div class="q-label"><span class="dot" style="background:#f5c451"></span>Volatility (VIX / VVIX / ATR)</div>
+        <div class="opts">
+          <div class="opt" data-v="contained">Contained or falling</div>
+          <div class="opt" data-v="spike">Sharp spike (then fading)</div>
+          <div class="opt" data-v="elevated">Elevated & sticky</div>
+          <div class="opt" data-v="hot">Hot — gap-heavy melt-up</div>
+        </div>
+      </div>
+
+      <div class="q-block" data-q="credit">
+        <div class="q-label"><span class="dot" style="background:#b58cff"></span>Credit & cross-asset</div>
+        <div class="opts">
+          <div class="opt" data-v="firm">HYG firm, credit orderly</div>
+          <div class="opt" data-v="ok">Credit & breadth not broken</div>
+          <div class="opt" data-v="soft">Credit weak, dollar firmer</div>
+        </div>
+      </div>
+
+      <div class="q-block" data-q="lead">
+        <div class="q-label"><span class="dot" style="background:#ff6b6b"></span>Leadership</div>
+        <div class="opts">
+          <div class="opt" data-v="cyclicals">Cyclicals & semis lead</div>
+          <div class="opt" data-v="narrow">Narrow — a few mega-caps only</div>
+          <div class="opt" data-v="defensive">Defensives (XLP/XLU/XLV) lead</div>
+        </div>
+      </div>
+
+      <div class="result-box" id="result">
+        <div class="result-empty">Select at least the <b>moving-average state</b> above to classify the regime. The more you fill in, the sharper the match.</div>
+      </div>
+      <button class="reset-btn" id="reset">↺ Reset selections</button>
+    </div>
+  </div>
+</section>
+
+<!-- 8 REGIMES -->
+<section id="regimes">
+  <div class="wrap">
+    <h2><span class="num">6</span>The 8 regimes &amp; decision rules</h2>
+    <p class="sub">The full model: chart shape + what confirms it + what a macro trader actually does. Not a claim markets fit neat boxes — a tool to force <i>consistent behavior</i>.</p>
+
+    <div class="regime-grid" id="regime-cards"></div>
+
+    <div class="teach" style="margin-top:22px">
+      <span class="t-label">The four risk rules</span>
+      <b>Add risk</b> only when daily & weekly point the same way and breadth isn't contradicting price. <b>Reduce</b> when the index loses 20 & 50 together on rising volatility, or the rally narrows to a few mega-caps. <b>Hedge</b> when the higher-timeframe bull is intact but rates/oil/event risk threaten a vol shock. <b>Hold cash</b> when price is below the 200-day, breadth is poor, credit isn't confirming, and every bounce is just mean-reversion inside a broken structure.
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h3 style="margin-top:0">Marking levels systematically (not artistically)</h3>
+      <p>Support/resistance are <b>supply–demand zones</b>, not magic lines. Mark: prior highs/lows · unfilled gaps · 20/50/200-day MAs · anchored VWAP from major events or swing lows · fixed-range volume profile on big legs · Fibonacci 38.2 / 50 / 61.8% · round numbers.</p>
+      <p style="margin-bottom:0"><b>Highest-probability zones cluster.</b> When a rising 50-day EMA, an anchored VWAP from the last CPI gap, and a 38.2% retracement all land in the same area — that confluence is where you want to act.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE SNAPSHOT / DECISION DASHBOARD (data-driven) -->
+<section id="example">
+  <div class="wrap">
+    <h2><span class="num">7</span>Decision dashboard <span id="snap-as-of" class="snap-asof"></span></h2>
+    <p class="sub">Every panel the framework uses, populated from <code>macro-trader-data.json</code>, so the final call rests on the <i>whole board</i> — not a few quotes. Update the file and all of this refreshes.</p>
+
+    <div id="snap-banner" class="snap-banner" style="display:none"></div>
+    <div id="snap-headline" class="snap-headline"></div>
+
+    <h3>1 · Balance of evidence</h3>
+    <p class="sub" style="margin-bottom:8px">Every reading carries a tone tag in the data — risk-supportive, neutral, or risk-negative. The bar tallies them so the weight of evidence is visible at a glance.</p>
+    <div id="snap-evidence" class="evibar"></div>
+    <div id="snap-evidence-note" class="snap-evnote"></div>
+
+    <h3>2 · The full board — all eight panels</h3>
+    <div class="dash-grid" id="snap-dashboard"></div>
+
+    <h3>3 · Indicator readings</h3>
+    <div class="card">
+      <div class="ind-wrap">
+        <div>
+          <div class="ind-title">Moving-average state</div>
+          <div class="ma-pills" id="snap-ma"></div>
+        </div>
+        <div>
+          <div class="ind-title">Momentum</div>
+          <div id="snap-momentum"></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>4 · Computed regime</h3>
+    <div class="card" id="snap-computed">
+      <div id="snap-computed-body" class="snap-loading">Loading data…</div>
+    </div>
+
+    <h3>5 · Analyst commentary <span class="snap-auto" style="background:rgba(181,140,255,.16);color:#cbb4ff">from the data file</span></h3>
+    <div class="card snap-agent" id="snap-agent-card">
+      <p id="snap-agent-body" style="margin:0"></p>
+    </div>
+
+    <h3>6 · Final decision</h3>
+    <div class="decision" id="snap-decision"></div>
+
+    <div class="teach" style="margin-top:20px">
+      <span class="t-label">How the loop works</span>
+      An agent fetches the latest readings → overwrites the panels, indicators, <code>inputs</code> and <code>decision</code> in <code>macro-trader-data.json</code> → the page tallies the evidence, scores all 8 regimes, and lays the full board out for the call. See <code>macro-trader-UPDATE_GUIDE.md</code> for the field contract and allowed values.
+    </div>
+  </div>
+</section>
+
+<!-- ROUTINE -->
+<section id="routine">
+  <div class="wrap">
+    <h2><span class="num">8</span>The repeatable routine</h2>
+    <p class="sub">Run it in the same order every time — so you compare like with like instead of reacting to headlines. Check off each step.</p>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="daily">Daily routine</div>
+      <div class="tab" data-tab="weekly">Weekly routine</div>
+    </div>
+
+    <div id="daily-panel" class="card" style="border-radius:0 14px 14px 14px">
+      <div class="progress-wrap"><div class="progress-bar" id="daily-prog"></div></div>
+      <div class="routine" id="daily-list"></div>
+    </div>
+
+    <div id="weekly-panel" class="card" style="border-radius:0 14px 14px 14px;display:none">
+      <div class="progress-wrap"><div class="progress-bar" id="weekly-prog"></div></div>
+      <div class="routine" id="weekly-list"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p style="font-size:15px;color:var(--ink);font-weight:700;margin-bottom:4px">The framework outlives any single snapshot.</p>
+    <p>The point isn't to memorize June 2026's levels — it's to internalize the <b>order of operations</b>: secular trend → regime → breadth → levels, cross-examined across rates, FX, commodities, and credit. Finalize every regime read with your own live charts at decision time.</p>
+    <div class="disclaim">
+      <b>Educational use only.</b> This is a study aid synthesizing a technical-analysis framework. Nothing here is financial advice, a recommendation, or a prediction. Markets move quickly; the worked example is a workflow demonstration, not a standing call. Always verify live levels and manage your own risk.
+    </div>
+    <p class="src">Built from the "Technical Analysis Setup for a Macro Trader" research report · sources within include Fidelity indicator guides, Cboe volatility docs, StockCharts breadth references, TradingView VWAP/volume docs, NY Fed yield-curve model, IMF GFSR commentary, CME, State Street SPDR.</p>
+  </div>
+</footer>
+
+<!-- Local-file fallback: mirrors macro-trader-data.json so the page still renders
+     when opened directly (file://), where fetch() is blocked. Served over http,
+     the real data.json wins. Keep in sync with data.json if you change defaults. -->
+<script type="application/json" id="snap-fallback">
+{
+  "asOf": "2026-06-10",
+  "asOfLabel": "June 10, 2026 close",
+  "headline": "Rate / energy / geopolitical shock pressuring long-duration growth",
+  "panels": {
+    "equity": [
+      { "name": "S&P 500 (ES)", "value": "7,266.99", "chg": -1.62, "tone": "neg" },
+      { "name": "Nasdaq-100 (NQ)", "value": "26,480", "chg": -1.95, "tone": "neg" },
+      { "name": "Dow (YM)", "value": "49,918.78", "chg": -1.87, "tone": "neg" },
+      { "name": "Russell 2000 (RTY)", "value": "2,835.46", "chg": -1.10, "tone": "neg" }
+    ],
+    "volatility": [
+      { "name": "VIX", "value": "22.22", "chg": 11.83, "tone": "neg" },
+      { "name": "VVIX", "value": "108", "sub": "elevated, not disorderly", "tone": "neutral" },
+      { "name": "Put/Call", "value": "1.04", "sub": "defensive tilt", "tone": "neg" },
+      { "name": "SPX ATR(14)", "value": "rising", "sub": "wider stops", "tone": "neg" }
+    ],
+    "rates": [
+      { "name": "2Y yield", "value": "4.15%", "sub": "Jun 8", "tone": "neutral" },
+      { "name": "10Y yield", "value": "4.54%", "chg": 0.0, "tone": "neg" },
+      { "name": "2s10s", "value": "+39 bp", "sub": "positively sloped / steepening", "tone": "pos" },
+      { "name": "3M (curve)", "value": "4.30%", "sub": "10Y–3M positive", "tone": "pos" }
+    ],
+    "fx": [
+      { "name": "DXY", "value": "~100.0", "chg": 0.2, "tone": "neutral" },
+      { "name": "USD/JPY", "value": "~160", "sub": "carry stress watch", "tone": "neutral" }
+    ],
+    "commodities": [
+      { "name": "WTI crude", "value": "~$90", "chg": 2.1, "tone": "neg" },
+      { "name": "Gold", "value": "~$4,100", "sub": "firm / haven bid", "tone": "neutral" },
+      { "name": "Copper", "value": "~$6.65/lb", "sub": "holding — no growth-scare collapse", "tone": "pos" }
+    ],
+    "credit": [
+      { "name": "HYG", "value": "soft", "sub": "high-yield under mild pressure", "tone": "neg" },
+      { "name": "LQD", "value": "stable", "sub": "investment-grade orderly", "tone": "neutral" },
+      { "name": "HYG/LQD", "value": "easing", "sub": "credit not yet breaking", "tone": "neutral" }
+    ],
+    "breadth": [
+      { "name": "A/D line", "value": "rolling over", "sub": "no longer confirming", "tone": "neg" },
+      { "name": "% > 50-day", "value": "42%", "sub": "minority above", "tone": "neg" },
+      { "name": "% > 200-day", "value": "55%", "sub": "majority still above", "tone": "pos" },
+      { "name": "Net new highs", "value": "-38", "sub": "more new lows", "tone": "neg" },
+      { "name": "RSP/SPY", "value": "lagging", "sub": "avg stock behind mega-caps", "tone": "neg" },
+      { "name": "IWM/SPY", "value": "lagging", "sub": "small-caps soft", "tone": "neg" }
+    ],
+    "leadership": [
+      { "name": "XLE Energy", "value": "leading", "tone": "neg" },
+      { "name": "XLP Staples", "value": "leading", "tone": "neg" },
+      { "name": "XLU Utilities", "value": "leading", "tone": "neg" },
+      { "name": "XLV Health", "value": "firm", "tone": "neg" },
+      { "name": "XLK Tech", "value": "lagging", "tone": "neg" },
+      { "name": "SMH Semis", "value": "lagging", "sub": "growth leadership stalling", "tone": "neg" },
+      { "name": "XLF Financials", "value": "inline", "tone": "neutral" },
+      { "name": "Mag 7", "value": "mixed/soft", "sub": "concentration risk", "tone": "neg" }
+    ]
+  },
+  "indicators": {
+    "movingAverages": [
+      { "ma": "EMA 20", "state": "lost", "tone": "neg" },
+      { "ma": "EMA 50", "state": "below", "tone": "neg" },
+      { "ma": "MA 100", "state": "testing", "tone": "neutral" },
+      { "ma": "MA 200", "state": "above", "tone": "pos" }
+    ],
+    "momentum": [
+      { "name": "RSI(14)", "value": "41", "sub": "below 50 — soft, not washed out", "tone": "neg" },
+      { "name": "MACD", "value": "bearish cross", "sub": "trend rolling over", "tone": "neg" },
+      { "name": "ROC", "value": "negative", "sub": "decelerating below zero", "tone": "neg" },
+      { "name": "StochRSI", "value": "turning up", "sub": "tactical bounce attempt", "tone": "pos" }
+    ]
+  },
+  "inputs": { "ma": "below50", "breadth": "weak", "vol": "elevated", "credit": "ok", "lead": "defensive" },
+  "decision": {
+    "bias": "cautious",
+    "stance": "Reduce gross, hold core quality, carry a tactical hedge",
+    "keyLevels": "SPX support ~7,200 (round number + rising 200-day cluster); resistance ~7,400 (lost 50-day).",
+    "invalidation": "Daily close back above the 20 & 50 with breadth repairing (>50% above 50-day) and HYG firming flips this toward pullback-buy.",
+    "watching": [
+      "Do semis (SMH) stop bleeding and reclaim relative strength?",
+      "Does breadth repair — % above 50-day back over 50%?",
+      "Does HYG hold vs LQD, or does credit start amplifying?",
+      "Does the 10Y back off, or push higher and keep pressuring growth?",
+      "Does the 200-day on SPX hold on a closing basis?"
+    ]
+  },
+  "agentCommentary": "Built-in fallback (page opened locally). Serve over http to load macro-trader-data.json."
+}
+</script>
+
+<script>
+/* ---------- GLOSSARY / MA TABLE HIGHLIGHT ---------- */
+document.querySelectorAll('#ma-table tr[data-c]').forEach(function(tr){
+  tr.style.cursor='pointer';
+  tr.addEventListener('click',function(){
+    document.querySelectorAll('#ma-table tr[data-c]').forEach(function(r){r.style.borderLeft='';r.style.background='';});
+    tr.style.borderLeft='4px solid '+tr.dataset.c;
+    tr.style.background='rgba(255,255,255,.04)';
+  });
+});
+
+/* ---------- TIMEFRAME ZOOM LADDER ---------- */
+const TFS=[
+  {id:'monthly',name:'Monthly',role:'Secular trend',color:'#b58cff',tag:'BIG PICTURE',tagc:'#1d1430',auth:5,
+   q:'Is this asset in a secular <b>bull, range, or bear</b>?',
+   focus:'The shape of the whole multi-year structure — not individual candles.',
+   ma:'Is price holding above the long-term 200 / 100? Are they rising?',
+   action:'Sets the strategic bias for everything below. Rarely changes.',
+   trap:'Don’t trade <i>off</i> the monthly — trade in <i>agreement</i> with it.'},
+  {id:'weekly',name:'Weekly',role:'Macro regime',color:'#4ea1ff',tag:'REGIME',tagc:'#0c2236',auth:4,
+   q:'Has the <b>macro regime</b> shifted — and is the weekly 20/50 intact?',
+   focus:'Major regime turns: risk-on vs risk-off, trend vs range.',
+   ma:'Weekly 20 above 50, both rising = healthy. A weekly 20/50 break is a real warning.',
+   action:'Defines which regime card you’re in. Updated on weekends.',
+   trap:'A scary daily candle rarely breaks a weekly regime. Wait for the weekly to confirm.'},
+  {id:'daily',name:'Daily',role:'Swing trend',color:'#37e0a0',tag:'WHERE RISK LIVES',tagc:'#0e2a1a',auth:3,
+   q:'Where is the <b>swing trend</b> — and is risk worth taking now?',
+   focus:'The timeframe where positions are actually sized and held.',
+   ma:'Price vs 20/50/200. Loss of 20 & 50 together on volume = reduce.',
+   action:'Most decisions are taken here, in agreement with weekly.',
+   trap:'Don’t let the daily override the weekly regime — it executes the regime, it doesn’t set it.'},
+  {id:'4h',name:'4-Hour',role:'Tactical setup',color:'#f5c451',tag:'SETUP',tagc:'#2a230c',auth:2,
+   q:'Is there a <b>tradable setup</b> — pullback, breakout, or failed retest?',
+   focus:'Turning the daily bias into a specific entry structure.',
+   ma:'Pullbacks into the rising 20/50; retests of broken levels.',
+   action:'Define entry zones and invalidation; stalk the level.',
+   trap:'A clean 4H setup against the daily/weekly is still a counter-trend trade. Size it small.'},
+  {id:'1h',name:'1H / 30m',role:'Execution only',color:'#ffb454',tag:'TRIGGER',tagc:'#2a1d0c',auth:1,
+   q:'Is the <b>trigger</b> confirming right now?',
+   focus:'Timing the click — nothing more.',
+   ma:'Short-term momentum/structure confirming the 4H level.',
+   action:'Execute the entry the higher timeframes already justified.',
+   trap:'Never form your macro view here. Intraday noise will whipsaw you out of good positions.'}
+];
+const ladder=document.getElementById('tf-ladder');
+const detail=document.getElementById('tf-detail');
+TFS.forEach(function(t){
+  const r=document.createElement('div');
+  r.className='tf-rung'; r.id='tf-'+t.id; r.style.color=t.color;
+  let bars=''; for(let i=0;i<5;i++){ bars+='<i style="height:'+(7+i*3)+'px;opacity:'+(i<t.auth?.9:.18)+'"></i>'; }
+  r.innerHTML='<span class="tf-dot" style="background:'+t.color+'"></span>'+
+    '<span><span class="tf-name">'+t.name+'</span><br><span class="tf-role">'+t.role+'</span></span>'+
+    '<span class="tf-weight">'+bars+'</span>';
+  r.addEventListener('click',function(){ selectTF(t.id); });
+  ladder.appendChild(r);
+});
+function selectTF(id){
+  const t=TFS.find(x=>x.id===id);
+  document.querySelectorAll('.tf-rung').forEach(function(r){ r.classList.toggle('active',r.id==='tf-'+id); });
+  detail.style.setProperty('--glowc', t.color+'22');
+  detail.innerHTML=
+    '<div class="tf-d-top">'+
+      '<span class="tf-badge" style="color:'+t.color+'">'+t.name+'</span>'+
+      '<span class="tf-tag" style="background:'+t.color+';color:'+t.tagc+'">'+t.tag+'</span>'+
+      '<span class="tf-auth">Authority<br>'+'★'.repeat(t.auth)+'<span style="opacity:.25">'+'★'.repeat(5-t.auth)+'</span></span>'+
+    '</div>'+
+    '<div class="tf-q"><span class="qmark">Q:</span> '+t.q+'</div>'+
+    '<div class="tf-rows">'+
+      '<div class="tf-r"><span class="k">In focus</span><span class="v">'+t.focus+'</span></div>'+
+      '<div class="tf-r"><span class="k">MA read</span><span class="v">'+t.ma+'</span></div>'+
+      '<div class="tf-r"><span class="k">You do</span><span class="v">'+t.action+'</span></div>'+
+    '</div>'+
+    '<div class="tf-trap"><b>Trap:</b> '+t.trap+'</div>';
+}
+selectTF('monthly');
+
+/* ---------- REGIME DATA ---------- */
+const REGIMES = [
+  {id:'strong', name:'Strong risk-on uptrend', color:'#3ddc84', tag:'RISK-ON', tagc:'#0e2a1a',
+   chart:'Price above 20/50/100/200, all rising',
+   confirm:'Breadth broad, VIX contained, HYG firm, cyclicals & semis lead',
+   action:'Add risk on pullbacks; stay long leaders',
+   ideal:{ma:'stacked',breadth:'broad',vol:'contained',credit:'firm',lead:'cyclicals'}},
+  {id:'normal', name:'Normal bull trend', color:'#7ee0a8', tag:'BULL', tagc:'#0e2a1a',
+   chart:'Above 50 & 200, occasional 20-EMA breaks',
+   confirm:'Breadth positive but not euphoric',
+   action:'Hold core risk; add selectively',
+   ideal:{ma:'above200',breadth:'positive',vol:'contained',credit:'firm',lead:'cyclicals'}},
+  {id:'meltup', name:'Overextended melt-up', color:'#f5c451', tag:'CAUTION', tagc:'#2a230c',
+   chart:'Stretched above upper band, RSI hot, gap-heavy',
+   confirm:'Breadth strong but sentiment crowded',
+   action:'Stop chasing; trim into strength; raise tactical hedge',
+   ideal:{ma:'stretched',breadth:'crowded',vol:'hot',credit:'firm',lead:'narrow'}},
+  {id:'pullback', name:'Pullback within uptrend', color:'#4ea1ff', tag:'DIP', tagc:'#0c2236',
+   chart:'Loses 20 but holds 50/200',
+   confirm:'VIX spike but credit & breadth not broken',
+   action:'Buy best levels if support cluster holds',
+   ideal:{ma:'lost20',breadth:'positive',vol:'spike',credit:'ok',lead:'cyclicals'}},
+  {id:'correction', name:'Correction', color:'#ffb454', tag:'REDUCE', tagc:'#2a1d0c',
+   chart:'Below 50, 20 rolls over, 200 still in play',
+   confirm:'Breadth weakens, semis lag, VIX elevated',
+   action:'Reduce gross; shorten horizon; wait for repair',
+   ideal:{ma:'below50',breadth:'weak',vol:'elevated',credit:'ok',lead:'defensive'}},
+  {id:'breakdown', name:'Bearish breakdown', color:'#ff6b6b', tag:'RISK-OFF', tagc:'#2e1212',
+   chart:'Below 200, 50 below 200 (or close)',
+   confirm:'Weak breadth, weak credit, firmer dollar',
+   action:'De-risk, hedge, emphasize capital preservation',
+   ideal:{ma:'below200',breadth:'weak',vol:'elevated',credit:'soft',lead:'defensive'}},
+  {id:'rebound', name:'Oversold rebound', color:'#37e0a0', tag:'TACTICAL', tagc:'#0e2a1a',
+   chart:'Deeply stretched lower, RSI washed out, StochRSI turns',
+   confirm:'VIX spikes then fades; selling exhausts',
+   action:'Trade tactically — smaller, faster; don’t assume new bull',
+   ideal:{ma:'washed',breadth:'mixed',vol:'spike',credit:'ok',lead:'cyclicals'}},
+  {id:'range', name:'Choppy range', color:'#b58cff', tag:'CHOP', tagc:'#1d1430',
+   chart:'20 & 50 flat; repeated MA whipsaws',
+   confirm:'MACD/RSI signals fail, breadth mixed',
+   action:'Lower size; trade edges or hold more cash',
+   ideal:{ma:'flat',breadth:'mixed',vol:'contained',credit:'ok',lead:'narrow'}}
+];
+
+/* ---------- RENDER REGIME CARDS ---------- */
+const rc = document.getElementById('regime-cards');
+REGIMES.forEach(function(r){
+  const d=document.createElement('div');
+  d.className='rcard'; d.style.borderLeftColor=r.color; d.id='card-'+r.id;
+  d.innerHTML='<h4><span class="tag" style="background:'+r.color+';color:'+r.tagc+'">'+r.tag+'</span>'+r.name+'</h4>'+
+    '<p><b>Chart:</b> '+r.chart+'</p>'+
+    '<p><b>Confirms:</b> '+r.confirm+'</p>'+
+    '<p class="act">→ '+r.action+'</p>';
+  rc.appendChild(d);
+});
+
+/* ---------- CLASSIFIER ---------- */
+const sel={ma:null,breadth:null,vol:null,credit:null,lead:null};
+const WEIGHT={ma:3,breadth:2,vol:1.5,credit:1.5,lead:1.5};
+
+document.querySelectorAll('.q-block').forEach(function(block){
+  const q=block.dataset.q;
+  block.querySelectorAll('.opt').forEach(function(opt){
+    opt.addEventListener('click',function(){
+      if(sel[q]===opt.dataset.v){ sel[q]=null; opt.classList.remove('sel'); }
+      else{
+        block.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+        opt.classList.add('sel'); sel[q]=opt.dataset.v;
+      }
+      classify();
+    });
+  });
+});
+
+function classify(){
+  const res=document.getElementById('result');
+  if(!sel.ma){
+    res.innerHTML='<div class="result-empty">Select at least the <b>moving-average state</b> above to classify the regime. The more you fill in, the sharper the match.</div>';
+    clearHighlight(); return;
+  }
+  let best=null,bestScore=-1,maxPossible=0;
+  for(const k in sel){ if(sel[k]) maxPossible+=WEIGHT[k]; }
+  REGIMES.forEach(function(r){
+    let s=0;
+    for(const k in sel){ if(sel[k] && r.ideal[k]===sel[k]) s+=WEIGHT[k]; }
+    if(s>bestScore){ bestScore=s; best=r; }
+  });
+  const pct=maxPossible>0?Math.round((bestScore/maxPossible)*100):0;
+  let conf= pct>=80?'Strong match': pct>=50?'Good match': pct>=25?'Partial match':'Loose match — add more inputs';
+  res.innerHTML=
+    '<div class="result-head" style="background:'+best.color+';color:'+best.tagc+'">'+
+      '<span>'+best.name+'</span><span class="score">'+conf+' · '+pct+'%</span></div>'+
+    '<div class="result-body">'+
+      '<div class="row"><span class="lab">Chart</span><span>'+best.chart+'</span></div>'+
+      '<div class="row"><span class="lab">Confirms</span><span>'+best.confirm+'</span></div>'+
+      '<div class="row"><span class="lab">Action</span><span style="color:#fff;font-weight:600">'+best.action+'</span></div>'+
+    '</div>';
+  highlightCard(best.id);
+}
+function highlightCard(id){
+  clearHighlight();
+  const c=document.getElementById('card-'+id);
+  if(c){ c.style.boxShadow='0 0 0 2px '+(getComputedStyle(c).borderLeftColor); c.style.transform='translateY(-2px)'; }
+}
+function clearHighlight(){
+  REGIMES.forEach(function(r){const c=document.getElementById('card-'+r.id); if(c){c.style.boxShadow='';c.style.transform='';}});
+}
+document.getElementById('reset').addEventListener('click',function(){
+  for(const k in sel) sel[k]=null;
+  document.querySelectorAll('.opt.sel').forEach(o=>o.classList.remove('sel'));
+  classify();
+});
+
+/* ---------- ROUTINE CHECKLISTS ---------- */
+const DAILY=[
+  ['Pre-open futures','Check ES, NQ, YM, RTY vs prior settlement; scan Asia & Europe for spillover tone.'],
+  ['Rates','Read 2Y, 10Y, curve slope before any stock idea — policy, inflation, or growth?'],
+  ['FX & liquidity','DXY and USD/JPY. Stable/softer dollar = more supportive; sudden strength = caution.'],
+  ['Commodities','WTI, gold, copper — inflation scare, growth scare, or geopolitical stress?'],
+  ['Volatility & credit','VIX, VVIX, put/call, HYG, LQD — before deciding if an equity move is "real."'],
+  ['Leadership','Sector leaders/laggards, SMH/SOXX, Mag 7. Standing on a few names = fragile.'],
+  ['Breadth & levels','Update AD line, %-above-MA, new highs/lows, S/R map for SPX, NDX, QQQ, leaders.'],
+  ['Catalysts','BLS / BEA / Fed official calendars, plus a live earnings calendar for big names.']
+];
+const WEEKLY=[
+  ['Monthly & weekly candles first','Then the daily — keeps the secular & regime view dominant.'],
+  ['Trend state','Reassess vs the 20/50/100/200 stack on indexes, semis, credit, dollar, rates.'],
+  ['Recalculate breadth','AD line trend, % above 50- & 200-day, net new highs/lows.'],
+  ['Re-rank sector RS vs SPY','Is XLK/SMH leadership broadening? Are XLF/XLI confirming or XLP/XLU/XLV taking over?'],
+  ['Cross-asset confirmation','Yields, DXY, oil, gold, copper, credit — line them up.'],
+  ['Build next week’s catalyst map','Macro releases, Fed events, major earnings. Decide risk posture before Monday.']
+];
+function buildList(arr,listId,progId){
+  const list=document.getElementById(listId);
+  arr.forEach(function(item,i){
+    const s=document.createElement('div'); s.className='step';
+    s.innerHTML='<span class="num-b">'+(i+1)+'</span><span class="chk">✓</span>'+
+      '<span class="s-txt"><b>'+item[0]+'</b> — '+item[1]+'</span>';
+    s.addEventListener('click',function(){ s.classList.toggle('done'); updProg(listId,progId); });
+    list.appendChild(s);
+  });
+}
+function updProg(listId,progId){
+  const steps=document.querySelectorAll('#'+listId+' .step');
+  const done=document.querySelectorAll('#'+listId+' .step.done').length;
+  document.getElementById(progId).style.width=(done/steps.length*100)+'%';
+}
+buildList(DAILY,'daily-list','daily-prog');
+buildList(WEEKLY,'weekly-list','weekly-prog');
+
+/* ---------- TABS ---------- */
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click',function(){
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    const isDaily=t.dataset.tab==='daily';
+    document.getElementById('daily-panel').style.display=isDaily?'block':'none';
+    document.getElementById('weekly-panel').style.display=isDaily?'none':'block';
+  });
+});
+
+/* ---------- DECISION DASHBOARD (data-driven) ---------- */
+const PANEL_DEFS=[
+  {key:"equity",     title:"Equity beta",         icon:"📈"},
+  {key:"volatility", title:"Volatility",          icon:"⚡"},
+  {key:"rates",      title:"Rates",               icon:"🏛️"},
+  {key:"fx",         title:"FX / liquidity",      icon:"💵"},
+  {key:"commodities",title:"Commodities",         icon:"🛢️"},
+  {key:"credit",     title:"Credit",              icon:"🔗"},
+  {key:"breadth",    title:"Breadth / internals", icon:"📊"},
+  {key:"leadership", title:"Leadership",          icon:"🧭"}
+];
+const TONE={pos:"var(--green)", neg:"var(--red)", neutral:"var(--muted)"};
+const LBL={
+  ma:{stacked:"price above 20/50/100/200 and rising",above200:"above 50 & 200 with the odd 20-break",stretched:"stretched well above the bands",lost20:"below the 20 but holding 50/200",below50:"below the 50 with the 20 rolling over",below200:"below the 200 with 50 ≤ 200",washed:"deeply oversold and washed out",flat:"flat 20/50 and whipsawing"},
+  breadth:{broad:"broad (AD line rising, majority above MAs)",positive:"positive but not euphoric",crowded:"strong but crowded",weak:"weakening (semis lag, new highs drying up)",mixed:"mixed / failing"},
+  vol:{contained:"contained or falling",spike:"spiking then fading",elevated:"elevated and sticky",hot:"hot and gap-heavy"},
+  credit:{firm:"firm and orderly",ok:"not yet broken",soft:"weak, with a firmer dollar"},
+  lead:{cyclicals:"cyclicals & semis",narrow:"a narrow set of mega-caps",defensive:"defensives (staples / utilities / health care)"}
+};
+function scoreRegime(inputs){
+  let best=null,bestScore=-1,maxPossible=0;
+  for(const k in inputs){ if(inputs[k]&&WEIGHT[k]) maxPossible+=WEIGHT[k]; }
+  REGIMES.forEach(function(r){
+    let s=0; for(const k in inputs){ if(inputs[k]&&r.ideal[k]===inputs[k]) s+=WEIGHT[k]; }
+    if(s>bestScore){bestScore=s;best=r;}
+  });
+  return {regime:best,pct:maxPossible>0?Math.round(bestScore/maxPossible*100):0};
+}
+function crossAssetLine(i){
+  if((i.vol==='elevated'||i.vol==='spike')&&i.credit==='soft'&&i.lead==='defensive')
+    return "The cross-asset tape leans risk-off — watch whether credit (HYG vs LQD) and the dollar stabilize before adding any exposure.";
+  if(i.credit==='firm'&&i.lead==='cyclicals'&&(i.vol==='contained'))
+    return "Cross-asset confirmation is supportive: firm credit and cyclical leadership argue the move is real, so pullbacks are buyable.";
+  if(i.vol==='hot'&&i.breadth==='crowded')
+    return "Momentum is hot but crowded — the risk is a fast unwind, so stop chasing and let the cross-asset confirmation catch up.";
+  return "Let the tiebreakers decide next: does price hold its MA structure, do semis stop bleeding, does breadth repair, and does credit stay orderly?";
+}
+function buildCommentary(d,scored){
+  const i=d.inputs, r=scored.regime;
+  const p1="As of <b>"+(d.asOfLabel||d.asOf||"the latest close")+"</b>, the moving-average state is <b>"+LBL.ma[i.ma]+"</b>; breadth is <b>"+LBL.breadth[i.breadth]+"</b>; volatility is <b>"+LBL.vol[i.vol]+"</b>; credit is <b>"+LBL.credit[i.credit]+"</b>; and leadership sits with <b>"+LBL.lead[i.lead]+"</b>.";
+  const p2="That mix best matches <b style=\"color:"+r.color+"\">"+r.name+"</b> ("+scored.pct+"% match). "+crossAssetLine(i);
+  const p3="<span class=\"act-line\">→ Model action: "+r.action+".</span>";
+  return "<p>"+p1+"</p><p>"+p2+"</p><p>"+p3+"</p>";
+}
+function rowHtml(r){
+  const dot='<span class="td" style="background:'+(TONE[r.tone]||'var(--muted)')+'"></span>';
+  let val=r.value!==undefined?r.value:'';
+  if(typeof r.chg==='number'){
+    const cls=r.chg<0?'down':(r.chg>0?'up':'');
+    const arr=r.chg<0?' ▼':(r.chg>0?' ▲':'');
+    if(r.chg!==0) val='<span class="'+cls+'">'+r.value+arr+Math.abs(r.chg).toFixed(2)+'%</span>';
+  }
+  const sub=r.sub?'<small>'+r.sub+'</small>':'';
+  return '<div class="drow"><span class="dn">'+dot+(r.name||r.ma)+'</span><span class="dv">'+val+sub+'</span></div>';
+}
+function tallyTones(d){
+  let pos=0,neg=0,neu=0;
+  const add=row=>{ if(row.tone==='pos')pos++; else if(row.tone==='neg')neg++; else neu++; };
+  if(d.panels) PANEL_DEFS.forEach(p=>(d.panels[p.key]||[]).forEach(add));
+  if(d.indicators){ (d.indicators.movingAverages||[]).forEach(add); (d.indicators.momentum||[]).forEach(add); }
+  return {pos,neg,neu,total:pos+neg+neu};
+}
+function renderSnapshot(d,src){
+  const ao=document.getElementById('snap-as-of'); if(ao) ao.textContent='— '+(d.asOfLabel||d.asOf||'');
+  const banner=document.getElementById('snap-banner');
+  if(src==='fallback'){ banner.style.display='block';
+    banner.innerHTML="⚠️ Couldn’t load <code>macro-trader-data.json</code> (you may have opened this file directly). Showing built-in defaults. Serve the folder over http to load live data."; }
+  else { banner.style.display='none'; }
+  document.getElementById('snap-headline').innerHTML='<b>Headline:</b> '+(d.headline||'—');
+
+  /* 1 · evidence balance */
+  const t=tallyTones(d), eb=document.getElementById('snap-evidence');
+  const pct=n=>t.total?Math.max(n/t.total*100,n?9:0):0;
+  eb.innerHTML=
+    '<span style="flex:'+pct(t.pos)+';background:var(--green)">'+(t.pos||'')+'</span>'+
+    '<span style="flex:'+pct(t.neu)+';background:#3a4458;color:#cdd7e6">'+(t.neu||'')+'</span>'+
+    '<span style="flex:'+pct(t.neg)+';background:var(--red)">'+(t.neg||'')+'</span>';
+  document.getElementById('snap-evidence-note').innerHTML=
+    '<b style="color:var(--green)">'+t.pos+' supportive</b> · <b style="color:var(--muted)">'+t.neu+' neutral</b> · <b style="color:var(--red)">'+t.neg+' negative</b> across '+t.total+' readings.';
+
+  /* 2 · full board */
+  const dash=document.getElementById('snap-dashboard'); dash.innerHTML='';
+  PANEL_DEFS.forEach(function(p){
+    const rows=(d.panels&&d.panels[p.key])||[];
+    if(!rows.length) return;
+    dash.innerHTML+='<div class="dpanel"><div class="dpanel-h"><span class="pi">'+p.icon+'</span>'+p.title+'</div>'+
+      rows.map(rowHtml).join('')+'</div>';
+  });
+
+  /* 3 · indicators */
+  const maEl=document.getElementById('snap-ma');
+  maEl.innerHTML=((d.indicators&&d.indicators.movingAverages)||[]).map(function(m){
+    return '<div class="ma-pill" style="border-top-color:'+(TONE[m.tone]||'var(--muted)')+'">'+m.ma+'<small>'+m.state+'</small></div>';
+  }).join('')||'<span class="snap-loading">—</span>';
+  const momEl=document.getElementById('snap-momentum');
+  momEl.innerHTML=((d.indicators&&d.indicators.momentum)||[]).map(function(m){
+    const sub=m.sub?'<small>'+m.sub+'</small>':'';
+    return '<div class="mom-row"><span class="mn">'+m.name+'</span><span class="mv" style="color:'+(TONE[m.tone]||'var(--ink)')+'">'+m.value+sub+'</span></div>';
+  }).join('')||'<span class="snap-loading">—</span>';
+
+  /* 4 · computed regime */
+  const scored=scoreRegime(d.inputs||{});
+  const body=document.getElementById('snap-computed-body');
+  if(scored.regime){
+    const r=scored.regime;
+    let chips=''; for(const k of ['ma','breadth','vol','credit','lead']){
+      if(d.inputs&&d.inputs[k]) chips+='<span class="snap-inp"><b>'+k+':</b> '+d.inputs[k]+'</span>';
+    }
+    body.innerHTML=
+      '<div class="snap-regime-line"><span class="snap-chip" style="background:'+r.color+';color:'+r.tagc+'">'+r.name+'</span>'+
+        '<span class="snap-conf">'+scored.pct+'% match · confirms: '+r.confirm+'</span></div>'+
+      '<div class="snap-inputs">'+chips+'</div>'+
+      buildCommentary(d,scored);
+    highlightCard(r.id);
+  } else { body.innerHTML='<p class="snap-loading">No <code>inputs</code> in the data file.</p>'; }
+
+  /* 5 · agent prose */
+  document.getElementById('snap-agent-body').textContent=d.agentCommentary||'(no analyst commentary in the data file yet)';
+
+  /* 6 · final decision */
+  const dec=d.decision||{}, biasColors={ "risk-on":"var(--green)","neutral":"var(--muted)","cautious":"var(--amber)","risk-off":"var(--red)" };
+  const bc=biasColors[dec.bias]||'var(--gold)';
+  document.getElementById('snap-decision').innerHTML=
+    '<span class="dec-bias" style="background:'+bc+';color:#08101c">'+(dec.bias||'—')+' bias</span>'+
+    '<div class="dec-stance">'+(dec.stance||'—')+'</div>'+
+    (dec.keyLevels?'<div class="dec-row"><b>Key levels:</b> '+dec.keyLevels+'</div>':'')+
+    (dec.invalidation?'<div class="dec-row"><b>Invalidation:</b> '+dec.invalidation+'</div>':'')+
+    (dec.watching&&dec.watching.length?'<div class="dec-row"><b>Watching next:</b></div><ul class="dec-watch">'+dec.watching.map(w=>'<li>'+w+'</li>').join('')+'</ul>':'');
+}
+(function loadData(){
+  function fallback(){
+    try{ return JSON.parse(document.getElementById('snap-fallback').textContent); }
+    catch(e){ return {headline:"(no data)",inputs:{},panels:{},indicators:{},decision:{}}; }
+  }
+  fetch('macro-trader-data.json',{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('http '+r.status); return r.json(); })
+    .then(function(d){ renderSnapshot(d,'json'); })
+    .catch(function(){ renderSnapshot(fallback(),'fallback'); });
+})();
+
+/* ---------- NAV ACTIVE STATE ---------- */
+const navLinks=document.querySelectorAll('nav.toc a');
+const sections=document.querySelectorAll('section');
+window.addEventListener('scroll',function(){
+  let cur='';
+  sections.forEach(function(s){ if(scrollY>=s.offsetTop-120) cur=s.id; });
+  navLinks.forEach(function(a){
+    a.style.color=a.getAttribute('href')==='#'+cur?'#fff':'';
+    a.style.background=a.getAttribute('href')==='#'+cur?'var(--panel)':'';
+  });
+});
+</script>
+</body>
+</html>
