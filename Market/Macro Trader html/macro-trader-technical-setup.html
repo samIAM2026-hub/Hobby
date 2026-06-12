@@ -480,6 +480,7 @@
         <div class="q-label"><span class="dot" style="background:#4ea1ff"></span>Moving-average state</div>
         <div class="opts">
           <div class="opt" data-v="stacked">Above 20/50/100/200, all rising</div>
+          <div class="opt" data-v="above50">Above 50/100/200, testing the 20</div>
           <div class="opt" data-v="above200">Above 50 & 200, occasional 20 breaks</div>
           <div class="opt" data-v="stretched">Stretched far above bands</div>
           <div class="opt" data-v="lost20">Lost 20, holding 50/200</div>
@@ -505,6 +506,7 @@
         <div class="q-label"><span class="dot" style="background:#f5c451"></span>Volatility (VIX / VVIX / ATR)</div>
         <div class="opts">
           <div class="opt" data-v="contained">Contained or falling</div>
+          <div class="opt" data-v="cooling">Cooling after a spike</div>
           <div class="opt" data-v="spike">Sharp spike (then fading)</div>
           <div class="opt" data-v="elevated">Elevated & sticky</div>
           <div class="opt" data-v="hot">Hot — gap-heavy melt-up</div>
@@ -524,6 +526,7 @@
         <div class="q-label"><span class="dot" style="background:#ff6b6b"></span>Leadership</div>
         <div class="opts">
           <div class="opt" data-v="cyclicals">Cyclicals & semis lead</div>
+          <div class="opt" data-v="growth">Growth / semis lead</div>
           <div class="opt" data-v="narrow">Narrow — a few mega-caps only</div>
           <div class="opt" data-v="defensive">Defensives (XLP/XLU/XLV) lead</div>
         </div>
@@ -562,7 +565,7 @@
 <section id="example">
   <div class="wrap">
     <h2><span class="num">7</span>Decision dashboard <span id="snap-as-of" class="snap-asof"></span></h2>
-    <p class="sub">Every panel the framework uses, populated from <code>macro-trader-data.json</code>, so the final call rests on the <i>whole board</i> — not a few quotes. Update the file and all of this refreshes.</p>
+    <p class="sub">Every panel the framework uses, populated from <code>macro-trader-data.json</code>, so the final call rests on the <i>whole board</i> — futures, cash-market closes, rates, credit, volatility, commodities, and breadth. Update the file and all of this refreshes.</p>
 
     <div id="snap-banner" class="snap-banner" style="display:none"></div>
     <div id="snap-headline" class="snap-headline"></div>
@@ -604,7 +607,7 @@
 
     <div class="teach" style="margin-top:20px">
       <span class="t-label">How the loop works</span>
-      An agent fetches the latest readings → overwrites the panels, indicators, <code>inputs</code> and <code>decision</code> in <code>macro-trader-data.json</code> → the page tallies the evidence, scores all 8 regimes, and lays the full board out for the call. See <code>macro-trader-UPDATE_GUIDE.md</code> for the field contract and allowed values.
+      An agent fetches the latest readings → overwrites the panels, indicators, <code>inputs</code> and <code>decision</code> in <code>macro-trader-data.json</code> → the page tallies the evidence, translates refreshed states like <code>above50</code>, <code>cooling</code>, and <code>growth</code> into the regime model, then lays the full board out for the call. See <code>macro-trader-UPDATE_GUIDE.md</code> for the field contract and allowed values.
     </div>
   </div>
 </section>
@@ -635,7 +638,7 @@
 <footer>
   <div class="wrap">
     <p style="font-size:15px;color:var(--ink);font-weight:700;margin-bottom:4px">The framework outlives any single snapshot.</p>
-    <p>The point isn't to memorize June 2026's levels — it's to internalize the <b>order of operations</b>: secular trend → regime → breadth → levels, cross-examined across rates, FX, commodities, and credit. Finalize every regime read with your own live charts at decision time.</p>
+    <p>The point isn't to memorize any one overnight futures snapshot — it's to internalize the <b>order of operations</b>: secular trend → regime → breadth → levels, cross-examined across rates, FX, commodities, and credit. Finalize every regime read with your own live charts at decision time.</p>
     <div class="disclaim">
       <b>Educational use only.</b> This is a study aid synthesizing a technical-analysis framework. Nothing here is financial advice, a recommendation, or a prediction. Markets move quickly; the worked example is a workflow demonstration, not a standing call. Always verify live levels and manage your own risk.
     </div>
@@ -648,90 +651,304 @@
      the real data.json wins. Keep in sync with data.json if you change defaults. -->
 <script type="application/json" id="snap-fallback">
 {
-  "asOf": "2026-06-10",
-  "asOfLabel": "June 10, 2026 close",
-  "headline": "Rate / energy / geopolitical shock pressuring long-duration growth",
+  "asOf": "2026-06-12",
+  "asOfLabel": "June 12, 2026 overnight futures / June 11 cash close",
+  "headline": "Relief rally holding in overnight futures; hot PPI and real yields remain the caveat",
   "panels": {
     "equity": [
-      { "name": "S&P 500 (ES)", "value": "7,266.99", "chg": -1.62, "tone": "neg" },
-      { "name": "Nasdaq-100 (NQ)", "value": "26,480", "chg": -1.95, "tone": "neg" },
-      { "name": "Dow (YM)", "value": "49,918.78", "chg": -1.87, "tone": "neg" },
-      { "name": "Russell 2000 (RTY)", "value": "2,835.46", "chg": -1.10, "tone": "neg" }
+      {
+        "name": "S&P 500 futures (ES)",
+        "value": "7,403.00",
+        "chg": 0.09,
+        "tone": "neutral"
+      },
+      {
+        "name": "Nasdaq-100 futures (NQ)",
+        "value": "29,512.50",
+        "chg": 0.16,
+        "tone": "pos"
+      },
+      {
+        "name": "Dow futures (YM)",
+        "value": "50,892",
+        "chg": 0.03,
+        "tone": "neutral"
+      },
+      {
+        "name": "Russell 2000 futures (RTY)",
+        "value": "2,920.40",
+        "chg": -0.06,
+        "tone": "neutral"
+      }
     ],
     "volatility": [
-      { "name": "VIX", "value": "22.22", "chg": 11.83, "tone": "neg" },
-      { "name": "VVIX", "value": "108", "sub": "elevated, not disorderly", "tone": "neutral" },
-      { "name": "Put/Call", "value": "1.04", "sub": "defensive tilt", "tone": "neg" },
-      { "name": "SPX ATR(14)", "value": "rising", "sub": "wider stops", "tone": "neg" }
+      {
+        "name": "VIX",
+        "value": "19.44",
+        "chg": -12.51,
+        "tone": "pos"
+      },
+      {
+        "name": "VVIX",
+        "value": "100.63",
+        "sub": "vol-of-vol cooled with the relief rally",
+        "tone": "pos"
+      },
+      {
+        "name": "Put/Call",
+        "value": "0.59",
+        "sub": "call demand / relief tone",
+        "tone": "pos"
+      },
+      {
+        "name": "SPX ATR(14)",
+        "value": "elevated",
+        "sub": "ranges still wider than calm tape",
+        "tone": "neutral"
+      }
     ],
     "rates": [
-      { "name": "2Y yield", "value": "4.15%", "sub": "Jun 8", "tone": "neutral" },
-      { "name": "10Y yield", "value": "4.54%", "chg": 0.0, "tone": "neg" },
-      { "name": "2s10s", "value": "+39 bp", "sub": "positively sloped / steepening", "tone": "pos" },
-      { "name": "3M (curve)", "value": "4.30%", "sub": "10Y–3M positive", "tone": "pos" }
+      {
+        "name": "2Y yield",
+        "value": "4.07%",
+        "sub": "late-day yield after de-escalation",
+        "tone": "pos"
+      },
+      {
+        "name": "10Y yield",
+        "value": "4.46%",
+        "chg": -0.08,
+        "tone": "pos"
+      },
+      {
+        "name": "2s10s",
+        "value": "+39 bp",
+        "sub": "positively sloped",
+        "tone": "pos"
+      },
+      {
+        "name": "3M (curve)",
+        "value": "4.30%",
+        "sub": "10Y-3M still positive (~16 bp)",
+        "tone": "pos"
+      }
     ],
     "fx": [
-      { "name": "DXY", "value": "~100.0", "chg": 0.2, "tone": "neutral" },
-      { "name": "USD/JPY", "value": "~160", "sub": "carry stress watch", "tone": "neutral" }
+      {
+        "name": "DXY",
+        "value": "99.80",
+        "chg": -0.06,
+        "tone": "neutral"
+      },
+      {
+        "name": "USD/JPY",
+        "value": "~160.3",
+        "sub": "carry stress watch, slightly off highs",
+        "tone": "neutral"
+      }
     ],
     "commodities": [
-      { "name": "WTI crude", "value": "~$90", "chg": 2.1, "tone": "neg" },
-      { "name": "Gold", "value": "~$4,100", "sub": "firm / haven bid", "tone": "neutral" },
-      { "name": "Copper", "value": "~$6.65/lb", "sub": "holding — no growth-scare collapse", "tone": "pos" }
+      {
+        "name": "WTI crude",
+        "value": "$86.93",
+        "chg": -0.89,
+        "tone": "pos"
+      },
+      {
+        "name": "Gold",
+        "value": "$4,220.80",
+        "chg": 3.19,
+        "sub": "haven bid recovering",
+        "tone": "neutral"
+      },
+      {
+        "name": "Copper",
+        "value": "$6.43/lb",
+        "chg": 2.68,
+        "sub": "firm; no growth-scare collapse",
+        "tone": "pos"
+      }
     ],
     "credit": [
-      { "name": "HYG", "value": "soft", "sub": "high-yield under mild pressure", "tone": "neg" },
-      { "name": "LQD", "value": "stable", "sub": "investment-grade orderly", "tone": "neutral" },
-      { "name": "HYG/LQD", "value": "easing", "sub": "credit not yet breaking", "tone": "neutral" }
+      {
+        "name": "HYG",
+        "value": "$79.94",
+        "chg": 0.59,
+        "tone": "pos"
+      },
+      {
+        "name": "LQD",
+        "value": "$109.08",
+        "chg": 0.85,
+        "tone": "pos"
+      },
+      {
+        "name": "HYG/LQD",
+        "value": "stable",
+        "sub": "credit not amplifying stress",
+        "tone": "pos"
+      }
     ],
     "breadth": [
-      { "name": "A/D line", "value": "rolling over", "sub": "no longer confirming", "tone": "neg" },
-      { "name": "% > 50-day", "value": "42%", "sub": "minority above", "tone": "neg" },
-      { "name": "% > 200-day", "value": "55%", "sub": "majority still above", "tone": "pos" },
-      { "name": "Net new highs", "value": "-38", "sub": "more new lows", "tone": "neg" },
-      { "name": "RSP/SPY", "value": "lagging", "sub": "avg stock behind mega-caps", "tone": "neg" },
-      { "name": "IWM/SPY", "value": "lagging", "sub": "small-caps soft", "tone": "neg" }
+      {
+        "name": "A/D line",
+        "value": "+450",
+        "sub": "positive, but not euphoric",
+        "tone": "pos"
+      },
+      {
+        "name": "% > 50-day",
+        "value": "46.5%",
+        "sub": "still sub-50 participation",
+        "tone": "neg"
+      },
+      {
+        "name": "% > 200-day",
+        "value": "55.6%",
+        "sub": "majority still above long-term trend",
+        "tone": "pos"
+      },
+      {
+        "name": "Net new highs",
+        "value": "+46",
+        "sub": "more new highs than lows",
+        "tone": "pos"
+      },
+      {
+        "name": "RSP/SPY",
+        "value": "mixed",
+        "sub": "RSP +1.56% vs SPY +1.70% on cash close",
+        "tone": "neutral"
+      },
+      {
+        "name": "IWM/SPY",
+        "value": "leading",
+        "sub": "IWM +2.96% vs SPY +1.70% on cash close",
+        "tone": "pos"
+      }
     ],
     "leadership": [
-      { "name": "XLE Energy", "value": "leading", "tone": "neg" },
-      { "name": "XLP Staples", "value": "leading", "tone": "neg" },
-      { "name": "XLU Utilities", "value": "leading", "tone": "neg" },
-      { "name": "XLV Health", "value": "firm", "tone": "neg" },
-      { "name": "XLK Tech", "value": "lagging", "tone": "neg" },
-      { "name": "SMH Semis", "value": "lagging", "sub": "growth leadership stalling", "tone": "neg" },
-      { "name": "XLF Financials", "value": "inline", "tone": "neutral" },
-      { "name": "Mag 7", "value": "mixed/soft", "sub": "concentration risk", "tone": "neg" }
+      {
+        "name": "SMH Semis",
+        "value": "leading rebound",
+        "sub": "+6.75% on the cash day",
+        "tone": "pos"
+      },
+      {
+        "name": "XLK Tech",
+        "value": "leading",
+        "sub": "+3.73% on the cash day",
+        "tone": "pos"
+      },
+      {
+        "name": "XLI Industrials",
+        "value": "firm",
+        "sub": "+3.24% on the cash day",
+        "tone": "pos"
+      },
+      {
+        "name": "XLF Financials",
+        "value": "stable",
+        "sub": "+0.75% on the cash day",
+        "tone": "neutral"
+      },
+      {
+        "name": "XLE Energy",
+        "value": "lagging",
+        "sub": "oil reversed lower",
+        "tone": "neutral"
+      },
+      {
+        "name": "XLP Staples",
+        "value": "lagging",
+        "sub": "defensive bid cooled",
+        "tone": "pos"
+      },
+      {
+        "name": "XLV Health",
+        "value": "firm",
+        "sub": "+0.81% on the cash day",
+        "tone": "neutral"
+      },
+      {
+        "name": "Crypto beta",
+        "value": "bouncing",
+        "sub": "BTC +3.07%, ETH +3.01%, SOL +5.60%",
+        "tone": "neutral"
+      }
     ]
   },
   "indicators": {
     "movingAverages": [
-      { "ma": "EMA 20", "state": "lost", "tone": "neg" },
-      { "ma": "EMA 50", "state": "below", "tone": "neg" },
-      { "ma": "MA 100", "state": "testing", "tone": "neutral" },
-      { "ma": "MA 200", "state": "above", "tone": "pos" }
+      {
+        "ma": "EMA 20",
+        "state": "testing/below",
+        "tone": "neutral"
+      },
+      {
+        "ma": "SMA 50",
+        "state": "above",
+        "tone": "pos"
+      },
+      {
+        "ma": "SMA 100",
+        "state": "above",
+        "tone": "pos"
+      },
+      {
+        "ma": "SMA 200",
+        "state": "above",
+        "tone": "pos"
+      }
     ],
     "momentum": [
-      { "name": "RSI(14)", "value": "41", "sub": "below 50 — soft, not washed out", "tone": "neg" },
-      { "name": "MACD", "value": "bearish cross", "sub": "trend rolling over", "tone": "neg" },
-      { "name": "ROC", "value": "negative", "sub": "decelerating below zero", "tone": "neg" },
-      { "name": "StochRSI", "value": "turning up", "sub": "tactical bounce attempt", "tone": "pos" }
+      {
+        "name": "RSI(14)",
+        "value": "47",
+        "sub": "near neutral; bounce improved but not strong momentum",
+        "tone": "neutral"
+      },
+      {
+        "name": "MACD",
+        "value": "bearish, improving watch",
+        "sub": "line remains below signal after the pullback",
+        "tone": "neg"
+      },
+      {
+        "name": "ROC(20)",
+        "value": "-0.67%",
+        "sub": "20-session rate of change still slightly negative",
+        "tone": "neg"
+      },
+      {
+        "name": "StochRSI",
+        "value": "turning up",
+        "sub": "tactical bounce attempt",
+        "tone": "pos"
+      }
     ]
   },
-  "inputs": { "ma": "below50", "breadth": "weak", "vol": "elevated", "credit": "ok", "lead": "defensive" },
+  "inputs": {
+    "ma": "above50",
+    "breadth": "mixed",
+    "vol": "cooling",
+    "credit": "ok",
+    "lead": "growth"
+  },
   "decision": {
-    "bias": "cautious",
-    "stance": "Reduce gross, hold core quality, carry a tactical hedge",
-    "keyLevels": "SPX support ~7,200 (round number + rising 200-day cluster); resistance ~7,400 (lost 50-day).",
-    "invalidation": "Daily close back above the 20 & 50 with breadth repairing (>50% above 50-day) and HYG firming flips this toward pullback-buy.",
+    "bias": "constructive-cautious",
+    "stance": "Stay invested, use a normal tranche, but do not chase overnight strength",
+    "keyLevels": "SPX cash support ~7,300-7,360; resistance ~7,420-7,520. ES futures holding above ~7,400 keeps the rebound alive overnight.",
+    "invalidation": "A SPX cash close back below ~7,300 with VIX back above 22 and HYG rolling over would flip this back toward correction defense.",
     "watching": [
-      "Do semis (SMH) stop bleeding and reclaim relative strength?",
-      "Does breadth repair — % above 50-day back over 50%?",
-      "Does HYG hold vs LQD, or does credit start amplifying?",
-      "Does the 10Y back off, or push higher and keep pressuring growth?",
-      "Does the 200-day on SPX hold on a closing basis?"
+      "Do ES/NQ futures hold the June 11 relief rally into the next cash open?",
+      "Does breadth repair above 50% of SPX members over the 50-day?",
+      "Do 2Y/10Y yields stay lower after the late-day de-escalation move?",
+      "Does crude stay below the prior shock zone, or does oil re-accelerate?",
+      "Do semis follow through after the SMH rebound, or fade at resistance?"
     ]
   },
-  "agentCommentary": "Built-in fallback (page opened locally). Serve over http to load macro-trader-data.json."
+  "agentCommentary": "Internet refresh: corrected the equity panel to use actual futures for ES/NQ/YM/RTY instead of cash index closes. The June 11 cash session was a broad relief rally, and June 12 overnight futures are holding slightly higher in ES/NQ while RTY is flat. Rates were corrected to late-day levels after de-escalation (2Y ~4.07%, 10Y ~4.46%). The stance remains constructive-cautious because volatility and credit improved, but breadth is still sub-50% above the 50-day and May PPI remains hot."
 }
 </script>
 
@@ -854,6 +1071,11 @@ const REGIMES = [
    action:'Lower size; trade edges or hold more cash',
    ideal:{ma:'flat',breadth:'mixed',vol:'contained',credit:'ok',lead:'narrow'}}
 ];
+const SCORE_ALIAS = {
+  ma:{above50:'lost20'},
+  vol:{cooling:'spike'},
+  lead:{growth:'cyclicals'}
+};
 
 /* ---------- RENDER REGIME CARDS ---------- */
 const rc = document.getElementById('regime-cards');
@@ -895,7 +1117,10 @@ function classify(){
   for(const k in sel){ if(sel[k]) maxPossible+=WEIGHT[k]; }
   REGIMES.forEach(function(r){
     let s=0;
-    for(const k in sel){ if(sel[k] && r.ideal[k]===sel[k]) s+=WEIGHT[k]; }
+    for(const k in sel){
+      const v=(SCORE_ALIAS[k]&&SCORE_ALIAS[k][sel[k]])||sel[k];
+      if(v && r.ideal[k]===v) s+=WEIGHT[k];
+    }
     if(s>bestScore){ bestScore=s; best=r; }
   });
   const pct=maxPossible>0?Math.round((bestScore/maxPossible)*100):0;
@@ -985,22 +1210,27 @@ const PANEL_DEFS=[
 ];
 const TONE={pos:"var(--green)", neg:"var(--red)", neutral:"var(--muted)"};
 const LBL={
-  ma:{stacked:"price above 20/50/100/200 and rising",above200:"above 50 & 200 with the odd 20-break",stretched:"stretched well above the bands",lost20:"below the 20 but holding 50/200",below50:"below the 50 with the 20 rolling over",below200:"below the 200 with 50 ≤ 200",washed:"deeply oversold and washed out",flat:"flat 20/50 and whipsawing"},
+  ma:{stacked:"price above 20/50/100/200 and rising",above50:"above the 50/100/200 while testing the 20",above200:"above 50 & 200 with the odd 20-break",stretched:"stretched well above the bands",lost20:"below the 20 but holding 50/200",below50:"below the 50 with the 20 rolling over",below200:"below the 200 with 50 ≤ 200",washed:"deeply oversold and washed out",flat:"flat 20/50 and whipsawing"},
   breadth:{broad:"broad (AD line rising, majority above MAs)",positive:"positive but not euphoric",crowded:"strong but crowded",weak:"weakening (semis lag, new highs drying up)",mixed:"mixed / failing"},
-  vol:{contained:"contained or falling",spike:"spiking then fading",elevated:"elevated and sticky",hot:"hot and gap-heavy"},
+  vol:{contained:"contained or falling",cooling:"cooling after the volatility spike",spike:"spiking then fading",elevated:"elevated and sticky",hot:"hot and gap-heavy"},
   credit:{firm:"firm and orderly",ok:"not yet broken",soft:"weak, with a firmer dollar"},
-  lead:{cyclicals:"cyclicals & semis",narrow:"a narrow set of mega-caps",defensive:"defensives (staples / utilities / health care)"}
+  lead:{cyclicals:"cyclicals & semis",growth:"growth and semiconductors",narrow:"a narrow set of mega-caps",defensive:"defensives (staples / utilities / health care)"}
 };
+function scoreValue(k,v){
+  return (SCORE_ALIAS[k]&&SCORE_ALIAS[k][v])||v;
+}
 function scoreRegime(inputs){
   let best=null,bestScore=-1,maxPossible=0;
   for(const k in inputs){ if(inputs[k]&&WEIGHT[k]) maxPossible+=WEIGHT[k]; }
   REGIMES.forEach(function(r){
-    let s=0; for(const k in inputs){ if(inputs[k]&&r.ideal[k]===inputs[k]) s+=WEIGHT[k]; }
+    let s=0; for(const k in inputs){ if(inputs[k]&&r.ideal[k]===scoreValue(k,inputs[k])) s+=WEIGHT[k]; }
     if(s>bestScore){bestScore=s;best=r;}
   });
   return {regime:best,pct:maxPossible>0?Math.round(bestScore/maxPossible*100):0};
 }
 function crossAssetLine(i){
+  if(i.ma==='above50'&&i.vol==='cooling'&&i.credit==='ok'&&i.lead==='growth')
+    return "This is a constructive-cautious tape: futures are holding the relief rally, volatility cooled, credit is orderly, but breadth still needs to repair before chasing.";
   if((i.vol==='elevated'||i.vol==='spike')&&i.credit==='soft'&&i.lead==='defensive')
     return "The cross-asset tape leans risk-off — watch whether credit (HYG vs LQD) and the dollar stabilize before adding any exposure.";
   if(i.credit==='firm'&&i.lead==='cyclicals'&&(i.vol==='contained'))
@@ -1092,7 +1322,7 @@ function renderSnapshot(d,src){
   document.getElementById('snap-agent-body').textContent=d.agentCommentary||'(no analyst commentary in the data file yet)';
 
   /* 6 · final decision */
-  const dec=d.decision||{}, biasColors={ "risk-on":"var(--green)","neutral":"var(--muted)","cautious":"var(--amber)","risk-off":"var(--red)" };
+  const dec=d.decision||{}, biasColors={ "risk-on":"var(--green)","constructive-cautious":"var(--gold)","neutral":"var(--muted)","cautious":"var(--amber)","risk-off":"var(--red)" };
   const bc=biasColors[dec.bias]||'var(--gold)';
   document.getElementById('snap-decision').innerHTML=
     '<span class="dec-bias" style="background:'+bc+';color:#08101c">'+(dec.bias||'—')+' bias</span>'+

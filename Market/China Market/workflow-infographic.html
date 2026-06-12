@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>每日市场工作流 · Daily Market Workflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F4ED; --paper:#FFFFFF;
+    --navy:#0E2A47; --navy2:#143E66;
+    --gold:#B08842; --gold2:#D4B271;
+    --line:#E4DED1; --line2:#C8BFAE;
+    --ink:#2A2620; --muted:#6B6256;
+    --up:#D7263D; --up-soft:#FBE9EC; --up-deep:#9E1A2D;
+    --down:#1F8A47; --down-soft:#E7F5EC; --down-deep:#125F30;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:'Noto Sans SC',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+  /* Topbar */
+  .topbar{position:sticky;top:0;z-index:40;background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);border-bottom:3px solid var(--gold)}
+  .topbar .wrap{display:flex;align-items:center;gap:16px;padding:18px 28px}
+  .brand-seal{width:42px;height:42px;background:var(--up);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC',serif;font-weight:700;font-size:22px;color:#fff;flex:none;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+  .brand-txt h1{font-family:'Noto Serif SC',serif;color:#fff;font-size:21px;font-weight:600;letter-spacing:1px}
+  .brand-txt .en{color:var(--gold2);font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:400}
+  .topbar .meta{margin-left:auto;text-align:right;color:#cdd8e6;font-size:12px}
+  .topbar .meta b{color:#fff;font-weight:500}
+
+  /* Hero */
+  .hero{padding:42px 0 14px}
+  .hero .kicker{color:var(--gold);font-size:12px;letter-spacing:4px;text-transform:uppercase;font-weight:500;margin-bottom:10px}
+  .hero h2{font-family:'Noto Serif SC',serif;font-size:34px;color:var(--navy);font-weight:700;line-height:1.3}
+  .hero p{color:var(--muted);font-size:15px;max-width:700px;margin-top:12px}
+  .gold-rule{width:64px;height:3px;background:var(--gold);margin:18px 0 0}
+
+  /* Stage label */
+  .stagebar{display:flex;gap:14px;align-items:center;margin:38px 0 26px}
+  .stagebar .pill{background:var(--navy);color:#fff;font-family:'Noto Serif SC',serif;font-size:15px;padding:5px 16px;border-radius:2px}
+  .stagebar .line{flex:1;height:1px;background:var(--line2)}
+  .stagebar .en{color:var(--gold);font-size:11px;letter-spacing:3px;text-transform:uppercase}
+
+  /* Grids */
+  .flow3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .flow2{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:780px;margin:0 auto}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:24px;position:relative;box-shadow:0 1px 2px rgba(14,42,71,.04);display:flex;flex-direction:column}
+  .card .idx{position:absolute;top:-14px;left:22px;width:30px;height:30px;background:var(--navy);color:#fff;font-family:'Noto Serif SC',serif;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 2px 6px rgba(14,42,71,.25)}
+  .card .ic{font-size:24px;margin-bottom:8px}
+  .card h3{font-family:'Noto Serif SC',serif;color:var(--navy);font-size:18px;font-weight:600}
+  .card .sub{color:var(--gold);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin:3px 0 12px}
+  .card ul{list-style:none;flex:1}
+  .card li{position:relative;padding-left:18px;font-size:13px;color:var(--ink);margin-bottom:7px}
+  .card li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;background:var(--gold2);border-radius:50%}
+  .tag{display:inline-block;font-size:11px;padding:2px 9px;border-radius:3px;margin-top:12px;font-weight:500;align-self:flex-start}
+  .tag.input{background:var(--up-soft);color:var(--up-deep)}
+  .tag.output{background:var(--down-soft);color:var(--down-deep)}
+  .tag.prompt{background:#F0EAD8;color:var(--gold)}
+
+  /* output route badge */
+  .route{display:flex;align-items:center;gap:8px;margin-top:11px;padding:8px 11px;background:linear-gradient(135deg,#0E2A47 0%,#143E66 100%);border-radius:4px;border-left:3px solid var(--gold)}
+  .route .rt-ic{font-size:14px}
+  .route .rt-tx{font-size:11.5px;line-height:1.35;color:#eef3f9}
+  .route .rt-tx b{color:var(--gold2);font-weight:600}
+
+  /* Collapsible prompt */
+  details.prompt{margin-top:14px;border-top:1px dashed var(--line2);padding-top:12px}
+  details.prompt > summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:500;color:var(--navy2);user-select:none;padding:7px 11px;background:#F4EFE3;border:1px solid var(--line);border-radius:4px;transition:background .15s}
+  details.prompt > summary:hover{background:#EFE8D7}
+  details.prompt > summary::-webkit-details-marker{display:none}
+  details.prompt > summary .chev{display:inline-block;color:var(--gold);font-size:11px;transition:transform .2s}
+  details.prompt[open] > summary .chev{transform:rotate(90deg)}
+  details.prompt > summary .more{margin-left:auto;color:var(--muted);font-size:10.5px;letter-spacing:1px;text-transform:uppercase}
+  .prompt-body{margin-top:10px;max-height:360px;overflow:auto;background:#FCFAF4;border:1px solid var(--line);border-radius:4px;padding:14px 15px}
+  .prompt-body pre{font-family:'Noto Sans SC',ui-monospace,monospace;white-space:pre-wrap;word-break:break-word;font-size:11.5px;line-height:1.62;color:#3a342b}
+  .prompt-body::-webkit-scrollbar{width:9px}
+  .prompt-body::-webkit-scrollbar-thumb{background:var(--line2);border-radius:5px}
+  .prompt-body::-webkit-scrollbar-track{background:#F4EFE3}
+
+  /* Arrow connector */
+  .connector{display:flex;flex-direction:column;align-items:center;margin:26px 0 4px}
+  .connector .arw{font-size:26px;color:var(--gold);line-height:1}
+  .connector .lbl{font-size:12px;color:var(--muted);letter-spacing:1px;margin-top:2px}
+
+  /* summary strip */
+  .summary{background:var(--navy);color:#eef3f9;border-radius:6px;padding:26px 28px;margin-top:42px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .summary .blk h4{font-family:'Noto Serif SC',serif;color:var(--gold2);font-size:13px;letter-spacing:2px;margin-bottom:6px;text-transform:uppercase}
+  .summary .blk p{font-size:13px;color:#cdd8e6}
+  .summary .blk b{color:#fff;font-size:20px;font-family:'Noto Serif SC',serif;display:block}
+
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:34px 0 50px}
+  footer .seal{color:var(--up);font-family:'Noto Serif SC',serif;font-weight:700}
+
+  @media(max-width:860px){
+    .flow3{grid-template-columns:1fr}
+    .flow2{grid-template-columns:1fr}
+    .summary{grid-template-columns:1fr 1fr}
+    .hero h2{font-size:26px}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand-seal">市</div>
+    <div class="brand-txt">
+      <h1>每日市场工作流</h1>
+      <div class="en">Daily Market Workflow</div>
+    </div>
+    <div class="meta">
+      <div><b>五节点流程</b> · 5-Node Pipeline</div>
+      <div>A股 · 美股 · USD/CAD · 双 HTML</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="kicker">Workflow · Infographic</div>
+    <h2>从盘前情报到每日成稿的一条龙</h2>
+    <p>每个交易日，三路市场情报——A股收盘复盘、美股收盘复盘、USD/CAD 货币对分析日报——汇入两份持续更新的 HTML 成品：每日简报与宏观仪表盘。两份复盘各自附带可展开的完整提示词，点击即可查看或收起。</p>
+    <div class="gold-rule"></div>
+  </section>
+
+  <!-- STAGE 1: INPUTS -->
+  <div class="stagebar">
+    <span class="pill">壹 · 情报采集</span>
+    <span class="line"></span>
+    <span class="en">Stage 1 — Intelligence Inputs</span>
+  </div>
+
+  <div class="flow3">
+
+    <!-- 1. A-share -->
+    <div class="card">
+      <span class="idx">1</span>
+      <div class="ic">🐉</div>
+      <h3>A股市场复盘 / Deep Research</h3>
+      <div class="sub">China A-Share · Deep Research</div>
+      <ul>
+        <li>12 章节机构研报式收盘复盘</li>
+        <li>八大指数、市场宽度、资金流向</li>
+        <li>行业轮动、主线判定、龙头图谱</li>
+        <li>ETF 配置 + 明日三重剧本推演</li>
+      </ul>
+      <span class="tag prompt">PROMPT · 输入</span>
+      <details class="prompt">
+        <summary><span class="chev">▶</span> 查看完整提示词<span class="more">A-share prompt</span></summary>
+        <div class="prompt-body"><pre>开启豆包超能模式，实时全网检索核验最新真实数据，禁止编造、禁止旧数据。
+你现在同时担任：A股宏观策略分析师、市场结构研究员、资金流向分析师、行业轮动研究员、ETF配置顾问、技术面分析师。
+服务对象是 Macro Trader / ETF 宏观交易者，重点关注：大盘趋势、市场流动性、主力/北向资金流向、行业轮动、风险偏好、宏观政策、ETF配置机会、中短期方向。
+请针对【2026年6月11日， A股全天收盘】，严格按照以下12个固定章节，输出专业、可直接交易使用的完整复盘报告：
+一、今日市场核心结论（5-10条精炼核心要点：市场强弱、风险偏好、主线、强弱板块、增量资金、风格切换、明日重点）
+二、八大指数表现分析（上证/深成/创业板/科创50/沪深300/中证500/中证1000/北证50，包含涨跌幅、成交额增减、相对5/20日量能、5/10/20/60日均线技术趋势判断）
+三、市场宽度分析（涨跌家数、涨跌比、涨停跌停家数、炸板率、赚钱效应等级、市场情绪周期定位）
+四、成交量与全维度资金分析（两市成交额对比5日/20日均量、北向资金净流入流出、主力行业TOP5流入流出、全品类ETF资金真实流向与资金偏好解读）
+五、行业轮动分析（今日涨幅TOP10行业+驱动逻辑+驱动类型；今日跌幅TOP10行业+下跌原因+资金行为）
+六、今日市场主线深度判定（当日绝对主线、细分分支、主线强化/退潮判断、依据：量能、龙头、连板、资金流）
+七、核心龙头图谱分析（10只当日代表性核心龙头，涨跌、量能、机构参与、是否新高、是否见顶）
+八、ETF投资者专属配置视角（当日最强方向、核心ETF清单、短期1周/中期1月/季度3个月配置策略）
+九、三大指数关键技术位（上证/创业板/科创50 支撑位、压力位、未来上涨/震荡/回调概率量化判断）
+十、当日重磅消息面复盘（国内政策、行业消息、国际消息，标注对后市影响高/中/低）
+十一、明日市场三重剧本推演（高概率主剧本+次剧本+小概率剧本，附明日重点观察：指数、板块、龙头、ETF）
+十二、Macro Trader 行动指南（市场综合评分、趋势/流动性/风险偏好/赚钱效应/政策分项打分、当前3大机会方向、3大风险方向、明日5个核心观察指标）
+全文采用机构研报风格、数据100%为2026年6月11日，真实收盘数据、逻辑贴合宏观交易+行业轮动+ETF实战。</pre></div>
+      </details>
+      <div class="route">
+        <span class="rt-ic">🎙️</span>
+        <span class="rt-tx">输出方式：<b>Google NotebookLM 讲稿演示</b><br>Deep Research → 音频讲稿</span>
+      </div>
+    </div>
+
+    <!-- 2. US -->
+    <div class="card">
+      <span class="idx">2</span>
+      <div class="ic">🌎</div>
+      <h3>美股市场复盘指令 / Deep Research</h3>
+      <div class="sub">US Market · Deep Research</div>
+      <ul>
+        <li>15 节综合收盘复盘与分析</li>
+        <li>四大指数、市场宽度、板块轮动</li>
+        <li>宏观驱动、美联储、利率与流动性</li>
+        <li>技术面 + ETF 策略 + 风险与展望</li>
+      </ul>
+      <span class="tag prompt">PROMPT · 输入</span>
+      <details class="prompt">
+        <summary><span class="chev">▶</span> 查看完整提示词<span class="more">US prompt</span></summary>
+        <div class="prompt-body"><pre>Act as a senior U.S. equity market strategist, macro analyst, sector rotation researcher, technical analyst, ETF strategist, and institutional market commentator.
+Today is [Today's Date].
+I am a macro trader and ETF investor. I mainly focus on:
+Major U.S. indexes: S&P 500, Nasdaq 100, Dow Jones, Russell 2000
+Sector rotation
+Market breadth
+Money flows and liquidity
+Interest rates and bond yields
+Fed expectations
+Earnings and guidance
+AI / technology leadership
+Risk appetite
+Technical levels
+ETF positioning and trading implications
+Please produce a comprehensive Daily U.S. Market Recap and Analysis based on the latest available market data after today's close.
+Use reliable sources where possible, such as Reuters, Bloomberg, CNBC, WSJ, MarketWatch, FactSet, S&P Dow Jones Indices, Nasdaq, NYSE, Federal Reserve, U.S. Treasury, CME FedWatch, FRED, and company earnings releases.
+
+Daily U.S. Market Recap and Analysis
+
+1. Executive Summary
+Start with 8–12 key bullet points answering:
+- Was today a risk-on or risk-off session?
+- Which major indexes led or lagged?
+- Was the move broad-based or narrow?
+- Which sectors led and lagged?
+- What were the main catalysts?
+- Did rates, the dollar, oil, or volatility affect equities?
+- Was today's market action bullish, bearish, or mixed?
+- What is the key takeaway for a macro trader / ETF investor?
+
+2. Major Index Performance
+Analyze today's performance of: S&P 500 / SPY / VOO / IVV, Nasdaq 100 / QQQ, Dow Jones / DIA, Russell 2000 / IWM.
+For each index include: daily % change, closing level, intraday high/low if relevant, whether it closed near the high or low of the day, YTD performance if useful, relative strength vs other indexes, key technical levels (20/50/100/200-day MAs), support and resistance. Explain what the index action says about market sentiment.
+
+3. Market Breadth and Internal Strength
+Advancers vs decliners; new highs vs new lows; % of stocks above 20/50/200-day MAs; equal-weight vs cap-weight S&P 500; small caps vs large caps; Nasdaq breadth; sector participation.
+Answer: Was today's move driven by a few mega-cap stocks or broad participation? Is breadth improving or deteriorating? Does breadth confirm or contradict the index move?
+
+4. Sector Rotation
+Analyze all 11 S&P 500 sectors: Technology, Communication Services, Consumer Discretionary, Consumer Staples, Health Care, Financials, Industrials, Energy, Materials, Utilities, Real Estate.
+For each: daily performance, relative strength/weakness, key drivers, whether the move looks defensive/cyclical/growth-led/value-led, ETF implications (XLK, XLC, XLY, XLP, XLV, XLF, XLI, XLE, XLB, XLU, XLRE). Identify strongest and weakest sectors of the day.
+
+5. Key Stock and Theme Movers
+Magnificent 7: AAPL, MSFT, NVDA, AMZN, GOOGL, META, TSLA; Semiconductors: NVDA, AMD, AVGO, MU, INTC, SOXX, SMH; AI infrastructure and cloud; banks and financials; energy/oil-related; consumer; defensives; major earnings movers; major news-driven movers. Explain whether leadership is healthy or concentrated.
+
+6. Macro Drivers
+Treasury yields (2y/10y/30y); yield curve movement; U.S. dollar index; oil; gold; Bitcoin/crypto if relevant; credit spreads if available; VIX and volatility structure. Explain how these affected equities today.
+
+7. Federal Reserve and Rate Expectations
+Fed speeches/comments; economic data affecting rate expectations; CME FedWatch implied probabilities; expectations for next Fed meeting; whether data supports cuts/hikes/longer pause; impact on growth, value, bonds, small caps. Explain whether the market is pricing a soft landing, stagflation, recession, or renewed inflation.
+
+8. Economic Data and News Catalysts
+CPI/PCE/PPI; jobs data; jobless claims; retail sales; ISM/PMI; consumer confidence; GDP; housing; Treasury auctions; geopolitical; trade/tariff; fiscal/policy. For each: actual result, consensus, market reaction, investment implication.
+
+9. Earnings and Corporate News
+Major companies reporting; EPS and revenue beats/misses; guidance changes; margin trends; analyst reactions; sector-level earnings implications; impact on index direction. Explain whether earnings are supporting or weakening the trend.
+
+10. Money Flows, Liquidity, and Positioning
+ETF flows; equity fund flows; money market fund assets; Treasury liquidity; Fed balance sheet/QT; options positioning; put/call ratio; dealer gamma/expiry effects; short interest/crowded positioning. Explain whether flows and positioning are supportive or risky.
+
+11. Technical Analysis
+For S&P 500, Nasdaq 100, Russell 2000, 10-year yield, U.S. dollar index, VIX: trend direction, support, resistance, moving averages, momentum, breakout/breakdown risks, overbought/oversold. Classify as Bullish / Neutral / Bearish / Improving / Deteriorating.
+
+12. ETF Strategy Implications
+SPY/VOO/IVV, QQQ, IWM, DIA, RSP, SMH/SOXX, XLK, XLF, XLE, XLU, TLT/IEF/SHY, GLD, Bitcoin ETFs. Which show relative strength; which are weakening; momentum vs defensive; which may be overextended; pullback opportunities.
+
+13. Risk Assessment
+Main risks for the next 1–5 trading days: inflation surprise, Fed repricing, earnings disappointment, overbought technicals, narrow leadership, liquidity stress, geopolitical risk, dollar strength, yield spike, oil shock, weak breadth. Rate short-term risk: Low / Moderate / Elevated / High. Explain why.
+
+14. Market Outlook
+Next trading day (key levels, catalysts, bullish/bearish scenarios); next 1–2 weeks (trend, sector leadership, macro risks, ETF positioning); next 1–3 months (regime, earnings trend, Fed policy impact, risk/reward for equities and bonds).
+
+15. Actionable Takeaways for a Macro Trader / ETF Investor
+What to watch tomorrow; what data matters next; sectors with momentum; defensive areas; aggressive/neutral/cautious; buy-the-dip vs reduce-risk; ETF watchlist.
+Final conclusion format:
+Market Bias: Bullish / Neutral / Bearish
+Risk Appetite: Strong / Moderate / Weak
+Leadership Quality: Broad / Narrow / Deteriorating
+Best Opportunities: [list]
+Main Risks: [list]
+ETF Positioning View: [explain]
+
+Style Requirements
+Professional but practical tone. Avoid vague comments — use data, market levels, clear reasoning. When data is unavailable, say so clearly instead of guessing. Always distinguish short-term trading signal vs medium-term trend vs long-term implication. Goal: understand what happened today, why, and how to prepare for the next trading day.</pre></div>
+      </details>
+      <div class="route">
+        <span class="rt-ic">🎙️</span>
+        <span class="rt-tx">输出方式：<b>Google NotebookLM 讲稿演示</b><br>Deep Research → 音频讲稿</span>
+      </div>
+    </div>
+
+    <!-- 3. USD/CAD -->
+    <div class="card">
+      <span class="idx">3</span>
+      <div class="ic">💱</div>
+      <h3>USD/CAD 货币对分析日报 / Deep Research</h3>
+      <div class="sub">USD/CAD · Deep Research</div>
+      <ul>
+        <li>美元/加元每日汇率走势复盘</li>
+        <li>利差、原油与加央行政策驱动</li>
+        <li>关键支撑/压力位与技术形态</li>
+        <li>当日偏多/偏空研判与交易区间</li>
+      </ul>
+      <span class="tag prompt">PROMPT · 输入</span>
+      <details class="prompt">
+        <summary><span class="chev">▶</span> 查看完整提示词<span class="more">USD/CAD prompt</span></summary>
+        <div class="prompt-body"><pre>Act as a professional FX strategist, macro trader, and technical analyst.
+Create a complete USD/CAD currency pair recap and outlook for [Today's Date].
+The goal is to help an investor or trader understand what drove USD/CAD, whether the move was USD-driven, CAD-driven, oil-driven, rate-driven, or risk-sentiment-driven, and how the setup affects short-term and medium-term positioning.
+Please structure the report as follows:
+
+1. Executive Summary
+Provide a concise summary covering:
+- Whether USD/CAD moved higher, lower, or stayed range-bound
+- Whether the move was mainly driven by USD strength/weakness or CAD strength/weakness
+- The most important macro driver of the period
+- Whether the market tone was risk-on, risk-off, defensive, commodity-led, or rate-driven
+- Key technical levels traders should watch next
+Clearly state: "The USD/CAD move was mainly driven by ______."
+
+2. Price Action Recap
+- Opening level, high, low, and latest/closing level
+- Daily/weekly/monthly percentage change
+- Intraday behavior if relevant
+- Whether USD/CAD closed near the high, low, or middle of the range
+- Whether the move showed trend continuation, reversal, breakout, failed breakout, or consolidation
+Include a short interpretation of what the price action suggests.
+
+3. Fundamental Drivers
+U.S. Dollar Side: U.S. economic data (CPI, PCE, payrolls, jobless claims, retail sales, ISM, GDP); Fed expectations; U.S. Treasury yields (2y/10y); DXY; risk sentiment and safe-haven demand; U.S. political/fiscal headlines. Explain whether the USD was supported or pressured.
+Canadian Dollar Side: Bank of Canada policy expectations; Canadian CPI, GDP, employment, retail sales, housing, business surveys; Canada-U.S. yield spread; Canadian trade balance and terms of trade; domestic political/fiscal headlines. Explain whether CAD was supported or pressured.
+
+4. Oil and Commodity Influence
+WTI crude; Brent if relevant; natural gas if relevant; broader commodity sentiment; whether oil strength supported CAD or oil weakness pressured CAD; whether the CAD response to oil was strong, weak, or disconnected.
+Clearly state: "Oil was a positive / negative / neutral factor for CAD because ______."
+
+5. Interest Rate and Yield Spread Analysis
+U.S. 2y vs Canada 2y; U.S. 10y vs Canada 10y; Fed vs BoC rate-cut/hike expectations; whether yield spreads favored USD or CAD; whether the move in USD/CAD matched the rate differential signal.
+Explain: "The yield spread signal currently favors ______."
+
+6. Risk Sentiment and Equity Market Impact
+S&P 500 / Nasdaq risk appetite; VIX; credit spreads if relevant; global risk-on/off; whether CAD behaved like a pro-cyclical currency; whether USD gained safe-haven demand. Explain whether USD/CAD was moving as a risk pair or a rate-differential pair.
+
+7. Technical Analysis
+Daily chart: trend direction; 20/50/100/200-day MAs; price above/below key MAs; RSI (overbought/oversold/neutral); MACD; Bollinger Band position.
+Weekly chart: broader trend structure; major support/resistance zones; long-term uptrend/downtrend/range; key breakout/breakdown levels.
+Key levels: immediate resistance; major resistance; immediate support; major support; bullish breakout level; bearish breakdown level.
+Format:
+Level | Importance | Interpretation
+[price] | Major resistance | Break above may signal USD/CAD upside continuation
+[price] | Support | Break below may signal CAD strength
+
+8. Scenario Analysis
+Bullish USD/CAD: stronger USD, higher U.S. yields, Fed more hawkish than BoC, weak oil, risk-off, weak Canadian data — include upside targets.
+Bearish USD/CAD: weaker USD, lower U.S. yields, BoC more hawkish than Fed, strong oil, risk-on, strong Canadian data — include downside targets.
+Range-Bound: mixed U.S./Canadian data, stable oil, no major change in yield spreads, balanced risk sentiment — include range support and resistance.
+
+9. Trading and Hedging Implications
+For a trader/investor holding USD and exposed to CAD risk: whether conditions favor holding USD, reducing USD exposure, or gradually hedging; whether USD/CAD is near an attractive hedge level; whether to use spot conversion, limit orders, staged conversion, or options; the technical level that confirms a stronger CAD move; the level that confirms further USD strength.
+Framework:
+USD/CAD Condition | Suggested Action
+Breaks above resistance | Delay CAD conversion / keep more USD exposure
+Fails at resistance | Start partial USD-to-CAD hedge
+Breaks below support | Increase CAD hedge
+Remains range-bound | Use staged conversion
+
+10. Key Upcoming Catalysts
+U.S. CPI/PCE; U.S. jobs report; Fed meeting or speeches; Canada CPI; Canada employment report; Bank of Canada meeting; oil inventory data; OPEC headlines; U.S. Treasury auctions; major risk events. Explain which catalyst matters most for USD/CAD.
+
+11. Final View
+Final Bias: Neutral / Bullish USD/CAD / Bearish USD/CAD
+Main Driver: [Fed-BoC spread / oil / risk sentiment / USD trend]
+Key Support: [level]
+Key Resistance: [level]
+Confirmation Signal: [price or macro trigger]
+Invalidation Risk: [what would make the view wrong]
+
+Extra Instruction
+Use current market data, cite reliable sources, and separate confirmed facts from interpretation. Avoid overconfidence. If data is mixed, clearly say the setup is mixed.</pre></div>
+      </details>
+      <div class="route">
+        <span class="rt-ic">🎙️</span>
+        <span class="rt-tx">输出方式：<b>Google NotebookLM 讲稿演示</b><br>Deep Research → 音频讲稿</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="arw">▼</div>
+    <div class="lbl">三路情报汇入 · feeds into</div>
+  </div>
+
+  <!-- STAGE 2: OUTPUTS -->
+  <div class="stagebar">
+    <span class="pill">贰 · 成品更新</span>
+    <span class="line"></span>
+    <span class="en">Stage 2 — HTML Deliverables</span>
+  </div>
+
+  <div class="flow2">
+    <div class="card">
+      <span class="idx">4</span>
+      <div class="ic">📰</div>
+      <h3>每日简报 HTML</h3>
+      <div class="sub">Daily Briefing · Live Data</div>
+      <ul>
+        <li>全资产实时看板，六大板块 ~30 分区</li>
+        <li>股票 · 利率信用 · 风险 · 外汇商品 · 宏观政策</li>
+        <li>估值与 Q1 财报、指数均线距离技术分析</li>
+        <li>行动清单 + 待观察催化剂日历</li>
+      </ul>
+      <span class="tag output">HTML · 更新</span>
+    </div>
+
+    <div class="card">
+      <span class="idx">5</span>
+      <div class="ic">📊</div>
+      <h3>宏观仪表盘 HTML</h3>
+      <div class="sub">Technical Setup · 判读指南</div>
+      <ul>
+        <li>交互式研判指南：四问按序拆解仪表盘</li>
+        <li>核心工具信号、均线状态（健康/狭窄上涨）</li>
+        <li>跨资产四传感器 + 宏观读图 + 系统化标位</li>
+        <li>六步决策流：八面板证据 → 制度 → 最终决策</li>
+      </ul>
+      <span class="tag output">HTML · 更新</span>
+    </div>
+  </div>
+
+  <!-- summary strip -->
+  <div class="summary">
+    <div class="blk">
+      <h4>输入</h4>
+      <b>3</b>
+      <p>A股 · 美股 · USD/CAD</p>
+    </div>
+    <div class="blk">
+      <h4>输出</h4>
+      <b>2</b>
+      <p>简报 HTML + 仪表盘 HTML</p>
+    </div>
+    <div class="blk">
+      <h4>节奏</h4>
+      <b>每日</b>
+      <p>盘前/盘后采集，定时成稿</p>
+    </div>
+    <div class="blk">
+      <h4>风格</h4>
+      <b>中式典雅</b>
+      <p>米白 · 藏青 · 金</p>
+    </div>
+  </div>
+
+  <footer>
+    <span class="seal">市</span> &nbsp;每日市场工作流 · Daily Market Workflow &nbsp;|&nbsp; 点击提示词卡片可展开 / 收起 &nbsp;|&nbsp; 米白 + 藏青 + 金 设计体系
+  </footer>
+
+</div>
+</body>
+</html>
