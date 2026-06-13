@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A股三日趋势复盘 · 2026-06-10 → 06-12</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#F7F4ED; --paper:#FFFFFF;
+    --ink:#1A1A1A; --ink-2:#3D3D3D; --ink-3:#6B6B6B;
+    --line:#E4DED1; --line-strong:#C8BFAE;
+    --navy:#0E2A47; --navy-2:#143E66;
+    --gold:#B08842; --gold-light:#D4B271;
+    --up:#D7263D; --up-soft:#FBE9EC; --up-deep:#9E1A2D;
+    --down:#1F8A47; --down-soft:#E7F5EC; --down-deep:#125F30;
+    --flat:#8A8A8A;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  .serif{font-family:'Noto Serif SC',serif}
+
+  header.topbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#0E2A47 0%,#143E66 100%);color:#fff;border-bottom:3px solid var(--gold)}
+  .topbar-inner{max-width:1380px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-seal{width:42px;height:42px;background:var(--up);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC';font-weight:900;font-size:22px;border:2px solid var(--gold-light);box-shadow:0 0 0 1px rgba(255,255,255,.15)}
+  .brand-text{display:flex;flex-direction:column;line-height:1.15}
+  .brand-title{font-family:'Noto Serif SC';font-weight:700;font-size:18px;letter-spacing:1px}
+  .brand-sub{font-size:11.5px;color:#C9D6E3;letter-spacing:2px}
+  .topbar-meta{display:flex;gap:22px;font-size:12px;color:#C9D6E3}
+  .topbar-meta span b{color:#fff;font-weight:500;margin-left:4px}
+
+  nav.chapters{position:sticky;top:71px;z-index:40;background:#FAF8F2;border-bottom:1px solid var(--line)}
+  .chapters-inner{max-width:1380px;margin:0 auto;padding:0 28px;display:flex;gap:0;overflow-x:auto}
+  .chapter-tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--ink-3);border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;transition:all .15s;text-decoration:none}
+  .chapter-tab:hover{color:var(--navy)}
+  .chapter-tab.active{color:var(--up);border-bottom-color:var(--up);font-weight:700}
+  .chapter-tab .num{font-family:'Noto Serif SC';margin-right:6px;color:var(--gold)}
+
+  main{max-width:1380px;margin:0 auto;padding:32px 28px 80px}
+  section.chapter{background:var(--paper);border:1px solid var(--line);padding:36px 40px;margin-bottom:28px;box-shadow:0 1px 3px rgba(14,42,71,0.04);scroll-margin-top:130px}
+  .ch-head{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:24px;gap:24px;flex-wrap:wrap}
+  .ch-title{font-family:'Noto Serif SC';font-weight:900;font-size:26px;color:var(--navy);display:flex;align-items:baseline;gap:14px}
+  .ch-num{color:var(--up);font-size:36px;line-height:1;border-right:2px solid var(--gold);padding-right:14px}
+  .ch-en{font-size:12px;color:var(--ink-3);letter-spacing:3px;text-transform:uppercase;font-family:'Noto Sans SC'}
+
+  .tldr{background:linear-gradient(90deg,#FFF7E0 0%, #FAF8F2 100%);border-left:4px solid var(--gold);padding:14px 18px;margin-bottom:24px;font-size:14px;color:var(--ink-2)}
+  .tldr b{color:var(--navy);font-weight:700}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:28px}
+  .kpi{background:var(--paper);padding:18px 18px 16px;display:flex;flex-direction:column;gap:4px}
+  .kpi-label{font-size:11.5px;color:var(--ink-3);letter-spacing:1px}
+  .kpi-value{font-family:'Noto Serif SC';font-weight:700;font-size:28px;line-height:1.15;overflow-wrap:anywhere}
+  .kpi-value.path{font-size:18px;letter-spacing:-.2px}
+  .kpi-value.up{color:var(--up)}.kpi-value.down{color:var(--down)}
+  .kpi-sub{font-size:11.5px;color:var(--ink-3)}
+
+  table.research{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0;background:var(--paper)}
+  table.research th{background:var(--navy);color:#fff;text-align:left;padding:10px 12px;font-weight:500;font-size:12.5px;letter-spacing:1px;border-right:1px solid #1F4A72}
+  table.research td{padding:11px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  table.research tr:hover td{background:#FAF8F2}
+  table.research .perf-up{color:var(--up);font-weight:700;font-family:'Noto Serif SC'}
+  table.research .perf-down{color:var(--down);font-weight:700;font-family:'Noto Serif SC'}
+  table.research .perf-flat{color:var(--flat);font-weight:700;font-family:'Noto Serif SC'}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+  @media(max-width:960px){.two-col{grid-template-columns:1fr}}
+
+  .chart-card{background:var(--paper);border:1px solid var(--line);padding:16px 18px}
+  .chart-title{font-family:'Noto Serif SC';font-weight:700;font-size:15px;color:var(--navy);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:14px}
+  .chart-title small{font-family:'Noto Sans SC';font-weight:400;font-size:11px;color:var(--ink-3);letter-spacing:1px}
+  .chart-wrap{position:relative;height:320px}
+
+  .theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .theme-card{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--gold);padding:16px 18px;transition:all .18s;position:relative}
+  .theme-card:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(14,42,71,.08)}
+  .theme-card.hot{border-top-color:var(--up)}
+  .theme-card.cold{border-top-color:var(--down)}
+  .theme-name{font-family:'Noto Serif SC';font-weight:700;font-size:15.5px;color:var(--navy);margin-bottom:6px}
+  .theme-desc{font-size:13px;color:var(--ink-2);line-height:1.6}
+  .theme-tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:2px;margin-bottom:8px;letter-spacing:1px}
+  .theme-tag.t1{background:var(--down-soft);color:var(--down-deep)}
+  .theme-tag.t2{background:#FFF1D6;color:var(--gold)}
+  .theme-tag.t3{background:var(--up-soft);color:var(--up-deep)}
+
+  .sub-tabs{display:flex;border:1px solid var(--navy);margin-bottom:16px;width:fit-content;flex-wrap:wrap}
+  .sub-tab{padding:8px 18px;font-size:13px;font-weight:500;cursor:pointer;background:var(--paper);color:var(--navy);border-right:1px solid var(--navy);transition:all .15s}
+  .sub-tab:last-child{border-right:0}
+  .sub-tab.active{background:var(--navy);color:#fff}
+  .day-panel{display:none}
+  .day-panel.active{display:block}
+
+  .pill{display:inline-block;padding:2px 9px;font-size:11.5px;margin:2px 5px 2px 0;border-radius:2px}
+  .pill.up{background:var(--up-soft);color:var(--up-deep)}
+  .pill.down{background:var(--down-soft);color:var(--down-deep)}
+
+  .idx-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:14px}
+  .idx-row{background:var(--paper);padding:11px 14px;display:flex;flex-direction:column;gap:3px}
+  .idx-row-label{font-size:10.5px;color:var(--ink-3);letter-spacing:1.5px}
+  .idx-row-value{font-size:13.5px;color:var(--ink);font-weight:500;line-height:1.5}
+
+  .flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:760px){.flow-grid{grid-template-columns:1fr}}
+  .flow-box{border:1px solid var(--line);padding:12px 16px;font-size:13px;line-height:1.6;color:var(--ink-2)}
+  .flow-box.in{background:var(--up-soft);border-left:4px solid var(--up)}
+  .flow-box.out{background:var(--down-soft);border-left:4px solid var(--down)}
+  .flow-box b{display:block;font-family:'Noto Serif SC';margin-bottom:4px}
+  .flow-box.in b{color:var(--up-deep)} .flow-box.out b{color:var(--down-deep)}
+
+  .conclusion-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+  .conc{background:linear-gradient(180deg,#FFFDF6 0%, #F7F4ED 100%);border:1px solid var(--line);border-top:3px double var(--up);padding:16px 18px}
+  .conc-num{font-family:'Noto Serif SC';font-weight:900;font-size:36px;color:var(--up);line-height:1}
+  .conc h4{margin:6px 0 8px;font-family:'Noto Serif SC';color:var(--navy);font-size:15px}
+  .conc p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.65}
+
+  .quote{border-left:3px solid var(--up);padding:8px 14px;margin:14px 0;background:var(--up-soft);color:var(--up-deep);font-size:14px}
+  .note{background:#FFFAEC;border:1px dashed var(--gold-light);padding:10px 14px;font-size:12.5px;color:var(--ink-3);margin-top:16px}
+
+  /* 情绪周期阶梯 */
+  .phase-flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;margin:18px 0 8px;border:1px solid var(--line)}
+  @media(max-width:760px){.phase-flow{grid-template-columns:1fr}}
+  .phase{padding:18px 20px;position:relative;background:var(--paper)}
+  .phase + .phase{border-left:1px solid var(--line)}
+  @media(max-width:760px){.phase + .phase{border-left:0;border-top:1px solid var(--line)}}
+  .phase .day{font-size:11.5px;color:var(--ink-3);letter-spacing:1px}
+  .phase .stage{font-family:'Noto Serif SC';font-weight:900;font-size:20px;margin:4px 0 2px}
+  .phase .score{font-family:'Noto Serif SC';font-size:13px;color:var(--gold);font-weight:700}
+  .phase .desc{font-size:12.5px;color:var(--ink-2);margin-top:8px;line-height:1.6}
+  .phase.p1{border-top:4px solid var(--down)} .phase.p1 .stage{color:var(--down-deep)}
+  .phase.p2{border-top:4px solid #8A8A8A} .phase.p2 .stage{color:#5A5A5A}
+  .phase.p3{border-top:4px solid var(--up)} .phase.p3 .stage{color:var(--up-deep)}
+  .phase .arrow{position:absolute;right:-11px;top:50%;transform:translateY(-50%);z-index:2;color:var(--gold);font-size:18px;background:var(--paper);padding:2px}
+  @media(max-width:760px){.phase .arrow{display:none}}
+
+  footer{text-align:center;font-size:12px;color:var(--ink-3);padding:24px 0 0;border-top:1px solid var(--line);margin-top:24px}
+  .heat-cell{font-family:'Noto Serif SC';font-weight:700;text-align:center}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-seal">势</div>
+      <div class="brand-text">
+        <span class="brand-title">A股三日趋势复盘 · 交易模式与主线轮动</span>
+        <span class="brand-sub">3-DAY TREND REVIEW · TRADING PATTERN · ROTATION</span>
+      </div>
+    </div>
+    <div class="topbar-meta">
+      <span>复盘区间：<b>2026-06-10 → 06-12</b></span>
+      <span>交易日：<b>3 个（周三→周五）</b></span>
+      <span>服务对象：<b>Macro Trader / ETF</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="chapters">
+  <div class="chapters-inner" id="chapter-nav">
+    <a class="chapter-tab active" href="#ch1"><span class="num">壹</span>核心结论</a>
+    <a class="chapter-tab" href="#ch2"><span class="num">贰</span>情绪周期</a>
+    <a class="chapter-tab" href="#ch3"><span class="num">叁</span>指数趋势</a>
+    <a class="chapter-tab" href="#ch4"><span class="num">肆</span>量能资金</a>
+    <a class="chapter-tab" href="#ch5"><span class="num">伍</span>主线切换</a>
+    <a class="chapter-tab" href="#ch6"><span class="num">陆</span>每日复盘</a>
+    <a class="chapter-tab" href="#ch7"><span class="num">柒</span>趋势研判</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ 壹 · 核心结论 ============ -->
+<section class="chapter" id="ch1">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">壹</span><span>三日核心结论</span></div>
+    <div class="ch-en">EXECUTIVE SUMMARY</div>
+  </div>
+
+  <div class="tldr">
+    <b>交易模式：一次典型的"退潮探底 → 恐慌冰点 → 放量反转"V型情绪修复。</b>6-10 沪指失守 4000 点、主力净流出 716 亿，市场进入退潮期；6-11 超 <b>4000 只</b>个股下跌、炸板率升至 35%、赚钱效应仅 24.85%，情绪砸出阶段冰点；6-12 沪指放量 <b>3.24 万亿</b>突破 4000 点、近 4000 只个股上涨、主力转为净流入 206 亿，反转确立。三日完成 <b>缩量阴跌→缩量冰点→放量反包</b> 的量价结构切换，主线则从"半导体材料避险"切向"有色金属周期进攻"。
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi"><span class="kpi-label">上证指数 · 6-12 收盘</span><span class="kpi-value up">4031.51</span><span class="kpi-sub">三日累计约 +0.53% · 收复 4000 点</span></div>
+    <div class="kpi"><span class="kpi-label">三日成交额路径</span><span class="kpi-value path">2.62→2.57→3.24</span><span class="kpi-sub">单位万亿 · 反转日放量 6629 亿</span></div>
+    <div class="kpi"><span class="kpi-label">主力资金 · 三日</span><span class="kpi-value path">−716→−357→+206</span><span class="kpi-sub">单位亿 · 流出收敛后转净流入</span></div>
+    <div class="kpi"><span class="kpi-label">北向资金 · 三日</span><span class="kpi-value path">+18.6→−75→+89</span><span class="kpi-sub">单位亿 · 流出一日后大幅回流</span></div>
+    <div class="kpi"><span class="kpi-label">市场情绪评分</span><span class="kpi-value path up">50→50→75</span><span class="kpi-sub">中性偏弱 → 反转修复</span></div>
+    <div class="kpi"><span class="kpi-label">炸板率路径</span><span class="kpi-value path down">26.4%→35%→14.8%</span><span class="kpi-sub">冰点回落 · 封板质量改善</span></div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="quote">三日是教科书式的"探底—磨底—反包"：6-10/6-11 缩量阴跌不是恐慌性踩踏（成交仅 2.5 万亿量级），更像高位科技抱团瓦解后的存量调仓；6-12 一根放量阳线完成情绪逆转。</div>
+      <p style="font-size:13.5px;color:var(--ink-2);margin:0">关键信号在于<b>量价配合</b>：下跌两日均为缩量（无增量恐慌盘），反转日则放量 25% 以上，增量资金确认入场。这种"缩量跌、放量涨"是低位反转的典型量价特征，而非诱多。</p>
+    </div>
+    <div class="idx-rows" style="margin-top:0">
+      <div class="idx-row"><span class="idx-row-label">情绪曲线</span><span class="idx-row-value">退潮前段 → 衰退冰点 → 修复反包</span></div>
+      <div class="idx-row"><span class="idx-row-label">主线路径</span><span class="idx-row-value">半导体材料/涨价链 → 半导体+稀缺资源 → 有色金属周期</span></div>
+      <div class="idx-row"><span class="idx-row-label">风格切换</span><span class="idx-row-value">高位成长出逃 → 低位防御抱团 → 周期/中小盘补涨</span></div>
+      <div class="idx-row"><span class="idx-row-label">量价结构</span><span class="idx-row-value">缩量阴跌 → 缩量磨底 → 放量反包</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 贰 · 情绪周期 ============ -->
+<section class="chapter" id="ch2">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">贰</span><span>情绪周期与交易模式</span></div>
+    <div class="ch-en">SENTIMENT CYCLE</div>
+  </div>
+
+  <div class="tldr"><b>这是本次复盘的核心——情绪三段式见底反转。</b>退潮期（6-10）高位兑现、亏钱效应扩散 → 冰点期（6-11）连续两日超 4000 只个股下跌、晋级率仅 26.7% → 修复期（6-12）赚钱效应回到 71%、百股涨停重现。识别这一节奏，是三日里最重要的交易主线。</div>
+
+  <div class="phase-flow">
+    <div class="phase p1">
+      <span class="arrow">➜</span>
+      <div class="day">6-10 周三</div>
+      <div class="stage">退潮期 · 前半段</div>
+      <div class="score">情绪指数 169 → 56 骤降</div>
+      <div class="desc">沪指失守 4000 点，涨跌比 0.40，跌停 65 家（前日仅 2 家暴增），赚钱效应 2/10。高位 AI 硬件、新能源系统性兑现，但缩量调仓、未现踩踏。</div>
+    </div>
+    <div class="phase p2">
+      <span class="arrow">➜</span>
+      <div class="day">6-11 周四</div>
+      <div class="stage">衰退期 · 冰点</div>
+      <div class="score">赚钱效应 24.85%（近1月最低）</div>
+      <div class="desc">权重护盘下沪指仅微跌 0.16%，但超 4000 只个股飘绿，炸板率升至 35%，连板晋级率 26.7%、连板高度降至 3 板。短线博弈意愿降至阶段低位，恐慌见底。</div>
+    </div>
+    <div class="phase p3">
+      <div class="day">6-12 周五</div>
+      <div class="stage">修复期 · 反包</div>
+      <div class="score">赚钱效应 71% · 评分 75</div>
+      <div class="desc">沪指放量突破 4000 点，涨跌比 2.6:1、近 4000 只个股上涨，涨停 102 家、炸板率回落至 14.8%。情绪从冰点快速回暖，进入"低位修复—主升浪"过渡。</div>
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-top:24px">
+    <div class="chart-card">
+      <div class="chart-title">情绪温度计 <small>赚钱效应 · 炸板率 · 综合评分</small></div>
+      <div class="chart-wrap"><canvas id="moodChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">市场宽度演变 <small>柱=涨/跌家数 · 线=涨停家数</small></div>
+      <div class="chart-wrap"><canvas id="breadthChart"></canvas></div>
+    </div>
+  </div>
+
+  <table class="research">
+    <thead><tr><th>情绪指标</th><th>6-10 退潮</th><th>6-11 冰点</th><th>6-12 反转</th><th>趋势解读</th></tr></thead>
+    <tbody>
+      <tr><td><b>上涨 / 下跌家数</b></td><td><span class="perf-up">1556</span> / <span class="perf-down">3878</span></td><td><span class="perf-up">1369</span> / <span class="perf-down">4069</span></td><td><span class="perf-up">3923</span> / <span class="perf-down">1511</span></td><td>普跌 → 极致普跌 → 普涨，宽度V型逆转</td></tr>
+      <tr><td><b>涨跌比</b></td><td class="perf-down">0.40</td><td class="perf-down">0.34</td><td class="perf-up">2.60</td><td>盈亏比从严重失衡修复至 2.6:1</td></tr>
+      <tr><td><b>涨停 / 跌停</b></td><td>75 / <span class="perf-down">65</span></td><td>69 / 31</td><td><span class="perf-up">102</span> / 23</td><td>跌停潮收敛，涨停重回三位数</td></tr>
+      <tr><td><b>炸板率</b></td><td>26.4%</td><td class="perf-down">35.0%</td><td class="perf-up">14.8%</td><td>冰点见顶后大幅回落，封板质量改善</td></tr>
+      <tr><td><b>赚钱效应</b></td><td class="perf-down">极差 2/10</td><td class="perf-down">24.85%</td><td class="perf-up">中等偏强 71%</td><td>从仅结构性机会到全面修复</td></tr>
+      <tr><td><b>情绪定位</b></td><td>退潮前段</td><td>衰退冰点</td><td class="perf-up">修复过渡</td><td>三日走完一轮短周期见底</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 叁 · 指数趋势 ============ -->
+<section class="chapter" id="ch3">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">叁</span><span>指数趋势分析</span></div>
+    <div class="ch-en">INDEX TREND</div>
+  </div>
+
+  <div class="tldr"><b>4000 点三日"失而复得"：</b>上证 6-10 失守 4000（3993.23）→ 6-11 缩量微跌至约 3987 → 6-12 放量站上 4031.51，技术面短期均线由空翻多、5 日线上穿 10 日线。中小盘（中证500）反转日最强 +1.91%，<b>北证 50 三日连跌</b>（-3.16/-3.34/-0.78）是唯一未修复的指数，微盘流动性仍弱。</div>
+
+  <div class="two-col">
+    <div class="chart-card">
+      <div class="chart-title">八大指数每日涨跌幅 <small>点击图例可显隐 · 单位 %</small></div>
+      <div class="chart-wrap"><canvas id="chgChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">三日累计涨跌 <small>以 6-10 前收盘为基准复利 · 单位 %</small></div>
+      <div class="chart-wrap"><canvas id="cumChart"></canvas></div>
+    </div>
+  </div>
+
+  <table class="research">
+    <thead><tr><th>指数</th><th>6-10</th><th>6-11</th><th>6-12</th><th>三日累计</th><th>趋势状态与点评</th></tr></thead>
+    <tbody>
+      <tr><td><b>上证指数</b></td><td class="perf-down">−0.42%</td><td class="perf-down">−0.16%</td><td class="perf-up">+1.12%</td><td class="perf-up">+0.53%</td><td>失守后放量收复 4000，5日线上穿10日线转多</td></tr>
+      <tr><td><b>深证成指</b></td><td class="perf-down">−2.06%</td><td class="perf-down">−0.68%</td><td class="perf-up">+0.75%</td><td class="perf-down">−2.00%</td><td>跌幅收敛后修复，5日线拐头向上</td></tr>
+      <tr><td><b>创业板指</b></td><td class="perf-down">−2.70%</td><td class="perf-down">−1.13%</td><td class="perf-up">+0.50%</td><td class="perf-down">−3.32%</td><td>断头铡刀后弱修复，成长仍待量能确认</td></tr>
+      <tr><td><b>科创50</b></td><td class="perf-down">−0.65%</td><td class="perf-up">+0.62%</td><td class="perf-up">+0.05%</td><td class="perf-up">+0.02%</td><td>全程相对抗跌，半导体材料支撑情绪锚</td></tr>
+      <tr><td><b>沪深300</b></td><td class="perf-down">−1.11%</td><td class="perf-down">−0.55%</td><td class="perf-up">+1.16%</td><td class="perf-down">−0.51%</td><td>权重领涨反转日，护盘+回补</td></tr>
+      <tr><td><b>中证500</b></td><td class="perf-down">−0.95%</td><td class="perf-down">−0.35%</td><td class="perf-up">+1.91%</td><td class="perf-up">+0.59%</td><td>反转日最强，中盘股弹性修复领跑</td></tr>
+      <tr><td><b>中证1000</b></td><td class="perf-down">−0.85%</td><td class="perf-down">−1.44%</td><td class="perf-up">+0.53%</td><td class="perf-down">−1.77%</td><td>冰点日领跌、修复偏弱，小盘补涨滞后</td></tr>
+      <tr><td><b>北证50</b></td><td class="perf-down">−3.16%</td><td class="perf-down">−3.34%</td><td class="perf-down">−0.78%</td><td class="perf-down">−7.12%</td><td>三日连跌，唯一未反转，微盘流动性风险</td></tr>
+    </tbody>
+  </table>
+  <div class="note">注：累计涨跌按三日单日涨跌幅复利估算；6-11 收盘点位由 6-12 报告反推（上证约 3986.86、创业板约 3811.29）。中证 500/1000 因 6-12 中证指数样本年度调整生效，绝对点位口径前后不一致，故趋势以日涨跌幅为准。</div>
+</section>
+
+<!-- ============ 肆 · 量能资金 ============ -->
+<section class="chapter" id="ch4">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">肆</span><span>量能与资金趋势</span></div>
+    <div class="ch-en">VOLUME &amp; CAPITAL FLOW</div>
+  </div>
+
+  <div class="tldr"><b>量价是本轮反转最硬的证据：</b>6-10/6-11 连续缩量（2.62→2.57 万亿，均低于 20 日均量），说明下跌缺乏增量抛压，是存量调仓而非恐慌出逃；6-12 骤然放量至 <b>3.24 万亿</b>（单日增 6629 亿、放大 25%），增量资金确认入场。资金面同步——主力 −716→−357→<b>+206</b> 亿，北向 +18.6→−75→<b>+89</b> 亿，三日内完成"流出收敛—回流确认"。</div>
+
+  <div class="two-col">
+    <div class="chart-card">
+      <div class="chart-title">两市成交额 <small>单位亿元 · 红柱=反转日放量</small></div>
+      <div class="chart-wrap"><canvas id="volChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">资金流向趋势 <small>主力净流入 + 北向资金 · 单位亿元</small></div>
+      <div class="chart-wrap"><canvas id="flowChart"></canvas></div>
+    </div>
+  </div>
+
+  <table class="research">
+    <thead><tr><th>日期</th><th>成交额</th><th>量能特征</th><th>北向资金</th><th>主力净流向</th><th>资金行为定性</th></tr></thead>
+    <tbody>
+      <tr><td><b>6-10 周三</b></td><td>2.62万亿</td><td>缩量226亿 · 近20日均量</td><td class="perf-up">+18.6亿</td><td class="perf-down">−716亿（电子−339）</td><td>高低切换 · 存量调仓为主</td></tr>
+      <tr><td><b>6-11 周四</b></td><td>2.57万亿</td><td><span class="perf-down">续缩量692亿</span> · 量能冰点</td><td class="perf-down">−74.97亿（终结9连买）</td><td class="perf-down">−357亿（流出收敛）</td><td>避险抱团 · 债券ETF吸金</td></tr>
+      <tr><td><b>6-12 周五</b></td><td><span class="perf-up">3.24万亿</span></td><td><span class="perf-up">放量6629亿 · 放大25%</span></td><td class="perf-up">+89.23亿（外资回流）</td><td class="perf-up">+206亿（有色+144）</td><td>增量入场 · 周期进攻</td></tr>
+    </tbody>
+  </table>
+
+  <div class="flow-grid">
+    <div class="flow-box out"><b>三日主力净流出主线</b>电子（6-10 单日 −339 亿，年内最大）、计算机/AI、通信设备、传媒、新能源——高位科技赛道连续遭兑现，是三日资金主轴的"卖方"。</div>
+    <div class="flow-box in"><b>三日主力净流入主线</b>有色/小金属（6-10 起持续吸金，6-12 单日 +144 亿登顶）、半导体材料、非银金融、国防军工——低位周期与政策受益硬科技承接，是"买方"主线。</div>
+  </div>
+
+  <div class="note">ETF 维度印证高低切换：6-10/6-11 资金涌入国债 ETF（华夏国债单日 +29.91 亿居首）、红利、煤炭等避险品种；6-12 转向通信 ETF（+14.58 亿）、有色 ETF、中证 500/1000 宽基，同时科创半导体 ETF 遭赎回。避险资产承接 → 进攻资产回流，是反转的资金侧确认。</div>
+</section>
+
+<!-- ============ 伍 · 主线切换 ============ -->
+<section class="chapter" id="ch5">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">伍</span><span>板块轮动与主线切换</span></div>
+    <div class="ch-en">SECTOR ROTATION &amp; LEADERSHIP</div>
+  </div>
+
+  <div class="tldr"><b>主线沿"避险 → 进攻"演进，但内核始终是金属/资源。</b>退潮日资金缩圈至半导体材料/电子特气涨价链（六氟化钨暴涨 232.7%）→ 冰点日扩散到半导体材料 + 稀缺小金属（钼、钨、工业气体，工信部 AI+通信政策催化）→ 反转日总爆发为有色金属周期（SK 海力士"以钼代钨"+ 资源品涨价），主力单日净流入 144 亿全市场第一。<b>"小金属/有色"这条暗线贯穿三日，是真正的资金共识。</b></div>
+
+  <div class="theme-grid">
+    <div class="theme-card cold">
+      <span class="theme-tag t1">6-10 退潮 · 缩圈避险</span>
+      <div class="theme-name">半导体材料 / 电子特气 / PCB 涨价链</div>
+      <div class="theme-desc">全市场退潮中唯一逆势吸金的硬逻辑主线，梯队完整（天娱数科4连板、海光信息逆势+6.2%）。六氟化钨单日暴涨 232.7% 直接催化，资金在科技内部向"涨价+材料"环节极致缩圈。</div>
+    </div>
+    <div class="theme-card">
+      <span class="theme-tag t2">6-11 冰点 · 抱团扩散</span>
+      <div class="theme-name">半导体材料 + 稀缺资源</div>
+      <div class="theme-desc">普跌冰点中唯一获主力大幅净流入（超190亿）的方向。工业气体+14.57%、钼+10%、钨+8.35%，工信部《AI+通信》政策点名高端芯片材料，避险资金扎堆稀缺小金属，主线逆势强化。</div>
+    </div>
+    <div class="theme-card hot">
+      <span class="theme-tag t3">6-12 反转 · 周期总攻</span>
+      <div class="theme-name">有色金属周期板块</div>
+      <div class="theme-desc">绝对主线，板块成交1637亿、主力净流入144亿全市场第一，金钼股份/盛龙股份2连板，洛阳钼业、铜陵有色等千亿龙头封板。SK海力士"以钼代钨"+全球资源品周期回暖共振。</div>
+    </div>
+  </div>
+
+  <div style="overflow-x:auto;margin-top:22px">
+  <table class="research" id="heatTable">
+    <thead><tr><th style="min-width:130px">板块 / 细分</th><th>6-10 周三</th><th>6-11 周四</th><th>6-12 周五</th><th style="min-width:160px">三日轮动备注</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  </div>
+  <div class="legend" style="display:flex;gap:14px;font-size:12px;color:var(--ink-3);margin:4px 0 18px;flex-wrap:wrap">
+    <span><span style="display:inline-block;width:10px;height:10px;background:var(--up);vertical-align:middle;margin-right:4px"></span>上涨（A股红涨）</span>
+    <span><span style="display:inline-block;width:10px;height:10px;background:var(--down);vertical-align:middle;margin-right:4px"></span>下跌</span>
+    <span>"—" 为当日未进入涨跌幅榜单 / 报告未提供数值</span>
+  </div>
+
+  <div class="note">轮动逻辑：高位 AI 硬件/应用（电子、计算机、传媒）三日持续退潮，是资金的稳定流出端；有色/小金属、半导体材料则是稳定流入端。反转日（6-12）周期补涨全面扩散至军工（SpaceX IPO 催化 +3.56%）、汽车、煤炭、石化，赚钱效应外溢确认行情广度。</div>
+</section>
+
+<!-- ============ 陆 · 每日复盘 ============ -->
+<section class="chapter" id="ch6">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">陆</span><span>每日复盘详情</span></div>
+    <div class="ch-en">DAILY REVIEW</div>
+  </div>
+  <div class="sub-tabs" id="dayTabs"></div>
+  <div id="dayPanels"></div>
+</section>
+
+<!-- ============ 柒 · 趋势研判 ============ -->
+<section class="chapter" id="ch7">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">柒</span><span>趋势研判与后市关注</span></div>
+    <div class="ch-en">TREND OUTLOOK &amp; WATCHLIST</div>
+  </div>
+
+  <div class="tldr"><b>趋势定性：短期由空翻多的反弹趋势初步确立，但需第二根验证。</b>6-12 放量反包 + 主力北向双回流 + 赚钱效应修复，三重信号共振指向反转有效。但单日放量后，下一交易日的"承接"才是关键——量能能否守住 3 万亿、有色主线能否分化中续强、4060 点压力能否突破，决定这是反转起点还是反弹一日游。</div>
+
+  <div class="conclusion-grid">
+    <div class="conc"><div class="conc-num">一</div><h4>4000 点得失为生命线</h4><p>上证收复 4000 后，3980（5日线）为新支撑、4060（盘中高点）为首压。守住则反弹延续，跌回 3980 下方则反转证伪、重回震荡。</p></div>
+    <div class="conc"><div class="conc-num">二</div><h4>量能须守 3 万亿</h4><p>反转的核心是增量资金。若次日成交快速萎缩回 2.5 万亿下方，说明放量是脉冲而非趋势，反弹高度受限；维持 3 万亿则增量行情可期。</p></div>
+    <div class="conc"><div class="conc-num">三</div><h4>有色主线承接力</h4><p>有色/小金属是贯穿三日的资金共识。观察金钼股份、洛阳钼业等龙头能否在分化中续强、主力是否延续净流入，决定主升浪能否展开。</p></div>
+    <div class="conc"><div class="conc-num">四</div><h4>北向回流可持续性</h4><p>北向 6-12 净流入 89 亿、终结流出。若维持 50 亿以上净流入，外资信心确认；若再度转出，则反转缺乏外资背书。</p></div>
+    <div class="conc"><div class="conc-num">五</div><h4>高位科技亏钱效应</h4><p>电子/AI 三日持续流出尚未止跌。若高位股杀跌情绪扩散、炸板率重回 20% 上方，会重新压制风险偏好，需警惕反包后的二次回踩。</p></div>
+    <div class="conc"><div class="conc-num">六</div><h4>风格与微盘风险</h4><p>北证 50 三日连跌、中证 1000 修复滞后，微盘流动性仍弱。本轮反转由权重+周期+中盘领跑，操作上低吸周期与中盘宽基优于追微盘题材。</p></div>
+  </div>
+
+  <table class="research" style="margin-top:22px">
+    <thead><tr><th>维度</th><th>三大机会方向</th><th>三大风险方向</th></tr></thead>
+    <tbody>
+      <tr><td><b>进攻</b></td><td class="perf-up">有色金属周期（低估值补涨）</td><td class="perf-down">高位 AI/半导体（集中兑现）</td></tr>
+      <tr><td><b>事件</b></td><td class="perf-up">商业航天/军工（SpaceX IPO 催化）</td><td class="perf-down">全球经济下行（世行下调增速）</td></tr>
+      <tr><td><b>弹性</b></td><td class="perf-up">中小盘宽基（中证500/1000 估值修复）</td><td class="perf-down">短期获利回吐（放量后冲高回落）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">本报告基于 2026-06-10 / 06-11 / 06-12 三份每日 A 股收盘复盘整理，旨在还原三日交易模式与趋势主线。各原始报告部分数据可能由 AI 生成、口径不一，文中已注明估算与反推之处。仅供个人研究参考，不构成投资建议。</div>
+</section>
+
+<footer>A股三日趋势复盘 · 2026-06-10 → 06-12 · 设计风格：China Market 研究模版 · 数据：同花顺 / 东方财富 Choice / Wind</footer>
+</main>
+
+<script>
+const UP='#D7263D', DOWN='#1F8A47', NAVY='#0E2A47', NAVY2='#143E66', GOLD='#B08842', GOLDL='#D4B271', FLAT='#8A8A8A';
+const DAYS=['6-10 周三','6-11 周四','6-12 周五'];
+Chart.defaults.font.family="'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif";
+Chart.defaults.color='#6B6B6B';
+
+/* ---- 指数每日涨跌 ---- */
+const INDEX_CHG={
+  '上证指数':[-0.42,-0.16,1.12],
+  '深证成指':[-2.06,-0.68,0.75],
+  '创业板指':[-2.70,-1.13,0.50],
+  '科创50':[-0.65,0.62,0.05],
+  '沪深300':[-1.11,-0.55,1.16],
+  '中证500':[-0.95,-0.35,1.91],
+  '中证1000':[-0.85,-1.44,0.53],
+  '北证50':[-3.16,-3.34,-0.78]
+};
+const SERIES_COLORS=[NAVY,'#1E6FD0',UP,GOLD,'#6B4FA3',DOWN,'#C46210','#5A5A5A'];
+
+new Chart(document.getElementById('chgChart'),{
+  type:'line',
+  data:{labels:DAYS,datasets:Object.entries(INDEX_CHG).map(([k,v],i)=>({
+    label:k,data:v,borderColor:SERIES_COLORS[i],backgroundColor:SERIES_COLORS[i]+'22',
+    borderWidth:2,tension:.3,pointRadius:4,pointHoverRadius:6,
+    hidden:['深证成指','沪深300','中证1000'].includes(k)
+  }))},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:12,font:{size:11.5}}},
+      tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y>0?'+':''}${c.parsed.y.toFixed(2)}%`}}},
+    scales:{y:{ticks:{callback:v=>v+'%'},grid:{color:'#EFEAE0'}},x:{grid:{display:false}}}}
+});
+
+/* ---- 累计涨跌 ---- */
+const cumTotals=Object.entries(INDEX_CHG).map(([k,v])=>{
+  let acc=1; v.forEach(d=>acc*=(1+d/100));
+  return {k,v:+((acc-1)*100).toFixed(2)};
+}).sort((a,b)=>b.v-a.v);
+new Chart(document.getElementById('cumChart'),{
+  type:'bar',
+  data:{labels:cumTotals.map(d=>d.k),datasets:[{data:cumTotals.map(d=>d.v),
+    backgroundColor:cumTotals.map(d=>d.v>=0?UP+'D0':DOWN+'D0'),
+    borderColor:cumTotals.map(d=>d.v>=0?UP:DOWN),borderWidth:1}]},
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`三日累计 ${c.parsed.x>0?'+':''}${c.parsed.x.toFixed(2)}%`}}},
+    scales:{x:{ticks:{callback:v=>v+'%'},grid:{color:'#EFEAE0'}},y:{grid:{display:false}}}}
+});
+
+/* ---- 情绪温度计 ---- */
+new Chart(document.getElementById('moodChart'),{
+  data:{labels:DAYS,datasets:[
+    {type:'bar',label:'赚钱效应(%)',data:[10,24.85,71],backgroundColor:UP+'B0',yAxisID:'y',order:2},
+    {type:'line',label:'炸板率(%)',data:[26.4,35.0,14.8],borderColor:DOWN,borderWidth:2,tension:.3,pointRadius:4,pointBackgroundColor:DOWN,yAxisID:'y',order:1},
+    {type:'line',label:'综合评分',data:[50,50,75],borderColor:GOLD,borderWidth:2,borderDash:[5,4],tension:.3,pointRadius:4,pointBackgroundColor:GOLD,yAxisID:'y',order:0}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:12,font:{size:11.5}}}},
+    scales:{y:{min:0,max:100,grid:{color:'#EFEAE0'}},x:{grid:{display:false}}}}
+});
+
+/* ---- 市场宽度 ---- */
+const ADV=[1556,1369,3923], DEC=[3878,4069,1511], LIMITUP=[75,69,102];
+new Chart(document.getElementById('breadthChart'),{
+  data:{labels:DAYS,datasets:[
+    {type:'bar',label:'上涨家数',data:ADV,backgroundColor:UP+'B8',yAxisID:'y'},
+    {type:'bar',label:'下跌家数',data:DEC,backgroundColor:DOWN+'B8',yAxisID:'y'},
+    {type:'line',label:'涨停家数',data:LIMITUP,borderColor:GOLD,borderWidth:2,tension:.3,pointRadius:4,pointBackgroundColor:GOLD,yAxisID:'y2'}]},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:12,font:{size:11.5}}}},
+    scales:{y:{position:'left',grid:{color:'#EFEAE0'},title:{display:true,text:'涨跌家数'}},
+      y2:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>v+'家'},title:{display:true,text:'涨停'}},
+      x:{grid:{display:false}}}}
+});
+
+/* ---- 成交额 ---- */
+const VOL=[26200,25749,32400];
+new Chart(document.getElementById('volChart'),{
+  type:'bar',
+  data:{labels:DAYS,datasets:[{label:'成交额',data:VOL,
+    backgroundColor:[NAVY+'CC',FLAT+'CC',UP+'CC'],
+    borderColor:[NAVY,FLAT,UP],borderWidth:1}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.parsed.y/10000).toFixed(2)+' 万亿元'}}},
+    scales:{y:{min:24000,ticks:{callback:v=>(v/10000).toFixed(1)+'万亿'},grid:{color:'#EFEAE0'}},x:{grid:{display:false}}}}
+});
+
+/* ---- 资金流向 ---- */
+const MAIN=[-716,-357,206.23], NORTH=[18.6,-74.97,89.23];
+new Chart(document.getElementById('flowChart'),{
+  data:{labels:DAYS,datasets:[
+    {type:'bar',label:'主力净流入(亿)',data:MAIN,
+      backgroundColor:MAIN.map(v=>v>=0?UP+'C0':DOWN+'C0'),borderColor:MAIN.map(v=>v>=0?UP:DOWN),borderWidth:1,yAxisID:'y'},
+    {type:'line',label:'北向资金(亿)',data:NORTH,borderColor:NAVY,borderWidth:2,tension:.3,
+      pointRadius:5,pointBackgroundColor:NORTH.map(v=>v>=0?UP:DOWN),yAxisID:'y2'}]},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:12,font:{size:11.5}}}},
+    scales:{y:{position:'left',grid:{color:'#EFEAE0'},ticks:{callback:v=>v+'亿'},title:{display:true,text:'主力'}},
+      y2:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>v+'亿'},title:{display:true,text:'北向'}},
+      x:{grid:{display:false}}}}
+});
+
+/* ---- 板块轮动热力表 ---- */
+const SECTORS=[
+  ['有色 / 小金属',     null,  10.00,  4.29, '暗线主升 · 资金贯穿三日的共识'],
+  ['电子特气/工业气体', 4.32,  14.57,  null, '退潮期避险主线 · 涨价催化'],
+  ['半导体材料',        null,   8.04,  null, '政策受益 · 冰点逆势强化'],
+  ['国防军工',          -1.83,  null,  3.56, 'SpaceX IPO 催化反转日总攻'],
+  ['非银金融/保险',     3.19,   null,  3.24, '低估值护盘 · 反转日券商接力'],
+  ['银行',              1.91,   null,  null, '退潮期防御护盘'],
+  ['煤炭/石化',         -4.20,  null,  1.43, '周期联动 · 反转日补涨'],
+  ['汽车',              -1.52,  null,  2.11, '政策驱动 · 反转日修复'],
+  ['电子(AI硬件)',      -2.21,  null, -1.10, '三日持续退潮 · 稳定流出端'],
+  ['计算机/AI应用',     null,  -7.23, -0.87, '高位杀估值 · 抱团瓦解'],
+  ['传媒',              null,  -4.72, -0.75, '获利了结 · 转向新主线'],
+  ['北证50/微盘',       -3.16,  -3.34,-0.78, '三日连跌 · 流动性风险']
+];
+function heatStyle(v){
+  const a=Math.min(Math.abs(v)/8,1);
+  const base=v>=0?'215,38,61':'31,138,71';
+  const fg=a>0.45?'#fff':(v>=0?'#9E1A2D':'#125F30');
+  return `background:rgba(${base},${(0.08+a*0.6).toFixed(2)});color:${fg}`;
+}
+document.querySelector('#heatTable tbody').innerHTML=SECTORS.map(([name,a,b,c,note])=>{
+  const cells=[a,b,c].map(v=>{
+    if(v===null) return `<td class="heat-cell" style="color:#C8BFAE">—</td>`;
+    return `<td class="heat-cell" style="${heatStyle(v)}">${v>0?'+':''}${v.toFixed(2)}%</td>`;
+  }).join('');
+  return `<tr><td><b>${name}</b></td>${cells}<td style="font-size:12px;color:var(--ink-3)">${note}</td></tr>`;
+}).join('');
+
+/* ---- 每日复盘 Tab ---- */
+const DAILY=[
+ {d:'6月10日 · 周三',mood:'缩量阴跌 · 退潮前段',
+  one:'沪指失守4000点，极致沪强深弱，创业板暴跌2.70%；情绪从高潮直接转入退潮期，全市场涨跌比1:4，亏钱效应全面扩散，但缩量调仓未现踩踏。',
+  hot:['电子特气 +4.32%','兵装重组 +3.70%','保险 +3.19%','旅游酒店 +2.47%','PCB/覆铜板 +2.15%'],
+  cold:['其他电源 −4.31%','煤炭开采 −4.20%','机器人 −4.10%','元件 −3.88%','电子 −2.21%'],
+  rows:[['上证收盘','3993.23（−0.42%）'],['两市成交','2.62万亿（缩量226亿）'],['涨/跌家数','1556 / 3878（涨跌比0.40）'],['涨停/跌停','75 / 65（跌停暴增）'],['炸板率','26.4% · 接力降温'],['北向资金','+18.6亿（沪买深卖）'],['主力资金','净流出716亿（电子−339）'],['情绪定位','退潮期前半段 · 评分50']],
+  fin:'非银金融 +42.7亿 · 银行 +31.5亿 · 基础化工 +28.3亿',
+  fout:'电子 −339.39亿（年内最大）· 电力设备 −127.6亿 · 通信 −98.2亿',
+  note:'催化：六氟化钨单日暴涨232.7%催化电子特气主线；隔夜美股科技股大跌、美联储议息临近引高位科技兑现；5月出口+19%超预期。主线半导体材料/电子特气/PCB涨价链逆势强化，梯队完整（天娱数科4连板、海光信息+6.2%）。'},
+ {d:'6月11日 · 周四',mood:'极致分化 · 衰退冰点',
+  one:'权重护盘下沪指仅微跌0.16%，但超4000只个股飘绿，赚钱效应24.85%为近1月最低，炸板率升至35%、连板晋级率仅26.7%，情绪砸出阶段冰点。',
+  hot:['工业气体 +14.57%','钼 +10.00%','半导体材料 +8.04%','钨 +8.35%','电子化学品 +7.78%'],
+  cold:['AI应用 −7.23%','短剧游戏 −6.85%','云计算 −5.92%','算力租赁 −5.74%','人形机器人 −5.18%'],
+  rows:[['上证收盘','约3986.86（−0.16%）'],['两市成交','2.57万亿（续缩量692亿）'],['涨/跌家数','1369 / 4069（涨跌比0.34）'],['涨停/跌停','69 / 31'],['炸板率','35.0% · 阶段最高'],['北向资金','−74.97亿（终结9连买）'],['主力资金','净流出357亿（流出收敛）'],['情绪定位','衰退期冰点 · 评分50']],
+  fin:'有色金属 +86.62亿 · 小金属 +60.29亿 · 电子化学品 +28.02亿',
+  fout:'计算机/AI −89.24亿 · 通信设备 −56.17亿 · 传媒 −47.83亿',
+  note:'催化：六部门中长期资金入市方案（权益上限30%→40%，超5000亿增量）、工信部《AI+通信》三年规划落地；但美国5月CPI 4.1%超预期、美股大跌950点压制。主线半导体材料+稀缺资源逆势抱团（主力净流入超190亿），债券ETF吸金避险（国债ETF +29.91亿居首）。'},
+ {d:'6月12日 · 周五',mood:'放量反包 · 修复反转',
+  one:'沪指放量突破4000点、成交3.24万亿创本月新高，完成明确高低切换：高位AI兑现、低位有色/航天成新主线，超71%个股上涨，赚钱效应显著修复。',
+  hot:['有色金属 +4.29%','国防军工 +3.56%','非银金融 +3.24%','汽车 +2.11%','通信 +1.87%'],
+  cold:['综合 −3.18%','电子 −1.10%','计算机 −0.87%','传媒 −0.75%','医药生物 −0.62%'],
+  rows:[['上证收盘','4031.51（+1.12%）'],['两市成交','3.24万亿（放量6629亿）'],['涨/跌家数','3923 / 1511（涨跌比2.6）'],['涨停/跌停','102 / 23'],['炸板率','14.8% · 大幅回落'],['北向资金','+89.23亿（外资回流）'],['主力资金','净流入206亿（有色+144）'],['情绪定位','修复过渡 · 评分75']],
+  fin:'有色金属 +144.09亿（全市场第一）· 非银金融 +32.51亿 · 电力设备 +28.73亿',
+  fout:'电子 −45.21亿 · 计算机 −22.84亿 · 医药生物 −18.52亿',
+  note:'催化：SK海力士"以钼代钨"技术突破催化有色周期；SpaceX史上最大IPO催化商业航天；中证指数全系列样本调整生效（近7000亿被动资金调仓）。主线有色金属周期总攻（金钼股份/盛龙股份2连板、千亿龙头封板），技术面5日线上穿10日线、短期转多，反弹趋势初步确立。'}
+];
+const tabsEl=document.getElementById('dayTabs'),panelsEl=document.getElementById('dayPanels');
+DAILY.forEach((d,i)=>{
+  const t=document.createElement('div');
+  t.className='sub-tab'+(i===2?' active':''); t.textContent=d.d.split(' ')[0];
+  t.onclick=()=>{document.querySelectorAll('.sub-tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.day-panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active'); document.getElementById('dp'+i).classList.add('active');};
+  tabsEl.appendChild(t);
+  const p=document.createElement('div');
+  p.className='day-panel'+(i===2?' active':''); p.id='dp'+i;
+  p.innerHTML=`
+    <div style="font-family:'Noto Serif SC';font-weight:700;font-size:18px;color:var(--navy)">${d.d}
+      <span style="font-family:'Noto Sans SC';font-weight:500;font-size:12px;color:var(--gold);margin-left:10px;letter-spacing:1px">${d.mood}</span></div>
+    <div class="quote" style="margin:12px 0">${d.one}</div>
+    <div style="margin-bottom:8px">${d.hot.map(x=>`<span class="pill up">▲ ${x}</span>`).join('')}${d.cold.map(x=>`<span class="pill down">▼ ${x}</span>`).join('')}</div>
+    <div class="idx-rows">${d.rows.map(([k,v])=>`<div class="idx-row"><span class="idx-row-label">${k}</span><span class="idx-row-value">${v}</span></div>`).join('')}</div>
+    <div class="flow-grid">
+      <div class="flow-box in"><b>主力净流入方向</b>${d.fin}</div>
+      <div class="flow-box out"><b>主力净流出方向</b>${d.fout}</div>
+    </div>
+    <div class="note">${d.note}</div>`;
+  panelsEl.appendChild(p);
+});
+
+/* ---- 章节导航高亮 ---- */
+const tabs=[...document.querySelectorAll('.chapter-tab')];
+const secs=tabs.map(t=>document.querySelector(t.getAttribute('href')));
+function syncNav(){
+  let idx=0;
+  secs.forEach((s,i)=>{if(s.getBoundingClientRect().top<160)idx=i;});
+  tabs.forEach((t,i)=>t.classList.toggle('active',i===idx));
+}
+window.addEventListener('scroll',syncNav,{passive:true});
+</script>
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SpaceX 深度投资分析 · 2026年6月</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#F7F4ED; --paper:#FFFFFF;
+    --ink:#1A1A1A; --ink-2:#3D3D3D; --ink-3:#6B6B6B;
+    --line:#E4DED1; --line-strong:#C8BFAE;
+    --navy:#0E2A47; --navy-2:#143E66;
+    --gold:#B08842; --gold-light:#D4B271;
+    --up:#D7263D; --up-soft:#FBE9EC; --up-deep:#9E1A2D;
+    --down:#1F8A47; --down-soft:#E7F5EC; --down-deep:#125F30;
+    --flat:#8A8A8A;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
+  .serif{font-family:'Noto Serif SC',serif}
+
+  header.topbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#0E2A47 0%,#143E66 100%);color:#fff;border-bottom:3px solid var(--gold)}
+  .topbar-inner{max-width:1380px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-seal{width:42px;height:42px;background:var(--up);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC';font-weight:900;font-size:20px;border:2px solid var(--gold-light);box-shadow:0 0 0 1px rgba(255,255,255,.15)}
+  .brand-text{display:flex;flex-direction:column;line-height:1.15}
+  .brand-title{font-family:'Noto Serif SC';font-weight:700;font-size:18px;letter-spacing:1px}
+  .brand-sub{font-size:11.5px;color:#C9D6E3;letter-spacing:2px}
+  .topbar-meta{display:flex;gap:22px;font-size:12px;color:#C9D6E3;flex-wrap:wrap}
+  .topbar-meta span b{color:#fff;font-weight:500;margin-left:4px}
+
+  nav.chapters{position:sticky;top:71px;z-index:40;background:#FAF8F2;border-bottom:1px solid var(--line)}
+  .chapters-inner{max-width:1380px;margin:0 auto;padding:0 28px;display:flex;gap:0;overflow-x:auto}
+  .chapter-tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--ink-3);border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;transition:all .15s;text-decoration:none}
+  .chapter-tab:hover{color:var(--navy)}
+  .chapter-tab.active{color:var(--up);border-bottom-color:var(--up);font-weight:700}
+  .chapter-tab .num{font-family:'Noto Serif SC';margin-right:6px;color:var(--gold)}
+
+  main{max-width:1380px;margin:0 auto;padding:32px 28px 80px}
+  section.chapter{background:var(--paper);border:1px solid var(--line);padding:36px 40px;margin-bottom:28px;box-shadow:0 1px 3px rgba(14,42,71,0.04);scroll-margin-top:130px}
+  @media(max-width:680px){section.chapter{padding:24px 20px}}
+  .ch-head{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:24px;gap:24px;flex-wrap:wrap}
+  .ch-title{font-family:'Noto Serif SC';font-weight:900;font-size:26px;color:var(--navy);display:flex;align-items:baseline;gap:14px}
+  .ch-num{color:var(--up);font-size:36px;line-height:1;border-right:2px solid var(--gold);padding-right:14px}
+  .ch-en{font-size:12px;color:var(--ink-3);letter-spacing:3px;text-transform:uppercase;font-family:'Noto Sans SC'}
+
+  .tldr{background:linear-gradient(90deg,#FFF7E0 0%, #FAF8F2 100%);border-left:4px solid var(--gold);padding:14px 18px;margin-bottom:24px;font-size:14px;color:var(--ink-2)}
+  .tldr b{color:var(--navy);font-weight:700}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:28px}
+  .kpi{background:var(--paper);padding:18px 18px 16px;display:flex;flex-direction:column;gap:4px}
+  .kpi-label{font-size:11.5px;color:var(--ink-3);letter-spacing:1px}
+  .kpi-value{font-family:'Noto Serif SC';font-weight:700;font-size:27px;line-height:1.1}
+  .kpi-value.up{color:var(--up)}.kpi-value.down{color:var(--down)}.kpi-value.navy{color:var(--navy)}.kpi-value.gold{color:var(--gold)}
+  .kpi-sub{font-size:11.5px;color:var(--ink-3)}
+
+  p{margin:0 0 14px}
+  section.chapter p:last-child{margin-bottom:0}
+  .body-text{font-size:14px;color:var(--ink-2);line-height:1.8}
+
+  table.research{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0;background:var(--paper)}
+  table.research th{background:var(--navy);color:#fff;text-align:left;padding:10px 12px;font-weight:500;font-size:12.5px;letter-spacing:1px;border-right:1px solid #1F4A72}
+  table.research td{padding:11px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  table.research tr:hover td{background:#FAF8F2}
+  table.research .num-cell{font-family:'Noto Serif SC';font-weight:700;text-align:right}
+  table.research .perf-up{color:var(--up);font-weight:700;font-family:'Noto Serif SC'}
+  table.research .perf-down{color:var(--down);font-weight:700;font-family:'Noto Serif SC'}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+  @media(max-width:960px){.two-col{grid-template-columns:1fr}}
+
+  .chart-card{background:var(--paper);border:1px solid var(--line);padding:16px 18px}
+  .chart-title{font-family:'Noto Serif SC';font-weight:700;font-size:15px;color:var(--navy);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+  .chart-title small{font-family:'Noto Sans SC';font-weight:400;font-size:11px;color:var(--ink-3);letter-spacing:1px}
+  .chart-wrap{position:relative;height:320px}
+
+  .theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .theme-card{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--gold);padding:16px 18px;transition:all .18s;position:relative}
+  .theme-card:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(14,42,71,.08)}
+  .theme-card.hot{border-top-color:var(--up)}
+  .theme-card.cold{border-top-color:var(--down)}
+  .theme-name{font-family:'Noto Serif SC';font-weight:700;font-size:15.5px;color:var(--navy);margin-bottom:6px}
+  .theme-desc{font-size:13px;color:var(--ink-2);line-height:1.65}
+
+  .sub-tabs{display:flex;border:1px solid var(--navy);margin-bottom:16px;width:fit-content;flex-wrap:wrap}
+  .sub-tab{padding:8px 18px;font-size:13px;font-weight:500;cursor:pointer;background:var(--paper);color:var(--navy);border-right:1px solid var(--navy);transition:all .15s}
+  .sub-tab:last-child{border-right:0}
+  .sub-tab.active{background:var(--navy);color:#fff}
+  .seg-panel{display:none}
+  .seg-panel.active{display:block}
+
+  .pill{display:inline-block;padding:2px 9px;font-size:11.5px;margin:2px 5px 2px 0;border-radius:2px}
+  .pill.up{background:var(--up-soft);color:var(--up-deep)}
+  .pill.down{background:var(--down-soft);color:var(--down-deep)}
+  .pill.gold{background:#FBF3E2;color:#7A5A1E}
+
+  .idx-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:14px}
+  .idx-row{background:var(--paper);padding:11px 14px;display:flex;flex-direction:column;gap:3px}
+  .idx-row-label{font-size:10.5px;color:var(--ink-3);letter-spacing:1.5px}
+  .idx-row-value{font-size:13.5px;color:var(--ink);font-weight:500;line-height:1.5}
+
+  .flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  @media(max-width:760px){.flow-grid{grid-template-columns:1fr}}
+  .flow-box{border:1px solid var(--line);padding:14px 18px;font-size:13.5px;line-height:1.7;color:var(--ink-2)}
+  .flow-box.in{background:var(--up-soft);border-left:4px solid var(--up)}
+  .flow-box.out{background:var(--down-soft);border-left:4px solid var(--down)}
+  .flow-box b.h{display:block;font-family:'Noto Serif SC';margin-bottom:8px;font-size:15px}
+  .flow-box.in b.h{color:var(--up-deep)} .flow-box.out b.h{color:var(--down-deep)}
+  .flow-box ul{margin:0;padding-left:18px} .flow-box li{margin-bottom:5px}
+
+  .conclusion-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+  .conc{background:linear-gradient(180deg,#FFFDF6 0%, #F7F4ED 100%);border:1px solid var(--line);border-top:3px double var(--up);padding:16px 18px}
+  .conc-num{font-family:'Noto Serif SC';font-weight:900;font-size:34px;color:var(--up);line-height:1}
+  .conc h4{margin:6px 0 8px;font-family:'Noto Serif SC';color:var(--navy);font-size:15px}
+  .conc p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.65}
+
+  .quote{border-left:3px solid var(--up);padding:10px 16px;margin:14px 0;background:var(--up-soft);color:var(--up-deep);font-size:14.5px;line-height:1.7}
+  .quote.gold{border-left-color:var(--gold);background:#FBF3E2;color:#6B4E18}
+  .note{background:#FFFAEC;border:1px dashed var(--gold-light);padding:12px 16px;font-size:12.5px;color:var(--ink-3);margin-top:16px;line-height:1.7}
+
+  .rating-bar{display:flex;align-items:center;gap:0;margin:6px 0 18px;border:1px solid var(--line-strong);overflow:hidden;font-size:12.5px}
+  .rating-seg{flex:1;text-align:center;padding:9px 4px;color:var(--ink-3);background:var(--paper)}
+  .rating-seg.on{background:var(--up);color:#fff;font-weight:700}
+
+  footer{text-align:center;font-size:12px;color:var(--ink-3);padding:24px 0 0;border-top:1px solid var(--line);margin-top:24px;line-height:1.8}
+  .milestone{display:flex;gap:0;flex-wrap:wrap;margin-top:14px;border:1px solid var(--line);border-right:0}
+  .ms{flex:1;min-width:120px;border-right:1px solid var(--line);padding:12px 14px;background:var(--paper)}
+  .ms-year{font-family:'Noto Serif SC';font-weight:900;color:var(--gold);font-size:18px}
+  .ms-text{font-size:12px;color:var(--ink-2);margin-top:4px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-seal">星</div>
+      <div class="brand-text">
+        <span class="brand-title">SpaceX 深度投资分析</span>
+        <span class="brand-sub">SPACEX DEEP-DIVE · INVESTMENT THESIS</span>
+      </div>
+    </div>
+    <div class="topbar-meta">
+      <span>截至：<b>2026-06-12（IPO 后）</b></span>
+      <span>IPO 定价：<b>$135/股 · ~$1.96万亿</b></span>
+      <span>结论：<b>极佳资产 · 极贵价格</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="chapters">
+  <div class="chapters-inner" id="chapter-nav">
+    <a class="chapter-tab active" href="#ch1"><span class="num">壹</span>核心结论</a>
+    <a class="chapter-tab" href="#ch2"><span class="num">贰</span>公司与战略地位</a>
+    <a class="chapter-tab" href="#ch3"><span class="num">叁</span>商业模式与经济性</a>
+    <a class="chapter-tab" href="#ch4"><span class="num">肆</span>护城河与竞争</a>
+    <a class="chapter-tab" href="#ch5"><span class="num">伍</span>估值分析</a>
+    <a class="chapter-tab" href="#ch6"><span class="num">陆</span>多空·风险·催化</a>
+    <a class="chapter-tab" href="#ch7"><span class="num">柒</span>待解问题与局限</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ 壹 · 核心结论 ============ -->
+<section class="chapter" id="ch1">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">壹</span><span>核心结论</span></div>
+    <div class="ch-en">Executive Summary</div>
+  </div>
+
+  <div class="tldr">
+    <b>一句话定调：SpaceX 是一座极其稀缺、极高质量的基础设施级平台，但当前市值已提前消化了它未来上行空间中的绝大部分。</b>
+    2026年6月，SpaceX 以 <b>$135/股</b> 完成创纪录 IPO，出售约 <b>5%</b> 股份募资 <b>$750亿</b>，定价隐含股权价值约 <b>$1.96万亿</b>，上市首日交易将估值推升至 <b>$2万亿以上</b>。这意味着"私募市场资产"的分析框架，已被一个远高于此前 tender 估值的"公开市场新标价"所取代。
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi"><span class="kpi-label">IPO 定价隐含估值</span><span class="kpi-value navy">$1.96<small style="font-size:15px">万亿</small></span><span class="kpi-sub">首日交易突破 $2 万亿</span></div>
+    <div class="kpi"><span class="kpi-label">2025 合并营收</span><span class="kpi-value">$186.7<small style="font-size:15px">亿</small></span><span class="kpi-sub">调整后 EBITDA $65.8 亿</span></div>
+    <div class="kpi"><span class="kpi-label">Starlink 订阅用户</span><span class="kpi-value up">1030<small style="font-size:15px">万</small></span><span class="kpi-sub">覆盖 164 个国家/地区 · Q1 2026</span></div>
+    <div class="kpi"><span class="kpi-label">在轨卫星</span><span class="kpi-value navy">~9,600<small style="font-size:15px">颗</small></span><span class="kpi-sub">约占全球可机动卫星 75%</span></div>
+    <div class="kpi"><span class="kpi-label">隐含市销率（P/S）</span><span class="kpi-value up">~105×</span><span class="kpi-sub">按 2025 营收 · $2T 时约 107×</span></div>
+    <div class="kpi"><span class="kpi-label">连接业务调整 EBITDA率</span><span class="kpi-value down">~63%</span><span class="kpi-sub">Starlink 已成经济引擎</span></div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <p class="body-text">SpaceX 是一家垂直整合的太空与连接公司，两大核心引擎是<b>发射服务</b>与 <b>Starlink 宽带</b>；2026年2月收购 xAI 后，财报新增 <b>AI 分部</b>。2025 年 <b>Space 分部</b>营收 $40.86亿，<b>连接（Connectivity）分部</b>营收 $113.87亿、经营利润 $44.23亿、分部调整 EBITDA $71.68亿。通俗讲：<b>发射业务奠定了战略地位，但 Starlink 才是真正的赚钱机器。</b></p>
+      <div class="quote gold">护城河"非常强"，但"资产质量"与"估值"如今是两个完全不同的问题。当前公开估值，是在按"Starlink 成为全球通信基础设施 + Starship 跑通 + 国防项目扩张 + 邻近市场期权兑现"来定价的。</div>
+    </div>
+    <div>
+      <div class="idx-rows" style="margin-top:0">
+        <div class="idx-row"><span class="idx-row-label">公司定性</span><span class="idx-row-value">极高质量资产 · 商业模式有吸引力 · 护城河非常强</span></div>
+        <div class="idx-row"><span class="idx-row-label">估值定性</span><span class="idx-row-value">非常贵，但战略上可理解（"绝佳公司，艰难价格"）</span></div>
+        <div class="idx-row"><span class="idx-row-label">投资定位</span><span class="idx-row-value">业务是核心长期战略资产；但当前价位上，行为更像投机性成长股</span></div>
+        <div class="idx-row"><span class="idx-row-label">核心赌注</span><span class="idx-row-value">Starlink 规模化为持久高毛利现金流 + Starship 实现第二次成本重置</span></div>
+        <div class="idx-row"><span class="idx-row-label">最大风险</span><span class="idx-row-value">当前估值已把大量未来兑现资本化于今天</span></div>
+      </div>
+      <div style="margin-top:14px">
+        <span style="font-size:12px;color:var(--ink-3);letter-spacing:1px">综合评级定位</span>
+        <div class="rating-bar">
+          <div class="rating-seg">便宜</div>
+          <div class="rating-seg">合理</div>
+          <div class="rating-seg">偏贵</div>
+          <div class="rating-seg on">非常贵但战略可理解</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 贰 · 公司与战略地位 ============ -->
+<section class="chapter" id="ch2">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">贰</span><span>公司概览与战略地位</span></div>
+    <div class="ch-en">Company &amp; Strategic Importance</div>
+  </div>
+
+  <div class="tldr"><b>从"发射颠覆者"成长为"国家级工业能力"。</b>SpaceX 于 <b>2002 年</b>由马斯克创立，使命是降低进入太空的成本、让生命多行星化。Falcon/Dragon 建立商业发射与轨道运输、Starlink 建立全球连接平台、Starship 意在成为延伸至月球与火星的完全可复用系统。</div>
+
+  <div class="milestone">
+    <div class="ms"><div class="ms-year">2008</div><div class="ms-text">Falcon 1 首次成功入轨</div></div>
+    <div class="ms"><div class="ms-year">2012</div><div class="ms-text">CRS 计划首次商业货运补给</div></div>
+    <div class="ms"><div class="ms-year">2019</div><div class="ms-text">首批 Starlink 卫星发射</div></div>
+    <div class="ms"><div class="ms-year">2020</div><div class="ms-text">商业载人，恢复美国本土载人航天</div></div>
+    <div class="ms"><div class="ms-year">2025</div><div class="ms-text">Starship 纳入 NASA NLS II 合同</div></div>
+    <div class="ms"><div class="ms-year">2026</div><div class="ms-text">完成 IPO，估值突破 $2 万亿</div></div>
+  </div>
+
+  <p class="body-text" style="margin-top:20px">与美国政府的关系异常深厚且粘性极强——这是战略地位的核心，因为客户买的往往是<b>"体系级能力"（system-of-systems）</b>，而非单次发射或单颗航天器，使 SpaceX 比普通承包商更难被替代。</p>
+
+  <table class="research">
+    <thead><tr><th>政府/国防合同</th><th>金额</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><b>NASA 商业载人 CCtCap</b></td><td class="num-cell">$49.27亿</td><td>2014 年 $26 亿 + 2022 年增订 5 次任务 $14.36 亿，载人连续性</td></tr>
+      <tr><td><b>NASA 货运 CRS / CRS-2</b></td><td class="num-cell">$16亿 / 上限$140亿</td><td>原 CRS 至少 12 次任务；CRS-2 为全体承包商上限，SpaceX 持续接单</td></tr>
+      <tr><td><b>Artemis 月面着陆器 HLS（Starship）</b></td><td class="num-cell">$28.9亿</td><td>HLS 开发挑战已牵动 NASA 登月计划排期</td></tr>
+      <tr><td><b>太空军 SDN 数据网络骨干</b></td><td class="num-cell">$22.9亿</td><td>Space Data Network</td></tr>
+      <tr><td><b>SB-AMTI 威胁探测卫星</b></td><td class="num-cell">$41.6亿</td><td>导弹/威胁探测星座</td></tr>
+      <tr><td><b>NRO 侦察卫星网络（机密）</b></td><td class="num-cell">$18亿</td><td>Starshield 部门，2021 年机密合同（路透报道）</td></tr>
+      <tr><td><b>NSSL Lane 2 国安发射</b></td><td class="num-cell">FY25 $8.46亿</td><td>FY25 派 7 次任务；FY26 又派 5 次任务（Phase 3 框架）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">IPO 后公司已公开，初始流通盘较小，老股东在绿鞋行使前仍持有约 95%。需注意：最新披露<b>不可与早期私募分析直接对比</b>——招股书已按"共同控制"会计追溯并入 <b>xAI</b> 与 <b>X</b>，与核心 Space / Connectivity 分部并列。政府依赖既是壁垒、也是风险（采购周期、政治、竞争与利益冲突审查）。</div>
+</section>
+
+<!-- ============ 叁 · 商业模式与经济性 ============ -->
+<section class="chapter" id="ch3">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">叁</span><span>商业模式与经济性</span></div>
+    <div class="ch-en">Business Model &amp; Economics</div>
+  </div>
+
+  <div class="tldr"><b>三层增长引擎：发射（战略底座）→ Starlink（经济引擎）→ Starship（未来期权）。</b>Falcon 发射从 2024 年 <b>134 次</b>增至 2025 年 <b>165 次</b>，但对外发射数与单次均价基本持平——说明<b>大量发射运力来自 Starlink 部署的"内部需求"</b>，使工厂、发射台与运营即便在外部需求波动时也能满载。</div>
+
+  <div class="sub-tabs" id="segTabs">
+    <div class="sub-tab active" data-seg="0">发射服务</div>
+    <div class="sub-tab" data-seg="1">Starlink</div>
+    <div class="sub-tab" data-seg="2">政府与国防</div>
+    <div class="sub-tab" data-seg="3">Starship 与未来</div>
+  </div>
+
+  <div id="segPanels">
+    <!-- 0 发射 -->
+    <div class="seg-panel active" id="seg0">
+      <div class="two-col">
+        <div>
+          <p class="body-text"><b>可复用是模式的经济核心。</b>Falcon 9 是全球首款轨道级可复用火箭，公司明确将"可复用"与"更低进入太空成本"挂钩。公开报价虽不完整：Falcon 9 标准分期价至 2024 年约 <b>$6,975 万</b>；Rideshare 拼车最低 <b>$35 万</b>（50kg 至 SSO，增重 $7k/kg）。这些商品化定价之所以能公布，正因 SpaceX 仍有足够成本余量在低价的同时进行激进研发。</p>
+          <p class="body-text">2025 年 Space 分部营收 <b>$40.86亿</b>、分部调整 EBITDA <b>$6.53亿</b>，同时为 Starship 投入 <b>$30.04亿</b> 研发。换言之，传统 Falcon/Dragon/政府业务已能产生真实盈利能力，但公司选择把很大一块经济产能再投入 Starship——投资者应将 Space 分部一半看作当期业务、一半看作"自筹资金的风险投资项目"。</p>
+        </div>
+        <div class="idx-rows" style="margin-top:0">
+          <div class="idx-row"><span class="idx-row-label">2025 Falcon 发射次数</span><span class="idx-row-value">165 次（2024 为 134 次）</span></div>
+          <div class="idx-row"><span class="idx-row-label">Space 分部营收</span><span class="idx-row-value">$40.86 亿</span></div>
+          <div class="idx-row"><span class="idx-row-label">Space 分部调整 EBITDA</span><span class="idx-row-value">$6.53 亿</span></div>
+          <div class="idx-row"><span class="idx-row-label">Starship 研发投入</span><span class="idx-row-value">$30.04 亿（自筹）</span></div>
+          <div class="idx-row"><span class="idx-row-label">Falcon 9 标准报价</span><span class="idx-row-value">约 $6,975 万（至 2024）</span></div>
+          <div class="idx-row"><span class="idx-row-label">Rideshare 拼车</span><span class="idx-row-value">最低 $35 万 / 50kg SSO</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- 1 Starlink -->
+    <div class="seg-panel" id="seg1">
+      <p class="body-text"><b>Starlink 已是公司最有价值的运营资产，且远非"农村消费者小众市场"。</b>截至 2026/3/31 约 <b>1030 万</b>订阅、覆盖 <b>164 个</b>国家/地区，由约 <b>9,600 颗</b>卫星支撑（约占全球可机动卫星 75%）。2025 年连接分部营收 <b>$113.87亿</b>、经营利润 <b>$44.23亿</b>、调整 EBITDA <b>$71.68亿</b>。当年营收增长 $37.88亿中，消费贡献 $23.77亿、企业与政府贡献 $14.11亿（其中企业 +$12.18亿、含移动连接 +$6.32亿；政府 +$1.93亿）——<b>结构正向更粘、更优质的企业/政府客户迁移。</b></p>
+      <div class="two-col">
+        <div class="chart-card">
+          <div class="chart-title">订阅用户 vs ARPU <small>柱=订阅(百万) · 线=月 ARPU($)</small></div>
+          <div class="chart-wrap"><canvas id="subChart"></canvas></div>
+        </div>
+        <div>
+          <p class="body-text"><b>ARPU 下行不必然看空。</b>ARPU 从 2023 年 <b>$99</b>→2024 <b>$91</b>→2025 <b>$81</b>→Q1 2026 <b>$66</b>，公司预计随国际化与低价套餐占比上升将继续下降。关键问题不是 ARPU 是否上升，而是<b>网络总体经济性改善是否快于 ARPU 下降</b>——经营利润与 EBITDA 的跃升说明，迄今答案为"是"。</p>
+          <p class="body-text"><b>资本开支已更像"建设期"而非"无底洞"。</b>2025 连接分部 capex <b>$41.78亿</b>（约占分部营收 36.7%），经营利润率约 <b>38.8%</b>、调整 EBITDA 率约 <b>63.0%</b>。它不是轻资产业务，但越来越像一旦增长性 capex 正常化便能产生可观自由现金流的重资产网络。产品线已横跨住宅、漫游、商业优先、固定企业、海事/移动、直连手机（650+ 颗在轨、兼容现有 LTE 手机、多区域运营商合作）。</p>
+        </div>
+      </div>
+    </div>
+    <!-- 2 政府国防 -->
+    <div class="seg-panel" id="seg2">
+      <p class="body-text"><b>政府依赖在今天"利大于弊"。</b>原因不仅是合同金额，而是<b>制度性锁定</b>：NASA 依赖其载人与货运连续性；太空军把越来越核心的网络与传感器项目交给它；情报客户也乐于从 Starshield 采购扩散式星座。国安发射是好例证：2025年4月太空军将 <b>7 次 FY25 Lane 2 NSSL 任务</b>以 <b>$8.458亿</b>派给 SpaceX，10月又派 <b>5 次 FY26 任务</b>。这并非垄断（ULA、Blue Origin 也在其中），但表明五角大楼已在结构性地把 SpaceX 当作核心的"保障性进入太空"供应商。</p>
+      <div class="quote">客户买的往往是"体系级能力"，而非单次发射——这使 SpaceX 的政府关系成为非常强、但"政治上有条件"的护城河：必须靠可靠性、排期表现与政治可航行性来维持。</div>
+    </div>
+    <!-- 3 Starship -->
+    <div class="seg-panel" id="seg3">
+      <p class="body-text"><b>Starship 是整个 thesis 的最大摆动因子。</b>公司称其为长期增长的关键使能者与运力/复用/频次的"阶跃式变化"。2026年5月首次 <b>V3 Starship</b> 试飞达成多个里程碑（部署模拟与改进型 Starlink 载荷、上面级受控溅落），但 FAA 要求对助推器故障进行调查后方可继续飞行。FAA 环评现支持博卡奇卡<b>每年最多 25 次</b> Starship/Super Heavy 发射与着陆（须取得许可）。这让 Starship 战略重要，<b>但尚未成为已被证明的商业现金机器。</b></p>
+      <p class="body-text"><b>务实的中期机会窄于宣传。</b>最具防御性的中期价值驱动是：更低成本部署下一代 Starlink 卫星、经 HLS/NLS II 参与 NASA 月球架构、承接 Falcon 难以胜任或市场经济性之外的载荷级别、以及若复用大幅改善则重塑发射定价。点对点旅行、大型在轨物流经济、火星运输等是真实期权，但<b>不是近期可投资的现金流</b>——估值时这一区分至关重要。</p>
+      <div class="note">规模化盈利需三件事同时成立：① Starlink 在 ARPU 下行中维持订阅与企业/政府结构改善及强单位经济性；② 发射业务保持成本优势并把内部需求转化为对外定价杠杆；③ Starship 降低卫星部署成本并解锁新任务级别、而非永远是开放式研发黑洞。2025 年 Space+Connectivity 合并经营利润率约 <b>24.3%</b>、调整 EBITDA 率约 <b>50.5%</b>（且 Space 仍在重金投入 Starship），说明核心业务比怀疑者认为的更接近规模化盈利。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 肆 · 护城河与竞争 ============ -->
+<section class="chapter" id="ch4">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">肆</span><span>经济护城河与竞争格局</span></div>
+    <div class="ch-en">Economic Moat &amp; Competitive Landscape</div>
+  </div>
+
+  <div class="tldr"><b>护城河评级：非常强。</b>核心不在于任何单一专利，而在于<b>各项优势彼此强化的系统</b>：可复用→低成本+高频次→制造利用率与运营学习提升→Starlink 创造捕获式发射需求→支撑工厂规模→改善终端/卫星/发射经济性→可靠性与响应性深化政府信任。这一组合远比任何单一技术更难复制。</div>
+
+  <div class="theme-grid">
+    <div class="theme-card hot">
+      <div class="theme-name">成本优势 · 基准</div>
+      <div class="theme-desc">2025 年 <b>165 次</b> Falcon 发射证明复用已是工业流程而非演示项目；西方无对手在整合发射频次上接近。</div>
+    </div>
+    <div class="theme-card hot">
+      <div class="theme-name">技术与制造 · 垂直整合</div>
+      <div class="theme-desc">自造火箭、飞船、卫星、用户终端与软件，压缩反馈闭环；Starshield 把同一架构延伸至安全政府用例。</div>
+    </div>
+    <div class="theme-card">
+      <div class="theme-name">监管与基础设施</div>
+      <div class="theme-desc">Starbase + 多个佛州/加州发射场；发射许可、安全流程、靶场整合是被低估的进入壁垒，利好有成熟流程的在位者。</div>
+    </div>
+    <div class="theme-card">
+      <div class="theme-name">政府关系 · 强但政治有条件</div>
+      <div class="theme-desc">NASA 与五角大楼不会把关键载人与国安工作交给不受信任供应商；截至 2026 年中，依赖在增加而非减少。</div>
+    </div>
+    <div class="theme-card">
+      <div class="theme-name">Starlink "网络效应"</div>
+      <div class="theme-desc">非经典社交图谱效应，而是<b>规模—密度—认证效应</b>：更多卫星/网关/终端/运营商整合/国家批准→效用更高、单位成本更低→更多用户。</div>
+    </div>
+    <div class="theme-card cold">
+      <div class="theme-name">最大威胁 · Amazon Kuiper</div>
+      <div class="theme-desc">并非领先（远未），而是因为它攻击最重要的利润池——连接。Kuiper 规划 <b>3,236 颗</b>，2025/4 起全面部署，已锁定 <b>80+ 次</b>发射、6 次成功发射后 <b>150+ 颗</b>在轨。</div>
+    </div>
+  </div>
+
+  <p class="body-text" style="margin-top:22px">其余对手战略重要但落后一个数量级。下表为主要竞争者对比：</p>
+  <div style="overflow-x:auto">
+  <table class="research">
+    <thead><tr><th>公司</th><th>定位</th><th>关键数据</th><th>相对 SpaceX</th></tr></thead>
+    <tbody>
+      <tr><td><b>Rocket Lab</b></td><td>最强创业型"发射+太空系统"同行</td><td>2025 营收 $6.02亿 · 记录 21 次发射</td><td>方向相似但经济体量小一个数量级</td></tr>
+      <tr><td><b>Blue Origin / ULA</b></td><td>特定发射细分的严肃威胁</td><td>New Glenn 至 2026/4 仅数次任务</td><td>非全franchise竞争，专精高能国安入轨</td></tr>
+      <tr><td><b>Amazon Kuiper</b></td><td>对连接利润池的最大长期威胁</td><td>规划 3,236 颗 · 80+ 次发射锁定</td><td>资金/云/企业渠道雄厚，但当前明显落后</td></tr>
+      <tr><td><b>Eutelsat OneWeb</b></td><td>西方另一主要在运营 LEO 宽带</td><td>600+ 颗 · H1 LEO 营收 €1.11亿 · 拟补 440 颗</td><td>更小、更偏 B2B/B2G、更受资本约束</td></tr>
+      <tr><td><b>AST SpaceMobile</b></td><td>直连设备方向，战略有趣</td><td>2025 营收 $7,090 万 · 仍处早期</td><td>早期阶段</td></tr>
+      <tr><td><b>Viasat / Iridium</b></td><td>真实卫星通信公司</td><td>Viasat FY26 营收 $46.4亿 · Iridium 2025 $8.72亿</td><td>非 Starlink 级 LEO 宽带系统</td></tr>
+      <tr><td><b>中国国家队星座</b></td><td>严肃的长期地缘挑战</td><td>—</td><td>路透仍称与 SpaceX 存重大技术与营收差距</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ 伍 · 估值分析 ============ -->
+<section class="chapter" id="ch5">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">伍</span><span>估值分析</span></div>
+    <div class="ch-en">Valuation Analysis</div>
+  </div>
+
+  <div class="tldr"><b>三层框架：历史私募标价 → 当前披露的财务实力 → 新的公开市场稀缺溢价。</b>估值从 2023/12 约 <b>$1,800亿</b> → 2024/6 约 <b>$2,100亿</b> → 2024/12 约 <b>$3,500亿</b> → 2025/12 约 <b>$8,000亿</b> → 2026/6 IPO 约 <b>$1.96万亿</b>（首日破 $2万亿），是大型晚期私司有史以来最陡峭的估值攀升之一。</div>
+
+  <div class="two-col">
+    <div class="chart-card">
+      <div class="chart-title">估值跃迁 <small>单位 $十亿 · 对数轴</small></div>
+      <div class="chart-wrap"><canvas id="valChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">营收与分部构成 <small>单位 $十亿 · 2025 含 AI 分部 $32.0亿</small></div>
+      <div class="chart-wrap"><canvas id="revChart"></canvas></div>
+    </div>
+  </div>
+
+  <p class="body-text" style="margin-top:22px"><b>当前公开估值在现有基本面上明显偏贵。</b>约 $1.96万亿对应 2025 营收约 <b>105×</b> 市销率，$2万亿时约 <b>107×</b>。即便 2025/12 的 $8,000亿私募估值，也隐含约 42.8× 2025 营收；2024 年底 $3,500亿 tender 估值隐含约 25.0× 2024 营收。当前公开倍数不再仅是"激进"，而是预设了对未来期权的巨额货币化。</p>
+
+  <div class="two-col">
+    <div class="chart-card">
+      <div class="chart-title">同业市销率对比 <small>市值 ÷ 最新年营收 · 对数轴</small></div>
+      <div class="chart-wrap"><canvas id="psChart"></canvas></div>
+    </div>
+    <div>
+      <table class="research" style="margin-top:0">
+        <thead><tr><th>公司</th><th>市值</th><th>营收基数</th><th>隐含 P/S</th></tr></thead>
+        <tbody>
+          <tr><td><b>SpaceX</b>（IPO ~$1.96T）</td><td class="num-cell">$1.96T</td><td class="num-cell">$186.7亿(25)</td><td class="perf-up">~105.0×</td></tr>
+          <tr><td>AST SpaceMobile</td><td class="num-cell">$24.0B</td><td class="num-cell">$0.71亿(25)</td><td class="perf-up">~338.3×</td></tr>
+          <tr><td>Rocket Lab</td><td class="num-cell">$62.2B</td><td class="num-cell">$6.02亿(25)</td><td class="perf-up">~103.4×</td></tr>
+          <tr><td>Iridium</td><td class="num-cell">$5.06B</td><td class="num-cell">$8.72亿(25)</td><td class="perf-down">~5.8×</td></tr>
+          <tr><td>Viasat</td><td class="num-cell">$9.88B</td><td class="num-cell">$46.4亿(FY26)</td><td class="perf-down">~2.1×</td></tr>
+        </tbody>
+      </table>
+      <p class="body-text" style="font-size:13px;margin-top:12px">该表说明两点：① 公开市场愿为"太空赢家"付很高的销售倍数；② 即便以这一慷慨标准，SpaceX 也是按最佳情形而非现有发射+宽带现金流定价。其运营规模与盈利能力确实远强于多数投机性同行。</p>
+    </div>
+  </div>
+
+  <div style="margin-top:24px">
+    <div class="chart-title" style="border:0;padding:0;margin-bottom:10px">核心 Space/Connectivity 分部加总（SOTP）· 概念性区间 <small style="margin-left:8px">单位 $十亿 · 不可简单相加</small></div>
+    <div class="chart-card">
+      <div class="chart-wrap" style="height:300px"><canvas id="sotpChart"></canvas></div>
+    </div>
+    <div class="quote gold" style="margin-top:16px">各分项<b>不应简单相加</b>：政府/国防与稀缺溢价部分与 Launch、Starlink 重叠。剔重后，AI/公开市场膨胀前的"核心太空股权价值"合理区间约 <b>$3,500亿–$6,500亿</b>，若充分给予 Starship 与国安期权信用，乐观上限可达 <b>$7,000亿+</b>。该区间与 2024 年底、2025 年底私募标价大致吻合，但远低于 2026/6 公开估值。</div>
+  </div>
+
+  <div class="note"><b>结论：非常贵，但战略上可理解。</b>资产非凡；价格则假设 Starlink 成为全球基础设施、国安依赖加深、Starship 最终运转良好到拓宽（而非吞噬）护城河。投资者可以相信这个故事，但不应假装今天的估值仅靠当期发射经济性或当期报告现金流就能支撑。SOTP 区间为基于披露分部经济性、公开可比倍数与合同/期权堆栈的推断，刻意采用较宽区间。</div>
+</section>
+
+<!-- ============ 陆 · 多空·风险·催化 ============ -->
+<section class="chapter" id="ch6">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">陆</span><span>多空逻辑 · 风险 · 催化</span></div>
+    <div class="ch-en">Bull / Bear / Risks / Catalysts</div>
+  </div>
+
+  <div class="flow-grid">
+    <div class="flow-box in">
+      <b class="h">▲ 多头逻辑（Bull）</b>
+      <ul>
+        <li>Starlink 自 1,030 万用户基础继续复利，企业/政府结构持续改善，网络日益像全球宽带公用事业而非前沿产品。</li>
+        <li>Starship 显著降低下一代卫星部署成本——V3 卫星设计下行容量 <b>1 Tbps</b>，预计 2026 下半年开始由 Starship 发射。</li>
+        <li>SDN、SB-AMTI、机密 Starshield 等国防项目深化其"政府基础设施"角色。</li>
+        <li>在此情形下，核心太空 franchise 本身即可支撑一度看似不可能的估值，应远高于国防主承包商与传统卫星运营商。</li>
+      </ul>
+    </div>
+    <div class="flow-box out">
+      <b class="h">▼ 空头逻辑（Bear）</b>
+      <ul>
+        <li>ARPU 持续下行中 Starlink 订阅增速放缓；Kuiper 等对企业与航空账户激烈竞争。</li>
+        <li>卫星更换与发射 capex 结构性维持高位；Starship 技术惊艳但商业化延迟。</li>
+        <li>届时 SpaceX 仍是战略重要公司，但投资者将被迫按"重资产基础设施提供商"而非"文明级技术期权"来估值。</li>
+        <li>在 $2万亿以上、约 <b>105×–107×</b> 销售的价位，即便基础业务不崩溃，相对投资者预期仍有可观下行。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="overflow-x:auto;margin-top:22px">
+  <table class="research">
+    <thead><tr><th style="min-width:140px">风险（按重要性排序）</th><th>为何重要</th></tr></thead>
+    <tbody>
+      <tr><td><b>① 估值风险</b></td><td>当前公开标价约 <b>105×–107×</b> 2025 销售，相对现有基本面几无容错空间。</td></tr>
+      <tr><td><b>② Starship 执行风险</b></td><td>对长期利润扩张与期权至关重要，但 FAA 仍在 Flight 12 后监督故障调查。</td></tr>
+      <tr><td><b>③ 资本密集度</b></td><td>2025 capex 极重：Space 约 $38.32亿、Connectivity 约 $41.78亿，增长仍吞噬大量资本。</td></tr>
+      <tr><td><b>④ 连接业务竞争</b></td><td>Kuiper 有重大发射承诺与亚马逊级资源；OneWeb 补网；ASTS 攻直连设备；Viasat/Iridium 在专门细分仍强。</td></tr>
+      <tr><td><b>⑤ 政府集中与政治风险</b></td><td>日益嵌入美国国安项目，战略价值高但政治暴露大。</td></tr>
+      <tr><td><b>⑥ 监管/频谱/轨道拥堵</b></td><td>规模是优势，也带来频谱争端、天文学关切、轨道碎片审查与发射许可监督。</td></tr>
+      <tr><td><b>⑦ 关键人物风险</b></td><td>马斯克对战略、资本获取与人才吸引仍居核心；多公司管理摊薄是真实风险。</td></tr>
+      <tr><td><b>⑧ 透明度风险</b></td><td>机密合同与新合并分部报告，使外部清晰分析比普通上市公司更难。</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="theme-grid" style="margin-top:22px">
+    <div class="theme-card">
+      <div class="theme-name">近期催化</div>
+      <div class="theme-desc">Starship 纠正措施与 FAA 复核后的下次试飞窗口；Starlink 订阅与企业/政府增长；直连手机采用与国防项目执行的具体进展。</div>
+    </div>
+    <div class="theme-card">
+      <div class="theme-name">中期催化</div>
+      <div class="theme-desc">Starship 可重复发射 V3 Starlink 卫星的运营证据；Artemis/HLS 里程碑；更多 NSSL 与 Starshield 中标；ARPU 承压下 Starlink 维持高毛利的证明。</div>
+    </div>
+    <div class="theme-card">
+      <div class="theme-name">长期催化</div>
+      <div class="theme-desc">Starship 真正实现快速复用；更廉价重型运力催生的任何可信新产业；SpaceX 成为全球通信与国防架构中不可绕过的一层的程度。</div>
+    </div>
+  </div>
+
+  <div class="quote" style="margin-top:22px">最终投资结论：<b>是</b>，SpaceX 是高质量资产；<b>是</b>，商业模式有吸引力；<b>是</b>，护城河非常强。但<b>当前估值并不保守</b>。对能承受执行波动、监管噪音与高入场价的长久期投资者，它仍是商业太空中首屈一指的战略 franchise；对估值纪律型投资者，它已从"最佳私募资产"进入"绝佳公司、艰难价格"的领域。</div>
+</section>
+
+<!-- ============ 柒 · 待解问题与局限 ============ -->
+<section class="chapter" id="ch7">
+  <div class="ch-head">
+    <div class="ch-title"><span class="ch-num">柒</span><span>待解问题与局限</span></div>
+    <div class="ch-en">Open Questions &amp; Limitations</div>
+  </div>
+
+  <div class="conclusion-grid">
+    <div class="conc"><div class="conc-num">一</div><h4>分析框架已变</h4><p>xAI/X 并入后新增 AI 分部，2026/6 公开估值不可与早期"纯 SpaceX"私募标价直接对比。</p></div>
+    <div class="conc"><div class="conc-num">二</div><h4>控制权与持股</h4><p>IPO 后确切的控制权与内部人持股比例，在本文所用资料中未完整确立。</p></div>
+    <div class="conc"><div class="conc-num">三</div><h4>机密国防经济性</h4><p>Starshield 机密合同经济性不透明，任何国防估值溢价必然为近似。</p></div>
+    <div class="conc"><div class="conc-num">四</div><h4>实际合同定价</h4><p>Falcon 与 Starlink 公开价格仅供参考，国安与大型企业实际合同定价可能与刊例价显著不同。</p></div>
+  </div>
+
+  <div class="note" style="margin-top:20px">本页为对所提供 SpaceX.md 深度分析的中文结构化摘要，采用 China Market 研究模版（米白+藏青+金）。所有数据引自原文披露口径，部分为基于披露的推断与概念性区间。<b>仅供个人研究参考，不构成投资建议。</b></div>
+</section>
+
+<footer>
+  SpaceX 深度投资分析 · 截至 2026-06-12（IPO 后）· 设计风格：China Market 研究模版<br/>
+  核心判断：极高质量的稀缺基础设施平台 · 当前市值已提前消化大部分未来上行 · 非投资建议
+</footer>
+</main>
+
+<script>
+const UP='#D7263D', DOWN='#1F8A47', NAVY='#0E2A47', NAVY2='#143E66', GOLD='#B08842', GOLDL='#D4B271', FLAT='#8A8A8A', BLUE='#1E6FD0', PURP='#6B4FA3';
+Chart.defaults.font.family="'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif";
+Chart.defaults.color='#6B6B6B';
+
+/* ---- 分部 Tab ---- */
+document.querySelectorAll('#segTabs .sub-tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('#segTabs .sub-tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.seg-panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('seg'+t.dataset.seg).classList.add('active');
+  };
+});
+
+/* ---- Starlink 订阅 vs ARPU ---- */
+new Chart(document.getElementById('subChart'),{
+  data:{labels:['2023','2024','2025','Q1 2026'],datasets:[
+    {type:'bar',label:'订阅用户(百万)',data:[2.3,4.4,8.9,10.3],backgroundColor:NAVY+'D0',borderColor:NAVY,borderWidth:1,yAxisID:'y',order:2},
+    {type:'line',label:'月 ARPU($)',data:[99,91,81,66],borderColor:GOLD,backgroundColor:GOLD+'22',borderWidth:2.5,tension:.3,pointRadius:4,pointBackgroundColor:GOLD,yAxisID:'y2',order:1}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14,font:{size:12}}}},
+    scales:{y:{position:'left',title:{display:true,text:'订阅(百万)'},grid:{color:'#EFEAE0'}},
+      y2:{position:'right',title:{display:true,text:'ARPU($)'},grid:{drawOnChartArea:false},ticks:{callback:v=>'$'+v}},
+      x:{grid:{display:false}}}}
+});
+
+/* ---- 估值跃迁 ---- */
+new Chart(document.getElementById('valChart'),{
+  type:'bar',
+  data:{labels:['2023/12','2024/6','2024/12','2025/12','2026/6 IPO'],
+    datasets:[{label:'估值($十亿)',data:[180,210,350,800,1960],
+      backgroundColor:[NAVY+'B0',NAVY+'B0',NAVY+'D0',GOLD+'D0',UP+'D0'],
+      borderColor:[NAVY,NAVY,NAVY,GOLD,UP],borderWidth:1}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+(c.parsed.y>=1000?(c.parsed.y/1000).toFixed(2)+' 万亿':c.parsed.y+' 十亿')}}},
+    scales:{y:{type:'logarithmic',title:{display:true,text:'$十亿（对数）'},grid:{color:'#EFEAE0'},
+      ticks:{callback:v=>([100,200,500,1000,2000].includes(v)?'$'+v:'')}},x:{grid:{display:false}}}}
+});
+
+/* ---- 营收与分部 ---- */
+new Chart(document.getElementById('revChart'),{
+  type:'bar',
+  data:{labels:['2023','2024','2025'],datasets:[
+    {label:'Space 发射',data:[null,null,4.086],backgroundColor:NAVY+'D0',stack:'s'},
+    {label:'Connectivity / Starlink',data:[null,null,11.387],backgroundColor:UP+'D0',stack:'s'},
+    {label:'AI（xAI 并入）',data:[null,null,3.201],backgroundColor:GOLD+'D0',stack:'s'},
+    {label:'合并总营收',data:[10.387,14.015,18.674],backgroundColor:NAVY2+'70',borderColor:NAVY2,borderWidth:1,stack:'t'}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:10,font:{size:11}}},
+      tooltip:{callbacks:{label:c=>c.parsed.y==null?null:c.dataset.label+': $'+c.parsed.y.toFixed(2)+'十亿'}}},
+    scales:{y:{title:{display:true,text:'$十亿'},grid:{color:'#EFEAE0'}},x:{grid:{display:false}}}}
+});
+
+/* ---- 同业 P/S ---- */
+const PS=[['SpaceX',105.0,UP],['AST SpaceMobile',338.3,PURP],['Rocket Lab',103.4,BLUE],['Iridium',5.8,DOWN],['Viasat',2.1,DOWN]].sort((a,b)=>b[1]-a[1]);
+new Chart(document.getElementById('psChart'),{
+  type:'bar',
+  data:{labels:PS.map(d=>d[0]),datasets:[{data:PS.map(d=>d[1]),
+    backgroundColor:PS.map(d=>d[2]+'D0'),borderColor:PS.map(d=>d[2]),borderWidth:1}]},
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'P/S ≈ '+c.parsed.x.toFixed(1)+'×'}}},
+    scales:{x:{type:'logarithmic',title:{display:true,text:'市销率（对数）'},grid:{color:'#EFEAE0'},
+      ticks:{callback:v=>([1,2,5,10,50,100,300].includes(v)?v+'×':'')}},y:{grid:{display:false}}}}
+});
+
+/* ---- SOTP 区间（浮动条）---- */
+const SOTP=[
+  ['发射业务',25,50],
+  ['Starlink',250,450],
+  ['Starship 与期权',40,120],
+  ['政府/国防溢价',30,90],
+  ['战略稀缺溢价',25,100]
+];
+new Chart(document.getElementById('sotpChart'),{
+  type:'bar',
+  data:{labels:SOTP.map(d=>d[0]),datasets:[{
+    label:'估值区间($十亿)',data:SOTP.map(d=>[d[1],d[2]]),
+    backgroundColor:[NAVY+'C0',UP+'C0',GOLD+'C0',NAVY2+'C0',GOLDL+'C0'],
+    borderColor:[NAVY,UP,GOLD,NAVY2,GOLD],borderWidth:1,borderSkipped:false,borderRadius:2}]},
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>'$'+c.raw[0]+'亿 – $'+c.raw[1]+'亿（$十亿）'}}},
+    scales:{x:{title:{display:true,text:'$十亿（区间，不可简单相加）'},grid:{color:'#EFEAE0'},min:0,max:480},y:{grid:{display:false}}}}
+});
+
+/* ---- 章节导航高亮 ---- */
+const tabs=[...document.querySelectorAll('.chapter-tab')];
+const secs=tabs.map(t=>document.querySelector(t.getAttribute('href')));
+function syncNav(){
+  let idx=0;
+  secs.forEach((s,i)=>{if(s.getBoundingClientRect().top<160)idx=i;});
+  tabs.forEach((t,i)=>t.classList.toggle('active',i===idx));
+}
+window.addEventListener('scroll',syncNav,{passive:true});
+</script>
+</body>
+</html>

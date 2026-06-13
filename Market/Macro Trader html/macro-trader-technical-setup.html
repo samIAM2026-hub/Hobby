@@ -565,7 +565,7 @@
 <section id="example">
   <div class="wrap">
     <h2><span class="num">7</span>Decision dashboard <span id="snap-as-of" class="snap-asof"></span></h2>
-    <p class="sub">Every panel the framework uses, populated from <code>macro-trader-data.json</code>, so the final call rests on the <i>whole board</i> — futures, cash-market closes, rates, credit, volatility, commodities, and breadth. Update the file and all of this refreshes.</p>
+    <p class="sub">Every panel the framework uses is populated from <code>macro-trader-data.json</code>, so the final call rests on the <i>whole board</i> — cash-market closes, rates, credit, volatility, commodities, breadth, and leadership. Update the JSON file and all of this refreshes.</p>
 
     <div id="snap-banner" class="snap-banner" style="display:none"></div>
     <div id="snap-headline" class="snap-headline"></div>
@@ -607,7 +607,7 @@
 
     <div class="teach" style="margin-top:20px">
       <span class="t-label">How the loop works</span>
-      An agent fetches the latest readings → overwrites the panels, indicators, <code>inputs</code> and <code>decision</code> in <code>macro-trader-data.json</code> → the page tallies the evidence, translates refreshed states like <code>above50</code>, <code>cooling</code>, and <code>growth</code> into the regime model, then lays the full board out for the call. See <code>macro-trader-UPDATE_GUIDE.md</code> for the field contract and allowed values.
+      An agent fetches the latest readings → overwrites the panels, indicators, <code>inputs</code> and <code>decision</code> in <code>macro-trader-data.json</code> → the page tallies the evidence, translates refreshed states like <code>above50</code>, <code>cooling</code>, and <code>growth</code> into the regime model, then lays the full board out for the call. Keep the embedded fallback below in sync when the JSON defaults change.
     </div>
   </div>
 </section>
@@ -638,7 +638,7 @@
 <footer>
   <div class="wrap">
     <p style="font-size:15px;color:var(--ink);font-weight:700;margin-bottom:4px">The framework outlives any single snapshot.</p>
-    <p>The point isn't to memorize any one overnight futures snapshot — it's to internalize the <b>order of operations</b>: secular trend → regime → breadth → levels, cross-examined across rates, FX, commodities, and credit. Finalize every regime read with your own live charts at decision time.</p>
+    <p>The point isn't to memorize any one cash-close snapshot — it's to internalize the <b>order of operations</b>: secular trend → regime → breadth → levels, cross-examined across rates, FX, commodities, and credit. Finalize every regime read with your own live charts at decision time.</p>
     <div class="disclaim">
       <b>Educational use only.</b> This is a study aid synthesizing a technical-analysis framework. Nothing here is financial advice, a recommendation, or a prediction. Markets move quickly; the worked example is a workflow demonstration, not a standing call. Always verify live levels and manage your own risk.
     </div>
@@ -648,124 +648,125 @@
 
 <!-- Local-file fallback: mirrors macro-trader-data.json so the page still renders
      when opened directly (file://), where fetch() is blocked. Served over http,
-     the real data.json wins. Keep in sync with data.json if you change defaults. -->
+     the external macro-trader-data.json wins. Keep this block in sync with the
+     JSON file whenever snapshot defaults change. -->
 <script type="application/json" id="snap-fallback">
 {
   "asOf": "2026-06-12",
-  "asOfLabel": "June 12, 2026 overnight futures / June 11 cash close",
-  "headline": "Relief rally holding in overnight futures; hot PPI and real yields remain the caveat",
+  "asOfLabel": "June 12, 2026 cash close",
+  "headline": "Risk appetite improved into the close, but restrictive yields and only-partial breadth repair keep the tape constructive-cautious",
   "panels": {
     "equity": [
       {
-        "name": "S&P 500 futures (ES)",
-        "value": "7,403.00",
-        "chg": 0.09,
-        "tone": "neutral"
-      },
-      {
-        "name": "Nasdaq-100 futures (NQ)",
-        "value": "29,512.50",
-        "chg": 0.16,
+        "name": "S&P 500",
+        "value": "7,431.46",
+        "chg": 0.5,
         "tone": "pos"
       },
       {
-        "name": "Dow futures (YM)",
-        "value": "50,892",
-        "chg": 0.03,
-        "tone": "neutral"
+        "name": "Nasdaq Composite",
+        "value": "25,888.84",
+        "chg": 0.31,
+        "tone": "pos"
       },
       {
-        "name": "Russell 2000 futures (RTY)",
-        "value": "2,920.40",
-        "chg": -0.06,
-        "tone": "neutral"
+        "name": "Dow Jones",
+        "value": "51,202.26",
+        "chg": 0.7,
+        "tone": "pos"
+      },
+      {
+        "name": "Russell 2000",
+        "value": "2,943.99",
+        "chg": 0.79,
+        "tone": "pos"
       }
     ],
     "volatility": [
       {
         "name": "VIX",
-        "value": "19.44",
-        "chg": -12.51,
+        "value": "<20",
+        "sub": "fear gauge spent the session back below the key 20 line",
         "tone": "pos"
       },
       {
         "name": "VVIX",
         "value": "100.63",
-        "sub": "vol-of-vol cooled with the relief rally",
+        "sub": "vol-of-vol stayed calmer than the prior spike",
         "tone": "pos"
       },
       {
         "name": "Put/Call",
         "value": "0.59",
-        "sub": "call demand / relief tone",
+        "sub": "call demand still outweighing put demand",
         "tone": "pos"
       },
       {
         "name": "SPX ATR(14)",
         "value": "elevated",
-        "sub": "ranges still wider than calm tape",
+        "sub": "range compression improved, but not back to a quiet tape",
         "tone": "neutral"
       }
     ],
     "rates": [
       {
         "name": "2Y yield",
-        "value": "4.07%",
-        "sub": "late-day yield after de-escalation",
-        "tone": "pos"
+        "value": "4.08%",
+        "sub": "front-end still high enough to keep the Fed on hold",
+        "tone": "neutral"
       },
       {
         "name": "10Y yield",
-        "value": "4.46%",
-        "chg": -0.08,
-        "tone": "pos"
+        "value": "4.49%",
+        "chg": 0.03,
+        "tone": "neutral"
       },
       {
         "name": "2s10s",
-        "value": "+39 bp",
-        "sub": "positively sloped",
+        "value": "+40 bp",
+        "sub": "curve stays positively sloped",
         "tone": "pos"
       },
       {
         "name": "3M (curve)",
         "value": "4.30%",
-        "sub": "10Y-3M still positive (~16 bp)",
+        "sub": "10Y-3M remains slightly positive",
         "tone": "pos"
       }
     ],
     "fx": [
       {
         "name": "DXY",
-        "value": "99.80",
-        "chg": -0.06,
+        "value": "99.81",
+        "chg": 0,
         "tone": "neutral"
       },
       {
         "name": "USD/JPY",
-        "value": "~160.3",
-        "sub": "carry stress watch, slightly off highs",
+        "value": "160.27",
+        "sub": "still a live carry and BoJ-intervention watch",
         "tone": "neutral"
       }
     ],
     "commodities": [
       {
         "name": "WTI crude",
-        "value": "$86.93",
-        "chg": -0.89,
+        "value": "$84.88",
+        "chg": -3.2,
         "tone": "pos"
       },
       {
         "name": "Gold",
-        "value": "$4,220.80",
-        "chg": 3.19,
-        "sub": "haven bid recovering",
+        "value": "$4,445.20",
+        "chg": 2.7,
+        "sub": "precious metals still bid even as crude broke lower",
         "tone": "neutral"
       },
       {
         "name": "Copper",
-        "value": "$6.43/lb",
-        "chg": 2.68,
-        "sub": "firm; no growth-scare collapse",
+        "value": "$6.40/lb",
+        "chg": 2.46,
+        "sub": "growth-sensitive metal held up; no hard-landing tell",
         "tone": "pos"
       }
     ],
@@ -785,7 +786,7 @@
       {
         "name": "HYG/LQD",
         "value": "stable",
-        "sub": "credit not amplifying stress",
+        "sub": "credit still is not amplifying the equity wobble",
         "tone": "pos"
       }
     ],
@@ -793,87 +794,87 @@
       {
         "name": "A/D line",
         "value": "+450",
-        "sub": "positive, but not euphoric",
+        "sub": "positive, but still short of broad-thrust territory",
         "tone": "pos"
       },
       {
         "name": "% > 50-day",
         "value": "46.5%",
-        "sub": "still sub-50 participation",
+        "sub": "still sub-50 participation despite the week's rebound",
         "tone": "neg"
       },
       {
         "name": "% > 200-day",
         "value": "55.6%",
-        "sub": "majority still above long-term trend",
+        "sub": "majority still holds the long-term trend",
         "tone": "pos"
       },
       {
         "name": "Net new highs",
         "value": "+46",
-        "sub": "more new highs than lows",
+        "sub": "new highs still outnumber new lows",
         "tone": "pos"
       },
       {
         "name": "RSP/SPY",
-        "value": "mixed",
-        "sub": "RSP +1.56% vs SPY +1.70% on cash close",
-        "tone": "neutral"
+        "value": "improving",
+        "sub": "equal-weight broadened the move even if mega-caps still matter",
+        "tone": "pos"
       },
       {
         "name": "IWM/SPY",
         "value": "leading",
-        "sub": "IWM +2.96% vs SPY +1.70% on cash close",
+        "sub": "small caps led the week and finished Friday strongest again",
         "tone": "pos"
       }
     ],
     "leadership": [
       {
         "name": "SMH Semis",
-        "value": "leading rebound",
-        "sub": "+6.75% on the cash day",
+        "value": "repairing",
+        "sub": "AI beta stayed involved after Thursday's large rebound",
         "tone": "pos"
       },
       {
         "name": "XLK Tech",
-        "value": "leading",
-        "sub": "+3.73% on the cash day",
+        "value": "mixed but constructive",
+        "sub": "index support still depends on growth leadership holding up",
         "tone": "pos"
       },
       {
         "name": "XLI Industrials",
         "value": "firm",
-        "sub": "+3.24% on the cash day",
+        "sub": "cyclicals did not roll back over with yields near 4.5%",
         "tone": "pos"
       },
       {
         "name": "XLF Financials",
-        "value": "stable",
-        "sub": "+0.75% on the cash day",
+        "value": "stabilizing",
+        "sub": "helpful, but not yet a clean all-clear from a key laggard",
         "tone": "neutral"
       },
       {
         "name": "XLE Energy",
         "value": "lagging",
-        "sub": "oil reversed lower",
+        "sub": "oil's sharp break pulled the energy bid back down",
         "tone": "neutral"
       },
       {
         "name": "XLP Staples",
         "value": "lagging",
-        "sub": "defensive bid cooled",
+        "sub": "defensive leadership cooled as risk appetite improved",
         "tone": "pos"
       },
       {
         "name": "XLV Health",
         "value": "firm",
-        "sub": "+0.81% on the cash day",
+        "sub": "defensives did not completely unwind",
         "tone": "neutral"
       },
       {
         "name": "Crypto beta",
-        "value": "bouncing",
-        "sub": "BTC +3.07%, ETH +3.01%, SOL +5.60%",
+        "value": "still tentative",
+        "sub": "crypto remains a weaker risk gauge than equities despite bounce attempts",
         "tone": "neutral"
       }
     ]
@@ -904,26 +905,26 @@
     "momentum": [
       {
         "name": "RSI(14)",
-        "value": "47",
-        "sub": "near neutral; bounce improved but not strong momentum",
+        "value": "49",
+        "sub": "near neutral; momentum repaired, but not decisively",
         "tone": "neutral"
       },
       {
         "name": "MACD",
-        "value": "bearish, improving watch",
-        "sub": "line remains below signal after the pullback",
+        "value": "bearish, stabilizing",
+        "sub": "still below signal, but downside momentum stopped accelerating",
         "tone": "neg"
       },
       {
         "name": "ROC(20)",
-        "value": "-0.67%",
-        "sub": "20-session rate of change still slightly negative",
+        "value": "-0.21%",
+        "sub": "20-session rate of change improved, but remains just below zero",
         "tone": "neg"
       },
       {
         "name": "StochRSI",
         "value": "turning up",
-        "sub": "tactical bounce attempt",
+        "sub": "tactical bounce still intact into the weekend",
         "tone": "pos"
       }
     ]
@@ -937,18 +938,18 @@
   },
   "decision": {
     "bias": "constructive-cautious",
-    "stance": "Stay invested, use a normal tranche, but do not chase overnight strength",
-    "keyLevels": "SPX cash support ~7,300-7,360; resistance ~7,420-7,520. ES futures holding above ~7,400 keeps the rebound alive overnight.",
-    "invalidation": "A SPX cash close back below ~7,300 with VIX back above 22 and HYG rolling over would flip this back toward correction defense.",
+    "stance": "Add only selectively; broad tape improved, but wait for better breadth confirmation before pressing risk",
+    "keyLevels": "SPX support sits around 7,360-7,400, with resistance around 7,450-7,520. Holding above the 50-day zone keeps the rebound constructive.",
+    "invalidation": "A renewed break below 7,360 with VIX back above 20-22, yields rising further, and credit softening would turn this back into correction defense.",
     "watching": [
-      "Do ES/NQ futures hold the June 11 relief rally into the next cash open?",
-      "Does breadth repair above 50% of SPX members over the 50-day?",
-      "Do 2Y/10Y yields stay lower after the late-day de-escalation move?",
-      "Does crude stay below the prior shock zone, or does oil re-accelerate?",
-      "Do semis follow through after the SMH rebound, or fade at resistance?"
+      "Can breadth get back above 50% of S&P 500 members over the 50-day?",
+      "Do 2Y and 10Y yields stop rising from the June 12 close?",
+      "Does oil stay under the mid-$80s to high-$80s zone, or rebuild a risk premium?",
+      "Do semis and growth hold leadership without the move narrowing again?",
+      "Does small-cap leadership keep broadening the tape next week?"
     ]
   },
-  "agentCommentary": "Internet refresh: corrected the equity panel to use actual futures for ES/NQ/YM/RTY instead of cash index closes. The June 11 cash session was a broad relief rally, and June 12 overnight futures are holding slightly higher in ES/NQ while RTY is flat. Rates were corrected to late-day levels after de-escalation (2Y ~4.07%, 10Y ~4.46%). The stance remains constructive-cautious because volatility and credit improved, but breadth is still sub-50% above the 50-day and May PPI remains hot."
+  "agentCommentary": "June 12 closed with risk appetite improving rather than accelerating. The S&P 500, Dow, Nasdaq, and Russell 2000 all finished higher, helped by a sharp drop in crude and a better preliminary University of Michigan sentiment reading, but the move still lacks full internal repair because only 46.5% of S&P 500 members sit above their 50-day average. Treasury yields stayed restrictive with the 2Y near 4.08% and the 10Y near 4.49%, so the tape remains constructive-cautious rather than clean risk-on. Credit is still calm, energy stress cooled materially, and the next test is whether next week's FOMC and post-oil price action let breadth catch up to price."
 }
 </script>
 

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>美股一周复盘 · 2026-06-08 → 06-12</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#F7F4ED; --paper:#FFFFFF;
+    --ink:#1A1A1A; --ink-2:#3D3D3D; --ink-3:#6B6B6B;
+    --line:#E4DED1; --line-strong:#C8BFAE;
+    --navy:#0E2A47; --navy-2:#143E66;
+    --gold:#B08842; --gold-light:#D4B271;
+    --up:#D7263D; --up-soft:#FBE9EC; --up-deep:#9E1A2D;
+    --down:#1F8A47; --down-soft:#E7F5EC; --down-deep:#125F30;
+    --flat:#8A8A8A;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  .serif{font-family:'Noto Serif SC',serif}
+
+  header.topbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#0E2A47 0%,#143E66 100%);color:#fff;border-bottom:3px solid var(--gold)}
+  .topbar-inner{max-width:1380px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-seal{width:42px;height:42px;background:var(--up);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC';font-weight:900;font-size:20px;border:2px solid var(--gold-light);box-shadow:0 0 0 1px rgba(255,255,255,.15)}
+  .brand-text{display:flex;flex-direction:column;line-height:1.15}
+  .brand-title{font-family:'Noto Serif SC';font-weight:700;font-size:18px;letter-spacing:1px}
+  .brand-sub{font-size:11.5px;color:#C9D6E3;letter-spacing:2px}
+  .topbar-meta{display:flex;gap:22px;font-size:12px;color:#C9D6E3}
+  .topbar-meta span b{color:#fff;font-weight:500;margin-left:4px}
+
+  nav.chapters{position:sticky;top:71px;z-index:40;background:#FAF8F2;border-bottom:1px solid var(--line)}
+  .chapters-inner{max-width:1380px;margin:0 auto;padding:0 28px;display:flex;gap:0;overflow-x:auto}
+  .chapter-tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--ink-3);border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;transition:all .15s;text-decoration:none}
+  .chapter-tab:hover{color:var(--navy)}
+  .chapter-tab.active{color:var(--up);border-bottom-color:var(--up);font-weight:700}
+  .chapter-tab .num{font-family:'Noto Serif SC';margin-right:6px;color:var(--gold)}
+
+  main{max-width:1380px;margin:0 auto;padding:32px 28px 80px}
+  section.chapter{background:var(--paper);border:1px solid var(--line);padding:36px 40px;margin-bottom:28px;box-shadow:0 1px 3px rgba(14,42,71,0.04);scroll-margin-top:130px}
+  .ch-head{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:24px;gap:24px;flex-wrap:wrap}
+  .ch-title{font-family:'Noto Serif SC';font-weight:900;font-size:25px;color:var(--navy);display:flex;align-items:baseline;gap:14px}
+  .ch-num{color:var(--up);font-size:34px;line-height:1;border-right:2px solid var(--gold);padding-right:14px}
+  .ch-en{font-size:11.5px;color:var(--ink-3);letter-spacing:3px;text-transform:uppercase;font-family:'Noto Sans SC'}
+
+  .tldr{background:linear-gradient(90deg,#FFF7E0 0%, #FAF8F2 100%);border-left:4px solid var(--gold);padding:16px 20px;margin-bottom:24px;font-size:14.5px;color:var(--ink-2)}
+  .tldr b{color:var(--navy);font-weight:700}
+  .verdict-tags{margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap}
+  .vtag{display:inline-block;font-size:12px;font-weight:700;padding:4px 12px;border-radius:2px}
+  .vtag.r{background:var(--up-soft);color:var(--up-deep);border:1px solid #f0c4cb}
+  .vtag.g{background:var(--down-soft);color:var(--down-deep);border:1px solid #bfe3cc}
+  .vtag.y{background:#FFF7E0;color:#8a6a20;border:1px solid var(--gold-light)}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:18px}
+  .kpi{background:var(--paper);padding:18px 18px 16px;display:flex;flex-direction:column;gap:4px}
+  .kpi-label{font-size:11.5px;color:var(--ink-3);letter-spacing:1px}
+  .kpi-value{font-family:'Noto Serif SC';font-weight:700;font-size:27px;line-height:1.1}
+  .kpi-value.up{color:var(--up)}.kpi-value.down{color:var(--down)}
+  .kpi-sub{font-size:11.5px;color:var(--ink-3)}
+  .kpi-sub.up{color:var(--up)}.kpi-sub.down{color:var(--down)}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+  @media(max-width:960px){.two-col{grid-template-columns:1fr}}
+
+  .chart-card{background:var(--paper);border:1px solid var(--line);padding:16px 18px}
+  .chart-title{font-family:'Noto Serif SC';font-weight:700;font-size:15px;color:var(--navy);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:14px;gap:10px}
+  .chart-title small{font-family:'Noto Sans SC';font-weight:400;font-size:11px;color:var(--ink-3);letter-spacing:.5px;text-align:right}
+  .chart-wrap{position:relative;height:320px}
+
+  .theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .theme-card{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--gold);padding:16px 18px;transition:all .18s;position:relative}
+  .theme-card:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(14,42,71,.08)}
+  .theme-card.hot{border-top-color:var(--up)}
+  .theme-card.cold{border-top-color:var(--down)}
+  .theme-tag{font-family:'Noto Serif SC';font-weight:700;font-size:11.5px;color:var(--gold);letter-spacing:1px}
+  .theme-name{font-family:'Noto Serif SC';font-weight:700;font-size:16px;color:var(--navy);margin:4px 0 7px}
+  .theme-desc{font-size:13px;color:var(--ink-2);line-height:1.65}
+  .theme-desc i{color:var(--navy-2);font-style:normal;font-weight:500}
+
+  .sub-tabs{display:flex;border:1px solid var(--navy);margin-bottom:18px;width:fit-content;flex-wrap:wrap}
+  .sub-tab{padding:9px 20px;font-size:13.5px;font-weight:500;cursor:pointer;background:var(--paper);color:var(--navy);border-right:1px solid var(--navy);transition:all .15s}
+  .sub-tab:last-child{border-right:0}
+  .sub-tab.active{background:var(--navy);color:#fff}
+  .day-panel{display:none}
+  .day-panel.active{display:block;animation:fade .25s}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .day-headline{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+  .day-spx{font-family:'Noto Serif SC';font-weight:900;font-size:34px;line-height:1}
+  .day-spx.up{color:var(--up)} .day-spx.down{color:var(--down)}
+  .day-mood{font-size:13px;font-weight:700;padding:4px 12px;border-radius:2px}
+  .m-off{background:var(--down-soft);color:var(--down-deep)}
+  .m-on{background:var(--up-soft);color:var(--up-deep)}
+  .m-mix{background:#FFF7E0;color:#8a6a20}
+  .day-body{font-size:14px;color:var(--ink-2);line-height:1.75}
+  .day-body .hl{color:var(--navy);font-weight:700}
+
+  .heat-scroll{overflow-x:auto}
+  table.heat{width:100%;border-collapse:collapse;font-size:12.5px;min-width:640px}
+  table.heat th{background:var(--navy);color:#fff;padding:9px 6px;font-weight:500;font-size:12px;text-align:center;border-right:1px solid #1F4A72}
+  table.heat th.sec,table.heat td.sec{text-align:left;white-space:nowrap;font-weight:600;color:var(--ink);background:#FAF8F2;border-right:1px solid var(--line)}
+  table.heat td{padding:3px;border-bottom:1px solid var(--paper)}
+  .hcell{font-family:'Noto Serif SC';font-weight:700;text-align:center;padding:8px 4px;border-radius:2px}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--ink-3);margin-top:12px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:12px;height:12px;border-radius:2px;display:inline-block}
+
+  .movers-wrap .barrow{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:13.5px}
+  .movers-wrap .nm{width:108px;color:var(--ink);font-weight:600;flex-shrink:0}
+  .movers-wrap .tr{flex:1;background:#F0EBE0;border-radius:2px;height:18px;position:relative;overflow:hidden}
+  .movers-wrap .fill{position:absolute;top:0;bottom:0}
+  .movers-wrap .mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--line-strong)}
+  .movers-wrap .pc{width:54px;text-align:right;font-weight:700;font-family:'Noto Serif SC';flex-shrink:0}
+
+  .conclusion-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-top:6px}
+  .ahead-box{background:linear-gradient(180deg,#FFFDF6 0%, #F7F4ED 100%);border:1px solid var(--line);border-left:3px solid var(--navy);padding:16px 20px}
+  .ahead-box h4{margin:0 0 6px;font-family:'Noto Serif SC';color:var(--navy);font-size:15.5px;display:flex;gap:8px;align-items:center}
+  .ahead-box h4 .ic{color:var(--gold);font-weight:900}
+  .ahead-box p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.65}
+  .ahead-box p b{color:var(--navy-2)}
+
+  .note{background:#FFFAEC;border:1px dashed var(--gold-light);padding:12px 16px;font-size:12.5px;color:var(--ink-3);margin-top:18px;line-height:1.7}
+  .note b{color:var(--ink-2)}
+  footer{text-align:center;font-size:12px;color:var(--ink-3);padding:24px 0 0;margin-top:8px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-seal">复</div>
+      <div class="brand-text">
+        <div class="brand-title">美股一周复盘与分析</div>
+        <div class="brand-sub">U.S. MARKET WEEKLY · 2026.06.08–06.12</div>
+      </div>
+    </div>
+    <div class="topbar-meta">
+      <span>周期<b>6月8日–12日</b></span>
+      <span>标普500<b class="serif" style="color:var(--up)">往返收平</b></span>
+      <span>下一焦点<b>6月17日 FOMC</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="chapters">
+  <div class="chapters-inner" id="navTabs">
+    <a class="chapter-tab active" href="#c1"><span class="num">一</span>周度综述</a>
+    <a class="chapter-tab" href="#c2"><span class="num">二</span>往返行情</a>
+    <a class="chapter-tab" href="#c3"><span class="num">三</span>跨资产信号</a>
+    <a class="chapter-tab" href="#c4"><span class="num">四</span>每日叙事</a>
+    <a class="chapter-tab" href="#c5"><span class="num">五</span>板块轮动</a>
+    <a class="chapter-tab" href="#c6"><span class="num">六</span>高贝塔震源</a>
+    <a class="chapter-tab" href="#c7"><span class="num">七</span>趋势与规律</a>
+    <a class="chapter-tab" href="#c8"><span class="num">八</span>前路展望</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- 1 综述 -->
+  <section class="chapter" id="c1">
+    <div class="ch-head">
+      <div class="ch-title"><span class="ch-num">一</span>周度综述</div>
+      <div class="ch-en">Executive Summary</div>
+    </div>
+    <div class="verdict-tags">
+      <span class="vtag g">周一–周三 · 避险下挫</span>
+      <span class="vtag r">周四–周五 · 风险回补</span>
+      <span class="vtag y">全周净值 · 几近往返收平</span>
+    </div>
+    <div class="tldr">
+      <b>一句话总结：</b>本周由地缘政治——而非经济数据——主导行情。霍尔木兹海峡危机升级叠加CPI重回4%以上，引发连续三日下跌；周四特朗普取消对伊朗的打击计划，触发半导体领涨的约7%反弹。标普500全周几近收平，但<b>市场宽度</b>在水面之下悄然扩散：等权重（RSP）与小盘股（IWM）持续跑赢权重科技股。美联储新主席沃什（Kevin Warsh）的首次议息会议（<b>6月17日</b>）已逼近——降息已被price out，年内<b>加息</b>概率仍存。
+    </div>
+    <div class="ch-en" style="margin:22px 0 10px;color:var(--navy);font-weight:700;letter-spacing:1px">本周收官点位 · 周五（6/12）对比上周五（6/5）</div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">标普500</div><div class="kpi-value">7,431<span style="font-size:13px;color:var(--ink-3)"> 估</span></div><div class="kpi-sub">先抑后扬 · 全周约收平</div></div>
+      <div class="kpi"><div class="kpi-label">波动率 VIX</div><div class="kpi-value down">18.45</div><div class="kpi-sub down">▽ 自周三高点 22.1 回落</div></div>
+      <div class="kpi"><div class="kpi-label">10年期美债收益率</div><div class="kpi-value down">4.48%</div><div class="kpi-sub down">▽ 自 4.57% 回落</div></div>
+      <div class="kpi"><div class="kpi-label">WTI 原油</div><div class="kpi-value down">$84.88</div><div class="kpi-sub down">▽ 全周 −7.5%</div></div>
+      <div class="kpi"><div class="kpi-label">黄金</div><div class="kpi-value">~$4,210</div><div class="kpi-sub">V型走势 · 周三深跌后反弹</div></div>
+      <div class="kpi"><div class="kpi-label">比特币</div><div class="kpi-value">$6.35万</div><div class="kpi-sub">— 贴近52周低位</div></div>
+    </div>
+    <div class="note"><b>阅读提示（红涨绿跌）：</b>本报告遵循中国市场配色惯例——<span style="color:var(--up);font-weight:700">红色代表上涨</span>，<span style="color:var(--down);font-weight:700">绿色代表下跌</span>，与美股原生配色相反。</div>
+  </section>
+
+  <!-- 2 往返行情 -->
+  <section class="chapter" id="c2">
+    <div class="ch-head">
+      <div class="ch-title"><span class="ch-num">二</span>往返行情</div>
+      <div class="ch-en">The Round Trip</div>
+    </div>
+    <div class="tldr">标普500周三探至 7,268 低点（较6月2日历史高点 7,610 回撤 −4.6%），随后几乎收复全部失地。<b>走势形态——而非净涨跌幅——才是本周的故事。</b></div>
+    <div class="two-col">
+      <div class="chart-card">
+        <div class="chart-title">标普500 · 每日收盘 <small>三跌两涨 · 周三为本周谷底</small></div>
+        <div class="chart-wrap"><canvas id="spxLine"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">各指数每日涨跌幅 <small>小盘股双向领先 · 纳指为高贝塔摆动因子</small></div>
+        <div class="chart-wrap"><canvas id="dailyBars"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 跨资产 -->
+  <section class="chapter" id="c3">
+    <div class="ch-head">
+      <div class="ch-title"><span class="ch-num">三</span>跨资产信号</div>
+      <div class="ch-en">Cross-Asset Signals</div>
+    </div>
+    <div class="tldr">以周一 = 100 进行归一化。「恐慌类」资产（VIX、原油）在周三见顶；周四–周五的缓和则通过<b>收益率与油价回落</b>体现。</div>
+    <div class="two-col">
+      <div class="chart-card">
+        <div class="chart-title">波动率与利率 <small>VIX冲高至22后回落破20 · 10Y随和平交易降至4.45%</small></div>
+        <div class="chart-wrap"><canvas id="volRates"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">大宗与加密（归一化） <small>原油随海峡溢价往返 · 黄金周三在战火中重挫</small></div>
+        <div class="chart-wrap"><canvas id="commod"></canvas></div>
+      </div>
+    </div>
+    <div class="note"><b>黄金的反常：</b>周三黄金在一场「真枪实弹」的冲突中反而下跌约4%——这是一个重要信号。实际收益率上行与加息预期升温，压过了避险买盘。在长端收益率5%的环境里，传统对冲工具（黄金、公用事业、REITs、长债）集体失效，真正起到防御作用的是<span style="color:var(--up);font-weight:700">短债（T-bills）与必需消费</span>。</div>
+  </section>
+
+  <!-- 4 每日叙事 -->
+  <section class="chapter" id="c4">
+    <div class="ch-head">
+      <div class="ch-title"><span class="ch-num">四</span>每日叙事</div>
+      <div class="ch-en">Day-by-Day Narrative</div>
+    </div>
+    <div class="tldr">本周弧线：<b>反弹 → 反转 → 投降式杀跌 → 地缘缓和 → 宽度扩散</b>。点击下方切换每个交易日。</div>
+    <div class="sub-tabs" id="daytabs">
+      <div class="sub-tab active" data-d="0">周一 6/8</div>
+      <div class="sub-tab" data-d="1">周二 6/9</div>
+      <div class="sub-tab" data-d="2">周三 6/10</div>
+      <div class="sub-tab" data-d="3">周四 6/11</div>
+      <div class="sub-tab" data-d="4">周五 6/12</div>
+    </div>
+    <div id="daypanels"></div>
+  </section>
+
+  <!-- 5 板块轮动 -->
+  <section class="chapter" id="c5">
+    <div class="ch-head">
+      <div class="ch-title"><span class="ch-num">五</span>板块轮动热力图</div>
+      <div class="ch-en">Sector Rotation Heatmap</div>
+    </div>
+    <div class="tldr">板块ETF每日涨跌幅（%）。注意<b>风格切换</b>：杀跌日由防御板块（房地产XLRE、必需消费XLP、公用事业XLU）领先；反弹日由周期与半导体（科技XLK、材料XLB、工业XLI）领涨。能源（XLE）则与全场相反——「战起则强、和议则弱」。</div>
+    <div class="heat-scroll"><div id="heatmap"></div></div>
+    <div class="legend">
+      <span><span class="dot" style="background:#9E1A2D"></span> 大涨</span>
+      <span><span class="dot" style="background:#D7263D;opacity:.55"></span> 上涨</span>
+      <span><span class="dot" style="background:#cdc6b6"></span> 持平</span>
+      <span><span class="dot" style="background:#1F8A47;opacity:.55"></span> 下跌</span>
+      <span><span class="dot" style="background:#125F30"></span> 大跌</span>
+    </div>
+  </section>
+
+  <!-- 6 高贝塔震源 -->
+  <section class="chapter" id="c6">
+    <div class="ch-head">
+      <div class="ch-title"><span class="ch-num">六</span>高贝塔震源 · 半导体</div>
+      <div class="ch-en">The High-Beta Epicenter</div>
+    </div>
+    <div class="tldr">半导体是本周的「震源」——既是回撤的源头，也是反弹的引擎。下方两个极端单日，展示了其摆动幅度之大。</div>
+    <div class="two-col">
+      <div class="chart-card movers-wrap">
+        <div class="chart-title" style="color:var(--down)">周三 6/10 · 避险杀跌日 <small>七巨头跌1.5–3.8% · 仅苹果翻红</small></div>
+        <div id="moversDown"></div>
+      </div>
+      <div class="chart-card movers-wrap">
+        <div class="chart-title" style="color:var(--up)">周四 6/11 · 报复性反弹日 <small>费城半导体指数+7.9%，2025年4月来最佳 · SOXX+8.3%</small></div>
+        <div id="moversUp"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 趋势与规律 -->
+  <section class="chapter" id="c7">
+    <div class="ch-head">
+      <div class="ch-title"><span class="ch-num">七</span>趋势与规律</div>
+      <div class="ch-en">Trends &amp; Patterns</div>
+    </div>
+    <div class="tldr">六条超越日内噪音的结构性信号。</div>
+    <div class="theme-grid">
+      <div class="theme-card hot"><div class="theme-tag">规律 01</div><div class="theme-name">地缘 &gt; 数据</div><div class="theme-desc">霍尔木兹海峡危机压倒一切宏观数据。CPI（4.2%）与PPI（+1.1%）双双偏热，但一旦「和平溢价」打到油价，影响便微乎其微。周四特朗普取消打击后，股票、债券、半导体、加密<i>同步</i>上涨——一条头条撬动了所有资产。</div></div>
+      <div class="theme-card hot"><div class="theme-tag">规律 02</div><div class="theme-name">市场宽度持续扩散</div><div class="theme-desc">每个交易日，等权重（RSP）与小盘股（IWM）都跑赢权重科技股（QQQ）。至周五，60%以上个股站上20日均线，创新高数量超过创新低。「平均个股」正悄然跑赢七巨头——这是相对2024–25年的<i>格局逆转</i>。</div></div>
+      <div class="theme-card cold"><div class="theme-tag">规律 03</div><div class="theme-name">「美联储看跌期权」已死</div><div class="theme-desc">5月强劲非农（17.2万）抹去降息希望；高盛将降息预期推迟至2027年。市场现定价年内<i>加息</i>概率约五成有余。6月17日FOMC——沃什主席的首秀——是本周悬顶之剑，点阵图存在鹰派风险。</div></div>
+      <div class="theme-card cold"><div class="theme-tag">规律 04</div><div class="theme-name">黄金的性格突变</div><div class="theme-desc">周三黄金在战火中反跌约4%——重大信号。实际收益率上行与加息预期压过避险需求。在长端5%的世界里，黄金、公用事业、REITs、长债等经典对冲集体失灵；真正防御的是<i>短债与必需消费</i>。</div></div>
+      <div class="theme-card"><div class="theme-tag">规律 05</div><div class="theme-name">半导体 = 摆动因子</div><div class="theme-desc">芯片驱动了两端的极值：既是回撤之源，又是反弹之擎。即便经历8%的单日暴涨，SMH仍站稳所有主要均线之上。高离散、高贝塔——是领导者，但绝非低压力的领导者。</div></div>
+      <div class="theme-card"><div class="theme-tag">规律 06</div><div class="theme-name">SpaceX 抢尽风头</div><div class="theme-desc">华尔街史上最大IPO以135美元定价，周五收涨<i>+19.2%</i>，估值近2.1万亿美元。但热度并未外溢——火箭实验室 −10.8%、直觉机器 −13.1%。市场爱的是旗舰，而非整个主题篮子。</div></div>
+    </div>
+  </section>
+
+  <!-- 8 前路展望 -->
+  <section class="chapter" id="c8">
+    <div class="ch-head">
+      <div class="ch-title"><span class="ch-num">八</span>前路展望</div>
+      <div class="ch-en">The Road Ahead</div>
+    </div>
+    <div class="tldr">决定「宽度扩散能否延续、缓和能否兑现」的关键变量。</div>
+    <div class="conclusion-grid">
+      <div class="ahead-box"><h4><span class="ic">①</span>6月16–17日 FOMC（周三决议）</h4><p>按兵不动已被price in约97%。风险在于沃什首次记者会与点阵图是否<b>固化加息倾向</b>；声明中关于「能源冲击」的措辞是关键风向标。</p></div>
+      <div class="ahead-box"><h4><span class="ic">②</span>海峡缓和的可持续性</h4><p>周四–周五的整轮反弹，建立在脆弱的和平叙事之上。一旦油价重新走强或剧情反转，<b>通胀难题将瞬间重燃</b>。</p></div>
+      <div class="ahead-box"><h4><span class="ic">③</span>关键点位</h4><p>标普 <b>7,450–7,500</b>（收复=偏多）vs. 7,260/7,175 支撑 · 10年期 4.50/4.40 · 美元指数 100 · VIX 20。</p></div>
+      <div class="ahead-box"><h4><span class="ic">④</span>领导力检验</h4><p>IWM与RSP能否持续跑赢QQQ？若收益率企稳、小盘领涨，则宽度扩散为真；若收益率冲高、资金回流权重股，则周四只是<b>缓和性反弹</b>。</p></div>
+      <div class="ahead-box"><h4><span class="ic">⑤</span>机构持仓倾向</h4><p>议息会前「精选偏多、战术谨慎」——动量端配置 IWM/RSP/金融XLF/半导体，核心端用 SPY/VOO，压舱端用 公用XLU/必需XLP/短债SHY；QQQ与TLT视为持有而非激进加仓。</p></div>
+      <div class="ahead-box"><h4><span class="ic">⑥</span>定调</h4><p>整体仍属「<b>结构性买回调、而非降风险</b>」环境，但不宜在议息会前重仓追高高贝塔成长。宽度若持续验证，回调即是良机。</p></div>
+    </div>
+  </section>
+
+  <div class="note">
+    <b>数据来源：</b>五份每日复盘（6月8日与9日 PDF；6月10、11、12日 Markdown），原始数据汇编自 FMP 交易所行情、路透、CNBC、TheStreet、嘉信、晨星、Barchart、MarketWatch 与 Trading Economics。<br>
+    <b>说明：</b>周五（6/12）标普/纳指/道指的收盘点位系根据已公布的当日涨跌幅推算（路透：标普 +0.50%、纳指 +0.31%、道指 +0.70%）。板块与宽度数据为所报每日 ETF/交易所口径；原文已标注部分跨源差异（如黄金周三日内 −2.3% 与收盘 −4.2%）。本文为源文档之综合整理，仅供参考，<b>不构成投资建议</b>。
+  </div>
+
+  <footer>美股一周复盘 · 2026年6月8日–12日 · 中国市场样式（米白·藏青·金 / 红涨绿跌）</footer>
+</main>
+
+<script>
+const UP='#D7263D',DOWN='#1F8A47',NAVY='#0E2A47',NAVY2='#143E66',GOLD='#B08842',GOLDL='#D4B271',INK3='#6B6B6B',GRID='rgba(14,42,71,.08)';
+Chart.defaults.color=INK3;
+Chart.defaults.font.family="'Noto Sans SC','PingFang SC',sans-serif";
+Chart.defaults.font.size=11.5;
+const days=['周一 6/8','周二 6/9','周三 6/10','周四 6/11','周五 6/12'];
+
+// SPX line
+new Chart(spxLine,{type:'line',
+  data:{labels:days,datasets:[{
+    data:[7405.73,7386.65,7267.65,7394.30,7431],
+    borderColor:NAVY,borderWidth:2.5,tension:.3,
+    pointBackgroundColor:[UP,DOWN,DOWN,UP,UP],pointRadius:6,pointBorderColor:'#fff',pointBorderWidth:2,
+    fill:true,backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,320);g.addColorStop(0,'rgba(14,42,71,.16)');g.addColorStop(1,'rgba(14,42,71,0)');return g;}
+  }]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'标普500：'+c.parsed.y.toLocaleString()}}},
+    scales:{y:{grid:{color:GRID},ticks:{callback:v=>v.toLocaleString()},min:7200,max:7480},x:{grid:{display:false}}}}});
+
+// daily bars
+new Chart(dailyBars,{type:'bar',
+  data:{labels:days,datasets:[
+    {label:'标普500',data:[0.30,-0.26,-1.61,1.75,0.50],backgroundColor:NAVY},
+    {label:'纳斯达克综指',data:[0.86,-0.97,-1.99,2.54,0.31],backgroundColor:NAVY2},
+    {label:'道琼斯',data:[-0.16,0.17,-1.87,1.86,0.70],backgroundColor:'#7E8CA0'},
+    {label:'罗素2000',data:[0.83,0.41,-1.10,3.00,0.92],backgroundColor:GOLD}
+  ]},
+  options:{plugins:{legend:{position:'bottom',labels:{boxWidth:11,padding:12,font:{size:11.5}}},
+    tooltip:{callbacks:{label:c=>c.dataset.label+'：'+(c.parsed.y>0?'+':'')+c.parsed.y+'%'}}},
+    scales:{y:{grid:{color:GRID},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}});
+
+// vol & rates
+new Chart(volRates,{type:'line',
+  data:{labels:days,datasets:[
+    {label:'VIX',data:[18.72,19.87,22.08,19.44,18.45],borderColor:UP,backgroundColor:UP,yAxisID:'y',tension:.3,borderWidth:2.5,pointRadius:3.5},
+    {label:'10年期收益率(%)',data:[4.57,4.54,4.535,4.45,4.48],borderColor:GOLD,backgroundColor:GOLD,yAxisID:'y1',tension:.3,borderWidth:2.5,pointRadius:3.5},
+    {label:'30年期收益率(%)',data:[5.00,5.025,5.00,4.97,4.97],borderColor:GOLDL,backgroundColor:GOLDL,yAxisID:'y1',tension:.3,borderWidth:2,borderDash:[4,3],pointRadius:2.5}
+  ]},
+  options:{interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'bottom',labels:{boxWidth:11,padding:12,font:{size:11.5}}}},
+    scales:{
+      y:{position:'left',grid:{color:GRID},title:{display:true,text:'VIX'},min:16,max:24},
+      y1:{position:'right',grid:{display:false},title:{display:true,text:'收益率 %'},min:4.3,max:5.1},
+      x:{grid:{display:false}}}}});
+
+// commodities indexed
+function idx(a){return a.map(v=>+(v/a[0]*100).toFixed(2));}
+new Chart(commod,{type:'line',
+  data:{labels:days,datasets:[
+    {label:'WTI原油',data:idx([91.77,88.20,88.00,87.71,84.88]),borderColor:UP,backgroundColor:UP,tension:.3,borderWidth:2.5,pointRadius:3.5},
+    {label:'黄金',data:idx([4349.20,4271.08,4105.80,4209.81,4212.00]),borderColor:GOLD,backgroundColor:GOLD,tension:.3,borderWidth:2.5,pointRadius:3.5},
+    {label:'比特币',data:idx([63975,62000,61700,63523,63552]),borderColor:NAVY2,backgroundColor:NAVY2,tension:.3,borderWidth:2,pointRadius:3},
+    {label:'美元指数',data:idx([99.90,100.01,100.00,99.64,99.81]),borderColor:'#7E8CA0',backgroundColor:'#7E8CA0',tension:.3,borderWidth:2,borderDash:[4,3],pointRadius:2.5}
+  ]},
+  options:{interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'bottom',labels:{boxWidth:11,padding:12,font:{size:11.5}}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+'：'+c.parsed.y+'（周一=100）'}}},
+    scales:{y:{grid:{color:GRID},title:{display:true,text:'归一化 · 周一=100'}},x:{grid:{display:false}}}}});
+
+// DAY PANELS
+const tl=[
+  {spx:'+0.30%',cls:'up',mood:'分化 / 喜忧参半',mc:'m-mix',
+    body:'<span class="hl">周五杀跌后的反弹。</span>半导体大涨（AMD +5.1%、博通 +2.8%），但苹果因WWDC「利好出尽」跌 −1.9%。市场宽度极度强势，涨跌家数比 3.39:1；小盘股 +0.83%。收益率压向 4.57%。'},
+  {spx:'−0.26%',cls:'down',mood:'避险',mc:'m-off',
+    body:'<span class="hl">多头陷阱与防御轮动。</span>由 +1% 翻绿。伊朗击落美军「阿帕奇」直升机，油价冲高后回落。房地产 +2.1%、必需消费 +1.7% 领涨；科技 −1.8%。30年期美债破 5.00%。苹果 −3.6%。'},
+  {spx:'−1.61%',cls:'down',mood:'投降式杀跌',mc:'m-off',
+    body:'<span class="hl">全周最差，收于当日低点。</span>CPI偏热至4.2%；海峡局势升级引发尾盘抛售。VIX +11% 至 22。黄金在战火中 −4.2%。标普较历史高点回撤 −4.6%。'},
+  {spx:'+1.75%',cls:'up',mood:'风险回补',mc:'m-on',
+    body:'<span class="hl">和平反弹。</span>特朗普取消对伊打击。半导体爆发——SOXX +8.3%、费半 +7.9%。罗素2000 +3.0%。油价 −2.6%，10年期降9基点至4.45%，VIX回落破20。'},
+  {spx:'+0.50%',cls:'up',mood:'宽度扩散',mc:'m-on',
+    body:'<span class="hl">健康的扩散。</span>材料与金融领涨；等权重再度跑赢权重。SpaceX IPO +19.2%。密歇根消费者信心超预期（48.9）。VIX 18.45。油价 −3% 至 $84.88。'}
+];
+document.getElementById('daypanels').innerHTML=tl.map((d,i)=>`
+  <div class="day-panel ${i===0?'active':''}" data-p="${i}">
+    <div class="day-headline">
+      <div class="day-spx ${d.cls}">标普 ${d.spx}</div>
+      <div class="day-mood ${d.mc}">${d.mood}</div>
+    </div>
+    <div class="day-body">${d.body}</div>
+  </div>`).join('');
+document.querySelectorAll('#daytabs .sub-tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('#daytabs .sub-tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    const d=t.dataset.d;
+    document.querySelectorAll('.day-panel').forEach(p=>p.classList.toggle('active',p.dataset.p===d));
+  };
+});
+
+// HEATMAP (red=up, green=down)
+const secs=['科技 XLK','金融 XLF','能源 XLE','材料 XLB','工业 XLI','非必需消费 XLY','通信服务 XLC','医疗保健 XLV','必需消费 XLP','公用事业 XLU','房地产 XLRE'];
+const heat=[
+  [ 2.15, -1.82, -1.75,  3.73,  0.86],
+  [-0.63,  0.17,  0.45,  0.75,  1.40],
+  [ 1.14, -1.60,  0.10, -1.96,  0.77],
+  [-1.32,  1.72, -2.00,  3.27,  1.90],
+  [-0.32,  0.34, -1.80,  3.21,  0.59],
+  [ 0.46,  0.67, -2.00,  2.49,  0.27],
+  [-0.52,  0.25, -1.65,  0.99, -0.43],
+  [-0.24,  1.30, -1.70,  0.79, -0.18],
+  [-0.44,  1.70,  0.30, -0.28,  0.68],
+  [-1.87,  0.18, -1.80,  0.07,  1.09],
+  [-1.50,  2.13, -1.90, -0.18,  0.97]
+];
+function heatColor(v){
+  if(v>=1.5) return 'background:#9E1A2D;color:#fff';
+  if(v>0) return 'background:rgba(215,38,61,'+(0.22+Math.min(v,1.5)/1.5*0.45)+');color:#7a1320';
+  if(v===0) return 'background:#E4DED1;color:#6B6B6B';
+  if(v>-1.5) return 'background:rgba(31,138,71,'+(0.22+Math.min(-v,1.5)/1.5*0.45)+');color:#0d4a25';
+  return 'background:#125F30;color:#fff';
+}
+let ht='<table class="heat"><thead><tr><th class="sec">板块ETF</th>'+days.map(d=>`<th>${d}</th>`).join('')+'</tr></thead><tbody>';
+secs.forEach((s,r)=>{
+  ht+=`<tr><td class="sec">${s}</td>`;
+  heat[r].forEach(v=>{ht+=`<td><div class="hcell" style="${heatColor(v)}">${v>0?'+':''}${v.toFixed(1)}</div></td>`;});
+  ht+='</tr>';
+});
+ht+='</tbody></table>';
+document.getElementById('heatmap').innerHTML=ht;
+
+// MOVERS (red=up, green=down)
+function movers(el,data){
+  const max=Math.max(...data.map(d=>Math.abs(d.v)));
+  el.innerHTML=data.map(d=>{
+    const w=Math.abs(d.v)/max*100, col=d.v>=0?UP:DOWN, sign=d.v>0?'+':'';
+    return `<div class="barrow"><div class="nm">${d.n}</div>
+      <div class="tr"><div class="fill" style="background:${col};left:${d.v>=0?'50%':(50-w/2)+'%'};width:${w/2}%"></div><div class="mid"></div></div>
+      <div class="pc" style="color:${col}">${sign}${d.v}%</div></div>`;
+  }).join('');
+}
+movers(document.getElementById('moversDown'),[
+  {n:'特斯拉 TSLA',v:-3.81},{n:'英伟达 NVDA',v:-3.75},{n:'美光 MU',v:-4.80},{n:'亚马逊 AMZN',v:-2.56},
+  {n:'Meta',v:-2.34},{n:'谷歌 GOOGL',v:-2.16},{n:'微软 MSFT',v:-1.50},{n:'苹果 AAPL',v:0.38}
+]);
+movers(document.getElementById('moversUp'),[
+  {n:'SOXX',v:8.34},{n:'SMH',v:6.76},{n:'特斯拉 TSLA',v:4.58},{n:'英伟达 NVDA',v:2.18},
+  {n:'亚马逊 AMZN',v:1.40},{n:'苹果 AAPL',v:1.29},{n:'谷歌 GOOGL',v:0.40},{n:'微软 MSFT',v:-1.85}
+]);
+
+// nav active state on scroll
+const secEls=[...document.querySelectorAll('section.chapter')];
+const tabs=[...document.querySelectorAll('.chapter-tab')];
+const obs=new IntersectionObserver((es)=>{
+  es.forEach(e=>{if(e.isIntersecting){const id=e.target.id;tabs.forEach(t=>t.classList.toggle('active',t.getAttribute('href')==='#'+id));}});
+},{rootMargin:'-130px 0px -65% 0px'});
+secEls.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

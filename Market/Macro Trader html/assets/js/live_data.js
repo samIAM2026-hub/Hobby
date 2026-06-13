@@ -27,7 +27,7 @@
    ║        · Use "TBD" or "—" where a value isn't currently sourced.        ║
    ║        · Change-percent fields use the convention "+0.37%" / "-0.13%".  ║
    ║                                                                         ║
-   ║      Last reviewed: June 11, 2026 close latest available.                ║
+   ║      Last reviewed: June 12, 2026 close latest available.                ║
    ║                                                                         ║
    ═══════════════════════════════════════════════════════════════════════ */
 
@@ -37,9 +37,9 @@ window.MARKET_LIVE = {
      §1 · SNAPSHOT METADATA
      The "as-of" header used by every dashboard.
      ══════════════════════════════════════════════════════════════════════════ */
-  asOfLong:           'June 11, 2026',
-  asOfShort:          'Jun 11',
-  asOfDow:            'Thu, Jun 11, 2026',
+  asOfLong:           'June 12, 2026',
+  asOfShort:          'Jun 12',
+  asOfDow:            'Fri, Jun 12, 2026',
 
 
   /* ══════════════════════════════════════════════════════════════════════════
@@ -55,59 +55,59 @@ window.MARKET_LIVE = {
                         the index chart is unavailable (SPY/DIA/IWM).
        · ETF/style    — Nasdaq quote + chart data (price returns, not total return).
      ══════════════════════════════════════════════════════════════════════════ */
-  spxClose:           '7,394.30',     // S&P 500
-  spxChg:             '+1.75%',       // 1D
-  spx1W:              '-2.51%',       // SPY 5-session proxy, Nasdaq chart, 2026-06-11
-  spxYTD:             '+7.81%',       // AP market summary, 2026-06-11
+  spxClose:           '7,431.46',     // S&P 500
+  spxChg:             '+0.50%',       // 1D
+  spx1W:              '+0.65%',       // AP market summary week-ended, 2026-06-12
+  spxYTD:             '+8.60%',       // AP market summary, 2026-06-12
   // MA distance series for the Technical Analysis section.
   //   Formula: (close / MA − 1) × 100, signed (above MA = positive).
-  //   Refreshed from Yahoo Finance daily close history, 2026-06-11 latest close.
+  //   Refreshed from Yahoo Finance / Nasdaq daily close history, 2026-06-12 latest close.
   //   Cross-check source pattern: investing.com/indices/<index>-technical "Moving Averages" table
-  spxTo20ema:         '-0.38%',       // 20d EMA 7,452.84
-  spxTo50ma:          '+2.26%',       // 50d SMA 7,155.96
-  spxTo200ma:         '+7.52%',      // 200d SMA 6,858.26
-  dowClose:           '50,848.75',    // Dow Jones Industrial Average
-  dowChg:             '+1.86%',
-  dow1W:              '-1.38%',       // DIA 5-session proxy, Nasdaq chart, 2026-06-11
-  dowYTD:             '+5.10%',        // AP market summary, 2026-06-11
-  dowTo20ema:         '+0.75%',       // 20d EMA 50,411.44
-  dowTo50ma:          '+2.80%',       // 50d SMA 49,071.02
-  dowTo200ma:         '+5.93%',       // 200d SMA 47,891.97
-  ndxClose:           '29,446.18',    // Nasdaq 100
-  ndxChg:             '+3.29%',
-  ndx1W:              '-3.16%',
-  ndxYTD:             '+16.82%',      // Nasdaq close vs 2025 year-end, 2026-06-11
-  ndxTo20ema:         '+0.30%',       // 20d EMA 29,481.38
-  ndxTo50ma:          '+5.52%',      // 50d SMA 27,446.08
-  ndxTo200ma:         '+14.72%',      // 200d SMA 25,552.25
-  ixicClose:          '25,809.66',    // Nasdaq Composite
-  ixicChg:            '+2.54%',
-  ixic1W:             '-3.81%',       // Nasdaq Composite 5-session return, 2026-06-11
-  ixicYTD:            '+11.08%',       // AP market summary, 2026-06-11
-  rutClose:           '2,921.03',     // Russell 2000
-  rutChg:             '+3.02%',
-  rut1W:              '-0.49%',       // IWM 5-session proxy, Nasdaq chart, 2026-06-11
-  rutYTD:             '+16.46%',       // AP market summary, 2026-06-11
-  rutTo20ema:         '+1.88%',       // 20d EMA 2,865.16
-  rutTo50ma:          '+4.64%',       // 50d SMA 2,758.96
-  rutTo200ma:         '+13.09%',      // 200d SMA 2,571.77
+  spxTo20ema:         '-0.29%',       // 20d EMA proxy roll-forward, 2026-06-12
+  spxTo50ma:          '+3.85%',       // 50d SMA proxy roll-forward
+  spxTo200ma:         '+8.36%',       // 200d SMA proxy roll-forward
+  dowClose:           '51,202.26',    // Dow Jones Industrial Average
+  dowChg:             '+0.70%',
+  dow1W:              '+0.66%',       // AP market summary week-ended, 2026-06-12
+  dowYTD:             '+6.50%',       // AP market summary, 2026-06-12
+  dowTo20ema:         '+1.57%',       // 20d EMA proxy roll-forward
+  dowTo50ma:          '+4.34%',       // 50d SMA proxy roll-forward
+  dowTo200ma:         '+6.91%',       // 200d SMA proxy roll-forward
+  ndxClose:           '29,635.95',    // Nasdaq 100
+  ndxChg:             '+0.64%',
+  ndx1W:              '+2.34%',
+  ndxYTD:             '+17.37%',      // Nasdaq close vs 2025 year-end, 2026-06-12
+  ndxTo20ema:         '+0.52%',       // 20d EMA proxy roll-forward
+  ndxTo50ma:          '+7.98%',       // 50d SMA proxy roll-forward
+  ndxTo200ma:         '+15.98%',      // 200d SMA proxy roll-forward
+  ixicClose:          '25,888.84',    // Nasdaq Composite
+  ixicChg:            '+0.31%',
+  ixic1W:             '+0.70%',       // AP market summary week-ended, 2026-06-12
+  ixicYTD:            '+11.40%',      // AP market summary, 2026-06-12
+  rutClose:           '2,943.99',     // Russell 2000
+  rutChg:             '+0.79%',
+  rut1W:              '+3.90%',       // AP market summary week-ended, 2026-06-12
+  rutYTD:             '+18.60%',      // AP market summary, 2026-06-12
+  rutTo20ema:         '+2.75%',       // 20d EMA proxy roll-forward
+  rutTo50ma:          '+6.71%',       // 50d SMA proxy roll-forward
+  rutTo200ma:         '+14.47%',      // 200d SMA proxy roll-forward
   rspClose:           '$209.75',      // Invesco S&P 500 Equal-Weight ETF (breadth proxy)
   rspChg:             '+1.56%',
-  rsp1W:              '-0.51%',
-  rspYTD:             '+8.76%',       // Nasdaq chart return, 2026-06-11
+  rsp1W:              '+0.92%',
+  rspYTD:             '+9.50%',       // Nasdaq chart return, 2026-06-12
 
   // ── S&P 500 Growth-vs-Value factor read (replaced IXIC in §2 — IXIC/NDX are
   //    ~95% correlated, factor split adds unique signal). Source: SPYG / SPYV
-  //    Yahoo Finance chart return, 2026-06-11 close. gvSpreadYTD =
+  //    Nasdaq ETF quote/history return, 2026-06-12 close. gvSpreadYTD =
   //    SPYG − SPYV in percentage points (positive = growth-led tape).
   //    1D / 1W spread = (today's/this-week's SPYG % − SPYV %) — fill on refresh.
   //    Note: NDX is mostly growth, so this tile mostly tells you whether the
   //    rally is *broadening into value* or *narrowing into growth*.
-  spygYTD:            '+9.06%',      // SPDR Portfolio S&P 500 Growth ETF
-  spyvYTD:            '+6.83%',       // SPDR Portfolio S&P 500 Value ETF
-  gvSpreadYTD:        '+2.23pp',      // SPYG − SPYV
+  spygYTD:            '+9.11%',       // SPDR Portfolio S&P 500 Growth ETF
+  spyvYTD:            '+7.11%',       // SPDR Portfolio S&P 500 Value ETF
+  gvSpreadYTD:        '+2.00pp',      // SPYG − SPYV
   gvSpread1D:         '+1.13pp',
-  gvSpread1W:         '-3.07pp',
+  gvSpread1W:         '-0.37pp',
 
 
   /* ══════════════════════════════════════════════════════════════════════════
@@ -126,40 +126,40 @@ window.MARKET_LIVE = {
 
      Tiles in daily_briefing.html are ordered heaviest → lightest SPX weight.
      ══════════════════════════════════════════════════════════════════════════ */
-  nvdaChg:            '+2.22%',       // NVIDIA · 1D
-  nvda1W:             '-6.31%',
-  nvda1M:             '-7.21%',
-  nvdaYTD:            '+8.48%',
+  nvdaChg:            '+0.16%',       // NVIDIA · 1D
+  nvda1W:             '+0.04%',
+  nvda1M:             '-7.06%',
+  nvdaYTD:            '+10.02%',
   nvdaWt:             '~8.1%',
-  googlChg:           '+0.39%',       // Alphabet Class A · 1D
-  googl1W:            '-3.87%',
-  googl1M:            '-7.64%',
-  googlYTD:           '+13.52%',
+  googlChg:           '+0.53%',       // Alphabet Class A · 1D
+  googl1W:            '-2.40%',
+  googl1M:            '-7.14%',
+  googlYTD:           '+14.91%',
   googlWt:            '~7.3%',
-  aaplChg:            '+1.39%',       // Apple · 1D
-  aapl1W:             '-5.01%',
-  aapl1M:             '+0.28%',
-  aaplYTD:            '+9.08%',
+  aaplChg:            '-1.52%',       // Apple · 1D
+  aapl1W:             '-5.27%',
+  aapl1M:             '-1.24%',
+  aaplYTD:            '+7.09%',
   aaplWt:             '~6.5%',
-  msftChg:            '-1.77%',       // Microsoft · 1D
-  msft1W:             '-8.81%',
-  msft1M:             '-4.27%',
-  msftYTD:            '-17.47%',
+  msftChg:            '+0.10%',       // Microsoft · 1D
+  msft1W:             '-6.22%',
+  msft1M:             '-4.18%',
+  msftYTD:            '-19.21%',
   msftWt:             '~4.4%',
-  amznChg:            '+1.47%',       // Amazon · 1D
-  amzn1W:             '-4.84%',
-  amzn1M:             '-9.15%',
-  amznYTD:            '+6.63%',
+  amznChg:            '-1.23%',       // Amazon · 1D
+  amzn1W:             '-3.04%',
+  amzn1M:             '-10.26%',
+  amznYTD:            '+3.35%',
   amznWt:             '~4.3%',
-  tslaChg:            '+4.60%',       // Tesla · 1D
-  tsla1W:             '-4.61%',
-  tsla1M:             '-7.91%',
-  tslaYTD:            '-8.88%',
+  tslaChg:            '+1.82%',       // Tesla · 1D
+  tsla1W:             '+3.95%',
+  tsla1M:             '-6.23%',
+  tslaYTD:            '-9.63%',
   tslaWt:             '~2.5%',
-  metaChg:            '-0.45%',       // Meta Platforms · 1D
-  meta1W:             '-9.42%',
-  meta1M:             '-5.73%',
-  metaYTD:            '-12.60%',
+  metaChg:            '-0.26%',       // Meta Platforms · 1D
+  meta1W:             '-4.39%',
+  meta1M:             '-5.97%',
+  metaYTD:            '-14.11%',
   metaWt:             '~2.4%',
 
 
@@ -176,64 +176,64 @@ window.MARKET_LIVE = {
      Tiles in daily_briefing.html are ordered heaviest → lightest SPX weight.
      ══════════════════════════════════════════════════════════════════════════ */
   xlkChg:             '+3.73%',          // Technology · 1D
-  xlk1W:              '-5.16%',
+  xlk1W:              '+1.61%',
   xlk1M:              '+4.57%',
-  xlkYTD:             '+26.96%',
+  xlkYTD:             '+27.26%',
   xlkWt:              '35.99%',
-  xlfChg:             '+0.75%',          // Financials · 1D
-  xlf1W:              '+0.82%',
-  xlf1M:              '+2.02%',
-  xlfYTD:             '-4.21%',
+  xlfChg:             '+1.39%',          // Financials · 1D
+  xlf1W:              '+2.01%',
+  xlf1M:              '+3.43%',
+  xlfYTD:             '-2.59%',
   xlfWt:              '11.75%',
-  xleChg:             '-1.94%',          // Energy · 1D
-  xle1W:              '-2.77%',
-  xle1M:              '-0.78%',
-  xleYTD:             '+25.13%',
+  xleChg:             '+0.76%',          // Energy · 1D
+  xle1W:              '-0.20%',
+  xle1M:              '-0.03%',
+  xleYTD:             '+28.73%',
   xleWt:              '3.26%',
-  xliChg:             '+3.24%',          // Industrials · 1D
-  xli1W:              '-0.57%',
-  xli1M:              '+0.46%',
-  xliYTD:             '+10.87%',
+  xliChg:             '+0.59%',          // Industrials · 1D
+  xli1W:              '+1.15%',
+  xli1M:              '+1.06%',
+  xliYTD:             '+13.58%',
   xliWt:              '8.03%',
-  xlyChg:             '+2.48%',          // Consumer Discretionary · 1D
-  xly1W:              '-0.82%',
-  xly1M:              '-1.68%',
-  xlyYTD:             '-1.73%',
+  xlyChg:             '+0.28%',          // Consumer Discretionary · 1D
+  xly1W:              '+1.53%',
+  xly1M:              '-1.41%',
+  xlyYTD:             '-2.34%',
   xlyWt:              '10.28%',
-  xlpChg:             '-0.26%',          // Consumer Staples · 1D
-  xlp1W:              '+3.94%',
-  xlp1M:              '+0.98%',
-  xlpYTD:             '+9.76%',
+  xlpChg:             '+0.67%',          // Consumer Staples · 1D
+  xlp1W:              '+2.88%',
+  xlp1M:              '+1.66%',
+  xlpYTD:             '+10.50%',
   xlpWt:              '5.34%',
-  xlvChg:             '+0.81%',          // Health Care · 1D
-  xlv1W:              '+1.32%',
-  xlv1M:              '+5.65%',
-  xlvYTD:             '-0.91%',
+  xlvChg:             '+0.18%',          // Health Care · 1D
+  xlv1W:              '+0.52%',
+  xlv1M:              '+5.46%',
+  xlvYTD:             '-0.64%',
   xlvWt:              '8.15%',
-  xluChg:             '+0.11%',          // Utilities · 1D
-  xlu1W:              '+0.25%',
-  xlu1M:              '-2.52%',
-  xluYTD:             '+2.01%',
+  xluChg:             '+1.08%',          // Utilities · 1D
+  xlu1W:              '+0.39%',
+  xlu1M:              '-1.47%',
+  xluYTD:             '+4.30%',
   xluWt:              '2.08%',
-  xlbChg:             '+3.27%',          // Materials · 1D
-  xlb1W:              '-0.77%',
-  xlb1M:              '-1.76%',
-  xlbYTD:             '+11.06%',
+  xlbChg:             '+1.90%',          // Materials · 1D
+  xlb1W:              '+3.09%',
+  xlb1M:              '+0.11%',
+  xlbYTD:             '+15.09%',
   xlbWt:              '1.76%',
-  xlreChg:            '-0.16%',          // Real Estate · 1D
-  xlre1W:             '+1.17%',
-  xlre1M:             '+0.76%',
-  xlreYTD:            '+11.24%',
+  xlreChg:            '+0.96%',          // Real Estate · 1D
+  xlre1W:             '+1.45%',
+  xlre1M:             '+1.73%',
+  xlreYTD:            '+12.39%',
   xlreWt:             '1.83%',
-  xlcChg:             '+1.00%',          // Communication Services · 1D
-  xlc1W:              '-0.88%',
-  xlc1M:              '-3.23%',
-  xlcYTD:             '-4.09%',
+  xlcChg:             '+0.43%',          // Communication Services · 1D
+  xlc1W:              '-0.03%',
+  xlc1M:              '-3.64%',
+  xlcYTD:             '-5.16%',
   xlcWt:              '11.56%',
-  smhChg:             '+6.75%',          // VanEck Semis (AI capex bellwether) · 1D
-  smh1W:              '-2.88%',
-  smh1M:              '+8.59%',
-  smhYTD:             '+63.26%',
+  smhChg:             '+1.72%',          // VanEck Semis (AI capex bellwether) · 1D
+  smh1W:              '+8.82%',
+  smh1M:              '+10.46%',
+  smhYTD:             '+72.15%',
   smhWt:              '—',               // Not a GICS sector — subset of XLK
 
 
@@ -301,13 +301,13 @@ window.MARKET_LIVE = {
      Sources: Yahoo Finance chart data through Jun 11/12, 2026 where markets were open.
      ══════════════════════════════════════════════════════════════════════════ */
   hangSengClose:      '24,597.92',     // Hang Seng (Hong Kong)
-  hangSengChg:        '+1.44%',
+  hangSengChg:        '-1.69%',
   hangSeng1W:         '-1.46%',
-  hangSengYTD:        '-6.61%',
+  hangSengYTD:        '-5.78%',
   csi300Close:        '4,781.60',      // CSI 300 (mainland China)
-  csi300Chg:          '+1.25%',
+  csi300Chg:          '-2.17%',
   csi3001W:           '-0.73%',
-  csi300YTD:          '+1.35%',
+  csi300YTD:          '+1.46%',
   nifty50:            '23,161.60',     // Nifty 50 (India)
   nifty50Chg:         '-0.23%',
   nifty501W:          '-1.09%',
@@ -321,13 +321,13 @@ window.MARKET_LIVE = {
   /* ══════════════════════════════════════════════════════════════════════════
      §8 · TREASURY YIELDS
      Source: Treasury.gov / FRED for official curve; 2Y/10Y refreshed from
-     market yield quotes on 2026-06-11 where official daily data lagged.
+     market yield quotes on 2026-06-12 where official daily data lagged.
      ══════════════════════════════════════════════════════════════════════════ */
-  yld2yFull:          '4.1400%',
-  yld2y:              '4.14%',
+  yld2yFull:          '4.0830%',
+  yld2y:              '4.08%',
   yld5y:              '4.260%',
-  yld10yFull:         '4.5300%',
-  yld10y:             '4.53%',
+  yld10yFull:         '4.4850%',
+  yld10y:             '4.49%',
   yld30yFull:         '4.9600%',
   yld30y:             '4.96%',
   yld10yReal:         '2.200%',       // 10Y TIPS real yield
@@ -337,8 +337,8 @@ window.MARKET_LIVE = {
      §9 · YIELD CURVE & INFLATION EXPECTATIONS
      Source: FRED (T10YIE, T5YIE), Treasury.gov.
      ══════════════════════════════════════════════════════════════════════════ */
-  curve2s10s:         '+0.39%',       // 10Y minus 2Y
-  curve2s30s:         '+0.82%',          // 30Y minus 2Y
+  curve2s10s:         '+0.40%',       // 10Y minus 2Y
+  curve2s30s:         '+0.88%',       // 30Y minus 2Y
   curve5s30s:         '+0.70%',          // 30Y minus 5Y
   breakeven5y:        '2.44%',          // 5Y breakeven inflation (FRED T5YIE)
   breakeven10y:       '2.34%',        // 10Y breakeven inflation (FRED T10YIE)
@@ -398,7 +398,7 @@ window.MARKET_LIVE = {
      §12 · VOLATILITY
      Source: Cboe (vix.com, dashboards) / FRED (VIXCLS).
      ══════════════════════════════════════════════════════════════════════════ */
-  vix:                '19.44',        // VIX (30-day SPX vol)
+  vix:                '17.68',        // VIX (30-day SPX vol)
   vvix:               '100.63',        // VIX of VIX (referenced in SP500_DCA)
   vix9d:              '20.66',          // 9-day VIX (short-term)
   vix3m:              '21.42',          // 3-month VIX
@@ -426,7 +426,7 @@ window.MARKET_LIVE = {
   aaiiBear:           '43.6%',          // AAII bearish %
   naaim:              '82.02',          // NAAIM exposure index
   consumerConf:       '93.1',          // Conference Board Consumer Confidence (May)
-  umichSent:          '49.8',          // U Michigan Consumer Sentiment
+  umichSent:          '48.9',          // U Michigan Consumer Sentiment (prelim Jun)
 
 
   /* ══════════════════════════════════════════════════════════════════════════
@@ -452,8 +452,8 @@ window.MARKET_LIVE = {
   audUsd:             '0.7035',          // Aussie
   audUsdChg:          '+0.59%',
   audUsdYTD:          '+5.35%',
-  usdCad:             '1.3977',          // Loonie
-  usdCadChg:          '+0.22%',
+  usdCad:             '1.3983',          // Loonie
+  usdCadChg:          '+0.14%',
   usdCadYTD:          '+1.91%',
   usdChf:             '0.7959',          // Swiss
   usdChfChg:          '-0.50%',
@@ -490,11 +490,11 @@ window.MARKET_LIVE = {
      YTD = spot/front-month futures % change YTD. Pull from exchange data,
      Yahoo Finance futures history, CME Group, ICE, or barchart.com.
      ══════════════════════════════════════════════════════════════════════════ */
-  brent:              '$89.40',      // Brent crude (per barrel)
-  brentChg:           '-3.97%',
+  brent:              '$87.33',      // Brent crude (per barrel)
+  brentChg:           '-3.40%',
   brentYTD:           '+47.16%',
-  wti:                '$86.86',       // WTI crude front-month
-  wtiChg:             '-3.52%',
+  wti:                '$84.88',       // WTI crude front-month
+  wtiChg:             '-3.20%',
   wtiYTD:             '+51.54%',
   natgas:             '$3.08',        // Henry Hub natural gas (per MMBtu)
   natgasChg:          '-3.39%',
@@ -675,7 +675,7 @@ window.MARKET_LIVE = {
      Most rate-sensitive sector · cleanest read on Fed-tightness biting.
      Source: Freddie Mac PMMS / NAR / Census / S&P Cotality / NAHB.
      ══════════════════════════════════════════════════════════════════════════ */
-  mortgage30y:        '6.55%',        // 30-Yr Fixed Mortgage Rate (Bankrate Jun 11)
+  mortgage30y:        '6.57%',        // 30-Yr Fixed Mortgage Rate (Bankrate Jun 12)
   existingHomeSales:  '4.02M',        // Existing Home Sales SAAR (April · +0.2% m/m, flat y/y)
   housingStarts:      '1.465M',       // Privately-owned housing starts SAAR (April · −2.8% m/m)
   caseShillerHpi:     '+0.7%',        // S&P Cotality Case-Shiller National HPI y/y (Feb · 13th straight month of deceleration)
@@ -742,14 +742,14 @@ window.MARKET_LIVE = {
      Short narrative fields the Daily Briefing renders. Refresh weekly when
      the regime / stance / levels change.
      ══════════════════════════════════════════════════════════════════════════ */
-  regimeLabel:        'Relief rally — geopolitical risk fades, inflation risk lingers',
-  regimeOneLiner:     'Risk assets rebounded after Iran strike risk faded: SPX rose 1.8%, NDX gained 3.3%, semis bounced 6.8%, VIX fell below 20, and crude reversed lower even as May PPI stayed hot.',
+  regimeLabel:        'Constructive but not cleared — lower oil helped, restrictive yields still cap the all-clear',
+  regimeOneLiner:     'June 12 finished with a steadier risk tone: SPX rose 0.5%, the Dow gained 0.7%, the Russell 2000 added 0.8%, crude fell sharply, and Michigan sentiment improved, but the 10Y still closed near 4.49% and breadth remains incomplete.',
   regimeScore:        '+1',
-  regimeScoreLabel:   'Constructive · Normal tranche',
-  dcaStance:          'Keep contributions on schedule at a normal tranche: price action improved and credit stabilized, but hot PPI, still-elevated oil, and mixed Mag 7 breadth argue against chasing aggressively.',
+  regimeScoreLabel:   'Constructive-cautious · Add selectively',
+  dcaStance:          'Keep contributions on schedule, but stay selective rather than aggressive: falling oil and calm credit helped, while restrictive yields and still-sub-50% short-term breadth argue against chasing.',
   confidence:         '7/10',
-  spxNextResistance:  '7,420 – 7,520',
-  spxFirstSupport:    '7,300 – 7,360',
+  spxNextResistance:  '7,450 – 7,520',
+  spxFirstSupport:    '7,360 – 7,400',
 
 
   /* ══════════════════════════════════════════════════════════════════════════
@@ -760,26 +760,6 @@ window.MARKET_LIVE = {
     // ── Upcoming · Next 2 Weeks ───────────────────────────────────────────
     // Each event has 4 optional explainer fields (why · watch · bullish · bearish)
     // that surface in the click-through modal on daily_briefing.html.
-    {
-      date: 'Thu Jun 11',
-      desc: 'May PPI + weekly jobless claims — margin pressure and labor cooling check',
-      impact: 'Med',
-      cat: 'macro',
-      why: 'After CPI, PPI helps determine whether input-cost pressure is broadening. Claims show whether the labor-market cooling is still orderly.',
-      watch: 'Core PPI · services PPI · initial claims · continuing claims · 2Y yield reaction',
-      bullish: 'Cooler PPI and contained claims → disinflation without a labor scare.',
-      bearish: 'Hot PPI or a claims jump → either inflation pressure or growth concern keeps volatility elevated.'
-    },
-    {
-      date: 'Fri Jun 12',
-      desc: 'University of Michigan sentiment/prelim inflation expectations — consumer stress and inflation psychology',
-      impact: 'Med',
-      cat: 'macro',
-      why: 'The Fed is sensitive to inflation expectations, especially when energy prices and tariffs are already in the market narrative.',
-      watch: 'Headline sentiment · 1-year inflation expectations · 5-year inflation expectations · consumer discretionary reaction',
-      bullish: 'Expectations ease while sentiment stabilizes → soft-landing tone improves.',
-      bearish: 'Expectations rise or sentiment drops → stagflation concern resurfaces.'
-    },
     {
       date: 'Tue-Wed Jun 16-17',
       desc: 'FOMC Meeting — no rate change expected; language/SEP set policy tone',
@@ -809,6 +789,16 @@ window.MARKET_LIVE = {
       watch: 'Pre-holiday volume · index futures liquidity · post-FOMC sector rotation',
       bullish: 'Calm post-FOMC digestion and stable futures keep dip-buyers engaged.',
       bearish: 'Thin liquidity plus geopolitical headlines widens gaps and raises hedging demand.'
+    },
+    {
+      date: 'Tue Jun 23',
+      desc: 'Flash PMIs — first read on post-FOMC business momentum',
+      impact: 'Med',
+      cat: 'macro',
+      why: 'The PMI prints will show whether the current mix of firm growth and sticky inflation remains intact after the June policy meeting.',
+      watch: 'Manufacturing vs services spread · input prices · new orders · 10Y yield reaction',
+      bullish: 'Stable activity with cooler price components supports a soft-landing narrative.',
+      bearish: 'Hot prices or weak new orders revives stagflation and earnings-risk concerns.'
     },
   ],
 

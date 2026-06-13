@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REIT Analysis & Long-Term Returns — Canadian & U.S. Retail Investor Report</title>
+<style>
+  :root{
+    --navy:#10243f; --navy2:#1b3a5f; --slate:#3c4a5a; --ink:#1d242c;
+    --paper:#f7f5f0; --card:#ffffff; --line:#e3ddd1; --line2:#d4ccba;
+    --gold:#b78a2e; --gold-soft:#f1e6cd; --teal:#1f6f6b; --teal-soft:#e0efed;
+    --green:#1f7a44; --green-soft:#e3f1e8; --red:#a32c2c; --red-soft:#f5e2e1;
+    --amber:#b5781a; --amber-soft:#f6ecd6; --muted:#6b7480;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Georgia","Iowan Old Style",serif;line-height:1.62;font-size:16.5px;}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 22px 90px;}
+  header.masthead{background:linear-gradient(160deg,var(--navy),var(--navy2));
+    color:#f4efe4;padding:54px 22px 40px;margin-bottom:6px;}
+  header.masthead .inner{max-width:1020px;margin:0 auto;}
+  .kicker{font-family:"Helvetica Neue",Arial,sans-serif;letter-spacing:.22em;
+    text-transform:uppercase;font-size:12px;color:var(--gold);font-weight:700;margin-bottom:14px;}
+  header.masthead h1{font-size:34px;line-height:1.18;margin:0 0 14px;font-weight:700;letter-spacing:-.01em;}
+  header.masthead p.sub{font-size:16px;color:#cdd6e2;margin:0;max-width:760px;}
+  .meta{margin-top:22px;font-family:"Helvetica Neue",Arial,sans-serif;font-size:12.5px;
+    color:#aebacc;display:flex;flex-wrap:wrap;gap:6px 20px;}
+  .meta b{color:#e9dfc6;font-weight:600;}
+  h2{font-size:25px;color:var(--navy);margin:52px 0 8px;padding-top:14px;
+    border-top:3px solid var(--navy);letter-spacing:-.01em;}
+  h2 .num{font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;color:var(--gold);
+    font-weight:700;display:block;letter-spacing:.16em;margin-bottom:4px;}
+  h3{font-size:19px;color:var(--navy2);margin:30px 0 6px;}
+  h4{font-size:16px;color:var(--slate);margin:20px 0 4px;font-family:"Helvetica Neue",Arial,sans-serif;
+    text-transform:uppercase;letter-spacing:.05em;}
+  p{margin:10px 0;}
+  a{color:var(--teal);}
+  ul,ol{margin:10px 0 10px 4px;padding-left:22px;}
+  li{margin:5px 0;}
+  strong{color:var(--navy2);}
+  .lead{font-size:18px;color:var(--slate);}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;
+    font-family:"Helvetica Neue",Arial,sans-serif;background:var(--card);
+    box-shadow:0 1px 0 var(--line);}
+  caption{caption-side:top;text-align:left;font-size:12.5px;color:var(--muted);
+    font-family:"Helvetica Neue",Arial,sans-serif;margin-bottom:7px;font-style:italic;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  thead th{background:var(--navy);color:#f3ecdd;font-weight:600;font-size:12.5px;
+    text-transform:uppercase;letter-spacing:.03em;}
+  tbody tr:nth-child(even){background:#faf8f3;}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;}
+  .badge{display:inline-block;padding:1px 8px;border-radius:11px;font-size:11.5px;
+    font-weight:700;font-family:"Helvetica Neue",Arial,sans-serif;white-space:nowrap;}
+  .b-green{background:var(--green-soft);color:var(--green);}
+  .b-red{background:var(--red-soft);color:var(--red);}
+  .b-amber{background:var(--amber-soft);color:var(--amber);}
+  .b-teal{background:var(--teal-soft);color:var(--teal);}
+  .b-gold{background:var(--gold-soft);color:var(--gold);}
+  .callout{background:var(--card);border:1px solid var(--line2);border-left:5px solid var(--gold);
+    padding:16px 20px;margin:22px 0;border-radius:4px;}
+  .callout.thesis{border-left-color:var(--teal);background:var(--teal-soft);}
+  .callout.warn{border-left-color:var(--red);background:var(--red-soft);}
+  .callout h4{margin-top:0;color:var(--navy);}
+  .verdict{font-size:18px;color:var(--navy);font-style:italic;}
+  .verdict b{font-style:normal;}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px 26px;
+    margin:26px 0;font-family:"Helvetica Neue",Arial,sans-serif;font-size:14px;column-count:2;column-gap:34px;}
+  .toc a{color:var(--slate);text-decoration:none;display:block;padding:3px 0;}
+  .toc a:hover{color:var(--teal);}
+  .disc{font-family:"Helvetica Neue",Arial,sans-serif;font-size:12px;color:var(--muted);
+    border-top:1px solid var(--line);margin-top:42px;padding-top:16px;line-height:1.5;}
+  .src{font-family:"Helvetica Neue",Arial,sans-serif;font-size:12.5px;color:var(--slate);}
+  .src a{color:var(--teal);}
+  .pill-row{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0;}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px 16px;
+    flex:1 1 150px;font-family:"Helvetica Neue",Arial,sans-serif;}
+  .stat .v{font-size:23px;font-weight:700;color:var(--navy);}
+  .stat .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+  .stat .d{font-size:12px;margin-top:2px;}
+  .up{color:var(--green);} .down{color:var(--red);}
+  @media(max-width:680px){.toc{column-count:1;}header.masthead h1{font-size:26px;}body{font-size:16px;}}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="inner">
+    <div class="kicker">Real Estate Securities · Cross-Border ETF Strategy</div>
+    <h1>REITs, Long-Term Returns &amp; Product Recommendations for Canadian and U.S. Retail Investors</h1>
+    <p class="sub">A practical analysis of how to evaluate REITs, how they have performed against the S&amp;P 500 over 10, 20 and 30 years, which sectors lead and lag, and which ETFs and listed REITs make sense for a long-term, ETF-based, total-return investor in Canada and the United States.</p>
+    <div class="meta">
+      <span><b>Prepared for:</b> Sam — retail investor, Canada</span>
+      <span><b>Date:</b> June 13, 2026</span>
+      <span><b>Market data as of:</b> June 12–13, 2026</span>
+      <span><b>Return data:</b> FTSE Nareit, period ending May 30, 2025</span>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+
+<div class="callout" style="margin-top:28px;">
+  <strong>How to read this report.</strong> Four content types are kept separate throughout:
+  <span class="badge b-teal">Historical data</span> = realized facts;
+  <span class="badge b-gold">Current valuation</span> = today's market readings;
+  <span class="badge b-amber">Forward opinion</span> = my judgment, not fact;
+  <span class="badge b-green">Product recommendation</span> = actionable shortlist. Nothing here is personalized financial advice — see the disclaimer at the end.
+</div>
+
+<nav class="toc">
+  <a href="#s1">1 · Executive Summary</a>
+  <a href="#s2">2 · REIT Basics</a>
+  <a href="#s3">3 · How to Analyze REITs</a>
+  <a href="#s4">4 · Major REIT Sectors</a>
+  <a href="#s5">5 · REITs vs S&amp;P 500 (History)</a>
+  <a href="#s6">6 · Sector-Level Performance</a>
+  <a href="#s7">7 · REITs vs Direct Property</a>
+  <a href="#s8">8 · REITs in a Portfolio</a>
+  <a href="#s9">9 · Canadian Investor Guide</a>
+  <a href="#s10">10 · U.S. Investor Guide</a>
+  <a href="#s11">11 · Individual REIT Selection</a>
+  <a href="#s12">12 · Current Market Setup</a>
+  <a href="#s13">13 · Recommended Strategy</a>
+  <a href="#s14">14 · Products to Avoid</a>
+  <a href="#s15">15 · Final Conclusion</a>
+</nav>
+
+<!-- ============ 1 EXEC SUMMARY ============ -->
+<h2 id="s1"><span class="num">SECTION 1</span>Executive Summary</h2>
+
+<p class="lead">REITs are a sound <em>complement</em> to a broad-equity portfolio — but the evidence does not support owning them to beat the S&amp;P 500. Their job is income, diversification, real-asset/inflation exposure and a different return stream, not outperformance.</p>
+
+<div class="pill-row">
+  <div class="stat"><div class="l">U.S. Equity REIT yield</div><div class="v">3.99%</div><div class="d">vs S&amp;P 500 1.24%</div></div>
+  <div class="stat"><div class="l">10-yr REIT return</div><div class="v">6.17%</div><div class="d down">vs S&amp;P 500 12.86%</div></div>
+  <div class="stat"><div class="l">25-yr REIT return</div><div class="v">9.54%</div><div class="d up">vs S&amp;P 500 7.87%</div></div>
+  <div class="stat"><div class="l">U.S. 10-yr Treasury</div><div class="v">4.48%</div><div class="d">REIT yield spread negative</div></div>
+</div>
+
+<p><strong>Are REITs attractive today versus broad equities?</strong> <span class="badge b-amber">Forward opinion</span> Selectively. After a multi-year de-rating driven by higher rates, listed REITs trade at meaningful discounts to private-market real estate value and at dividend yields well above their own history. That is a reasonable entry point for a <em>diversifier</em>, but with the 10-year Treasury at 4.48% and the REIT yield around 4%, REITs no longer offer the easy yield premium over bonds they did in the 2010s. The opportunity is in quality and sector selection, not the asset class as a blunt instrument.</p>
+
+<p><strong>How have REITs performed versus the S&amp;P 500?</strong> <span class="badge b-teal">Historical data</span> Over the last <strong>10 years REITs badly lagged</strong> (6.2% vs 12.9% annualized), over <strong>20 years they lagged</strong> (7.1% vs 10.5%), and over <strong>30 years they roughly matched but still trailed</strong> (9.5% vs 10.4%). REITs <em>did</em> win over 25 years (9.5% vs 7.9%) — but that window simply starts in 2000, right before the dot-com crash hammered the S&amp;P. The honest read: <strong>over most long horizons REITs have not beaten the S&amp;P 500; the 25-year win is a start-date artifact.</strong></p>
+
+<p><strong>Best and worst sectors historically.</strong> <span class="badge b-teal">Historical data</span> The structural winners have been <strong>industrial/logistics, data centers, cell towers, self-storage and manufactured housing</strong> — sectors tied to e-commerce, the digital economy and pricing power. The structural laggards have been <strong>office, regional malls/weaker retail, and mortgage REITs</strong>, the last of which has produced near-zero 20-year total returns despite double-digit headline yields.</p>
+
+<p><strong>Income, diversification, inflation or total return?</strong> <span class="badge b-amber">Forward opinion</span> REITs are best understood as an <strong>income + diversification + inflation-sensitivity</strong> holding. They are not a reliable total-return enhancer over a portfolio that already owns the S&amp;P 500. Their correlation to equities is high enough that the diversification is partial, but their cash-flow profile and real-asset linkage are genuinely different.</p>
+
+<p><strong>Domestic, U.S., global, or ETF?</strong> <span class="badge b-green">Product recommendation</span> For a Canadian, the cleanest core is a <strong>low-cost broad U.S. REIT ETF</strong> (the U.S. is ~70% of the global listed market and far more diversified by sector than Canada), ideally held in an <strong>RRSP</strong> to avoid the 15% U.S. withholding tax. A Canadian-listed REIT ETF adds home-currency income but concentrates you in retail, residential and industrial with almost no data-center or tower exposure. Most investors are best served by <strong>broad ETFs, not single names</strong>.</p>
+
+<p><strong>Key risks:</strong> interest rates and refinancing (REITs are leveraged, rate-sensitive cash-flow vehicles), the real-estate cycle, sector-specific obsolescence (office, weak retail), valuation, and — critically for cross-border investors — <strong>tax treatment</strong>, since REIT distributions are mostly ordinary/non-eligible income and are taxed unfavourably outside registered accounts.</p>
+
+<div class="callout thesis">
+  <strong class="verdict">The investment case for REITs depends mainly on <b>sector selection, valuation discipline, the path of long-term interest rates, and holding them in the right (tax-sheltered) account — not on any expectation that the asset class as a whole will outperform the S&amp;P 500.</b></strong>
+</div>
+
+<div class="callout">
+  <h4>Your hypothesis — tested</h4>
+  <p>You proposed: <em>"REITs may provide useful income and diversification, but over long periods they may not always outperform the S&amp;P 500. The best REIT exposure may come from low-cost diversified ETFs, while sector selection matters greatly."</em></p>
+  <p><strong>Verdict: confirmed on all three counts.</strong> (1) Income/diversification — yes, REITs yield ~4% vs ~1.2% for the S&amp;P and behave differently. (2) Long-run outperformance — they have <em>not</em> beaten the S&amp;P over 10, 20 or 30 years; the only long win (25y) is a start-date effect. (3) Best exposure = low-cost diversified ETFs, and sector dispersion is enormous (data centers/industrial vs office/mortgage), so <em>what</em> you own inside real estate has mattered far more than the asset-class decision itself.</p>
+</div>
+
+<!-- ============ 2 BASICS ============ -->
+<h2 id="s2"><span class="num">SECTION 2</span>REIT Basics: What REITs Are</h2>
+
+<p>A <strong>REIT (Real Estate Investment Trust)</strong> is a company that owns, operates or finances income-producing real estate and elects a special tax status. In exchange for distributing the bulk of its taxable income to shareholders (≈90%+ in the U.S.; Canadian REITs operate under similar flow-through trust rules), the entity pays little or no corporate tax. That pass-through structure is <em>why</em> REITs exist and why they pay high distributions: income that would otherwise be taxed at the corporate level is pushed out to unitholders.</p>
+
+<p><strong>How REITs make money:</strong> primarily by collecting rent from tenants on the properties they own (equity REITs), or by earning interest on real-estate loans and mortgage securities (mortgage REITs). They grow through rent escalations, higher occupancy, development, redevelopment, and acquisitions funded by issuing equity and debt.</p>
+
+<h4>Three structural types</h4>
+<table>
+  <caption>Equity vs mortgage vs hybrid REITs</caption>
+  <thead><tr><th>Type</th><th>What it owns</th><th>Income source</th><th>Risk profile</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Equity REIT</strong></td><td>Physical buildings (apartments, warehouses, data centers, etc.)</td><td>Rent</td><td>Real-estate cycle, occupancy, rates. The large majority of the market.</td></tr>
+    <tr><td><strong>Mortgage REIT (mREIT)</strong></td><td>Mortgages &amp; mortgage-backed securities</td><td>Net interest margin (spread)</td><td>Very high — leverage + rate/credit spread risk. ~12.9% headline yield but negative 20-yr total return.</td></tr>
+    <tr><td><strong>Hybrid REIT</strong></td><td>Mix of property and mortgages</td><td>Rent + interest</td><td>Blended; relatively rare today.</td></tr>
+  </tbody>
+</table>
+
+<h4>Three ways to own them</h4>
+<p><strong>Publicly traded REITs</strong> trade on exchanges — liquid, transparent, daily-priced, but volatile like stocks. <strong>Private / non-traded REITs</strong> are sold by brokers or sponsors — illiquid, often high-fee, valued infrequently, with redemption gates (the source of many investor complaints). <strong>REIT ETFs/mutual funds</strong> hold baskets of public REITs — instant diversification, low cost, and the right default for nearly all retail investors.</p>
+
+<p>REITs are routinely compared with three things: <strong>bonds</strong> (because of the high, fairly steady income), <strong>dividend stocks</strong> (because they are equities that pay a lot), and <strong>direct real estate ownership</strong> (because the underlying assets are buildings). They sit between these — equity-like volatility, bond-like income, real-asset economics.</p>
+
+<h4>Return and valuation vocabulary you must know</h4>
+<table>
+  <caption>Key REIT return and valuation terms</caption>
+  <thead><tr><th>Term</th><th>Definition</th><th>Why it matters</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Price return</strong></td><td>Change in unit price only</td><td>Understates REIT returns — ignores the big dividend.</td></tr>
+    <tr><td><strong>Income return</strong></td><td>Distributions received</td><td>Historically the majority of REIT total return.</td></tr>
+    <tr><td><strong>Total return</strong></td><td>Price + reinvested income</td><td>The only fair way to compare REITs to the S&amp;P 500.</td></tr>
+    <tr><td><strong>Distribution yield</strong></td><td>Annual distribution ÷ price</td><td>Headline income; can be misleadingly high if unsustainable.</td></tr>
+    <tr><td><strong>AFFO yield</strong></td><td>Adjusted funds from operations ÷ price</td><td>Cash-flow "earnings yield" after maintenance capex — the truest measure of what the REIT can actually pay.</td></tr>
+    <tr><td><strong>NAV discount / premium</strong></td><td>Price vs net asset value of the underlying property</td><td>Tells you if the market values the REIT below or above its real estate. Large discounts can signal value (or stress).</td></tr>
+  </tbody>
+</table>
+
+<!-- ============ 3 ANALYSIS FRAMEWORK ============ -->
+<h2 id="s3"><span class="num">SECTION 3</span>How to Analyze REITs — A Practical Framework</h2>
+
+<p>Forget P/E ratios — depreciation makes GAAP earnings nearly meaningless for property companies. REITs are analyzed on <strong>cash flow (FFO/AFFO), balance sheet, distribution safety and asset quality</strong>. Here is a five-lens checklist.</p>
+
+<h4>1 · Valuation</h4>
+<ul>
+  <li><strong>Price/FFO &amp; Price/AFFO</strong> — the REIT equivalent of P/E. Compare to the REIT's own history and to sector peers, not across sectors (a data-center REIT deserves a higher multiple than an office REIT).</li>
+  <li><strong>Implied cap rate</strong> — net operating income ÷ implied property value from the share price. A high implied cap rate vs private-market cap rates means the stock is cheap relative to the bricks.</li>
+  <li><strong>NAV discount/premium</strong> — listed REITs in 2026 broadly trade at discounts to NAV, a setup that has historically preceded good forward returns.</li>
+  <li><strong>Dividend yield vs its own historical range</strong> — a yield well above the 5-year average flags either value or distress; decide which.</li>
+  <li><strong>REIT yield spread vs the 10-yr Treasury / GoC bond</strong> — the single most important macro gauge. Today the U.S. equity-REIT yield (~4.0%) sits <em>below</em> the 10-yr Treasury (4.48%), a historically tight/negative spread that partly explains weak recent REIT performance.</li>
+</ul>
+
+<h4>2 · Operating quality</h4>
+<p>Same-property NOI growth (organic pricing power), occupancy, rent growth (and mark-to-market on expiring leases), weighted-average lease duration, tenant credit quality, geographic diversification, and sector supply/demand balance. A REIT with 4–5% same-store NOI growth and rising occupancy is compounding; one renewing leases <em>below</em> expiring rents (much of office) is shrinking.</p>
+
+<h4>3 · Balance sheet</h4>
+<p>This is where REITs live or die in a high-rate world. Watch <strong>Debt/EBITDA</strong> (≤6x is conservative; the sector average debt ratio is ~32.5%), <strong>interest coverage</strong> (sector ~4.1x), the <strong>fixed- vs floating-rate</strong> mix (floating is dangerous now), <strong>weighted-average debt maturity</strong> and the near-term <strong>refinancing wall</strong>, the <strong>credit rating</strong>, and <strong>liquidity / access to capital</strong>. Well-capitalized REITs with long, fixed, laddered debt have a structural edge over levered, floating-rate peers.</p>
+
+<h4>4 · Distribution safety</h4>
+<p><strong>AFFO payout ratio</strong> is the key number — under ~80% is comfortable for most sectors; above ~95% (as with some high-yield Canadian retail names) leaves no cushion. Look at distribution <em>growth history</em>, free-cash-flow coverage, and the realistic risk of a cut. A 9% yield with a 100%+ payout is a warning, not a gift.</p>
+
+<h4>5 · Growth drivers &amp; macro sensitivity</h4>
+<p><strong>Growth:</strong> organic rent escalators, development/redevelopment pipeline, accretive acquisitions, and the ability to issue equity above NAV. <strong>Macro:</strong> interest rates and inflation (dominant), credit spreads, GDP/employment, plus secular forces — e-commerce (industrial ↑), the digital economy and AI/data-center demand (towers &amp; data centers ↑), work-from-home (office ↓), demographics/aging (healthcare &amp; senior housing ↑), and housing affordability (apartments &amp; single-family rental).</p>
+
+<!-- ============ 4 SECTORS ============ -->
+<h2 id="s4"><span class="num">SECTION 4</span>Major REIT Sectors</h2>
+
+<p>Real estate is not one asset — it is a dozen businesses with very different economics. Below, each sector's drivers, outlook and suitability, followed by a ranking table. <span class="badge b-teal">Historical data</span> on 2024 returns and current yields are from Nareit; <span class="badge b-amber">growth/quality judgments are opinion</span>.</p>
+
+<h3>Residential / Apartments</h3>
+<p>Owns multifamily buildings; revenue from rent on short (1-yr) leases that reprice with the market — giving good inflation pass-through. Demand is tied to jobs, household formation and housing affordability (expensive ownership keeps renters renting). Moderately defensive, moderately rate-sensitive. <strong>Suitable for income + moderate growth.</strong></p>
+
+<h3>Industrial / Logistics</h3>
+<p>Warehouses and distribution centers — the physical backbone of e-commerce. A structural long-term winner with strong rent growth, though 2023–24 saw a cyclical cooldown after a torrid post-COVID run (the sector was down ~18% in 2024 as supply caught up). <strong>Suitable for growth-oriented investors;</strong> best-in-class operator is Prologis.</p>
+
+<h3>Retail / Shopping Centers</h3>
+<p>Split it in two. <strong>Grocery-anchored / open-air centers</strong> have proven resilient and well-occupied. <strong>Class-B malls</strong> are in secular decline, though top-tier malls (Simon) have recovered. Net-lease "free-standing" retail (Realty Income) is a bond-like income sub-sector. Higher yields (~5%), cyclical, e-commerce-pressured. <strong>Income-focused with care.</strong></p>
+
+<h3>Office</h3>
+<p>The most structurally challenged sector. Work-from-home permanently lowered demand; older buildings face rising vacancy, falling rents and heavy refinancing risk. 2024 produced a sharp relief rally (+21%) off deeply depressed levels, but the long-term outlook is poor outside trophy assets. <strong>Avoid / underweight for most long-term investors;</strong> note the sector's ~5.1% yield reflects risk, not value.</p>
+
+<h3>Data Centers</h3>
+<p>The marquee growth sector — server "warehouses" powering cloud computing and the AI build-out. Very strong demand, low current yield (~2.4%, the lowest of any sector) because investors pay up for growth. Capital-intensive and power-constrained, but the secular tailwind is the strongest in real estate. <strong>Growth.</strong> Leaders: Equinix, Digital Realty.</p>
+
+<h3>Cell Towers / Infrastructure</h3>
+<p>Owns the towers carriers lease for wireless networks; inflation-linked, multi-tenant, contractual revenue with very high margins. A long-term compounder that de-rated sharply in 2022–24 on rates and slowing carrier spend (down ~14% in 2024). <strong>Growth + quality;</strong> American Tower, Crown Castle.</p>
+
+<h3>Healthcare &amp; Senior Housing</h3>
+<p>Medical office, hospitals, lab/life-science space, and senior-living facilities. Demographics (aging population) are a powerful multi-decade tailwind; senior housing in particular is in a strong recovery (+24% in 2024). Mixed rate sensitivity. <strong>Income + demographic growth;</strong> Welltower is the bellwether.</p>
+
+<h3>Self-Storage</h3>
+<p>Small-box storage with very low operating costs, short leases (monthly pricing power) and recession resilience ("the 4 D's" — death, divorce, dislocation, downsizing keep demand steady). A long-run outperformer digesting a post-COVID demand normalization. <strong>Defensive growth;</strong> Public Storage, Extra Space.</p>
+
+<h3>Hotels / Lodging</h3>
+<p>Effectively re-prices rooms nightly — maximum inflation sensitivity but also maximum cyclicality and the deepest drawdowns in recessions. No lease protection. <strong>Cyclical; for risk-tolerant total-return investors only.</strong></p>
+
+<h3>Single-Family Rental</h3>
+<p>Scattered or build-to-rent houses; benefits from unaffordable home ownership keeping families renting. Newer, smaller sub-sector with steady demand. <strong>Income + moderate growth.</strong></p>
+
+<h3>Timberland</h3>
+<p>Owns forests; revenue from harvesting lumber and land. A genuine inflation/real-asset hedge but commodity-cyclical and tied to housing starts (down ~16% in 2024). <strong>Niche diversifier.</strong></p>
+
+<h3>Mortgage REITs</h3>
+<p>Do <em>not</em> own buildings — they own mortgages with heavy leverage, earning a spread. Headline yields are enormous (~13%) but total returns have been poor and volatile (<strong>roughly flat — about +0.3%/yr over 20 years</strong>), with repeated distribution cuts. High-yield trap. <strong>Avoid for most long-term investors.</strong></p>
+
+<h3>Diversified REITs</h3>
+<p>Own a mix of property types under one roof. Often trade at a discount (a "conglomerate" discount) and yield more (~6%), but the mix can dilute the best sectors. <strong>Case-by-case.</strong></p>
+
+<table>
+  <caption>Sector ranking — qualitative scores (★ low → ★★★★★ high). Forward opinion, informed by structural drivers and Nareit data.</caption>
+  <thead><tr><th>REIT Sector</th><th>Growth Potential</th><th>Income Stability</th><th>Rate Sensitivity</th><th>Cyclicality</th><th>Long-Term Quality</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Data Centers</strong></td><td>★★★★★</td><td>★★★★</td><td>Medium</td><td>Low</td><td><span class="badge b-green">★★★★★</span></td></tr>
+    <tr><td><strong>Industrial/Logistics</strong></td><td>★★★★★</td><td>★★★★</td><td>Medium</td><td>Medium</td><td><span class="badge b-green">★★★★★</span></td></tr>
+    <tr><td><strong>Cell Towers</strong></td><td>★★★★★</td><td>★★★★★</td><td>Med-High</td><td>Low</td><td><span class="badge b-green">★★★★★</span></td></tr>
+    <tr><td><strong>Self-Storage</strong></td><td>★★★★</td><td>★★★★</td><td>Low-Med</td><td>Low</td><td><span class="badge b-green">★★★★</span></td></tr>
+    <tr><td><strong>Residential/Apartments</strong></td><td>★★★</td><td>★★★★</td><td>Medium</td><td>Med</td><td><span class="badge b-teal">★★★★</span></td></tr>
+    <tr><td><strong>Healthcare/Senior</strong></td><td>★★★★</td><td>★★★★</td><td>Medium</td><td>Low-Med</td><td><span class="badge b-teal">★★★★</span></td></tr>
+    <tr><td><strong>Single-Family Rental</strong></td><td>★★★</td><td>★★★★</td><td>Medium</td><td>Med</td><td><span class="badge b-teal">★★★½</span></td></tr>
+    <tr><td><strong>Retail (grocery/net-lease)</strong></td><td>★★</td><td>★★★★</td><td>Med-High</td><td>Med</td><td><span class="badge b-amber">★★★</span></td></tr>
+    <tr><td><strong>Hotels/Lodging</strong></td><td>★★★</td><td>★★</td><td>Medium</td><td>High</td><td><span class="badge b-amber">★★½</span></td></tr>
+    <tr><td><strong>Timberland</strong></td><td>★★</td><td>★★★</td><td>Low</td><td>High</td><td><span class="badge b-amber">★★½</span></td></tr>
+    <tr><td><strong>Office</strong></td><td>★★</td><td>★★</td><td>High</td><td>High</td><td><span class="badge b-red">★★</span></td></tr>
+    <tr><td><strong>Mortgage REITs</strong></td><td>★</td><td>★</td><td>Very High</td><td>High</td><td><span class="badge b-red">★</span></td></tr>
+  </tbody>
+</table>
+
+<!-- ============ 5 HISTORY ============ -->
+<h2 id="s5"><span class="num">SECTION 5</span>Historical Performance: REITs vs the S&amp;P 500</h2>
+
+<p><span class="badge b-teal">Historical data</span> The table below uses FTSE Nareit compound-annual <strong>total returns</strong> (price + reinvested dividends) for periods ending May 30, 2025 — the cleanest apples-to-apples source. This is the heart of the report.</p>
+
+<table>
+  <caption>Annualized total returns by holding period — FTSE Nareit All Equity REITs vs leading benchmarks (% per year, ending May 30, 2025). Source: Nareit / FTSE / FactSet.</caption>
+  <thead><tr><th>Asset Class</th><th class="num">10-Yr</th><th class="num">20-Yr</th><th class="num">25-Yr</th><th class="num">30-Yr</th><th class="num">Yield</th></tr></thead>
+  <tbody>
+    <tr><td><strong>U.S. Equity REITs</strong> (FTSE Nareit All Equity)</td><td class="num">6.17</td><td class="num">7.10</td><td class="num">9.54</td><td class="num">9.51</td><td class="num">3.99%</td></tr>
+    <tr><td><strong>S&amp;P 500</strong></td><td class="num">12.86</td><td class="num">10.47</td><td class="num">7.87</td><td class="num">10.37</td><td class="num">1.24%</td></tr>
+    <tr><td>Nasdaq Composite</td><td class="num">15.27</td><td class="num">11.76</td><td class="num">7.15</td><td class="num">10.87</td><td class="num">—</td></tr>
+    <tr><td>Russell 2000 (small cap)</td><td class="num">6.64</td><td class="num">7.68</td><td class="num">7.48</td><td class="num">8.46</td><td class="num">—</td></tr>
+    <tr><td>U.S. Mortgage REITs</td><td class="num">2.25</td><td class="num">0.27</td><td class="num">6.55</td><td class="num">5.06</td><td class="num">12.91%</td></tr>
+    <tr><td>Canadian REITs (S&amp;P/TSX Capped REIT, TR)*</td><td class="num">~5.5</td><td class="num">n/a</td><td class="num">n/a</td><td class="num">~8.4†</td><td class="num">~5.4%</td></tr>
+  </tbody>
+</table>
+<p class="src">*Canadian REIT 10-yr total return ≈5.5% and 15-yr ≈6.2% (S&amp;P/TSX Capped REIT Index, to mid-2026); †≈8.4% since the XRE ETF's 2002 inception. Canadian aggregate bonds have returned low-single-digits annually over the past decade; the S&amp;P/TSX Composite has compounded in the high-single-digits, so Canadian REITs have lagged Canadian equities much as U.S. REITs lagged the S&amp;P.</p>
+
+<h4>Volatility, drawdowns and correlation</h4>
+<p><span class="badge b-teal">Historical data</span> REITs are <em>more</em> volatile than the S&amp;P 500, not less. Annualized volatility runs roughly 18–22% vs ~15–16% for the S&amp;P. Maximum drawdowns have been brutal: <strong>about −68% in the 2007–09 financial crisis</strong> (real estate was the epicentre) and <strong>−25% in 2022</strong> as rates spiked. Correlation to the S&amp;P 500 is high (~0.6–0.7) — so REITs diversify <em>partially</em>, not fully — while correlation to bonds is modest and has risen in the rate-driven era. The yield is the consolation for the volatility.</p>
+
+<div class="callout">
+  <h4>So — have REITs outperformed the S&amp;P 500 over the long run?</h4>
+  <p><strong>No, not on the whole.</strong> Over 10 years (−6.7%/yr gap), 20 years (−3.4%/yr) and 30 years (−0.9%/yr), the S&amp;P 500 won. REITs' headline 25-year victory (9.5% vs 7.9%) exists <em>only</em> because that window begins in 2000, capturing the dot-com collapse that crushed the tech-heavy S&amp;P while REITs were cheap. Shift the start date a few years and the REIT win disappears. <strong>The durable conclusion: REITs have provided income and a different return stream, not long-run outperformance.</strong> They are a diversifier, not an alpha engine.</p>
+</div>
+
+<!-- ============ 6 SECTOR PERFORMANCE ============ -->
+<h2 id="s6"><span class="num">SECTION 6</span>Sector-Level REIT Performance</h2>
+
+<p><span class="badge b-teal">Historical data</span> Dispersion <em>within</em> real estate dwarfs the REIT-vs-S&amp;P gap. The table shows full-year 2024 total returns and current yields by sector (Nareit), with the long-run structural verdict. Note how 2024 was a "reversion" year — beaten-down office and healthcare rebounded while the long-run winners (industrial, towers) had a down year on cyclical normalization. The long-run column reflects multi-decade structural performance, which is what matters for a buy-and-hold investor.</p>
+
+<table>
+  <caption>REIT sector total returns (2024, full year) and yields (May 2025), with long-run structural assessment. Source: Nareit; long-run column = author assessment.</caption>
+  <thead><tr><th>Sector</th><th class="num">2024 Total Return</th><th class="num">Yield</th><th>Long-Run Structural Record</th></tr></thead>
+  <tbody>
+    <tr><td>Data Centers</td><td class="num up">+25.2%</td><td class="num">2.40%</td><td><span class="badge b-green">Top-tier</span> — strongest secular grower</td></tr>
+    <tr><td>Industrial/Logistics</td><td class="num down">−17.8%</td><td class="num">3.98%</td><td><span class="badge b-green">Top-tier</span> — best 10-yr record; 2024 a cyclical pause</td></tr>
+    <tr><td>Cell Towers (Telecom)</td><td class="num down">−14.2%</td><td class="num">3.84%</td><td><span class="badge b-green">Top-tier</span> long run; rate-driven 2022–24 slump</td></tr>
+    <tr><td>Self-Storage</td><td class="num down">−0.5%</td><td class="num">4.20%</td><td><span class="badge b-teal">Strong</span> — high-margin compounder</td></tr>
+    <tr><td>Apartments/Residential</td><td class="num up">+20.5%</td><td class="num">3.71%</td><td><span class="badge b-teal">Solid</span> — steady, inflation-linked</td></tr>
+    <tr><td>Healthcare/Senior Housing</td><td class="num up">+24.2%</td><td class="num">3.42%</td><td><span class="badge b-teal">Improving</span> — demographic tailwind</td></tr>
+    <tr><td>Retail (incl. malls)</td><td class="num up">+14.0%</td><td class="num">4.95%</td><td><span class="badge b-amber">Mixed</span> — grocery good, malls weak</td></tr>
+    <tr><td>Office</td><td class="num up">+21.5%</td><td class="num">5.09%</td><td><span class="badge b-red">Worst</span> — secular decline; 2024 was a dead-cat bounce</td></tr>
+    <tr><td>Mortgage REITs</td><td class="num up">+0.4%</td><td class="num">12.91%</td><td><span class="badge b-red">Worst</span> — ~0% real 20-yr return despite huge yield</td></tr>
+  </tbody>
+</table>
+
+<h4>The verdicts</h4>
+<ul>
+  <li><strong>Best long-run sectors:</strong> data centers, industrial/logistics, cell towers, self-storage — the "new-economy" real estate tied to e-commerce and the digital/AI build-out.</li>
+  <li><strong>Worst long-run sectors:</strong> office, weak/mall retail, and mortgage REITs (the perennial high-yield trap).</li>
+  <li><strong>Most defensive:</strong> self-storage, healthcare/medical, grocery-anchored retail, net-lease.</li>
+  <li><strong>Most rate-sensitive:</strong> mortgage REITs (extreme), then long-lease net-lease and towers.</li>
+  <li><strong>Most structurally challenged:</strong> commodity office and Class-B malls.</li>
+  <li><strong>Most attractive for the next 5–10 years</strong> <span class="badge b-amber">(opinion):</span> data centers (AI/cloud), towers (de-rated quality), industrial (e-commerce), senior housing (demographics), and self-storage.</li>
+</ul>
+
+<!-- ============ 7 DIRECT PROPERTY ============ -->
+<h2 id="s7"><span class="num">SECTION 7</span>REITs vs Direct Real Estate Ownership</h2>
+
+<p>Many investors weigh a REIT against buying a rental condo or house. They are very different vehicles for owning the same underlying asset class.</p>
+
+<table>
+  <caption>REITs vs owning a rental property directly</caption>
+  <thead><tr><th>Dimension</th><th>Listed REITs</th><th>Direct rental property</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Liquidity</strong></td><td>Sell in seconds on an exchange</td><td>Months to sell; high transaction cost</td></tr>
+    <tr><td><strong>Leverage</strong></td><td>Modest, professionally managed (~32% debt)</td><td>Very high — a mortgage is 75–80% leverage on one asset</td></tr>
+    <tr><td><strong>Diversification</strong></td><td>Hundreds of properties, many sectors/regions</td><td>One property, one location, one or few tenants</td></tr>
+    <tr><td><strong>Management effort</strong></td><td>Zero — passive</td><td>High — tenants, repairs, vacancies, "the 2am call"</td></tr>
+    <tr><td><strong>Tenant / maintenance risk</strong></td><td>Pooled and diversified away</td><td>Concentrated — one bad tenant or roof hurts</td></tr>
+    <tr><td><strong>Transparency</strong></td><td>Audited filings, daily price</td><td>Opaque; you guess at value until you sell</td></tr>
+    <tr><td><strong>Volatility (mark-to-market)</strong></td><td>High and visible daily</td><td>Low only because it is rarely priced — not truly less risky</td></tr>
+    <tr><td><strong>Tax treatment</strong></td><td>Distributions mostly ordinary income; simple</td><td>Depreciation, expense deductions, capital-gains deferral, but complex</td></tr>
+    <tr><td><strong>Wealth-building potential</strong></td><td>Steady compounding, no forced leverage</td><td>Leverage can amplify returns — and losses</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <h4>When are REITs better than a rental property for a retail investor?</h4>
+  <p><span class="badge b-amber">Opinion.</span> For the <em>typical</em> retail investor — especially an ETF-focused, diversified, total-return investor — <strong>REITs are the better default</strong>: they deliver real-estate exposure with instant diversification, professional management, liquidity, no leverage you have to personally guarantee, and no operational burden. Direct ownership wins only for those who specifically want (a) the amplifying power of mortgage leverage, (b) hands-on control and the ability to add value, (c) the tax shelter of depreciation against rental income, and (d) are willing to accept concentration and illiquidity. For a buy-and-hold investor who already owns broad equities, a REIT ETF adds the asset class without turning real estate into a second job.</p>
+</div>
+
+<!-- ============ 8 PORTFOLIO ============ -->
+<h2 id="s8"><span class="num">SECTION 8</span>REITs in a Portfolio</h2>
+
+<p>REITs wear several hats, and which one matters depends on the investor:</p>
+<ul>
+  <li><strong>As income assets</strong> — a ~4% (U.S.) to ~5%+ (Canada) yield, well above the S&amp;P 500's ~1.2%, much of it paid monthly by Canadian REITs.</li>
+  <li><strong>As equity assets</strong> — they are stocks, with equity-like volatility and drawdowns; they are not a bond substitute despite the income.</li>
+  <li><strong>As inflation-sensitive / real assets</strong> — rents and property values tend to rise with inflation, especially in short-lease sectors (apartments, hotels, storage).</li>
+  <li><strong>As a partial diversifier</strong> — ~0.6–0.7 correlation to the S&amp;P means they zig somewhat differently, but not dramatically.</li>
+</ul>
+
+<p><strong>The bond-substitute trap:</strong> investors reaching for REITs "instead of bonds" because of the yield get burned in selloffs — in 2022 both fell, and REITs fell far more. Treat REITs as the high-income, real-asset <em>sleeve of your equities</em>, not as ballast.</p>
+
+<table>
+  <caption>Suggested REIT allocation ranges by investor type (as a share of total portfolio). Opinion-based, general guidance.</caption>
+  <thead><tr><th>Investor Type</th><th>Suggested REIT Allocation</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>Conservative income investor</td><td><span class="badge b-teal">5–10%</span></td><td>Diversified, low-leverage; avoid mortgage &amp; weak office</td></tr>
+    <tr><td>Balanced investor</td><td><span class="badge b-teal">5–15%</span></td><td>Broad ETF core; this is the sweet spot for most</td></tr>
+    <tr><td>Growth investor</td><td><span class="badge b-amber">0–10%</span></td><td>Optional; tilt to data centers/industrial if held</td></tr>
+    <tr><td>Real-asset-focused investor</td><td><span class="badge b-gold">10–20%</span></td><td>Pair with infrastructure/commodities for inflation defense</td></tr>
+  </tbody>
+</table>
+
+<p><strong>Go lower</strong> when you already own a home (large concentrated real-estate bet), when REIT yields sit below bond yields (as now), or when you cannot shelter the income from tax. <strong>Go higher</strong> when you want inflation protection, durable income, and you can hold REITs in a registered/tax-advantaged account. <strong>Account placement is not a detail — it is half the decision</strong> (Sections 9–10).</p>
+
+<!-- ============ 9 CANADIAN ============ -->
+<h2 id="s9"><span class="num">SECTION 9</span>Canadian Retail Investor Considerations</h2>
+
+<p>For a Canadian, the REIT decision is dominated by <strong>tax and account placement</strong>, then currency, then product.</p>
+
+<h4>The withholding-tax rule that drives everything</h4>
+<p><span class="badge b-gold">Key cross-border rule.</span> U.S. REIT distributions paid to a Canadian face a <strong>15% U.S. withholding tax</strong> — <em>except</em> in an <strong>RRSP/RRIF</strong>, where the Canada–U.S. tax treaty waives it for <em>U.S.-listed</em> ETFs holding U.S. securities. In a <strong>TFSA, FHSA or RESP the 15% is withheld and is <em>not</em> recoverable</strong> (no foreign tax credit in a tax-free account). In a <strong>taxable account</strong> it is withheld but you can claim a foreign tax credit. Conclusion: <strong>hold U.S.-listed U.S. REIT ETFs (like VNQ) in your RRSP.</strong></p>
+
+<table>
+  <caption>Where to hold each REIT type — Canadian accounts</caption>
+  <thead><tr><th>Holding</th><th>RRSP/RRIF</th><th>TFSA / FHSA</th><th>Taxable</th></tr></thead>
+  <tbody>
+    <tr><td><strong>U.S.-listed U.S. REIT ETF</strong> (VNQ, SCHH)</td><td><span class="badge b-green">Best</span> — no 15% withholding</td><td><span class="badge b-red">Worst</span> — 15% lost permanently</td><td><span class="badge b-amber">OK</span> — withholding recoverable via FTC, but income fully taxed</td></tr>
+    <tr><td><strong>Canadian-listed REIT ETF</strong> (XRE, ZRE, VRE)</td><td><span class="badge b-teal">Good</span></td><td><span class="badge b-green">Good</span> — no withholding issue</td><td><span class="badge b-amber">Tax-inefficient</span> — see below</td></tr>
+    <tr><td><strong>Canadian-listed ETF holding U.S./global REITs</strong></td><td><span class="badge b-amber">15% withheld inside fund, unrecoverable</span></td><td><span class="badge b-amber">15% withheld, unrecoverable</span></td><td><span class="badge b-amber">15% recoverable</span></td></tr>
+  </tbody>
+</table>
+
+<h4>Distribution taxation in a taxable account</h4>
+<p>Canadian REIT distributions are <strong>not "eligible dividends"</strong> — they are a blend of <strong>other income</strong> (taxed at your full marginal rate), <strong>return of capital</strong> (not taxed now; lowers your cost base, deferring tax to sale), <strong>capital gains</strong> (half-taxed) and <strong>foreign income</strong>. The high ordinary-income component makes REITs tax-inefficient in a non-registered account — another reason to shelter them.</p>
+
+<h4>Currency</h4>
+<p><span class="badge b-gold">Current:</span> USD/CAD ≈ 1.40. A Canadian buying U.S. REIT ETFs takes on USD exposure. <span class="badge b-amber">Opinion:</span> for a long-term diversified investor I would <strong>not</strong> bother hedging — currency-hedged versions cost more and add tracking error, and unhedged USD exposure is itself a diversifier for a Canadian whose income and home are in CAD.</p>
+
+<h4>Canadian-listed REIT ETFs</h4>
+<table>
+  <caption>Canadian-listed REIT ETFs (data approximate, mid-2026). <span class="badge b-green">Product recommendation</span> context.</caption>
+  <thead><tr><th>Ticker</th><th>Name / Strategy</th><th class="num">MER</th><th class="num">Yield</th><th class="num">Holdings</th><th>Best use / notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>VRE</strong></td><td>Vanguard FTSE Canadian Capped REIT</td><td class="num">0.39%</td><td class="num">~4.2%</td><td class="num">~19</td><td><span class="badge b-green">Lowest-cost</span> CAD core</td></tr>
+    <tr><td><strong>ZRE</strong></td><td>BMO Equal-Weight REITs</td><td class="num">0.61%</td><td class="num">~4.9%</td><td class="num">~24</td><td>Equal-weight = less single-name concentration</td></tr>
+    <tr><td><strong>XRE</strong></td><td>iShares S&amp;P/TSX Capped REIT</td><td class="num">0.61%</td><td class="num">~5.6%</td><td class="num">~16</td><td>Most popular/liquid; top-heavy (top 3 ≈37%)</td></tr>
+    <tr><td><strong>RIT</strong></td><td>CI Canadian REIT (active, can hold global)</td><td class="num">~0.85%</td><td class="num">~5.3%</td><td class="num">~30</td><td>Active; higher fee; broader mandate</td></tr>
+  </tbody>
+</table>
+<p><strong>The Canadian-ETF limitation:</strong> the entire TSX REIT universe is dominated by retail, residential, industrial and diversified names — with essentially <em>no data-center or cell-tower exposure</em> and little healthcare. That is exactly the high-growth slice you miss by going Canada-only.</p>
+
+<h4>U.S.-listed REIT ETFs accessible to Canadians</h4>
+<table>
+  <caption>U.S.-listed REIT ETFs (data approximate, mid-2026)</caption>
+  <thead><tr><th>Ticker</th><th>Index / strategy</th><th class="num">Expense</th><th class="num">Yield</th><th class="num">Holdings</th><th>Best account (CA)</th></tr></thead>
+  <tbody>
+    <tr><td><strong>VNQ</strong></td><td>MSCI US REIT — broad</td><td class="num">0.13%</td><td class="num">~3.8%</td><td class="num">~160</td><td>RRSP</td></tr>
+    <tr><td><strong>SCHH</strong></td><td>Dow Jones US REIT — broad, cheapest</td><td class="num">0.07%</td><td class="num">~3.0%</td><td class="num">~130</td><td>RRSP</td></tr>
+    <tr><td><strong>USRT</strong></td><td>iShares Core US REIT</td><td class="num">0.08%</td><td class="num">~3.3%</td><td class="num">~140</td><td>RRSP</td></tr>
+    <tr><td><strong>XLRE</strong></td><td>S&amp;P 500 Real Estate sector</td><td class="num">0.09%</td><td class="num">~3.5%</td><td class="num">~31</td><td>RRSP — large-cap only</td></tr>
+    <tr><td><strong>REET</strong></td><td>iShares Global REIT</td><td class="num">0.14%</td><td class="num">~3.0%</td><td class="num">~385</td><td>RRSP — adds non-US</td></tr>
+  </tbody>
+</table>
+
+<table>
+  <caption><span class="badge b-green">Recommendation matrix — Canadian investor</span></caption>
+  <thead><tr><th>Need</th><th>Preferred type</th><th>Examples</th><th>Best account</th><th>Rationale</th></tr></thead>
+  <tbody>
+    <tr><td>Simple Canadian REIT exposure</td><td>CAD REIT ETF</td><td>VRE, ZRE, XRE</td><td>TFSA / taxable</td><td>CAD-listed, CAD income, no withholding friction</td></tr>
+    <tr><td>U.S. REIT diversification</td><td>U.S. REIT ETF</td><td>VNQ, SCHH, USRT</td><td><strong>RRSP</strong></td><td>Broader sectors; treaty waives 15% withholding</td></tr>
+    <tr><td>Global real estate</td><td>Global REIT ETF</td><td>REET</td><td>RRSP / taxable</td><td>One-ticket worldwide property</td></tr>
+    <tr><td>Maximum income</td><td>High-yield CAD REIT ETF</td><td>XRE, RIT</td><td>TFSA / RRSP</td><td>~5–6% cash flow; accept lower growth, watch payout</td></tr>
+  </tbody>
+</table>
+
+<!-- ============ 10 US ============ -->
+<h2 id="s10"><span class="num">SECTION 10</span>U.S. Retail Investor Considerations</h2>
+
+<p>For a U.S. investor the cross-border tax issue disappears, and the decision reduces to <strong>cost, breadth, and account placement</strong>.</p>
+
+<h4>The U.S. tax point that matters most</h4>
+<p>REIT distributions are generally <strong>non-qualified — taxed as ordinary income</strong>, not at the lower qualified-dividend rate. (A portion may qualify for the 20% QBI deduction through 2025 law, and some is return of capital or capital gain.) The practical takeaway: <strong>hold REITs in a tax-advantaged account — Traditional IRA, Roth IRA or 401(k) — wherever possible.</strong> A Roth is ideal: the high, ordinary-income yield then compounds and is withdrawn tax-free. State tax adds to the case for sheltering. ETFs are also more tax-efficient and far cheaper than most actively managed real-estate mutual funds.</p>
+
+<table>
+  <caption>U.S.-listed REIT ETFs (data approximate, mid-2026)</caption>
+  <thead><tr><th>Ticker</th><th>Index / strategy</th><th class="num">Expense</th><th class="num">Yield</th><th class="num">Holdings</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>SCHH</strong></td><td>Dow Jones US Select REIT</td><td class="num">0.07%</td><td class="num">~3.0%</td><td class="num">~130</td><td><span class="badge b-green">Cheapest</span> broad option; excludes mortgage REITs</td></tr>
+    <tr><td><strong>USRT</strong></td><td>iShares Core US REIT</td><td class="num">0.08%</td><td class="num">~3.3%</td><td class="num">~140</td><td>Broad, low-cost, very liquid</td></tr>
+    <tr><td><strong>FREL</strong></td><td>Fidelity MSCI Real Estate</td><td class="num">0.084%</td><td class="num">~3.6%</td><td class="num">~160</td><td>Cheap; free to trade at Fidelity</td></tr>
+    <tr><td><strong>VNQ</strong></td><td>MSCI US REIT (incl. specialized)</td><td class="num">0.13%</td><td class="num">~3.8%</td><td class="num">~160</td><td>The category standard; most liquid</td></tr>
+    <tr><td><strong>XLRE</strong></td><td>S&amp;P 500 Real Estate sector</td><td class="num">0.09%</td><td class="num">~3.5%</td><td class="num">~31</td><td>Large-cap only; concentrated</td></tr>
+    <tr><td><strong>REET</strong></td><td>iShares Global REIT</td><td class="num">0.14%</td><td class="num">~3.0%</td><td class="num">~385</td><td>Adds ~30% non-U.S. real estate</td></tr>
+    <tr><td><strong>IYR</strong></td><td>iShares US Real Estate</td><td class="num">0.39%</td><td class="num">~3.0%</td><td class="num">~70</td><td><span class="badge b-amber">Pricey</span> — older, no reason to pay 0.39%</td></tr>
+    <tr><td><strong>RWR</strong></td><td>SPDR Dow Jones REIT</td><td class="num">0.25%</td><td class="num">~3.4%</td><td class="num">~110</td><td>Fine but dearer than SCHH/USRT</td></tr>
+    <tr><td><strong>KBWY</strong></td><td>Invesco KBW Premium Yield (small-cap high-yield)</td><td class="num">0.35%</td><td class="num">~9%+</td><td class="num">~30</td><td><span class="badge b-red">High-risk</span> — small caps, payout risk</td></tr>
+    <tr><td><strong>REM / MORT</strong></td><td>Mortgage REIT ETFs</td><td class="num">~0.48%</td><td class="num">~9–10%</td><td class="num">~25–35</td><td><span class="badge b-red">Avoid</span> for most — high leverage, poor total return</td></tr>
+  </tbody>
+</table>
+
+<table>
+  <caption><span class="badge b-green">Recommendation matrix — U.S. investor</span></caption>
+  <thead><tr><th>Need</th><th>Preferred product</th><th>Rationale</th></tr></thead>
+  <tbody>
+    <tr><td>Broad low-cost REIT exposure</td><td><strong>SCHH / USRT / VNQ</strong></td><td>Diversified, cheap, liquid — the core for nearly everyone</td></tr>
+    <tr><td>S&amp;P 500 real-estate sector exposure</td><td><strong>XLRE</strong></td><td>Large-cap, ultra-cheap; fits a sector-rotation/satellite slot</td></tr>
+    <tr><td>Global real estate</td><td><strong>REET</strong></td><td>One-ticket worldwide property diversification</td></tr>
+    <tr><td>Maximum income</td><td>Carefully chosen high-yield ETF</td><td>Higher yield, higher risk — size it small</td></tr>
+    <tr><td><strong>Avoid</strong></td><td>Mortgage-REIT ETFs (REM/MORT)</td><td>High leverage &amp; rate sensitivity; weak long-run total return</td></tr>
+  </tbody>
+</table>
+
+<!-- ============ 11 INDIVIDUAL REITS ============ -->
+<h2 id="s11"><span class="num">SECTION 11</span>Individual REIT Selection</h2>
+
+<p><span class="badge b-amber">Opinion.</span> For an ETF-focused investor, individual names are optional satellites, not the core. If you do hold singles, anchor in quality balance sheets and winning sectors. Yields/metrics below are approximate as of mid-2026.</p>
+
+<h4>U.S. REITs</h4>
+<table>
+  <caption>Selected U.S. REITs — role assessment</caption>
+  <thead><tr><th>REIT</th><th>Sector</th><th class="num">Yield</th><th>Quality / notes</th><th>Role</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Prologis (PLD)</strong></td><td>Industrial</td><td class="num">~3.7%</td><td>~4.8x debt/EBITDA, ~47% FFO payout — gold standard</td><td><span class="badge b-green">Core</span></td></tr>
+    <tr><td><strong>American Tower (AMT)</strong></td><td>Towers</td><td class="num">~3.5%</td><td>Inflation-linked global contracts; de-rated, high quality</td><td><span class="badge b-green">Core</span></td></tr>
+    <tr><td><strong>Equinix (EQIX)</strong></td><td>Data centers</td><td class="num">~2.2%</td><td>AI/cloud demand; growth over yield</td><td><span class="badge b-teal">Growth core</span></td></tr>
+    <tr><td><strong>Digital Realty (DLR)</strong></td><td>Data centers</td><td class="num">~3%</td><td>Global data centers; growth</td><td><span class="badge b-teal">Growth</span></td></tr>
+    <tr><td><strong>Public Storage (PSA)</strong></td><td>Self-storage</td><td class="num">~4%</td><td>Fortress balance sheet, high margin</td><td><span class="badge b-green">Core</span></td></tr>
+    <tr><td><strong>Welltower (WELL)</strong></td><td>Healthcare/senior</td><td class="num">~2.5%</td><td>Senior-housing recovery leader</td><td><span class="badge b-teal">Growth core</span></td></tr>
+    <tr><td><strong>Realty Income (O)</strong></td><td>Net-lease retail</td><td class="num">~5.5%</td><td>Monthly payer, "Dividend Aristocrat"; bond-like</td><td><span class="badge b-teal">Income</span></td></tr>
+    <tr><td><strong>AvalonBay (AVB) / Equity Res. (EQR)</strong></td><td>Apartments</td><td class="num">~3.5%</td><td>High-quality coastal multifamily</td><td><span class="badge b-teal">Income/core</span></td></tr>
+    <tr><td><strong>Simon Property (SPG)</strong></td><td>Malls</td><td class="num">~5%</td><td>Best-in-class malls; recovered, but secular caution</td><td><span class="badge b-amber">Satellite</span></td></tr>
+  </tbody>
+</table>
+
+<h4>Canadian REITs</h4>
+<table>
+  <caption>Selected Canadian REITs — role assessment</caption>
+  <thead><tr><th>REIT</th><th>Sector</th><th class="num">Yield</th><th>Notes</th><th>Role</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Canadian Apartment (CAR.UN)</strong></td><td>Apartments</td><td class="num">~4%</td><td>Largest CA residential REIT; quality, lower yield</td><td><span class="badge b-green">Core</span></td></tr>
+    <tr><td><strong>Granite (GRT.UN)</strong></td><td>Industrial</td><td class="num">~4%</td><td>Logistics, strong balance sheet, global tenants</td><td><span class="badge b-green">Core</span></td></tr>
+    <tr><td><strong>Dream Industrial (DIR.UN)</strong></td><td>Industrial</td><td class="num">~6.8%</td><td>~49% payout — well-covered; CA + Europe logistics</td><td><span class="badge b-teal">Income/core</span></td></tr>
+    <tr><td><strong>Choice Properties (CHP.UN)</strong></td><td>Grocery retail</td><td class="num">~5.5%</td><td>Loblaw-anchored; very stable</td><td><span class="badge b-teal">Income</span></td></tr>
+    <tr><td><strong>CT REIT (CRT.UN)</strong></td><td>Retail (single-tenant)</td><td class="num">~6%</td><td>Canadian Tire-anchored; steady, growing distribution</td><td><span class="badge b-teal">Income</span></td></tr>
+    <tr><td><strong>First Capital (FCR.UN)</strong></td><td>Urban retail</td><td class="num">~4.5%</td><td>Grocery-anchored urban; improving</td><td><span class="badge b-teal">Income</span></td></tr>
+    <tr><td><strong>RioCan (REI.UN)</strong></td><td>Retail/mixed</td><td class="num">~5.8%</td><td>~74% payout; mixed-use redevelopment story</td><td><span class="badge b-amber">Income/watch</span></td></tr>
+    <tr><td><strong>SmartCentres (SRU.UN)</strong></td><td>Retail</td><td class="num">~8%</td><td><span class="badge b-red">Payout ~96% AFFO</span> — high yield, thin cushion</td><td><span class="badge b-amber">Watch / caution</span></td></tr>
+    <tr><td><strong>Allied Properties (AP.UN)</strong></td><td>Office</td><td class="num">High</td><td>Urban office — structurally pressured, elevated yield = risk</td><td><span class="badge b-red">Avoid/watch</span></td></tr>
+  </tbody>
+</table>
+
+<!-- ============ 12 CURRENT SETUP ============ -->
+<h2 id="s12"><span class="num">SECTION 12</span>Current Market Setup (June 2026)</h2>
+
+<div class="pill-row">
+  <div class="stat"><div class="l">U.S. 10-yr Treasury</div><div class="v">4.48%</div><div class="d">2-yr 4.09% · curve normalizing</div></div>
+  <div class="stat"><div class="l">U.S. Real Estate sector (XLRE) 1-yr</div><div class="v up">+8.3%</div><div class="d down">vs S&amp;P 500 +24.3%</div></div>
+  <div class="stat"><div class="l">S&amp;P/TSX Composite 1-yr</div><div class="v up">+31.8%</div><div class="d">REITs lagging broad TSX</div></div>
+  <div class="stat"><div class="l">USD/CAD</div><div class="v">1.40</div><div class="d">currency tailwind for CA holders of USD</div></div>
+</div>
+
+<p><span class="badge b-gold">Current valuation.</span> The rate cycle has turned: short rates have eased toward ~3.7% (1-month bill) while the 10-year sits at <strong>4.48%</strong>, leaving a normal, modestly upward-sloping curve. Both the Fed and Bank of Canada have moved off their peak-restrictive stance, which historically helps REITs — but long yields remain elevated, so the tailwind is gentle, not a gale.</p>
+
+<p>Key readings: <strong>credit spreads</strong> are tight (high-yield steady), supportive of refinancing. <strong>Cap rates</strong> have largely reset higher and appear to be stabilizing. <strong>Listed REITs trade at discounts to NAV</strong> and to lagging private-market real-estate valuations — the classic setup where public markets have already repriced and private marks are catching down. Sector-by-sector: <strong>office</strong> remains stressed (though bouncing off lows), <strong>industrial</strong> is normalizing after oversupply, <strong>data centers</strong> are booming on AI/cloud demand, <strong>apartment</strong> rent growth has cooled to low-single-digits, <strong>retail</strong> (grocery-anchored) is healthy, and <strong>healthcare/senior housing</strong> is in a clear up-cycle.</p>
+
+<div class="callout">
+  <h4>Are REITs cheap, fair, or expensive today?</h4>
+  <p><span class="badge b-amber">Opinion: fairly-to-attractively valued, but not a screaming bargain.</span> On NAV discounts and dividend yields above their own history, REITs look <em>cheap</em>. But the REIT yield (~4%) sits <em>below</em> the 10-year Treasury (4.48%) — a negative yield spread that is historically unusual and caps how cheap they really are versus risk-free income. The setup favours <strong>quality, lower-leverage, growth-sector REITs</strong> over a blanket bet. If long rates fall from here, REITs should re-rate; if they stay high, returns lean on income and earnings growth.</p>
+</div>
+
+<!-- ============ 13 STRATEGY ============ -->
+<h2 id="s13"><span class="num">SECTION 13</span>Recommended REIT Strategy</h2>
+
+<h4>Conservative income investor</h4>
+<p>Prioritize stable distributions and low leverage. Use a <strong>diversified REIT ETF</strong> as the whole position; avoid mortgage REITs and weak office. Canada: <strong>ZRE</strong> (equal-weight reduces single-name risk) or <strong>VRE</strong> in a TFSA. U.S.: <strong>SCHH/USRT</strong> in an IRA. Target the low end of the allocation range (5–10%).</p>
+
+<h4>Balanced long-term investor (your profile)</h4>
+<p>A broad, low-cost REIT ETF core, diversified across the U.S. and Canada, sized at <strong>5–10%</strong> of the portfolio. Favour low fees and correct account placement above all. This is the "set it and forget it" approach the data supports.</p>
+
+<h4>Growth-oriented investor</h4>
+<p>Tilt toward the structural winners — <strong>data centers, towers, industrial, self-storage, residential</strong> — and underweight traditional retail and office. Achievable via a broad U.S. ETF (which already overweights these) plus optional single-name satellites (PLD, AMT, EQIX, WELL, PSA). Keep total REITs ≤10%.</p>
+
+<table>
+  <caption><span class="badge b-green">Final recommendation matrix</span> — by investor type</caption>
+  <thead><tr><th>Investor Type</th><th>Canada Recommendation</th><th>U.S. Recommendation</th><th>Allocation</th><th>Key Risk</th></tr></thead>
+  <tbody>
+    <tr><td>Conservative income</td><td>ZRE / VRE (TFSA)</td><td>SCHH / USRT (IRA/Roth)</td><td>5–10%</td><td>Rate spikes; payout cuts in high-yield names</td></tr>
+    <tr><td>Balanced long-term</td><td>VRE + VNQ (RRSP)</td><td>VNQ / SCHH (IRA/Roth)</td><td>5–10%</td><td>Underperformance vs S&amp;P; over-concentration</td></tr>
+    <tr><td>Growth-oriented</td><td>GRT.UN, DIR.UN + VNQ</td><td>VNQ + PLD/AMT/EQIX</td><td>0–10%</td><td>Lower yield; growth-sector valuation risk</td></tr>
+    <tr><td>Real-asset focused</td><td>XRE/ZRE + REET</td><td>VNQ + REET</td><td>10–20%</td><td>Real-estate cycle; inflation reversal</td></tr>
+  </tbody>
+</table>
+
+<!-- ============ 14 AVOID ============ -->
+<h2 id="s14"><span class="num">SECTION 14</span>Products to Avoid or Treat Carefully</h2>
+
+<div class="callout warn">
+  <h4>High yield does not equal good value.</h4>
+  <p>The single most common REIT mistake is buying the biggest yield. A high distribution yield usually reflects high <em>risk</em> — leverage, a stressed sector, or an unsustainable payout the market expects to be cut. Total return, cost, and balance-sheet safety beat headline yield every time.</p>
+</div>
+
+<ul>
+  <li><strong>Mortgage-REIT ETFs (REM, MORT):</strong> ~10% yields, but ~0% real total return over 20 years, heavy leverage, repeated dividend cuts. Not buy-and-hold assets.</li>
+  <li><strong>Non-traded / private REITs:</strong> high commissions, illiquidity, redemption gates (several have frozen withdrawals), and opaque valuations. Generally avoid.</li>
+  <li><strong>High-fee actively managed real-estate mutual funds:</strong> rarely beat a 0.07% index ETF after fees.</li>
+  <li><strong>Leveraged / closed-end real-estate funds:</strong> borrow to boost yield; magnify drawdowns and often trade at volatile premiums/discounts.</li>
+  <li><strong>Covered-call REIT ETFs:</strong> boost current income by selling away upside — fine if you <em>only</em> want cash flow, but they structurally cap total return, the wrong trade for a long-term compounder.</li>
+  <li><strong>Concentrated office REITs &amp; high-payout names:</strong> AFFO payouts above ~95% (e.g. some Canadian retail names) and floating-rate-heavy balance sheets carry real distribution-cut risk.</li>
+  <li><strong>U.S. REIT ETFs in a TFSA/FHSA:</strong> not a "bad product," but a costly <em>placement</em> error — the 15% withholding is lost permanently.</li>
+</ul>
+
+<!-- ============ 15 CONCLUSION ============ -->
+<h2 id="s15"><span class="num">SECTION 15</span>Final Conclusion</h2>
+
+<p><strong>Are REITs worth owning?</strong> Yes — as a modest, deliberately-placed sleeve for income, diversification and real-asset/inflation exposure. <strong>Not</strong> as a bet to beat the S&amp;P 500, which the 10-, 20- and 30-year record does not support.</p>
+
+<p><strong>Most attractive sectors:</strong> data centers, industrial/logistics, cell towers, self-storage, and senior housing. <strong>Underweight or avoid:</strong> commodity office, Class-B malls, and mortgage REITs.</p>
+
+<p><strong>Canadian investors:</strong> use <em>both</em>, by account. Hold a <strong>broad U.S. REIT ETF (VNQ/SCHH) in the RRSP</strong> for sector breadth and treaty-protected income, and optionally a <strong>Canadian-listed ETF (VRE/ZRE) in the TFSA</strong> for home-currency cash flow. Don't go Canada-only — you'd miss the data-center and tower growth entirely. <strong>U.S. investors:</strong> a single low-cost broad ETF (SCHH/USRT/VNQ) in a Roth or IRA does ~95% of the job.</p>
+
+<p><strong>How much?</strong> 5–15% of the portfolio for most, lower if you already own a home and cannot shelter the income, higher only for a deliberate real-asset tilt.</p>
+
+<div class="callout thesis">
+  <p class="verdict">For most long-term retail investors, the best REIT approach is <b>a small (5–10%) allocation to one or two low-cost, broadly diversified REIT ETFs — a U.S. broad fund (VNQ/SCHH) in a tax-sheltered account as the core, optionally complemented by a domestic-listed fund — held for income, diversification and inflation exposure rather than for beating the S&amp;P 500, with sector quality (data centers, industrial, towers, storage) favoured over chasing the highest yield.</b></p>
+</div>
+
+<!-- ============ SOURCES ============ -->
+<h2 style="border-top:3px solid var(--gold);"><span class="num">DATA SOURCES</span>References</h2>
+<p class="src">
+Return &amp; index data: <a href="https://www.reit.com/sites/default/files/2025-06/MediaFactSheetMay-2025.pdf">Nareit REIT Industry Fact Sheet, May 2025</a> ·
+<a href="https://www.reit.com/data-research/reit-indexes/annual-index-values-returns">Nareit Annual Index Values &amp; Returns</a> ·
+<a href="https://www.reit.com/data-research/reit-market-data/report/performance-property-sectorsubsector">Nareit Performance by Property Sector</a><br>
+Live market &amp; rate data (June 12–13, 2026): Bigdata.com market &amp; Treasury tearsheet (<a href="https://bigdata.com">bigdata.com</a>), Financial Modeling Prep · U.S. Treasury yields.<br>
+ETF specifics: <a href="https://etfdb.com/etf/REET/">ETF Database</a> ·
+<a href="https://www.blackrock.com/ca/investors/en/products/239843/ishares-sptsx-capped-reit-index-etf">iShares (XRE)</a> ·
+<a href="https://www.fool.ca/investing/top-canadian-reit-etf/">Motley Fool Canada</a> ·
+<a href="https://milliondollarjourney.com/best-reit-etfs-canada.htm">Million Dollar Journey</a> ·
+<a href="https://stockanalysis.com/etf/vnq/dividend/">StockAnalysis (VNQ)</a><br>
+Individual REIT metrics: <a href="https://www.sec.gov/Archives/edgar/data/1045609/000119312526157977/pld-ex99_2.htm">Prologis SEC filings</a> ·
+<a href="https://www.suredividend.com/monthly-dividend-stock-riocf/">Sure Dividend</a> ·
+<a href="https://wealthawesome.com/best-canadian-reit-stocks">Wealth Awesome</a> ·
+<a href="https://ycharts.com/indices/%5ESPTSCRETR">YCharts (TSX REIT TR)</a>.
+</p>
+
+<div class="disc">
+  <strong>Disclaimer.</strong> This report is for educational and informational purposes only and is not investment, tax, or legal advice, nor a recommendation to buy or sell any security. I am not a licensed financial advisor, tax professional, or fiduciary. Returns are historical and do not predict future results; all investing involves risk of loss. ETF yields, expense ratios, and individual-REIT metrics are approximate and drawn from third-party sources as of mid-2026 — verify current figures on official fund and issuer pages before acting. Tax treatment (including U.S. withholding, RRSP/TFSA rules, QBI deductions, and state taxes) depends on your personal situation and on rules that change; consult a qualified tax professional and your own advisor before making decisions. Market and rate data are as of June 12–13, 2026; return data are period-ending May 30, 2025 (FTSE Nareit).
+</div>
+
+</div>
+</body>
+</html>
+

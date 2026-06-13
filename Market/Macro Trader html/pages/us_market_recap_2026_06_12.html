@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>U.S. Market Recap Dashboard · June 12, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3efe8;
+    --surface: rgba(255, 251, 245, 0.92);
+    --surface-strong: #fffdf9;
+    --ink: #1f2524;
+    --muted: #5b6764;
+    --line: rgba(31, 37, 36, 0.12);
+    --line-strong: rgba(31, 37, 36, 0.24);
+    --risk-on: #0b8f66;
+    --risk-off: #c04d2f;
+    --neutral: #8c6a23;
+    --navy: #163542;
+    --blue: #2b6cb0;
+    --amber: #c79a2f;
+    --panel-shadow: 0 20px 60px rgba(21, 34, 33, 0.08);
+    --radius: 20px;
+    --radius-sm: 12px;
+    --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-serif: "Newsreader", Georgia, serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(43, 108, 176, 0.12), transparent 32%),
+      radial-gradient(circle at top right, rgba(11, 143, 102, 0.10), transparent 28%),
+      linear-gradient(180deg, #f8f4ed 0%, #efe8dd 100%);
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .shell {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, rgba(22, 53, 66, 0.96), rgba(25, 64, 55, 0.92)),
+      #163542;
+    color: #f9f6ef;
+    border-radius: 28px;
+    box-shadow: var(--panel-shadow);
+    padding: 32px;
+    margin-bottom: 22px;
+  }
+
+  .hero::before,
+  .hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 999px;
+    opacity: 0.24;
+    pointer-events: none;
+  }
+
+  .hero::before {
+    width: 360px;
+    height: 360px;
+    background: radial-gradient(circle, rgba(199, 154, 47, 0.5), transparent 60%);
+    top: -120px;
+    right: -40px;
+  }
+
+  .hero::after {
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(76, 175, 80, 0.4), transparent 65%);
+    bottom: -90px;
+    left: -60px;
+  }
+
+  .hero-top {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.5fr 0.8fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #53d49b;
+    box-shadow: 0 0 0 0 rgba(83, 212, 155, 0.55);
+    animation: pulse 2.2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(83, 212, 155, 0.55); }
+    70% { box-shadow: 0 0 0 11px rgba(83, 212, 155, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(83, 212, 155, 0); }
+  }
+
+  h1 {
+    margin: 16px 0 10px;
+    font-family: var(--font-serif);
+    font-size: clamp(36px, 4.8vw, 64px);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+  }
+
+  .hero-copy {
+    max-width: 780px;
+    font-size: 15px;
+    line-height: 1.75;
+    color: rgba(249, 246, 239, 0.86);
+  }
+
+  .hero-meta {
+    display: grid;
+    gap: 12px;
+  }
+
+  .regime-chip {
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
+    backdrop-filter: blur(12px);
+  }
+
+  .regime-chip .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(249, 246, 239, 0.72);
+  }
+
+  .regime-chip strong {
+    display: block;
+    margin-top: 8px;
+    font-size: 26px;
+    letter-spacing: -0.03em;
+  }
+
+  .regime-chip p {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(249, 246, 239, 0.78);
+  }
+
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .score-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    padding: 16px;
+  }
+
+  .score-card .k {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(249, 246, 239, 0.72);
+  }
+
+  .score-card .v {
+    margin-top: 8px;
+    font-size: clamp(22px, 3vw, 34px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+
+  .score-card .s {
+    margin-top: 5px;
+    font-size: 12px;
+    color: rgba(249, 246, 239, 0.72);
+  }
+
+  .workspace {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 20px;
+    display: grid;
+    gap: 18px;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: var(--radius);
+    box-shadow: var(--panel-shadow);
+    backdrop-filter: blur(14px);
+  }
+
+  .nav-panel,
+  .filter-panel {
+    padding: 18px;
+  }
+
+  .panel-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .jump-links {
+    display: grid;
+    gap: 8px;
+  }
+
+  .jump-links a {
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    color: var(--muted);
+    background: rgba(255, 255, 255, 0.42);
+    transition: 0.18s ease;
+  }
+
+  .jump-links a:hover,
+  .jump-links a.active {
+    color: var(--ink);
+    border-color: var(--line);
+    transform: translateX(4px);
+    background: var(--surface-strong);
+  }
+
+  .filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip-btn {
+    appearance: none;
+    border: 1px solid var(--line);
+    background: #fffaf2;
+    color: var(--muted);
+    padding: 9px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    transition: 0.18s ease;
+  }
+
+  .chip-btn:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .chip-btn.is-active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+
+  .content {
+    display: grid;
+    gap: 22px;
+  }
+
+  .section {
+    padding: 22px;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-number {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .section-header h2 {
+    margin: 0;
+    font-size: 22px;
+    letter-spacing: -0.03em;
+  }
+
+  .section-header p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .toggle {
+    appearance: none;
+    border: 1px solid var(--line);
+    background: var(--surface-strong);
+    color: var(--ink);
+    padding: 9px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+  }
+
+  .hero-grid,
+  .index-grid,
+  .macro-grid,
+  .summary-grid,
+  .risk-grid,
+  .etf-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .hero-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .index-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .macro-grid,
+  .summary-grid,
+  .risk-grid,
+  .etf-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .metric-card,
+  .summary-card,
+  .risk-card,
+  .etf-card,
+  .index-card,
+  .macro-card {
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--surface-strong);
+    padding: 16px;
+  }
+
+  .metric-card .k,
+  .index-card .k,
+  .macro-card .k {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .metric-card .v,
+  .index-card .v,
+  .macro-card .v {
+    font-size: 30px;
+    margin-top: 10px;
+    letter-spacing: -0.05em;
+    font-weight: 700;
+  }
+
+  .metric-card .s,
+  .index-card .s,
+  .macro-card .s {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .up { color: var(--risk-on); }
+  .down { color: var(--risk-off); }
+  .flat { color: var(--neutral); }
+
+  .takeaways {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .bullet-block,
+  .note-block {
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.62);
+    padding: 18px;
+  }
+
+  .bullet-block ul,
+  .note-block ul {
+    margin: 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 10px;
+  }
+
+  .bullet-block li,
+  .note-block li {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .bullet-block strong,
+  .note-block strong {
+    color: var(--ink);
+  }
+
+  .note-block {
+    background: linear-gradient(180deg, rgba(43, 108, 176, 0.06), rgba(255, 255, 255, 0.74));
+  }
+
+  .micro {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .bar-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .bar-row {
+    display: grid;
+    grid-template-columns: 170px minmax(0, 1fr) 56px;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .bar-row .name {
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .bar-track {
+    position: relative;
+    height: 14px;
+    background: #efe6d8;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #2b6cb0, #4f8fd0);
+    transform-origin: left center;
+    animation: grow 900ms ease both;
+  }
+
+  .bar-fill.good {
+    background: linear-gradient(90deg, #0b8f66, #45b48d);
+  }
+
+  .bar-fill.bad {
+    background: linear-gradient(90deg, #c04d2f, #d5775d);
+  }
+
+  @keyframes grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    margin-top: 14px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 760px;
+  }
+
+  th,
+  td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    font-size: 13px;
+  }
+
+  th {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  td strong {
+    display: block;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+
+  .callout {
+    margin-top: 18px;
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(11, 143, 102, 0.2);
+    background: linear-gradient(135deg, rgba(11, 143, 102, 0.08), rgba(255, 255, 255, 0.78));
+  }
+
+  .callout h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+  }
+
+  .callout p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .scenario-switch {
+    display: inline-flex;
+    gap: 8px;
+    padding: 6px;
+    border-radius: 999px;
+    background: #ebe4d7;
+    border: 1px solid var(--line);
+  }
+
+  .scenario-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    padding: 10px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+  }
+
+  .scenario-btn.is-active {
+    background: var(--surface-strong);
+    color: var(--ink);
+    box-shadow: 0 6px 18px rgba(31, 37, 36, 0.08);
+  }
+
+  .scenario-panel {
+    display: none;
+    margin-top: 16px;
+  }
+
+  .scenario-panel.is-active {
+    display: block;
+  }
+
+  .risk-card[data-tag],
+  .summary-card[data-tag],
+  .etf-card[data-tag] {
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .is-hidden {
+    display: none !important;
+  }
+
+  .footer-note {
+    margin-top: 22px;
+    padding: 18px;
+    border-radius: 18px;
+    background: #f8f1e4;
+    border: 1px solid rgba(140, 106, 35, 0.2);
+    color: #6f5a30;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .source-list {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 18px;
+    font-size: 12px;
+  }
+
+  .source-list a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  .source-list a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 1120px) {
+    .workspace,
+    .hero-top,
+    .takeaways,
+    .hero-grid,
+    .score-grid,
+    .index-grid,
+    .macro-grid,
+    .summary-grid,
+    .risk-grid,
+    .etf-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+      position: static;
+    }
+
+    .bar-row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .source-list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .shell {
+      padding: 14px;
+    }
+
+    .hero,
+    .section {
+      padding: 18px;
+    }
+
+    h1 {
+      font-size: 34px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">Interactive Daily U.S. Market Recap</div>
+          <h1>Broadening Risk-On,<br>Still Yield-Constrained</h1>
+          <p class="hero-copy">
+            Friday, June 12, 2026 delivered a constructive post-close setup for a macro trader: falling crude
+            eased the inflation shock, small caps and equal weight outperformed, and the S&amp;P 500 pushed into
+            new high ground. The constraint remains unchanged: Treasury yields are still elevated and the June 16-17
+            FOMC can still reset the entire tone.
+          </p>
+        </div>
+        <div class="hero-meta">
+          <div class="regime-chip">
+            <span class="label">Session Classification</span>
+            <strong>Risk-On / Broadening</strong>
+            <p>Dow and Russell led, Nasdaq lagged, oil fell, and the dollar softened.</p>
+          </div>
+          <div class="regime-chip">
+            <span class="label">Macro Constraint</span>
+            <strong>Higher-for-Longer Risk</strong>
+            <p>10Y at 4.485% and hawkish 2026 Fed pricing keep duration-sensitive assets from fully running.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="score-grid">
+        <div class="score-card">
+          <div class="k">Market Bias</div>
+          <div class="v">Bullish</div>
+          <div class="s">Short-term tape improved</div>
+        </div>
+        <div class="score-card">
+          <div class="k">Risk Appetite</div>
+          <div class="v">Moderate</div>
+          <div class="s">Broadening, not euphoric</div>
+        </div>
+        <div class="score-card">
+          <div class="k">Leadership Quality</div>
+          <div class="v">Improving</div>
+          <div class="s">Better breadth than mega-cap only</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <aside class="sidebar">
+        <section class="panel nav-panel">
+          <div class="panel-title">Navigate</div>
+          <nav class="jump-links" id="jumpLinks">
+            <a href="#snapshot">Snapshot</a>
+            <a href="#indices">Indices &amp; Breadth</a>
+            <a href="#sectors">Sector Rotation</a>
+            <a href="#macro">Macro Drivers</a>
+            <a href="#fed">Fed &amp; Policy</a>
+            <a href="#etf">ETF Positioning</a>
+            <a href="#outlook">Outlook</a>
+            <a href="#sources">Sources</a>
+          </nav>
+        </section>
+
+        <section class="panel filter-panel">
+          <div class="panel-title">Focus Filter</div>
+          <div class="filter-group" id="focusFilters">
+            <button class="chip-btn is-active" data-filter="all">All</button>
+            <button class="chip-btn" data-filter="bullish">Bullish</button>
+            <button class="chip-btn" data-filter="defensive">Defensive</button>
+            <button class="chip-btn" data-filter="watch">Watchlist</button>
+          </div>
+          <p class="micro">Filters hide ETF, risk, and setup cards so you can isolate momentum, defense, or near-term watch points.</p>
+        </section>
+      </aside>
+
+      <main class="content">
+        <section class="panel section" id="snapshot">
+          <div class="section-header">
+            <div class="section-heading">
+              <span class="section-number">01</span>
+              <div>
+                <h2>Close Snapshot</h2>
+                <p>The day’s core message in one screen.</p>
+              </div>
+            </div>
+            <button class="toggle" data-target="snapshotExtra">Show Desk Notes</button>
+          </div>
+
+          <div class="hero-grid">
+            <div class="metric-card">
+              <div class="k">S&amp;P 500</div>
+              <div class="v up">7,431.46</div>
+              <div class="s">+0.5% and likely a new record close above the prior 7,412.84 peak.</div>
+            </div>
+            <div class="metric-card">
+              <div class="k">Dow Jones</div>
+              <div class="v up">51,202.26</div>
+              <div class="s">+0.7%, helped by broader cyclicals and financial participation.</div>
+            </div>
+            <div class="metric-card">
+              <div class="k">Nasdaq Composite</div>
+              <div class="v up">25,888.84</div>
+              <div class="s">+0.3%, positive but lagging relative to Dow and Russell.</div>
+            </div>
+            <div class="metric-card">
+              <div class="k">Russell 2000</div>
+              <div class="v up">2,943.99</div>
+              <div class="s">+0.8%, record-close territory and the cleanest breadth confirmation.</div>
+            </div>
+          </div>
+
+          <div class="takeaways">
+            <div class="bullet-block">
+              <div class="panel-title">Executive Read</div>
+              <ul>
+                <li><strong>Risk-on session:</strong> falling oil and a softer dollar reduced macro stress.</li>
+                <li><strong>Best relative strength:</strong> small caps and equal-weight exposure, not just mega-cap AI.</li>
+                <li><strong>Main restraint:</strong> yields remain high enough to cap multiple expansion.</li>
+                <li><strong>Best expression:</strong> broad beta and rotation trades look cleaner than concentrated software risk.</li>
+              </ul>
+            </div>
+            <div class="note-block">
+              <div class="panel-title">Trading Implication</div>
+              <ul>
+                <li><strong>Short-term signal:</strong> buy-the-dip still works if 10Y stays contained.</li>
+                <li><strong>Medium-term trend:</strong> bullish but rotation-heavy.</li>
+                <li><strong>Long-term implication:</strong> equities still beat duration until inflation and yields roll over together.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout is-hidden" id="snapshotExtra">
+            <h3>Desk Note</h3>
+            <p>
+              The tape matters because it broadens participation without fully abandoning discipline. That is more useful
+              than a simple Nasdaq surge. A macro trader should treat this as constructive but still conditional on the
+              next move in yields and oil.
+            </p>
+          </div>
+        </section>
+
+        <section class="panel section" id="indices">
+          <div class="section-header">
+            <div class="section-heading">
+              <span class="section-number">02</span>
+              <div>
+                <h2>Indices &amp; Breadth</h2>
+                <p>Leadership broadened, which is the most important internal improvement of the day.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="index-grid">
+            <div class="index-card">
+              <div class="k">Relative Strength Ranking</div>
+              <div class="bar-list">
+                <div class="bar-row">
+                  <div class="name">Russell 2000</div>
+                  <div class="bar-track"><div class="bar-fill good" style="width: 100%"></div></div>
+                  <div class="micro">+0.8%</div>
+                </div>
+                <div class="bar-row">
+                  <div class="name">Dow Jones</div>
+                  <div class="bar-track"><div class="bar-fill good" style="width: 88%"></div></div>
+                  <div class="micro">+0.7%</div>
+                </div>
+                <div class="bar-row">
+                  <div class="name">S&amp;P 500</div>
+                  <div class="bar-track"><div class="bar-fill" style="width: 63%"></div></div>
+                  <div class="micro">+0.5%</div>
+                </div>
+                <div class="bar-row">
+                  <div class="name">Nasdaq</div>
+                  <div class="bar-track"><div class="bar-fill bad" style="width: 38%"></div></div>
+                  <div class="micro">+0.3%</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="index-card">
+              <div class="k">Breadth Read</div>
+              <div class="v">Broadening</div>
+              <div class="s">
+                Equal-weight S&amp;P outperformed cap-weight and Russell outperformed Nasdaq. That combination matters more
+                than a headline S&amp;P gain because it says participation improved outside the top handful of stocks.
+              </div>
+            </div>
+
+            <div class="index-card">
+              <div class="k">S&amp;P 500 Support</div>
+              <div class="v flat">7,214</div>
+              <div class="s">Verified 50-day moving average reference from June 10 reporting. First breakout retest zone: 7,300, then 7,214.</div>
+            </div>
+
+            <div class="index-card">
+              <div class="k">Russell Breakout Level</div>
+              <div class="v up">2,936</div>
+              <div class="s">Former record close. Holding above that keeps the breadth improvement credible.</div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <h3>What the index action says</h3>
+            <p>
+              This was not a narrow “Mag 7 dragged everything higher” session. The stronger message was that
+              the market absorbed a massive IPO, cheered lower oil, and rotated into smaller-cap and equal-weight
+              exposure at the same time.
+            </p>
+          </div>
+        </section>
+
+        <section class="panel section" id="sectors">
+          <div class="section-header">
+            <div class="section-heading">
+              <span class="section-number">03</span>
+              <div>
+                <h2>Sector Rotation</h2>
+                <p>Broad beta improved; tech stayed positive but lost the monopoly on leadership.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Sector</th>
+                  <th>Day Character</th>
+                  <th>Driver</th>
+                  <th>ETF Lens</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Technology</strong>Positive but not dominant</td>
+                  <td>Mixed AI tape, semis selective, software weaker.</td>
+                  <td>Growth leadership still intact but less one-dimensional.</td>
+                  <td>Watch <strong>XLK</strong>, <strong>SMH</strong>, <strong>SOXX</strong> on pullbacks rather than breakouts.</td>
+                </tr>
+                <tr>
+                  <td><strong>Communication Services</strong>Mixed</td>
+                  <td>Alphabet held up better than some peers; not a clean sector-wide thrust.</td>
+                  <td>Leadership quality decent, breadth not convincing.</td>
+                  <td><strong>XLC</strong> remains more stock-specific than sector-wide.</td>
+                </tr>
+                <tr>
+                  <td><strong>Consumer Discretionary</strong>Mixed</td>
+                  <td>Amazon lagged despite constructive tape.</td>
+                  <td>Consumer cyclicals not fully synchronized.</td>
+                  <td><strong>XLY</strong> less attractive than RSP/IWM today.</td>
+                </tr>
+                <tr>
+                  <td><strong>Consumer Staples</strong>Defensive lag</td>
+                  <td>Not where the day’s capital wanted to hide.</td>
+                  <td>Risk-on tone reduced need for shelter.</td>
+                  <td><strong>XLP</strong> is reserve capital, not momentum exposure.</td>
+                </tr>
+                <tr>
+                  <td><strong>Health Care</strong>Stable</td>
+                  <td>Neutral ballast rather than leadership.</td>
+                  <td>No large catalyst in the day’s tape.</td>
+                  <td><strong>XLV</strong> stays diversification, not alpha source.</td>
+                </tr>
+                <tr>
+                  <td><strong>Financials</strong>Constructive</td>
+                  <td>Helped the Dow and the broader value/cyclical tone.</td>
+                  <td>Higher rates are not great for duration, but still support financial earnings power.</td>
+                  <td><strong>XLF</strong> remains one of the cleaner rotation beneficiaries.</td>
+                </tr>
+                <tr>
+                  <td><strong>Industrials</strong>Constructive</td>
+                  <td>Broad participation day favored cyclical exposure.</td>
+                  <td>Risk appetite improved beyond pure tech.</td>
+                  <td><strong>XLI</strong> works in a broad beta regime.</td>
+                </tr>
+                <tr>
+                  <td><strong>Energy</strong>Potentially vulnerable</td>
+                  <td>Sector held in despite lower crude, but the commodity impulse turned negative.</td>
+                  <td>Oil de-escalation lowers inflation risk but challenges earnings torque.</td>
+                  <td><strong>XLE</strong> needs close monitoring if crude keeps falling.</td>
+                </tr>
+                <tr>
+                  <td><strong>Materials</strong>Improving</td>
+                  <td>Benefited from cyclical tone more than explicit commodity strength.</td>
+                  <td>Broad risk-on favors the group marginally.</td>
+                  <td><strong>XLB</strong> is secondary rotation, not first choice.</td>
+                </tr>
+                <tr>
+                  <td><strong>Utilities</strong>Relative lag</td>
+                  <td>Still rate-sensitive and not favored in a risk-on session.</td>
+                  <td>High yields remain an overhang.</td>
+                  <td><strong>XLU</strong> belongs in defense, not offense.</td>
+                </tr>
+                <tr>
+                  <td><strong>Real Estate</strong>Constrained</td>
+                  <td>High real rates remain the problem.</td>
+                  <td>Falling oil helps inflation optics, but financing costs are still elevated.</td>
+                  <td><strong>XLRE</strong> needs a yield rollover to improve materially.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout">
+            <h3>Sector message</h3>
+            <p>
+              Strongest practical rotation today was toward broader cyclicals and away from the idea that only
+              mega-cap AI can carry the tape. That is healthier for the market, but it has to persist into next week
+              to matter.
+            </p>
+          </div>
+        </section>
+
+        <section class="panel section" id="macro">
+          <div class="section-header">
+            <div class="section-heading">
+              <span class="section-number">04</span>
+              <div>
+                <h2>Macro Drivers</h2>
+                <p>Oil fell, yields stayed high, the dollar softened. Equities traded the first fact more than the second.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="macro-grid">
+            <div class="macro-card">
+              <div class="k">Brent Crude</div>
+              <div class="v down">$87.33</div>
+              <div class="s">-3.4%. U.S.-Iran de-escalation hopes reduced the energy risk premium.</div>
+            </div>
+            <div class="macro-card">
+              <div class="k">WTI</div>
+              <div class="v down">$84.88</div>
+              <div class="s">-3.2%. Falling oil drove the market’s inflation-relief reaction.</div>
+            </div>
+            <div class="macro-card">
+              <div class="k">10Y Treasury</div>
+              <div class="v flat">4.485%</div>
+              <div class="s">Still close enough to 2026 highs to keep valuation pressure alive.</div>
+            </div>
+            <div class="macro-card">
+              <div class="k">2Y Treasury</div>
+              <div class="v flat">4.083%</div>
+              <div class="s">Fed-sensitive front end remains restrictive.</div>
+            </div>
+            <div class="macro-card">
+              <div class="k">DXY</div>
+              <div class="v down">99.803</div>
+              <div class="s">-0.1%. Softer dollar confirmed the mild risk-on cross-asset tone.</div>
+            </div>
+            <div class="macro-card">
+              <div class="k">Bitcoin</div>
+              <div class="v flat">$63.3k</div>
+              <div class="s">Stable, but not confirming a broad speculative melt-up.</div>
+            </div>
+          </div>
+
+          <div class="takeaways">
+            <div class="bullet-block">
+              <div class="panel-title">Cross-Asset Read</div>
+              <ul>
+                <li><strong>Helpful for stocks:</strong> lower oil reduces near-term inflation fear.</li>
+                <li><strong>Less helpful for stocks:</strong> long-end yields did not collapse with oil.</li>
+                <li><strong>Important nuance:</strong> the market is trading lower inflation risk, not easy liquidity.</li>
+              </ul>
+            </div>
+            <div class="note-block">
+              <div class="panel-title">Data Caveat</div>
+              <ul>
+                <li><strong>Exact VIX close:</strong> not independently verified from accessible post-close sources.</li>
+                <li><strong>30Y yield close:</strong> not independently verified here, so omitted rather than guessed.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel section" id="fed">
+          <div class="section-header">
+            <div class="section-heading">
+              <span class="section-number">05</span>
+              <div>
+                <h2>Fed &amp; Policy Setup</h2>
+                <p>Hold next week remains the base case, but the year-end policy distribution is still hawkish.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-grid">
+            <article class="summary-card" data-tag="watch">
+              <div class="panel-title">Next FOMC</div>
+              <h3>June 16-17, 2026</h3>
+              <p class="micro">The immediate event risk for equities, rates, and small caps.</p>
+            </article>
+            <article class="summary-card" data-tag="watch">
+              <div class="panel-title">Base Case</div>
+              <h3>Hold</h3>
+              <p class="micro">No change expected next week, but communication risk is high under the new chair.</p>
+            </article>
+            <article class="summary-card" data-tag="defensive">
+              <div class="panel-title">2026 Repricing</div>
+              <h3>Hawkish skew</h3>
+              <p class="micro">Barron’s cited 59.6% odds of at least one hike later in 2026, only 1.4% odds of cuts this year.</p>
+            </article>
+          </div>
+
+          <div class="callout">
+            <h3>Macro interpretation</h3>
+            <p>
+              The market is not pricing recession. It is pricing a resilient growth backdrop with inflation still
+              sticky enough to keep the Fed from easing. That is why small caps can rally tactically while duration
+              stays under pressure.
+            </p>
+          </div>
+        </section>
+
+        <section class="panel section" id="etf">
+          <div class="section-header">
+            <div class="section-heading">
+              <span class="section-number">06</span>
+              <div>
+                <h2>ETF Positioning Dashboard</h2>
+                <p>Click filters on the left to isolate momentum, defense, or watchlist setups.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="etf-grid">
+            <article class="etf-card" data-tag="bullish">
+              <div class="panel-title">SPY / VOO / IVV</div>
+              <h3>Constructive core</h3>
+              <p class="micro">Broad market exposure still works, but the index is extended after reclaiming high ground.</p>
+            </article>
+            <article class="etf-card" data-tag="bullish">
+              <div class="panel-title">RSP</div>
+              <h3>One of the best tells</h3>
+              <p class="micro">Equal-weight outperformance is the cleanest evidence of healthier participation.</p>
+            </article>
+            <article class="etf-card" data-tag="bullish">
+              <div class="panel-title">IWM</div>
+              <h3>Momentum setup</h3>
+              <p class="micro">Strong tactical expression if oil stays contained and yields do not re-break higher.</p>
+            </article>
+            <article class="etf-card" data-tag="watch">
+              <div class="panel-title">QQQ</div>
+              <h3>Still strong, less exclusive</h3>
+              <p class="micro">Medium-term leadership remains intact, but today argued against over-concentration.</p>
+            </article>
+            <article class="etf-card" data-tag="watch">
+              <div class="panel-title">SMH / SOXX</div>
+              <h3>Selective pullback buy</h3>
+              <p class="micro">Semis remain leadership-capable, but the tape is more mixed than earlier in the cycle.</p>
+            </article>
+            <article class="etf-card" data-tag="bullish">
+              <div class="panel-title">XLF</div>
+              <h3>Rotation beneficiary</h3>
+              <p class="micro">Broader value/cyclical participation and elevated rates both support the setup.</p>
+            </article>
+            <article class="etf-card" data-tag="watch">
+              <div class="panel-title">XLE</div>
+              <h3>Needs close monitoring</h3>
+              <p class="micro">Sector resilience held today, but falling crude can quickly turn into earnings pressure.</p>
+            </article>
+            <article class="etf-card" data-tag="defensive">
+              <div class="panel-title">SHY</div>
+              <h3>Best parking lot</h3>
+              <p class="micro">Cash-like duration remains more attractive than reaching into long bonds too early.</p>
+            </article>
+            <article class="etf-card" data-tag="defensive">
+              <div class="panel-title">TLT / IEF</div>
+              <h3>Need yield rollover first</h3>
+              <p class="micro">Do not assume duration will rally just because oil fell for one session.</p>
+            </article>
+            <article class="etf-card" data-tag="defensive">
+              <div class="panel-title">XLU</div>
+              <h3>Defense only</h3>
+              <p class="micro">Utilities stay rate-sensitive and are not where this tape says to press offense.</p>
+            </article>
+            <article class="etf-card" data-tag="watch">
+              <div class="panel-title">GLD</div>
+              <h3>Tactical bounce</h3>
+              <p class="micro">Needs lower real yields to become a stronger trend again.</p>
+            </article>
+            <article class="etf-card" data-tag="watch">
+              <div class="panel-title">Bitcoin ETFs</div>
+              <h3>Speculative neutral</h3>
+              <p class="micro">Stable rather than confirming a fresh risk chase.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel section" id="outlook">
+          <div class="section-header">
+            <div class="section-heading">
+              <span class="section-number">07</span>
+              <div>
+                <h2>Outlook &amp; Scenarios</h2>
+                <p>Use the scenario switch to frame the next 1-5 trading days around the real swing variables.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="scenario-switch" id="scenarioSwitch">
+            <button class="scenario-btn is-active" data-scenario="base">Base Case</button>
+            <button class="scenario-btn" data-scenario="bull">Bullish Case</button>
+            <button class="scenario-btn" data-scenario="bear">Bearish Case</button>
+          </div>
+
+          <div class="scenario-panel is-active" data-scenario-panel="base">
+            <div class="risk-grid">
+              <article class="risk-card" data-tag="watch">
+                <div class="panel-title">Expected Path</div>
+                <h3>Constructive, not carefree</h3>
+                <p class="micro">Indices can hold gains if the 10Y stays around 4.50% and the Fed avoids a fresh hawkish shock.</p>
+              </article>
+              <article class="risk-card" data-tag="watch">
+                <div class="panel-title">Key Levels</div>
+                <h3>S&amp;P 7,430 / 7,300 / 7,214</h3>
+                <p class="micro">Breakout zone, first retest zone, then the verified 50-day moving average area.</p>
+              </article>
+              <article class="risk-card" data-tag="watch">
+                <div class="panel-title">Risk Rating</div>
+                <h3>Elevated</h3>
+                <p class="micro">Because Fed repricing and yield spikes can reverse the breadth improvement quickly.</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="scenario-panel" data-scenario-panel="bull">
+            <div class="risk-grid">
+              <article class="risk-card" data-tag="bullish">
+                <div class="panel-title">Trigger</div>
+                <h3>Oil falls further</h3>
+                <p class="micro">Another leg lower in crude would reduce inflation anxiety and help cyclicals plus small caps.</p>
+              </article>
+              <article class="risk-card" data-tag="bullish">
+                <div class="panel-title">Confirmation</div>
+                <h3>RSP and IWM keep leading</h3>
+                <p class="micro">That would say the move is broad enough to trust, not just index optics.</p>
+              </article>
+              <article class="risk-card" data-tag="bullish">
+                <div class="panel-title">Best Opportunities</div>
+                <h3>RSP, IWM, XLF</h3>
+                <p class="micro">Momentum should remain with broad beta before duration-sensitive tech retakes center stage.</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="scenario-panel" data-scenario-panel="bear">
+            <div class="risk-grid">
+              <article class="risk-card" data-tag="defensive">
+                <div class="panel-title">Trigger</div>
+                <h3>10Y breaks higher</h3>
+                <p class="micro">A move through the recent yield highs would pressure valuation and reset the risk budget.</p>
+              </article>
+              <article class="risk-card" data-tag="defensive">
+                <div class="panel-title">Catalyst</div>
+                <h3>Hawkish Fed messaging</h3>
+                <p class="micro">Even with a hold, a harder line on inflation could hit small caps and long-duration growth together.</p>
+              </article>
+              <article class="risk-card" data-tag="defensive">
+                <div class="panel-title">Defensive Response</div>
+                <h3>Raise SHY, trim extension</h3>
+                <p class="micro">Reduce aggressive breakout chasing and wait for either a better entry or a yield reversal.</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="footer-note">
+            <strong>Tomorrow’s watchlist:</strong> 10Y yield, Brent, RSP versus SPY, IWM versus QQQ, and whether the S&amp;P 500
+            can hold above the breakout area while heading into the June 16-17 FOMC meeting.
+          </div>
+        </section>
+
+        <section class="panel section" id="sources">
+          <div class="section-header">
+            <div class="section-heading">
+              <span class="section-number">08</span>
+              <div>
+                <h2>Source Trail</h2>
+                <p>Primary reporting and market summaries used in the report behind this page.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="source-list">
+            <a href="https://apnews.com/article/f61ee2e7ec8ca8c95048cef76ed27214" target="_blank" rel="noreferrer">AP market close summary</a>
+            <a href="https://www.marketwatch.com/livecoverage/stock-market-today-s-p-500-nasdaq-dow-jones-spacex-ipo-first-trade-us-iran-peace-deal" target="_blank" rel="noreferrer">MarketWatch live market coverage</a>
+            <a href="https://www.marketwatch.com/livecoverage/stock-market-today-s-p-500-nasdaq-dow-jones-spacex-ipo-first-trade-us-iran-peace-deal/card/equal-weight-s-p-500-etf-rallies-beating-major-u-s-stock-indexes-LZFAa57mFr9S6roMBvoY" target="_blank" rel="noreferrer">MarketWatch on equal-weight breadth</a>
+            <a href="https://www.marketwatch.com/livecoverage/stock-market-today-dow-jones-s-p-500-nasdaq-us-strikes-iran-cpi-oracle-results/card/s-p-500-sinks-back-toward-key-support-level-fpZh4csFSXG5LKXFlreS" target="_blank" rel="noreferrer">MarketWatch on S&amp;P support / 50-day</a>
+            <a href="https://www.wsj.com/finance/investing/jgbs-rise-tracking-gains-in-u-s-treasurys-f1524f11" target="_blank" rel="noreferrer">WSJ on Treasury yields</a>
+            <a href="https://www.marketwatch.com/story/oil-prices-extend-declines-on-possible-u-s-iran-peace-deal-to-reopen-strait-of-hormuz-6d2822bd" target="_blank" rel="noreferrer">MarketWatch on oil</a>
+            <a href="https://www.barrons.com/livecoverage/stock-market-news-today-061226/card/dow-gains-500-points-stocks-are-picking-up-some-steam--4oKAk6JgErV4GOygfsjn" target="_blank" rel="noreferrer">Barron’s on sentiment / Fed odds</a>
+            <a href="https://www.wsj.com/business/earnings/adobe-reports-higher-second-quarter-revenue-lifts-outlook-as-cfo-exits-c9fc488f" target="_blank" rel="noreferrer">WSJ on Adobe earnings</a>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+<script>
+  const toggleButtons = document.querySelectorAll("[data-target]");
+  toggleButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const target = document.getElementById(button.dataset.target);
+      if (!target) return;
+      const hidden = target.classList.toggle("is-hidden");
+      button.textContent = hidden ? "Show Desk Notes" : "Hide Desk Notes";
+    });
+  });
+
+  const filterButtons = document.querySelectorAll("#focusFilters .chip-btn");
+  const filterTargets = document.querySelectorAll("[data-tag]");
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      filterButtons.forEach((btn) => btn.classList.remove("is-active"));
+      button.classList.add("is-active");
+      const filter = button.dataset.filter;
+      filterTargets.forEach((card) => {
+        const show = filter === "all" || card.dataset.tag === filter;
+        card.classList.toggle("is-hidden", !show);
+      });
+    });
+  });
+
+  const scenarioButtons = document.querySelectorAll(".scenario-btn");
+  const scenarioPanels = document.querySelectorAll("[data-scenario-panel]");
+  scenarioButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const name = button.dataset.scenario;
+      scenarioButtons.forEach((btn) => btn.classList.toggle("is-active", btn === button));
+      scenarioPanels.forEach((panel) => {
+        panel.classList.toggle("is-active", panel.dataset.scenarioPanel === name);
+      });
+    });
+  });
+
+  const sectionIds = ["snapshot", "indices", "sectors", "macro", "fed", "etf", "outlook", "sources"];
+  const links = [...document.querySelectorAll("#jumpLinks a")];
+  const sections = sectionIds
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      links.forEach((link) => {
+        link.classList.toggle("active", link.getAttribute("href") === "#" + entry.target.id);
+      });
+    });
+  }, { threshold: 0.35 });
+
+  sections.forEach((section) => observer.observe(section));
+</script>
+</body>
+</html>

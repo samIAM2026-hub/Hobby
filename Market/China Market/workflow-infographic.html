@@ -185,6 +185,7 @@
         <li>四大指数、市场宽度、板块轮动</li>
         <li>宏观驱动、美联储、利率与流动性</li>
         <li>技术面 + ETF 策略 + 风险与展望</li>
+        <li>附带自包含交互式 HTML 仪表盘</li>
       </ul>
       <span class="tag prompt">PROMPT · 输入</span>
       <details class="prompt">
@@ -205,6 +206,15 @@ Technical levels
 ETF positioning and trading implications
 Please produce a comprehensive Daily U.S. Market Recap and Analysis based on the latest available market data after today's close.
 Use reliable sources where possible, such as Reuters, Bloomberg, CNBC, WSJ, MarketWatch, FactSet, S&P Dow Jones Indices, Nasdaq, NYSE, Federal Reserve, U.S. Treasury, CME FedWatch, FRED, and company earnings releases.
+
+In addition to the written report, create a self-contained interactive HTML page based on the report.
+The HTML must:
+- be a single standalone file with all CSS and JavaScript inline
+- not rely on external build steps, frameworks, or local data files
+- present the key conclusions, market data, sector rotation, macro drivers, ETF implications, and outlook in an interactive dashboard or report format
+- include clear section navigation and at least a few interactive elements such as tabs, filters, toggles, accordions, or scenario switches
+- be readable on both desktop and mobile
+- clearly label any data that was unavailable or not independently verified rather than inventing values
 
 Daily U.S. Market Recap and Analysis
 
@@ -272,7 +282,14 @@ Main Risks: [list]
 ETF Positioning View: [explain]
 
 Style Requirements
-Professional but practical tone. Avoid vague comments — use data, market levels, clear reasoning. When data is unavailable, say so clearly instead of guessing. Always distinguish short-term trading signal vs medium-term trend vs long-term implication. Goal: understand what happened today, why, and how to prepare for the next trading day.</pre></div>
+Professional but practical tone. Avoid vague comments — use data, market levels, clear reasoning. When data is unavailable, say so clearly instead of guessing. Always distinguish short-term trading signal vs medium-term trend vs long-term implication. Goal: understand what happened today, why, and how to prepare for the next trading day.
+
+HTML Deliverable Requirements
+- After completing the report, generate the self-contained interactive HTML based on the same analysis
+- Keep the design professional, information-dense, and easy to scan for a macro trader / ETF investor
+- Prefer a polished dashboard or briefing-page layout over a plain article dump
+- Use the same conclusions and data points as the written report so the HTML and report stay consistent
+- Make the HTML useful as a standalone artifact that can be opened directly in a browser</pre></div>
       </details>
       <div class="route">
         <span class="rt-ic">🎙️</span>

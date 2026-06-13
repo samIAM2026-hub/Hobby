@@ -209,7 +209,7 @@
            …
          </div>
        </div>
-     Refresh in lockstep with live_data.js — every claim cites a value in the tiles.
+     Refresh in lockstep with ../assets/js/live_data.js — every claim cites a value in the tiles.
      Legacy `.com-bullet` is preserved below for any blocks not yet migrated. */
   .section-commentary {
     background: var(--bg2);
@@ -1073,7 +1073,7 @@
   </div>
 </header>
 
-<div id="errBanner" class="err" style="display:none;">live_data.js could not be loaded. Verify the file exists in the same folder.</div>
+<div id="errBanner" class="err" style="display:none;">live_data.js could not be loaded. Verify ../assets/js/live_data.js exists and the relative link is still correct.</div>
 
 <div class="regime">
   <div class="regime-card">
@@ -1126,15 +1126,15 @@
        Red card auto-applied when YTD or 1M is negative (no 1M here, so YTD only)
        1W placeholders to be filled from Yahoo Finance 5-Day return on refresh -->
   <section class="section">
-    <div class="section-head"><h2>U.S. Equity · Broad Indices</h2><span class="meta">6 instruments · YTD trend (red card = YTD negative) · relief rally: RUT +3.02% / NDX +3.29% led, SPX +1.75%, Dow +1.86% · YTD: NDX +16.82% and RUT +16.46% lead, Growth−Value spread +2.23pp</span></div>
+    <div class="section-head"><h2>U.S. Equity · Broad Indices</h2><span class="meta">6 instruments · YTD trend (red card = YTD negative) · June 12 close: RUT +0.79%, Dow +0.70%, SPX +0.50%, IXIC +0.31% · YTD: small caps and growth still lead, but breadth repair is incomplete</span></div>
     <div class="section-commentary">
-      <div class="com-tldr">A broad relief rally repaired the prior day's damage: <span class="chip">NDX</span> <span class="num pos">+3.29%</span> and <span class="chip">RUT</span> <span class="num pos">+3.02%</span> led, while YTD leadership remains concentrated in tech/small-cap beta.</div>
+      <div class="com-tldr">The week ended with a healthier mix than the June 11 rebound: <span class="chip pos">RUT +0.79%</span>, <span class="chip pos">Dow +0.70%</span>, <span class="chip pos">SPX +0.50%</span>, and <span class="chip pos">IXIC +0.31%</span> all finished green, but <span class="chip warn">46.5%</span> of SPX above 50d still says this is repair, not all-clear risk-on.</div>
       <div class="com-points">
-        <div class="com-point"><span class="com-num">1</span><div class="com-text"><strong>YTD pecking order</strong> — <span class="chip pos">NDX +16.82%</span> › <span class="chip pos">RUT +16.46%</span> › <span class="chip pos">IXIC +11.08%</span> › <span class="chip pos">RSP +8.76%</span> › <span class="chip pos">SPX +7.81%</span> › <span class="chip pos">Dow +5.10%</span>. Small-caps and AI/tech beta still carry the year.</div></div>
-        <div class="com-point"><span class="com-num">2</span><div class="com-text"><strong>Today = broad relief</strong> — all six major tiles green. <span class="chip pos">NDX +3.29%</span> and <span class="chip pos">RUT +3.02%</span> led, while <span class="chip pos">SPX +1.75%</span> and <span class="chip pos">Dow +1.86%</span> confirmed. <span class="chip pos">RSP +1.56%</span> lagged cap-weight slightly, so mega-cap/growth led the bounce.</div></div>
-        <div class="com-point"><span class="com-num">3</span><div class="com-text"><strong>Growth−Value spread now <span class="num pos">+2.23pp</span></strong> — <span class="chip pos">SPYG +9.06%</span> − <span class="chip pos">SPYV +6.83%</span>. Still below a broad growth-confirmation line, but 1D <span class="num pos">+1.13pp</span> says growth retook leadership on the rebound.</div></div>
-        <div class="com-point"><span class="com-num">4</span><div class="com-text"><strong>Mag-7 mixed but better</strong> — 3 of 7 remain YTD-red (<span class="chip neg">MSFT −17.47%</span>, <span class="chip neg">META −12.60%</span>, <span class="chip neg">TSLA −8.88%</span>) while <span class="chip pos">GOOGL +13.52%</span>, <span class="chip pos">AAPL +9.08%</span>, <span class="chip pos">NVDA +8.48%</span> and <span class="chip pos">AMZN +6.63%</span> carry. Breadth is still only <span class="num warn">46.5%</span> above 50d, so confirmation needs more than one relief day.</div></div>
-        <div class="com-point"><span class="com-num">5</span><div class="com-text"><strong>Watch</strong> — VIX cooled below 20 and crude reversed lower (Brent ~$89, WTI ~$87), but hot PPI and a 10Y around 4.53% keep valuation risk alive. Credit is still calm, so the read improves to constructive-cautious rather than full risk-on.</div></div>
+        <div class="com-point"><span class="com-num">1</span><div class="com-text"><strong>YTD pecking order still favors beta</strong> — <span class="chip pos">RUT +18.60%</span> leads, followed by <span class="chip pos">NDX +16.82%</span>, <span class="chip pos">IXIC +11.40%</span>, <span class="chip pos">RSP +8.76%</span>, <span class="chip pos">SPX +8.60%</span>, and <span class="chip pos">Dow +6.50%</span>. Small caps and growth still own the year.</div></div>
+        <div class="com-point"><span class="com-num">2</span><div class="com-text"><strong>Friday broadened more than Thursday</strong> — <span class="chip pos">RUT +0.79%</span> outpaced <span class="chip pos">SPX +0.50%</span>, and the <span class="chip pos">Dow +0.70%</span> beat the Nasdaq. That is healthier than another pure mega-cap squeeze, even if equal-weight breadth is not fully repaired.</div></div>
+        <div class="com-point"><span class="com-num">3</span><div class="com-text"><strong>Growth still leads, but not cleanly</strong> — the <span class="chip pos">+2.23pp</span> YTD growth-over-value spread is intact, yet Friday's Mag-7 tape was mixed. That keeps the market in a constructive tape, not a runaway momentum phase.</div></div>
+        <div class="com-point"><span class="com-num">4</span><div class="com-text"><strong>Breadth remains the caveat</strong> — only <span class="chip warn">46.5%</span> of SPX members are above the 50-day while <span class="chip">55.6%</span> are above the 200-day. That is better than panic, but still too thin for a durable all-clear.</div></div>
+        <div class="com-point"><span class="com-num">5</span><div class="com-text"><strong>Watch</strong> — <span class="chip">WTI $84.88</span> and a sub-20 VIX helped sentiment, but a <span class="chip warn">10Y near 4.49%</span> and next week's FOMC keep valuation pressure alive. Credit is calm, so the read stays constructive-cautious rather than outright risk-off.</div></div>
       </div>
     </div>
     <div class="grid">
@@ -1187,15 +1187,15 @@
        Ordered by SPX weight (heaviest → lightest)
        Red card auto-applied by loader when YTD or 1M is negative -->
   <section class="section">
-    <div class="section-head"><h2>Magnificent 7</h2><span class="meta">~35% of SPX weight · ordered by weight · YTD trend (red card = YTD or 1M negative) · 3/7 in YTD drawdown (MSFT/META/TSLA); GOOGL leads at +13.52%, TSLA/NVDA/AAPL bounced, MSFT and META lagged</span></div>
+    <div class="section-head"><h2>Magnificent 7</h2><span class="meta">~35% of SPX weight · ordered by weight · YTD trend (red card = YTD or 1M negative) · still not one trade: GOOGL leads YTD, MSFT/META/TSLA remain drawdowns, Friday tape was mixed</span></div>
     <div class="section-commentary">
-      <div class="com-tldr">7 separate single-stock stories: <span class="chip pos">GOOGL +13.52%</span> top vs <span class="chip neg">MSFT −17.47%</span> bottom; today <span class="chip pos">TSLA +4.60%</span> and <span class="chip pos">NVDA +2.22%</span> bounced while MSFT/META stayed red.</div>
+      <div class="com-tldr">The Mag-7 still trades as separate balance sheets, not one factor: <span class="chip pos">GOOGL +14.91%</span> now leads YTD, while <span class="chip neg">MSFT −19.21%</span>, <span class="chip neg">META −14.11%</span>, and <span class="chip neg">TSLA −9.63%</span> remain meaningful drawdowns.</div>
       <div class="com-points">
-        <div class="com-point"><span class="com-num">1</span><div class="com-text"><strong>YTD spread ~31.0pts</strong> — <span class="chip pos">GOOGL +13.52%</span> top → <span class="chip neg">MSFT −17.47%</span> bottom. The "Mag-7 trade" still does not exist as one entity.</div></div>
-        <div class="com-point"><span class="com-num">2</span><div class="com-text"><strong>3 YTD red cards = ~9.3% of SPX</strong> — <span class="chip neg">MSFT −17.47%</span> / <span class="chip neg">META −12.60%</span> / <span class="chip neg">TSLA −8.88%</span> dragging. Carriers: <span class="chip pos">GOOGL</span> + <span class="chip pos">AAPL</span> plus <span class="chip pos">NVDA</span> + <span class="chip pos">AMZN</span>.</div></div>
-        <div class="com-point"><span class="com-num">3</span><div class="com-text"><strong>Today's 1D was split, not clean risk-on</strong> — <span class="chip pos">TSLA +4.60%</span>, <span class="chip pos">NVDA +2.22%</span>, <span class="chip pos">AMZN +1.47%</span> and <span class="chip pos">AAPL +1.39%</span> bounced; <span class="chip neg">MSFT −1.77%</span> and <span class="chip neg">META −0.45%</span> lagged. SPX +1.75% (§2) needed mega-cap growth, but not every mega-cap joined.</div></div>
-        <div class="com-point"><span class="com-num">4</span><div class="com-text"><strong>1W cleaner read — still all negative</strong> — least-bad <span class="chip neg">GOOGL −3.87%</span> / <span class="chip neg">TSLA −4.61%</span> / <span class="chip neg">AMZN −4.84%</span>, while <span class="chip neg">META −9.42%</span> + <span class="chip neg">MSFT −8.81%</span> lag hard.</div></div>
-        <div class="com-point"><span class="com-num">5</span><div class="com-text"><strong>Hidden risk: EPS concentration</strong> — per §27a Mag-7 = <span class="num warn">61%</span> of S&amp;P EPS growth, but effectively 4 names (GOOGL/AMZN/AAPL/NVDA) doing it. Ex-Mag-7 still grew <span class="num pos">+17.4%</span> — broader market lagging, not broken.</div></div>
+        <div class="com-point"><span class="com-num">1</span><div class="com-text"><strong>YTD spread is still wide</strong> — <span class="chip pos">GOOGL +14.91%</span> to <span class="chip neg">MSFT −19.21%</span> is roughly a 34-point gap. The market's biggest weights are still sending very different messages.</div></div>
+        <div class="com-point"><span class="com-num">2</span><div class="com-text"><strong>Friday was mixed, not euphoric</strong> — <span class="chip pos">TSLA +1.82%</span>, <span class="chip pos">GOOGL +0.53%</span>, <span class="chip pos">NVDA +0.16%</span>, and <span class="chip pos">MSFT +0.10%</span> finished green, while <span class="chip neg">AAPL −1.52%</span>, <span class="chip neg">AMZN −1.23%</span>, and <span class="chip neg">META −0.26%</span> lagged. That fits a steadier market, not a broad AI-blast chase.</div></div>
+        <div class="com-point"><span class="com-num">3</span><div class="com-text"><strong>The laggards still matter</strong> — <span class="chip neg">MSFT</span>, <span class="chip neg">META</span>, and <span class="chip neg">TSLA</span> remain red YTD, which means a large chunk of index weight is still structurally behind the leaders.</div></div>
+        <div class="com-point"><span class="com-num">4</span><div class="com-text"><strong>1-week tape still needs repair</strong> — <span class="chip pos">TSLA +3.95%</span> is the only Mag-7 name solidly green over the trailing week, while <span class="chip neg">MSFT −6.22%</span>, <span class="chip neg">AAPL −5.27%</span>, <span class="chip neg">META −4.39%</span>, <span class="chip neg">AMZN −3.04%</span>, and <span class="chip neg">GOOGL −2.40%</span> are still working off damage.</div></div>
+        <div class="com-point"><span class="com-num">5</span><div class="com-text"><strong>Hidden risk: EPS concentration</strong> — per §27a, Mag-7 still drives <span class="num warn">61%</span> of S&amp;P EPS growth. The broader market is healthy enough, but a stumble in the four leading names would still matter disproportionately.</div></div>
       </div>
     </div>
     <div class="grid tight">
@@ -1263,14 +1263,14 @@
        Weight badge = sector weight in S&P 500 (sums to ~100% across 11 SPDRs);
        SMH is the semis bellwether — a subset of XLK, not a GICS sector. -->
   <section class="section">
-    <div class="section-head"><h2>Sector ETFs · Daily Rotation</h2><span class="meta">11 SPDRs + SMH · ordered by S&amp;P 500 weight · YTD trend (red card = YTD or 1M negative) · top-heavy: XLK alone = 36% of SPX · YTD: SMH +63% &amp; XLK +27% lead, XLF/XLC/XLY/XLV red · today: semis/tech/industrials bounced, energy lagged</span></div>
+    <div class="section-head"><h2>Sector ETFs · Daily Rotation</h2><span class="meta">11 SPDRs + SMH · ordered by S&amp;P 500 weight · YTD trend (red card = YTD or 1M negative) · semis/tech still dominate the year, energy cooled sharply with crude, financials are stabilizing but still lag</span></div>
     <div class="section-commentary">
-      <div class="com-tldr">~67pt YTD spread (<span class="chip pos">SMH +63%</span> vs <span class="chip neg">XLF −4%</span>); today semis and tech led the rebound while energy lagged as crude reversed lower.</div>
+      <div class="com-tldr">The sector map still says "AI capex first, everything else second": <span class="chip pos">SMH +63%</span> and <span class="chip pos">XLK +27%</span> lead YTD, while lower oil knocked energy down a gear and financials still have work to do.</div>
       <div class="com-points">
-        <div class="com-point"><span class="com-num">1</span><div class="com-text"><strong>Top-heavy in the extreme</strong> — <span class="chip">XLK 35.99%</span> alone &gt; bottom 7 sectors combined. Top 3 (<span class="chip">XLK</span> + <span class="chip">XLF</span> + <span class="chip">XLC</span>) = <span class="num">59.3%</span> of SPX.</div></div>
-        <div class="com-point"><span class="com-num">2</span><div class="com-text"><strong>4 YTD red cards in the top half by weight</strong> — <span class="chip neg">XLF −4.21%</span> (11.75% wt) + <span class="chip neg">XLC −4.09%</span> (11.56% wt) still matter. <span class="chip neg">XLY −1.73%</span> and <span class="chip neg">XLV −0.91%</span> add drag, while <span class="chip pos">XLP +9.76%</span> holds its defensive bid.</div></div>
-        <div class="com-point"><span class="com-num">3</span><div class="com-text"><strong>YTD spread still wide ~67pt</strong> — <span class="chip pos">SMH +63.26%</span> vs <span class="chip neg">XLF −4.21%</span>. AI capex still leads the year and reasserted today: <span class="chip pos">SMH +6.75%</span>, <span class="chip pos">XLK +3.73%</span>. <span class="chip pos">XLE +25.13%</span> remains a major YTD winner but fell as oil cooled.</div></div>
-        <div class="com-point"><span class="com-num">4</span><div class="com-text"><strong>Today: growth/cyclicals bid</strong> — <span class="chip pos">SMH +6.75%</span>, <span class="chip pos">XLK +3.73%</span>, <span class="chip pos">XLB +3.27%</span> and <span class="chip pos">XLI +3.24%</span> led. Defensives lagged (<span class="chip neg">XLP −0.26%</span>, <span class="chip neg">XLRE −0.16%</span>) and <span class="chip neg">XLE −1.94%</span> faded with crude.</div></div>
+        <div class="com-point"><span class="com-num">1</span><div class="com-text"><strong>Top-heavy remains the rule</strong> — <span class="chip">XLK 35.99%</span> alone still outweighs the bottom seven sectors combined. That means the index can look healthy even while participation underneath is only middling.</div></div>
+        <div class="com-point"><span class="com-num">2</span><div class="com-text"><strong>The YTD spread is still huge</strong> — <span class="chip pos">SMH +63.26%</span> versus <span class="chip neg">XLF −4.21%</span> is still the defining dispersion trade. AI infrastructure remains the market's strongest theme.</div></div>
+        <div class="com-point"><span class="com-num">3</span><div class="com-text"><strong>Oil changed the daily rotation</strong> — <span class="chip">WTI $84.88</span> and <span class="chip">Brent $87.33</span> took heat out of energy leadership. That helps inflation optics, but also removes one of the year's strongest non-tech momentum groups.</div></div>
+        <div class="com-point"><span class="com-num">4</span><div class="com-text"><strong>Financials still matter more than their tape suggests</strong> — <span class="chip neg">XLF</span> remains a red YTD card in a large index weight. A cleaner market upgrade still needs financials to stop merely stabilizing and start confirming.</div></div>
       </div>
     </div>
     <div class="grid tight">
@@ -1476,14 +1476,14 @@
 
   <!-- §7 · International · Emerging · trend-first (mirrors §2 design, 1D/1W/YTD) -->
   <section class="section">
-    <div class="section-head"><h2>International · Emerging</h2><span class="meta">China softening · Brazil still positive · India deep red · today: CSI −2.17% / HK −1.69% both down; Nifty −11.43% YTD is the EM laggard</span></div>
+    <div class="section-head"><h2>International · Emerging</h2><span class="meta" id="emMetaText">Emerging-market snapshot refreshes from <code>live_data.js</code>.</span></div>
     <div class="section-commentary">
-      <div class="com-tldr">EM dispersion is the read — Brazil holds positive, mainland China barely green, HK clearly red, <span class="chip neg">Nifty −11.4%</span> the standout drawdown.</div>
+      <div class="com-tldr" id="emTldrText">EM dispersion refreshes from <code>live_data.js</code>.</div>
       <div class="com-points">
-        <div class="com-point"><span class="com-num">1</span><div class="com-text"><strong>China venues both red today</strong> — <span class="chip neg">CSI 300 −2.17%</span> and <span class="chip neg">HK −1.69%</span> both lower. YTD: <span class="chip pos">CSI +1.46%</span> / <span class="chip neg">HK −5.78%</span>. Mainland only marginally positive; HK has rolled clearly negative — no synchronized China bid.</div></div>
+        <div class="com-point"><span class="com-num">1</span><div class="com-text" id="chinaReadText"><strong>China venues</strong> — refreshes from <code>live_data.js</code>.</div></div>
         <div class="com-point"><span class="com-num">2</span><div class="com-text"><strong><span class="chip neg">Nifty −11.43%</span> = EM standout (wrong way)</strong> — today <span class="num neg">−0.43%</span>, still the deepest major-EM drawdown. India exiting the "fastest-growing major EM" narrative remains the single biggest EM-equity story of 2026. <span class="chip warn">USDINR +6.45%</span> YTD reinforces flow-out.</div></div>
         <div class="com-point"><span class="com-num">3</span><div class="com-text"><strong>Brazil = EM's quiet win</strong> — <span class="chip pos">Bovespa +5.39%</span> YTD with <span class="chip pos">USDBRL −5.36%</span> (real strengthening). Today <span class="num pos">+0.68%</span> 1D (1W −1.39%) bucked the global tape green.</div></div>
-        <div class="com-point"><span class="com-num">4</span><div class="com-text"><strong>No synchronized EM trade</strong> — Bovespa +5 / CSI +1 / HK −6 / Nifty −11. China thesis only marginally alive in the mainland; HK negative; India is a 2026-specific drawdown.</div></div>
+        <div class="com-point"><span class="com-num">4</span><div class="com-text" id="emTradeText"><strong>No synchronized EM trade</strong> — refreshes from <code>live_data.js</code>.</div></div>
       </div>
     </div>
     <div class="grid">
@@ -2090,11 +2090,11 @@
   <section class="section">
     <div class="section-head"><h2>Technical Analysis · Index MA Distance</h2><span class="meta">% above each MA · uptrend = positive across 20EMA / 50d / 200d</span></div>
     <div class="section-commentary">
-      <div class="com-tldr">All 4 hold above 50d &amp; 200d, but all four are now below their 20EMA after today's drop; NDX most extended on 200d, DJI closest to its mean.</div>
+      <div class="com-tldr">All 4 still hold above their 50d and 200d, but only the short-term damage has partly healed: <span class="chip warn">SPX</span> is still testing its 20EMA while <span class="chip pos">Dow</span> and <span class="chip pos">Russell</span> repaired more of the short-term damage.</div>
       <div class="com-points">
-        <div class="com-point"><span class="com-num">1</span><div class="com-text"><strong>Medium-term uptrend intact</strong> — every name still above its 50d and 200d, with 50d &gt; 200d (golden-cross regime intact) — but today's drop pushed all four below their 20EMA.</div></div>
-        <div class="com-point"><span class="com-num">2</span><div class="com-text"><strong>200d distance ranking</strong> — <span class="chip pos">NDX +11.20%</span> &gt; <span class="chip pos">RUT +9.90%</span> &gt; <span class="chip pos">SPX +5.74%</span> &gt; <span class="chip pos">DJI +4.06%</span>. Growth most extended above long-term trend; Dow closest to mean — consistent with thin breadth (§13 <span class="num warn">46.5%</span>).</div></div>
-        <div class="com-point"><span class="com-num">3</span><div class="com-text"><strong>20EMA broken across the board on today's drop</strong> — all four now below: <span class="chip neg">RUT −0.92%</span>, <span class="chip neg">DJI −1.02%</span>, <span class="chip neg">SPX −2.14%</span>, <span class="chip neg">NDX −2.87%</span>. Short-term momentum has rolled over even as the 50d/200d trend holds — the 50d is the next test on another red day.</div></div>
+        <div class="com-point"><span class="com-num">1</span><div class="com-text"><strong>Medium-term uptrend intact</strong> — every major index still sits above its 50d and 200d, so the larger structure remains bullish even after the early-June shakeout.</div></div>
+        <div class="com-point"><span class="com-num">2</span><div class="com-text"><strong>Long-term extension still favors growth and small caps</strong> — <span class="chip pos">RUT +14.47%</span> above 200d and <span class="chip pos">NDX +14.72%</span> above 200d both remain much more extended than <span class="chip pos">SPX +8.36%</span> or <span class="chip pos">Dow +6.91%</span>. Beta leadership remains obvious.</div></div>
+        <div class="com-point"><span class="com-num">3</span><div class="com-text"><strong>Short-term repair is partial, not complete</strong> — <span class="chip warn">SPX −0.29%</span> still sits just under the 20EMA, while <span class="chip pos">Dow +1.57%</span> and <span class="chip pos">Russell +2.75%</span> are back above theirs. That fits a constructive-cautious tape, not a clean momentum breakout.</div></div>
       </div>
     </div>
     <!-- Tile order matches sector grid: SPX, DJI, NDX, RUT (large→small cap). -->
@@ -2106,7 +2106,7 @@
           <div class="p"><span class="p-label">20 EMA</span><span class="p-val" data-live="spxTo20ema">—</span></div>
           <div class="p"><span class="p-label">50 MA</span><span class="p-val" data-live="spxTo50ma">—</span></div>
         </div>
-        <div class="note">Large-cap blend · +7.52% above 200d · just below 20EMA · breadth thin (§13).</div>
+        <div class="note">Large-cap blend · +8.36% above 200d · still testing the 20EMA · breadth remains the caveat (§13).</div>
       </div>
       <div class="tile">
         <div class="label-row"><div class="label">DJI · Dow Jones</div><span class="weight-badge" data-live="dowClose">—</span></div>
@@ -2115,7 +2115,7 @@
           <div class="p"><span class="p-label">20 EMA</span><span class="p-val" data-live="dowTo20ema">—</span></div>
           <div class="p"><span class="p-label">50 MA</span><span class="p-val" data-live="dowTo50ma">—</span></div>
         </div>
-        <div class="note">Mega-cap value tilt · YTD laggard (+3.86%) · now also below its 20EMA.</div>
+        <div class="note">Mega-cap value tilt · +6.50% YTD · recovered back above the 20EMA better than SPX.</div>
       </div>
       <div class="tile">
         <div class="label-row"><div class="label">NDX · Nasdaq 100</div><span class="weight-badge" data-live="ndxClose">—</span></div>
@@ -2124,7 +2124,7 @@
           <div class="p"><span class="p-label">20 EMA</span><span class="p-val" data-live="ndxTo20ema">—</span></div>
           <div class="p"><span class="p-label">50 MA</span><span class="p-val" data-live="ndxTo50ma">—</span></div>
         </div>
-        <div class="note">AI/megacap-tech beta · +16.82% YTD · most extended above 200d · reclaimed 20EMA.</div>
+        <div class="note">AI/megacap-tech beta · +16.82% YTD · still the most extended long-term trend above 200d.</div>
       </div>
       <div class="tile">
         <div class="label-row"><div class="label">RUT · Russell 2000</div><span class="weight-badge" data-live="rutClose">—</span></div>
@@ -2133,7 +2133,7 @@
           <div class="p"><span class="p-label">20 EMA</span><span class="p-val" data-live="rutTo20ema">—</span></div>
           <div class="p"><span class="p-label">50 MA</span><span class="p-val" data-live="rutTo50ma">—</span></div>
         </div>
-        <div class="note">Small-cap beta · -2.01% 1W / -1.10% 1D · second-most extended above 200d.</div>
+        <div class="note">Small-cap beta · +3.90% 1W / +0.79% 1D · second-most extended above 200d.</div>
       </div>
     </div>
   </section>
@@ -2154,7 +2154,7 @@
 </div>
 
 <div class="foot">
-  All values refresh by editing <code>live_data.js</code>. Editorial fields (regime label, one-liner, DCA stance, SPX levels, catalysts) also live in <code>live_data.js</code>. Reload the page after any change. For reference frameworks see the <a href="../index.html">Educational</a> section of the hub.
+  All values refresh by editing <code>../assets/js/live_data.js</code>. Editorial fields (regime label, one-liner, DCA stance, SPX levels, catalysts) also live there. Reload the page after any change. For reference frameworks see the <a href="../index.html">Educational</a> section of the hub.
 </div>
 
 <!-- ════════════════════ CATALYST DETAIL MODAL ════════════════════ -->
@@ -2194,6 +2194,7 @@
   </div>
 </div>
 
+<!-- Shared market snapshot: populates [data-live] values and editorial fields from ../assets/js/live_data.js. -->
 <script src="../assets/js/live_data.js"></script>
 <script>
 (function () {
@@ -2275,6 +2276,85 @@
       var ytdNeg = ytdEl && signOf(ytdEl.textContent) === 'neg';
       var oneMNeg = oneMEl && signOf(oneMEl.textContent) === 'neg';
       if (ytdNeg || oneMNeg) tile.classList.add('status-bad');
+    }
+
+    renderChinaRead(d);
+  }
+
+  function parsePct(value) {
+    var n = parseFloat(String(value || '').replace('−', '-').replace(/[^0-9.+-]/g, ''));
+    return isNaN(n) ? 0 : n;
+  }
+
+  function toneFor(value) {
+    var n = parsePct(value);
+    if (n > 0) return 'pos';
+    if (n < 0) return 'neg';
+    return '';
+  }
+
+  function chip(label, value) {
+    var tone = toneFor(value);
+    return '<span class="chip ' + tone + '">' + escapeHtml(label + ' ' + (value || '—')) + '</span>';
+  }
+
+  function renderChinaRead(d) {
+    var el = document.getElementById('chinaReadText');
+    if (!el) return;
+
+    var csi1d = d.csi300Chg || '—';
+    var hk1d = d.hangSengChg || '—';
+    var csiYtd = d.csi300YTD || '—';
+    var hkYtd = d.hangSengYTD || '—';
+    var bovespaYtd = d.bovespaYTD || '—';
+    var niftyYtd = d.nifty50YTD || '—';
+    var csiDay = parsePct(csi1d);
+    var hkDay = parsePct(hk1d);
+    var csiYear = parsePct(csiYtd);
+    var hkYear = parsePct(hkYtd);
+
+    var title = 'China venues split today';
+    var dayRead = 'mixed';
+    if (csiDay < 0 && hkDay < 0) {
+      title = 'China venues both red today';
+      dayRead = 'both lower';
+    } else if (csiDay > 0 && hkDay > 0) {
+      title = 'China venues both green today';
+      dayRead = 'both higher';
+    }
+
+    var ytdRead = 'China is mixed across mainland and HK.';
+    if (csiYear > 0 && hkYear < 0) {
+      ytdRead = 'Mainland is only marginally positive while HK is clearly negative — no synchronized China bid.';
+    } else if (csiYear > 0 && hkYear > 0) {
+      ytdRead = 'Both mainland and HK are positive YTD — a synchronized China bid is still alive.';
+    } else if (csiYear < 0 && hkYear < 0) {
+      ytdRead = 'Both mainland and HK are negative YTD — China remains a synchronized drag.';
+    }
+
+    el.innerHTML = '<strong>' + escapeHtml(title) + '</strong> — ' +
+      chip('CSI 300', csi1d) + ' and ' + chip('HK', hk1d) + ' ' + escapeHtml(dayRead) +
+      '. YTD: ' + chip('CSI', csiYtd) + ' / ' + chip('HK', hkYtd) + '. ' + escapeHtml(ytdRead);
+
+    var meta = document.getElementById('emMetaText');
+    if (meta) {
+      meta.innerHTML = 'China: CSI ' + escapeHtml(csi1d) + ' / HK ' + escapeHtml(hk1d) +
+        '; YTD CSI ' + escapeHtml(csiYtd) + ' / HK ' + escapeHtml(hkYtd) +
+        ' · Nifty ' + escapeHtml(niftyYtd) + ' YTD · Bovespa ' + escapeHtml(bovespaYtd) + ' YTD';
+    }
+
+    var tldr = document.getElementById('emTldrText');
+    if (tldr) {
+      tldr.innerHTML = 'EM dispersion is the read — ' + chip('Bovespa', bovespaYtd) +
+        ', mainland China ' + chip('CSI', csiYtd) + ', HK ' + chip('HK', hkYtd) +
+        ', and ' + chip('Nifty', niftyYtd) + ' remains the standout drawdown.';
+    }
+
+    var trade = document.getElementById('emTradeText');
+    if (trade) {
+      trade.innerHTML = '<strong>No synchronized EM trade</strong> — ' +
+        chip('Bovespa', bovespaYtd) + ' / ' + chip('CSI', csiYtd) + ' / ' +
+        chip('HK', hkYtd) + ' / ' + chip('Nifty', niftyYtd) + '. ' + escapeHtml(ytdRead);
     }
   }
 
