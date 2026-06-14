@@ -442,6 +442,8 @@
     <button class="tab-btn" onclick="showTab('sector')">🏭 Sector ETFs</button>
     <button class="tab-btn" onclick="showTab('specialty')">⭐ Specialty ETFs</button>
     <button class="tab-btn" onclick="showTab('usequity')">🇺🇸 US Equity ETFs</button>
+    <button class="tab-btn" onclick="showTab('intl')">🌍 Int'l / Global</button>
+    <button class="tab-btn" onclick="showTab('cash')">💵 Cash & Short-Term</button>
     <button class="tab-btn" onclick="showTab('liquidity')">💧 Liquidity & AUM</button>
     <button class="tab-btn" onclick="showTab('issuers')">🏛️ Issuer Rankings</button>
     <button class="tab-btn" onclick="showTab('recs')">🎯 Recommendations</button>
@@ -650,7 +652,7 @@
 <!-- ===== TAB 4: SPECIALTY ===== -->
 <div class="tab-content" id="tab-specialty">
   <p class="section-title">Specialty & Thematic ETFs</p>
-  <p class="section-sub">From all-in-one portfolios to covered call income to fixed income — Canada has one of the world's most diverse specialty ETF menus.</p>
+  <p class="section-sub">From all-in-one portfolios (aggressive to conservative to retirement-income) and covered-call income to fixed income (aggregate, short-term, corporate and high-yield), physical gold bullion, and Canada's pioneering spot Bitcoin ETFs — Canada has one of the world's most diverse specialty ETF menus. Use the category filter in the directory below to narrow by type.</p>
 
   <div class="chart-grid two-col">
     <div class="chart-card">
@@ -660,7 +662,7 @@
     </div>
     <div class="chart-card">
       <h3>Canadian Bond ETF Yield vs. Duration</h3>
-      <p class="chart-sub">Higher duration = higher rate sensitivity</p>
+      <p class="chart-sub">Short-term funds (ZST / XSB / XSH) cut rate risk vs. aggregate funds</p>
       <canvas id="bondChart"></canvas>
     </div>
   </div>
@@ -676,6 +678,8 @@
           <option value="Covered Call">Covered Call</option>
           <option value="Bond">Fixed Income</option>
           <option value="Factor">Factor / Smart Beta</option>
+          <option value="Commodity">Gold / Commodity</option>
+          <option value="Crypto">Crypto (Bitcoin / Ether)</option>
         </select>
       </div>
     </div>
@@ -774,7 +778,7 @@
     <div class="kpi-card navy"><div class="kpi-label">ZSP AUM</div><div class="kpi-value">~$26B</div><div class="kpi-sub">CAD · BMO S&P 500 flagship</div></div>
     <div class="kpi-card teal"><div class="kpi-label">Cheapest MER</div><div class="kpi-value">0.07%</div><div class="kpi-sub">XUU — Total US Market (iShares)</div></div>
     <div class="kpi-card gold"><div class="kpi-label">XQQ AUM</div><div class="kpi-value">~$5.6B</div><div class="kpi-sub">CAD · Largest Nasdaq-100 ETF in Canada</div></div>
-    <div class="kpi-card green"><div class="kpi-label">Equal Weight New</div><div class="kpi-value">ZEQL</div><div class="kpi-sub">BMO · 0.06% MER · Launched Feb 2026</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Equal Weight</div><div class="kpi-value">EQL</div><div class="kpi-sub">Invesco · S&P 500 Equal Weight</div></div>
   </div>
 
   <!-- S&P 500 SECTION -->
@@ -830,7 +834,7 @@
 
   <!-- EQUAL WEIGHT SECTION -->
   <p class="section-title" style="font-size:16px;margin-bottom:4px;margin-top:24px;">S&P 500 / US Equal Weight ETFs — <span style="color:var(--red)">Breaking Down Mega-Cap Dominance</span></p>
-  <p class="section-sub">Equal weight gives every S&P 500 company the same ~0.20% allocation — Nvidia and a small industrial each hold equal weight. Reduces Magnificent Seven concentration. Rebalances quarterly (sells winners, buys laggards). Now available in Canada in two families with CAD, CAD-hedged, and USD units.</p>
+  <p class="section-sub">Equal weight gives every S&P 500 company the same ~0.20% allocation — Nvidia and a small industrial each hold equal weight. Reduces Magnificent Seven concentration. Rebalances quarterly (sells winners, buys laggards). Available in Canada through the Invesco EQL family in CAD, CAD-hedged, and USD units.</p>
 
   <div class="chart-grid two-col">
     <div class="chart-card">
@@ -839,15 +843,15 @@
       <canvas id="usEwSectorChart"></canvas>
     </div>
     <div class="chart-card">
-      <h3>EQL vs. ZEQL: Side-by-Side Comparison</h3>
-      <p class="chart-sub">Same concept, very different MERs — ZEQL launched Feb 2026 at 0.06%</p>
+      <h3>Equal Weight vs. Cap-Weight: Cost</h3>
+      <p class="chart-sub">Equal weight (EQL) costs more than cap-weight index funds like VFV / XUU</p>
       <canvas id="eqlCompChart"></canvas>
     </div>
   </div>
 
   <div class="table-wrap" style="margin-top:4px">
     <div class="table-header">
-      <div><div class="table-title">US Equal Weight ETF Family — All Units</div><div class="table-sub">EQL family (Invesco) + ZEQL family (BMO) — all TSX-listed</div></div>
+      <div><div class="table-title">Invesco S&P 500 Equal Weight Family</div><div class="table-sub">Invesco EQL family (CAD, CAD-hedged, USD) — all TSX-listed</div></div>
     </div>
     <div style="overflow-x:auto">
     <table class="etf-table" id="ewUSTable">
@@ -936,17 +940,125 @@
       <tr><td><strong>TFSA — broad US exposure</strong></td><td><span class="ticker">XUU</span> or <span class="ticker">VFV</span></td><td>—</td><td>No foreign withholding tax recovery in TFSA anyway; keep it simple in CAD</td></tr>
       <tr><td><strong>RRSP — broad US exposure</strong></td><td>—</td><td>VOO / VTI (US-listed)</td><td>US-listed ETFs eliminate 15% dividend withholding tax inside RRSP. If staying Canadian-listed, <span class="ticker">VFV</span> or <span class="ticker">ZSP</span></td></tr>
       <tr><td><strong>Non-registered — tax efficiency</strong></td><td><span class="ticker">HXS</span></td><td>—</td><td>Swap-based: converts dividends to capital gains, defers all tax until sale</td></tr>
-      <tr><td><strong>Want equal weight exposure</strong></td><td><span class="ticker">EQL</span> or <span class="ticker">ZEQL</span></td><td><span class="ticker">EQL-U</span> or <span class="ticker">ZEQL.U</span></td><td>ZEQL at 0.06% MER is dramatically cheaper; EQL is more established with $1.7B AUM</td></tr>
-      <tr><td><strong>Nasdaq-100 / tech tilt</strong></td><td><span class="ticker">QQC</span> (unhedged) or <span class="ticker">XQQ</span> (hedged)</td><td><span class="ticker">QQC.U</span></td><td>XQQ has deepest liquidity ($4B AUM); QQC.F cheapest hedged option (0.20% MER)</td></tr>
+      <tr><td><strong>Want equal weight exposure</strong></td><td><span class="ticker">EQL</span></td><td><span class="ticker">EQL-U</span></td><td>Invesco EQL family — ~$1.6B AUM, available in CAD, CAD-hedged and USD units</td></tr>
+      <tr><td><strong>Nasdaq-100 / tech tilt</strong></td><td><span class="ticker">QQC</span> (unhedged) or <span class="ticker">XQQ</span> (hedged)</td><td>—</td><td>XQQ has deepest liquidity (~$5.6B AUM); QQC.F cheapest hedged option (0.20% MER)</td></tr>
       <tr><td><strong>Hedge USD/CAD currency risk</strong></td><td><span class="ticker">VSP</span>, <span class="ticker">ZUE</span>, or <span class="ticker">EQL-F</span></td><td>—</td><td>Hedged units eliminate currency drag; useful when expecting CAD to appreciate vs. USD</td></tr>
       <tr><td><strong>Have USD cash in account</strong></td><td>—</td><td><span class="ticker">ZSP.U</span>, <span class="ticker">VFV.U</span>, or <span class="ticker">EQL-U</span></td><td>Avoid currency conversion cost; buy USD-denominated TSX units directly</td></tr>
-      <tr><td><strong>Broadest US diversification</strong></td><td><span class="ticker">XUU</span></td><td><span class="ticker">XUU.U</span></td><td>3,500+ stocks vs. 500 in S&P 500. Lowest MER at 0.07%. Morningstar top-rated.</td></tr>
+      <tr><td><strong>Broadest US diversification</strong></td><td><span class="ticker">XUU</span></td><td>—</td><td>3,500+ stocks vs. 500 in S&P 500. Lowest MER at 0.07%. Morningstar top-rated.</td></tr>
     </tbody>
   </table>
   </div>
 
   <div class="footnote" style="margin-top:16px">
     <strong>Tax note for RRSP holders:</strong> Canadian-listed ETFs that hold US equities still pay 15% US dividend withholding tax, which is NOT recoverable inside an RRSP. To avoid this, hold US-domiciled ETFs (VOO, VTI, SPY) directly in your RRSP using USD. The tax saving of ~0.30–0.40%/year can exceed the currency conversion cost over time. In TFSA and non-registered accounts, the withholding tax applies regardless — so the choice of Canadian-listed vs US-listed matters less there. <strong>HXS exception:</strong> Swap-based structure means no US dividends flow through the ETF, so no withholding tax in any account type. <strong>Data sources:</strong> Morningstar Canada, MoneySense 2026, BMO GAM, Invesco Canada, ETF Trends, CIFSC. Data as of June 2026 — verify current figures with issuers before investing.
+  </div>
+</div>
+
+<!-- ===== TAB: INTERNATIONAL / GLOBAL EQUITY ===== -->
+<div class="tab-content" id="tab-intl">
+  <p class="section-title">International & Global Equity ETFs</p>
+  <p class="section-sub">The diversification leg most Canadian portfolios are built on — developed markets outside North America (EAFE), emerging markets, and one-ticker "ex-Canada" all-world funds that pair with a Canadian and/or US holding. All TSX-listed and CAD-denominated.</p>
+
+  <div class="kpi-row">
+    <div class="kpi-card red"><div class="kpi-label">XEF — Largest EAFE ETF</div><div class="kpi-value">~$20B</div><div class="kpi-sub">CAD · iShares Core MSCI EAFE IMI</div></div>
+    <div class="kpi-card navy"><div class="kpi-label">ZEA AUM</div><div class="kpi-value">~$11.5B</div><div class="kpi-sub">CAD · BMO MSCI EAFE</div></div>
+    <div class="kpi-card teal"><div class="kpi-label">Cheapest MER</div><div class="kpi-value">0.21%</div><div class="kpi-sub">VXC — Global all-cap ex-Canada</div></div>
+    <div class="kpi-card gold"><div class="kpi-label">XEC AUM</div><div class="kpi-value">~$4.7B</div><div class="kpi-sub">CAD · iShares Emerging Markets IMI</div></div>
+    <div class="kpi-card green"><div class="kpi-label">One-Ticker World</div><div class="kpi-value">XAW</div><div class="kpi-sub">All-world ex-Canada in a single fund</div></div>
+  </div>
+
+  <p class="section-title" style="font-size:16px;margin-bottom:4px;">All-World ex-Canada — One-Ticker Global</p>
+  <p class="section-sub">A single fund covering US + international developed + emerging markets, everything except Canada. Pair with a Canadian ETF (e.g. XIC/VCN) for a complete two-fund portfolio.</p>
+  <div class="table-wrap">
+    <div class="table-header"><div class="table-title">All-World ex-Canada ETFs</div><div class="table-sub">Click a ticker for full detail · CAD denominated</div></div>
+    <div style="overflow-x:auto">
+    <table class="etf-table" id="intlWorldTable">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Issuer</th><th>Coverage</th><th>MER %</th><th>AUM (CAD)</th><th>Yield %</th><th>Liquidity</th></tr></thead>
+      <tbody id="intlWorldTableBody"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <p class="section-title" style="font-size:16px;margin-bottom:4px;margin-top:24px;">Developed Markets ex-North America (EAFE)</p>
+  <p class="section-sub">Europe, Australasia, and the Far East — the "international developed" sleeve. XEF and VIU use broad IMI/all-cap indexes; ZEA tracks standard MSCI EAFE.</p>
+  <div class="table-wrap">
+    <div class="table-header"><div class="table-title">Developed ex-NA ETFs</div></div>
+    <div style="overflow-x:auto">
+    <table class="etf-table" id="intlDevTable">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Issuer</th><th>Index</th><th>MER %</th><th>AUM (CAD)</th><th>Yield %</th><th>Liquidity</th></tr></thead>
+      <tbody id="intlDevTableBody"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <p class="section-title" style="font-size:16px;margin-bottom:4px;margin-top:24px;">Emerging Markets</p>
+  <p class="section-sub">China, India, Taiwan, Korea, Brazil and other developing economies — higher growth potential, higher volatility. ZEM uses direct replication; XEC and VEE are broad IMI/all-cap.</p>
+  <div class="table-wrap">
+    <div class="table-header"><div class="table-title">Emerging Markets ETFs</div></div>
+    <div style="overflow-x:auto">
+    <table class="etf-table" id="intlEmTable">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Issuer</th><th>Index</th><th>MER %</th><th>AUM (CAD)</th><th>Yield %</th><th>Liquidity</th></tr></thead>
+      <tbody id="intlEmTableBody"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="chart-grid two-col" style="margin-top:16px">
+    <div class="chart-card">
+      <h3>AUM — International/Global ETFs (CAD B)</h3>
+      <p class="chart-sub">XEF, ZEA and VIU dominate; emerging-market funds are smaller</p>
+      <canvas id="intlAumChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>MER Comparison — International ETFs</h3>
+      <p class="chart-sub">Global ex-Canada funds are slightly cheaper than EM</p>
+      <canvas id="intlMerChart"></canvas>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <strong>Foreign withholding tax note:</strong> International ETFs that hold underlying foreign stocks directly (XEF, ZEA, VIU) are generally more tax-efficient in an RRSP than funds-of-US-funds, but a layer of foreign withholding tax still applies and is not recoverable in a TFSA. <strong>Data sources:</strong> BlackRock Canada, BMO GAM, Vanguard Canada, Morningstar Canada. AUM in CAD, as of June 2026 — verify with issuers before investing.
+  </div>
+</div>
+
+<!-- ===== TAB: CASH & SHORT-TERM ===== -->
+<div class="tab-content" id="tab-cash">
+  <p class="section-title">Cash, High-Interest Savings & Short-Term ETFs</p>
+  <p class="section-sub">Among the fastest-growing categories in Canada — a place to park cash earning near-overnight-rate yields with daily liquidity. High-Interest Savings (HISA) ETFs hold bank deposits; T-Bill and money-market funds hold government and short-term paper. All are CAD-denominated and trade with negligible price volatility (NAV ~$50 or ~$50 par).</p>
+
+  <div class="kpi-row">
+    <div class="kpi-card red"><div class="kpi-label">CASH — Largest HISA ETF</div><div class="kpi-value">~$6.7B</div><div class="kpi-sub">CAD · Global X High Interest Savings</div></div>
+    <div class="kpi-card navy"><div class="kpi-label">ZMMK AUM</div><div class="kpi-value">~$5.2B</div><div class="kpi-sub">CAD · BMO Money Market</div></div>
+    <div class="kpi-card teal"><div class="kpi-label">CSAV AUM</div><div class="kpi-value">~$4.7B</div><div class="kpi-sub">CAD · CI High Interest Savings</div></div>
+    <div class="kpi-card gold"><div class="kpi-label">Lowest MER</div><div class="kpi-value">0.10%</div><div class="kpi-sub">CBIL — Global X T-Bill</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Type</div><div class="kpi-value">HISA + MMF</div><div class="kpi-sub">Deposits, T-bills & money-market paper</div></div>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-header"><div class="table-title">Cash & Short-Term ETF Directory</div><div class="table-sub">Click a ticker for full detail · Yields are current/gross and move with the Bank of Canada overnight rate</div></div>
+    <div style="overflow-x:auto">
+    <table class="etf-table" id="cashTable">
+      <thead><tr><th>Ticker</th><th>Name</th><th>Issuer</th><th>Type</th><th>MER %</th><th>AUM (CAD)</th><th>Yield %</th><th>Liquidity</th></tr></thead>
+      <tbody id="cashTableBody"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="chart-grid two-col" style="margin-top:16px">
+    <div class="chart-card">
+      <h3>AUM — Cash & Short-Term ETFs (CAD B)</h3>
+      <p class="chart-sub">CASH and ZMMK lead a category that now exceeds $20B combined</p>
+      <canvas id="cashAumChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Current Yield vs. MER</h3>
+      <p class="chart-sub">Money-market funds edge out HISA on gross yield; T-bills sit slightly lower</p>
+      <canvas id="cashYieldChart"></canvas>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <strong>How they work:</strong> HISA ETFs (CASH, CSAV, PSA) hold deposits at Canadian chartered banks and pay monthly income that tracks the prevailing deposit rate; T-bill (CBIL) and money-market (ZMMK) funds hold government/short-term instruments. Yields move directly with the Bank of Canada overnight rate, so figures shown are current and will change. <strong>Note:</strong> HISA-ETF bank deposits are not CDIC-insured the way a personal savings account is. <strong>Data sources:</strong> Global X Canada, CI GAM, Purpose, BMO GAM, TMX Money, Morningstar Canada. As of June 2026.
   </div>
 </div>
 
@@ -1144,17 +1256,6 @@ const ETF_DB = {
     cons: ['Swap-based structure carries counterparty risk','No distributions — income reinvested (poor for cash-flow investors)','Corporate class structure adds complexity','Not ideal in RRSP/TFSA where tax deferral already exists'],
     bestFor: 'Non-registered (taxable) accounts for investors in high marginal tax brackets who want to defer all Canadian dividends as capital gains. Not recommended for RRSP/TFSA where the tax advantage doesn\'t apply.'
   },
-  'ZIU': {
-    name: 'BMO S&P/TSX 60 Index ETF',
-    issuer: 'BMO GAM', cat: 'Broad Market', sector: 'Canadian Equity',
-    mer: '0.15%', aum: '$68M CAD', yield: '2.9%', liquidity: 'Med',
-    inception: '2023',
-    desc: 'BMO\'s newer, cheaper alternative to XIU launched in October 2023. Tracks the same S&P/TSX 60 index as XIU at a lower 0.15% MER. Still building AUM ($68M) and has lower trading volume than XIU, but underlying holdings are highly liquid TSX 60 stocks so bid-ask impact is minimal for most investors.',
-    holdings: ['Same 60 stocks as XIU — RBC, TD, Shopify, Enbridge, CNQ, Suncor, BCE, Manulife, BMO, BN'],
-    pros: ['0.15% MER — cheaper than XIU (0.18%)','Same TSX 60 exposure as XIU','Backed by BMO — major Canadian institution'],
-    cons: ['Only $68M AUM — significantly less liquid than XIU','Very new — limited track record (launched Oct 2023)','Wider bid-ask spreads at current AUM level'],
-    bestFor: 'Cost-conscious investors who prefer BMO as an issuer and want the TSX 60 index at a slight discount to XIU. Not a replacement for XIU for large trades until AUM grows substantially.'
-  },
   'TPU': {
     name: 'TD S&P/TSX Capped Composite Index ETF',
     issuer: 'TD Asset Mgmt', cat: 'Broad Market', sector: 'Canadian Equity',
@@ -1190,17 +1291,6 @@ const ETF_DB = {
   },
 
   // ── EQUAL WEIGHT ────────────────────────────────────────
-  'XEW': {
-    name: 'iShares MSCI Canada Equal Weighted Index ETF',
-    issuer: 'RBC iShares', cat: 'Equal Weight', sector: 'Canadian Equity',
-    mer: '0.20%', aum: '~$400M CAD', yield: '2.4%', liquidity: 'Med',
-    inception: '2010',
-    desc: 'Canada\'s primary broad equal-weight ETF, tracking the MSCI Canada Equal Weighted Index. Every holding gets the same weight regardless of market cap — reducing the outsized influence of the Big Banks and energy giants. Rebalanced quarterly. Provides a "purer" diversification than cap-weighted alternatives.',
-    holdings: ['Equal weight across ~100 Canadian stocks — less bank/energy dominance'],
-    pros: ['Reduces Financials/Energy concentration vs. cap-weight','Quality diversification across sectors','MSCI methodology — robust index'],
-    cons: ['Higher MER (0.20%) vs. cap-weight ETFs','Lower AUM — less liquid','Higher turnover = more taxable events'],
-    bestFor: 'Investors who believe Canadian markets are over-concentrated in banks and energy, and who want a more balanced sector exposure without stock-picking.'
-  },
 
   // ── SECTOR: FINANCIALS ───────────────────────────────────
   'ZEB': {
@@ -1249,17 +1339,6 @@ const ETF_DB = {
     cons: ['CNQ+SU = ~48.6% — extreme concentration in 2 stocks','High volatility — energy sector is cyclical','MER high vs. broad market funds'],
     bestFor: 'Investors wanting concentrated exposure to Canadian oil & gas during commodity supercycles. Best as a tactical satellite, not a core holding. Pair with ZEO for a less concentrated energy position.'
   },
-  'ZEO': {
-    name: 'BMO Equal Weight Oil & Gas Index ETF',
-    issuer: 'BMO GAM', cat: 'Sector — Energy (Equal Weight)', sector: 'Energy',
-    mer: '0.61%', aum: '$234M CAD', yield: '3.5%', liquidity: 'Med',
-    inception: '2009',
-    desc: 'BMO\'s equal-weight energy ETF, offering 15-16 Canadian oil & gas stocks each weighted at ~7.5-8.25%. Removes the extreme CNQ/Suncor concentration of XEG. Smaller companies get meaningful weight, providing broader energy sector exposure.',
-    holdings: ['CNQ','Suncor','Cenovus','Tourmaline','ARC Resources','Baytex','Vermilion','Canadian Natural','Ovintiv','Whitecap — all equal weight'],
-    pros: ['Equal weight removes CNQ/SU dominance','Smaller energy companies get fair representation','Better diversification within energy sector'],
-    cons: ['Only $234M AUM — lower liquidity than XEG','0.61% MER — similar to XEG but for less liquidity','Semi-annual rebalancing needed for equal weight'],
-    bestFor: 'Energy bulls who want exposure to the broader Canadian energy sector without betting ~50% on just two companies. Best paired with XEG for blended exposure.'
-  },
 
   // ── SECTOR: MATERIALS / GOLD ─────────────────────────────
   'XGD': {
@@ -1283,17 +1362,6 @@ const ETF_DB = {
     pros: ['Equal weight gives smaller gold miners fair exposure','Top 2025 performer category','Different index to XGD — tax-loss harvest partner'],
     cons: ['~$600M AUM — less liquid than XGD','0.62% MER','Equal weight requires frequent rebalancing'],
     bestFor: 'Investors who believe mid-cap gold miners will outperform the largest producers (Barrick, Agnico). Equal weighting historically outperforms cap-weight in commodity sectors over long cycles.'
-  },
-  'XMA': {
-    name: 'iShares S&P/TSX Capped Materials Index ETF',
-    issuer: 'RBC iShares', cat: 'Sector — Materials', sector: 'Materials',
-    mer: '0.61%', aum: '~$350M CAD', yield: '1.5%', liquidity: 'Med',
-    inception: '2001',
-    desc: 'Broader materials sector ETF beyond just gold — includes diversified miners (base metals, potash/fertilizers via Nutrien), chemicals, and paper/forest products alongside gold and silver miners. Less pure gold play than XGD.',
-    holdings: ['Agnico Eagle','Barrick Gold','Nutrien','First Quantum','Lundin Mining','Teck Resources','Wheaton','Kinross','Freehold Royalties'],
-    pros: ['Broader materials exposure beyond gold','Lower gold-price correlation than XGD','Includes industrial metals and potash'],
-    cons: ['~$350M AUM — moderate liquidity','More complex than a pure gold play'],
-    bestFor: 'Investors wanting broad commodities sector exposure including base metals, agricultural (Nutrien) and gold, rather than a pure-play gold bet.'
   },
 
   // ── SECTOR: REAL ESTATE ──────────────────────────────────
@@ -1319,30 +1387,8 @@ const ETF_DB = {
     cons: ['~$550M AUM — less liquid than XRE','0.61% MER'],
     bestFor: 'Investors preferring diversified REIT exposure without CAPREIT dominance. Tax-loss harvest partner for XRE since they use different weighting methodologies.'
   },
-  'CIF': {
-    name: 'CI Canadian REIT ETF',
-    issuer: 'CI Global AM', cat: 'Sector — Real Estate (Active)', sector: 'Real Estate',
-    mer: '0.90%', aum: '~$250M CAD', yield: '5.5%', liquidity: 'Med',
-    inception: '2004',
-    desc: 'One of the few actively managed Canadian REIT ETFs, allowing CI\'s managers to over/underweight specific REITs based on fundamentals, valuation, and interest rate outlook. Higher yield (~5.5%) reflects both active selection and higher MER.',
-    holdings: ['Actively selected Canadian REITs — allocation varies'],
-    pros: ['Active management can avoid troubled REITs','Highest yield in Canadian REIT ETF category (~5.5%)','CI\'s expertise in Canadian real estate analysis'],
-    cons: ['0.90% MER — most expensive REIT ETF option','Active management doesn\'t consistently outperform index','~$250M AUM — lower liquidity'],
-    bestFor: 'Investors who believe active REIT selection adds value and are willing to pay a premium for it. Best suited as a small satellite position rather than core REIT allocation.'
-  },
 
   // ── SECTOR: UTILITIES ────────────────────────────────────
-  'XUT': {
-    name: 'iShares S&P/TSX Capped Utilities Index ETF',
-    issuer: 'RBC iShares', cat: 'Sector — Utilities', sector: 'Utilities',
-    mer: '0.61%', aum: '~$400M CAD', yield: '4.1%', liquidity: 'Med',
-    inception: '2011',
-    desc: 'Tracks the S&P/TSX Capped Utilities Index — Canadian electricity generators, gas distribution, and multi-utilities. Rate-sensitive sector that underperformed during 2022-23 rate hikes but recovering as Bank of Canada cuts rates. Monthly distributions.',
-    holdings: ['Fortis','Hydro One','Emera','AltaGas','Canadian Utilities','Atco','TransAlta Renewables','Boralex','Northland Power','Capital Power'],
-    pros: ['~4.1% yield — stable regulated income','Defensive sector — recession resistant','Rate cutting environment benefits utilities in 2024-26'],
-    cons: ['~$400M AUM — moderate liquidity','Very rate sensitive — underperforms when rates rise','Canadian utilities universe is small'],
-    bestFor: 'Defensive investors seeking stable income during market uncertainty. Increases portfolio resilience and provides ballast against equity market downturns. Best in RRSP/TFSA.'
-  },
   'ZUT': {
     name: 'BMO Equal Weight Utilities Index ETF',
     issuer: 'BMO GAM', cat: 'Sector — Utilities (Equal Weight)', sector: 'Utilities',
@@ -1366,17 +1412,6 @@ const ETF_DB = {
     pros: ['Only pure-play Canadian tech ETF','0.61% MER for sector access'],
     cons: ['~$500M AUM — lower liquidity','Shopify = 40-50% of fund — massive single-stock risk','Canadian tech universe much smaller than US — limited diversification'],
     bestFor: 'Investors specifically wanting Canadian tech sector exposure. High conviction Shopify play in ETF form. Be aware this is largely a Shopify bet in ETF clothing.'
-  },
-  'ZTL': {
-    name: 'BMO S&P/TSX Equal Weight Tech Index ETF',
-    issuer: 'BMO GAM', cat: 'Sector — Technology (Equal Weight)', sector: 'Technology',
-    mer: '0.39%', aum: '~$100M CAD', yield: '0.5%', liquidity: 'Med-Low',
-    inception: '2021',
-    desc: 'Equal-weight Canadian tech ETF from BMO. Removes the extreme Shopify concentration of XIT by equally weighting all holdings. Allows lesser-known Canadian tech names like Kinaxis, Enghouse, and Quarterhill to have meaningful representation.',
-    holdings: ['Shopify','Constellation Software','Open Text','Nuvei','Descartes','Lightspeed','Kinaxis','Enghouse — all equal weight'],
-    pros: ['Equal weight reduces Shopify concentration','Lower 0.39% MER vs. XIT (0.61%)','Better diversification within small Canadian tech universe'],
-    cons: ['Only ~$100M AUM — low liquidity','Widest bid-ask spreads in this analysis','Very small ETF — closure risk monitor'],
-    bestFor: 'Investors who want Canadian tech exposure but are uncomfortable with Shopify\'s outsized cap-weight dominance. Consider alongside US tech ETFs since Canada\'s tech sector is relatively small.'
   },
 
   // ── SPECIALTY: ALL-IN-ONE ────────────────────────────────
@@ -1685,11 +1720,11 @@ const ISSUERS = {
   'CI Global AM': {color:'#6b3fa0', short:'CI'},
   'Mackenzie': {color:'#d96b00', short:'Mackenzie'},
   'Fidelity': {color:'#36a2eb', short:'Fidelity'},
+  'Purpose': {color:'#e0457b', short:'Purpose'},
 };
 
 const broadData = [
   {ticker:'XIU',name:'iShares S&P/TSX 60 Index ETF',issuer:'RBC iShares',index:'S&P/TSX 60',mer:0.18,aum:'$20.56B',holdings:60,yield:3.0,liquidity:'High',type:'Cap-Weight',tag:'tsx60'},
-  {ticker:'ZIU',name:'BMO S&P/TSX 60 Index ETF',issuer:'BMO GAM',index:'S&P/TSX 60',mer:0.15,aum:'$68M',holdings:60,yield:2.9,liquidity:'Med',type:'Cap-Weight',tag:'tsx60'},
   {ticker:'XIC',name:'iShares Core S&P/TSX Capped Composite ETF',issuer:'RBC iShares',index:'S&P/TSX Capped Composite',mer:0.05,aum:'$22.4B',holdings:240,yield:2.5,liquidity:'High',type:'Cap-Weight',tag:'composite'},
   {ticker:'ZCN',name:'BMO S&P/TSX Capped Composite Index ETF',issuer:'BMO GAM',index:'S&P/TSX Capped Composite',mer:0.06,aum:'$13.9B',holdings:240,yield:2.4,liquidity:'High',type:'Cap-Weight',tag:'composite'},
   {ticker:'VCN',name:'Vanguard FTSE Canada All Cap Index ETF',issuer:'Vanguard',index:'FTSE Canada All Cap',mer:0.05,aum:'$5.1B',holdings:185,yield:2.3,liquidity:'High',type:'Cap-Weight',tag:'composite'},
@@ -1700,9 +1735,7 @@ const broadData = [
 ];
 
 const ewData = [
-  {ticker:'XEW',name:'iShares MSCI Equal Weight Canada ETF',issuer:'RBC iShares',focus:'Broad Canadian EW',mer:0.20,aum:'~$400M',yield:2.4,rebalance:'Quarterly',liquidity:'Med'},
   {ticker:'ZEB',name:'BMO Equal Weight Banks Index ETF',issuer:'BMO GAM',focus:'Big 6 Banks EW',mer:0.28,aum:'$5.2B',yield:2.9,rebalance:'Semi-Annual',liquidity:'High'},
-  {ticker:'ZEO',name:'BMO Equal Weight Oil & Gas Index ETF',issuer:'BMO GAM',focus:'Canadian E&P EW',mer:0.61,aum:'$234M',yield:3.5,rebalance:'Semi-Annual',liquidity:'Med'},
   {ticker:'ZGD',name:'BMO Equal Weight Global Gold Index ETF',issuer:'BMO GAM',focus:'Gold Miners EW',mer:0.62,aum:'~$600M',yield:0.8,rebalance:'Semi-Annual',liquidity:'Med'},
   {ticker:'ZUT',name:'BMO Equal Weight Utilities Index ETF',issuer:'BMO GAM',focus:'Canadian Utilities EW',mer:0.61,aum:'~$700M',yield:4.0,rebalance:'Semi-Annual',liquidity:'Med'},
   {ticker:'ZRE',name:'BMO Equal Weight REITs Index ETF',issuer:'BMO GAM',focus:'Canadian REITs EW',mer:0.61,aum:'~$550M',yield:4.5,rebalance:'Semi-Annual',liquidity:'Med'},
@@ -1713,17 +1746,12 @@ const sectorData = [
   {ticker:'XFN',name:'iShares S&P/TSX Capped Financials Index ETF',sector:'Financials',issuer:'RBC iShares',index:'S&P/TSX Capped Financials',mer:0.61,aum:'$2.1B',yield:2.8,method:'Cap-Weight',liquidity:'High'},
   {ticker:'ZWB',name:'BMO Covered Call Canadian Banks ETF',sector:'Financials',issuer:'BMO GAM',index:'Active/Covered Call',mer:0.91,aum:'~$2.5B',yield:5.2,method:'Covered Call',liquidity:'High'},
   {ticker:'XEG',name:'iShares S&P/TSX Capped Energy Index ETF',sector:'Energy',issuer:'RBC iShares',index:'S&P/TSX Capped Energy',mer:0.60,aum:'$1.41B',yield:3.8,method:'Cap-Weight',liquidity:'High'},
-  {ticker:'ZEO',name:'BMO Equal Weight Oil & Gas Index ETF',sector:'Energy',issuer:'BMO GAM',index:'Solactive EW Canada Oil & Gas',mer:0.61,aum:'$234M',yield:3.5,method:'Equal Weight',liquidity:'Med'},
   {ticker:'XGD',name:'iShares S&P/TSX Global Gold Index ETF',sector:'Materials',issuer:'RBC iShares',index:'S&P/TSX Global Gold',mer:0.61,aum:'$4.1B',yield:0.6,method:'Cap-Weight',liquidity:'High'},
   {ticker:'ZGD',name:'BMO Equal Weight Global Gold Index ETF',sector:'Materials',issuer:'BMO GAM',index:'Solactive EW Global Gold',mer:0.62,aum:'~$600M',yield:0.8,method:'Equal Weight',liquidity:'Med'},
-  {ticker:'XMA',name:'iShares S&P/TSX Capped Materials Index ETF',sector:'Materials',issuer:'RBC iShares',index:'S&P/TSX Capped Materials',mer:0.61,aum:'~$350M',yield:1.5,method:'Cap-Weight',liquidity:'Med'},
   {ticker:'XRE',name:'iShares S&P/TSX Capped REIT Index ETF',sector:'Real Estate',issuer:'RBC iShares',index:'S&P/TSX Capped REIT',mer:0.62,aum:'$1.36B',yield:4.8,method:'Cap-Weight',liquidity:'High'},
   {ticker:'ZRE',name:'BMO Equal Weight REITs Index ETF',sector:'Real Estate',issuer:'BMO GAM',index:'Solactive EW Canada REITs',mer:0.61,aum:'~$550M',yield:4.5,method:'Equal Weight',liquidity:'Med'},
-  {ticker:'XUT',name:'iShares S&P/TSX Capped Utilities Index ETF',sector:'Utilities',issuer:'RBC iShares',index:'S&P/TSX Capped Utilities',mer:0.61,aum:'~$400M',yield:4.1,method:'Cap-Weight',liquidity:'Med'},
   {ticker:'ZUT',name:'BMO Equal Weight Utilities Index ETF',sector:'Utilities',issuer:'BMO GAM',index:'Solactive EW Canada Utilities',mer:0.61,aum:'~$700M',yield:4.0,method:'Equal Weight',liquidity:'Med'},
   {ticker:'XIT',name:'iShares S&P/TSX Capped Info. Tech. Index ETF',sector:'Technology',issuer:'RBC iShares',index:'S&P/TSX Capped IT',mer:0.61,aum:'~$500M',yield:0.4,method:'Cap-Weight',liquidity:'Med'},
-  {ticker:'ZTL',name:'BMO S&P/TSX Equal Weight Tech Index ETF',sector:'Technology',issuer:'BMO GAM',index:'Solactive EW Canada Tech',mer:0.39,aum:'~$100M',yield:0.5,method:'Equal Weight',liquidity:'Med-Low'},
-  {ticker:'CIF',name:'CI Canadian REIT ETF',sector:'Real Estate',issuer:'CI Global AM',index:'Active',mer:0.90,aum:'~$250M',yield:5.5,method:'Active',liquidity:'Med'},
 ];
 
 const specData = [
@@ -1734,18 +1762,31 @@ const specData = [
   {ticker:'VGRO',name:'Vanguard Growth ETF Portfolio',cat:'All-in-One',issuer:'Vanguard',mer:0.24,aum:'~$4B',yield:1.7,eq:80,bond:20,liquidity:'High'},
   {ticker:'XBAL',name:'iShares Core Balanced ETF Portfolio',cat:'All-in-One',issuer:'RBC iShares',mer:0.20,aum:'~$3B',yield:2.2,eq:60,bond:40,liquidity:'High'},
   {ticker:'VBAL',name:'Vanguard Balanced ETF Portfolio',cat:'All-in-One',issuer:'Vanguard',mer:0.24,aum:'~$3.5B',yield:2.1,eq:60,bond:40,liquidity:'High'},
+  {ticker:'VCNS',name:'Vanguard Conservative ETF Portfolio',cat:'All-in-One',issuer:'Vanguard',mer:0.24,aum:'~$900M',yield:2.7,eq:40,bond:60,liquidity:'High'},
+  {ticker:'XCNS',name:'iShares Core Conservative Balanced ETF Portfolio',cat:'All-in-One',issuer:'RBC iShares',mer:0.20,aum:'~$340M',yield:2.8,eq:40,bond:60,liquidity:'High'},
+  {ticker:'VRIF',name:'Vanguard Retirement Income ETF Portfolio',cat:'All-in-One',issuer:'Vanguard',mer:0.32,aum:'~$330M',yield:4.0,eq:50,bond:50,liquidity:'High'},
   {ticker:'VDY',name:'Vanguard FTSE Canadian High Dividend Yield ETF',cat:'Dividend',issuer:'Vanguard',mer:0.22,aum:'~$4B',yield:4.5,eq:100,bond:0,liquidity:'High'},
   {ticker:'XDIV',name:'iShares Core MSCI Canadian Quality Dividend ETF',cat:'Dividend',issuer:'RBC iShares',mer:0.12,aum:'~$2B',yield:3.8,eq:100,bond:0,liquidity:'High'},
   {ticker:'XEI',name:'iShares S&P/TSX Composite High Dividend ETF',cat:'Dividend',issuer:'RBC iShares',mer:0.22,aum:'~$1.5B',yield:4.5,eq:100,bond:0,liquidity:'High'},
   {ticker:'ZDV',name:'BMO Canadian Dividend ETF',cat:'Dividend',issuer:'BMO GAM',mer:0.39,aum:'~$1B',yield:4.0,eq:100,bond:0,liquidity:'High'},
   {ticker:'CDZ',name:'iShares S&P/TSX Canadian Dividend Aristocrats ETF',cat:'Dividend',issuer:'RBC iShares',mer:0.67,aum:'~$800M',yield:3.5,eq:100,bond:0,liquidity:'Med'},
+  {ticker:'XDV',name:'iShares Canadian Select Dividend Index ETF',cat:'Dividend',issuer:'RBC iShares',mer:0.55,aum:'~$2.4B',yield:3.7,eq:100,bond:0,liquidity:'High'},
   {ticker:'ZWB',name:'BMO Covered Call Canadian Banks ETF',cat:'Covered Call',issuer:'BMO GAM',mer:0.91,aum:'~$2.5B',yield:5.2,eq:100,bond:0,liquidity:'High'},
   {ticker:'ZWC',name:'BMO Canadian High Dividend Covered Call ETF',cat:'Covered Call',issuer:'BMO GAM',mer:0.72,aum:'~$1.2B',yield:6.0,eq:100,bond:0,liquidity:'High'},
   {ticker:'ZAG',name:'BMO Aggregate Bond Index ETF',cat:'Bond',issuer:'BMO GAM',mer:0.09,aum:'~$11B',yield:3.7,eq:0,bond:100,liquidity:'High'},
   {ticker:'XBB',name:'iShares Core Canadian Universe Bond Index ETF',cat:'Bond',issuer:'RBC iShares',mer:0.10,aum:'$9.1B',yield:3.5,eq:0,bond:100,liquidity:'High'},
   {ticker:'VAB',name:'Vanguard Canadian Aggregate Bond Index ETF',cat:'Bond',issuer:'Vanguard',mer:0.09,aum:'$6.34B',yield:3.5,eq:0,bond:100,liquidity:'High'},
+  {ticker:'XSB',name:'iShares Core Canadian Short Term Bond Index ETF',cat:'Bond',issuer:'RBC iShares',mer:0.10,aum:'~$4.2B',yield:3.1,eq:0,bond:100,liquidity:'High'},
+  {ticker:'ZST',name:'BMO Ultra Short-Term Bond ETF',cat:'Bond',issuer:'BMO GAM',mer:0.17,aum:'~$4B',yield:2.7,eq:0,bond:100,liquidity:'High'},
+  {ticker:'XSH',name:'iShares Core Canadian Short Term Corporate Bond Index ETF',cat:'Bond',issuer:'RBC iShares',mer:0.11,aum:'~$2.4B',yield:3.9,eq:0,bond:100,liquidity:'High'},
+  {ticker:'ZHY',name:'BMO High Yield US Corporate Bond Hedged to CAD ETF',cat:'Bond',issuer:'BMO GAM',mer:0.62,aum:'~$1.5B',yield:6.4,eq:0,bond:100,liquidity:'High'},
   {ticker:'ZLB',name:'BMO Low Volatility Canadian Equity ETF',cat:'Factor',issuer:'BMO GAM',mer:0.39,aum:'~$2.5B',yield:2.8,eq:100,bond:0,liquidity:'High'},
   {ticker:'XMV',name:'iShares MSCI Min Volatility Canada ETF',cat:'Factor',issuer:'RBC iShares',mer:0.30,aum:'~$800M',yield:2.5,eq:100,bond:0,liquidity:'Med'},
+  {ticker:'CGL',name:'iShares Gold Bullion ETF (CAD-Hedged)',cat:'Commodity',issuer:'RBC iShares',mer:0.55,aum:'~$3.4B',yield:0.0,eq:0,bond:0,liquidity:'High'},
+  {ticker:'MNT',name:'Royal Canadian Mint Canadian Gold Reserves (ETR)',cat:'Commodity',issuer:'Royal Cdn Mint',mer:0.35,aum:'~$1.2B',yield:0.0,eq:0,bond:0,liquidity:'Med'},
+  {ticker:'BTCC',name:'Purpose Bitcoin ETF',cat:'Crypto',issuer:'Purpose',mer:1.30,aum:'~$1.7B',yield:0.0,eq:0,bond:0,liquidity:'High'},
+  {ticker:'FBTC',name:'Fidelity Advantage Bitcoin ETF',cat:'Crypto',issuer:'Fidelity',mer:0.40,aum:'~$1.25B',yield:0.0,eq:0,bond:0,liquidity:'High'},
+  {ticker:'BTCX',name:'CI Galaxy Bitcoin ETF',cat:'Crypto',issuer:'CI Global AM',mer:0.40,aum:'~$1B',yield:0.0,eq:0,bond:0,liquidity:'High'},
 ];
 
 const liqData = [
@@ -1758,11 +1799,9 @@ const liqData = [
   {ticker:'XFN',cat:'Financials',aum:'$2.1B',rating:'High',spread:'5–10 bps',i100:'Minimal',i500:'<0.1%',i1m:'<0.2%',mm:'Active',role:'Satellite'},
   {ticker:'XEG',cat:'Energy',aum:'$1.41B',rating:'High',spread:'5–12 bps',i100:'<0.05%',i500:'<0.1%',i1m:'<0.2%',mm:'Active',role:'Satellite'},
   {ticker:'XGD',cat:'Gold Miners',aum:'$4.1B',rating:'High',spread:'5–10 bps',i100:'Minimal',i500:'<0.1%',i1m:'<0.2%',mm:'Active',role:'Satellite'},
-  {ticker:'ZEO',cat:'Energy EW',aum:'$234M',rating:'Med',spread:'10–20 bps',i100:'<0.1%',i500:'<0.3%',i1m:'0.3–0.5%',mm:'Moderate',role:'Tactical'},
   {ticker:'XRE',cat:'REIT',aum:'$1.36B',rating:'High',spread:'5–12 bps',i100:'<0.05%',i500:'<0.1%',i1m:'<0.2%',mm:'Active',role:'Satellite'},
   {ticker:'ZAG',cat:'Agg. Bond',aum:'~$11B',rating:'High',spread:'2–5 bps',i100:'Minimal',i500:'Minimal',i1m:'<0.1%',mm:'Active',role:'Core'},
   {ticker:'XIT',cat:'Tech',aum:'~$500M',rating:'Med',spread:'8–18 bps',i100:'<0.1%',i500:'<0.25%',i1m:'0.3–0.5%',mm:'Moderate',role:'Tactical'},
-  {ticker:'XUT',cat:'Utilities',aum:'~$400M',rating:'Med',spread:'10–20 bps',i100:'<0.1%',i500:'<0.3%',i1m:'0.3–0.5%',mm:'Moderate',role:'Satellite'},
 ];
 
 const issuerScores = [
@@ -1792,7 +1831,6 @@ const sp500Data = [
 
 const totalMktData = [
   {ticker:'XUU',   name:'iShares Core S&P U.S. Total Market Index ETF',         issuer:'RBC iShares', cur:'🍁 CAD', hedged:'No',  mer:0.07, aum:'~$4.3B CAD', yield:1.1, holdings:'3,500+', account:'Best overall — any account'},
-  {ticker:'XUU.U', name:'iShares Core S&P U.S. Total Market Index ETF (USD)',   issuer:'RBC iShares', cur:'🇺🇸 USD', hedged:'No',  mer:0.07, aum:'~$90M USD',  yield:1.1, holdings:'3,500+', account:'USD cash accounts'},
   {ticker:'XUH',   name:'iShares Core S&P U.S. Total Market Index ETF (Hedged)',issuer:'RBC iShares', cur:'🍁 CAD', hedged:'Yes', mer:0.10, aum:'~$500M CAD', yield:1.0, holdings:'3,500+', account:'Non-Reg / CAD hedge'},
   {ticker:'VUN',   name:'Vanguard U.S. Total Market Index ETF',                 issuer:'Vanguard',    cur:'🍁 CAD', hedged:'No',  mer:0.16, aum:'~$18B CAD',  yield:1.0, holdings:'3,700+', account:'TFSA / RRSP'},
   {ticker:'VUS',   name:'Vanguard U.S. Total Market Index ETF (CAD-Hedged)',    issuer:'Vanguard',    cur:'🍁 CAD', hedged:'Yes', mer:0.16, aum:'~$1B CAD',   yield:0.9, holdings:'3,700+', account:'Non-Reg / CAD hedge'},
@@ -1802,9 +1840,6 @@ const equalWeightUSData = [
   {ticker:'EQL',    name:'Invesco S&P 500 Equal Weight Index ETF (CAD)',        issuer:'Invesco Canada', index:'S&P 500 Equal Weight',  cur:'🍁 CAD', hedged:'No',  mer:0.26, aum:'~$1.6B CAD',  inception:'Apr 2018', liquidity:'High',    note:'Wrapper around US-listed RSP. ~$1.6B AUM — established.'},
   {ticker:'EQL-F',  name:'Invesco S&P 500 Equal Weight Index ETF (CAD-Hedged)', issuer:'Invesco Canada', index:'S&P 500 Equal Weight',  cur:'🍁 CAD', hedged:'Yes', mer:0.26, aum:'~$1.6B CAD',  inception:'Apr 2018', liquidity:'High',    note:'Hedges CAD/USD. Best when CAD appreciating vs. USD.'},
   {ticker:'EQL-U',  name:'Invesco S&P 500 Equal Weight Index ETF (USD Units)',  issuer:'Invesco Canada', index:'S&P 500 Equal Weight',  cur:'🇺🇸 USD', hedged:'No',  mer:0.26, aum:'~$55M USD',  inception:'May 2018', liquidity:'Med-Low', note:'USD units. Smaller AUM — use limit orders. For USD accounts.'},
-  {ticker:'ZEQL',   name:'BMO MSCI USA Equal Weight Index ETF (CAD)',           issuer:'BMO GAM',        index:'MSCI USA Equal Weighted',cur:'🍁 CAD', hedged:'No',  mer:0.06, aum:'~$9M CAD',   inception:'Feb 2026', liquidity:'Low',     note:'NEW Feb 2026. 0.06% MER — cheapest equal weight ETF in Canada. ~537 stocks.'},
-  {ticker:'ZEQL.F', name:'BMO MSCI USA Equal Weight Index ETF (CAD-Hedged)',    issuer:'BMO GAM',        index:'MSCI USA Equal Weighted',cur:'🍁 CAD', hedged:'Yes', mer:0.06, aum:'<$5M CAD',   inception:'Feb 2026', liquidity:'Low',     note:'NEW Feb 2026. CAD-hedged version. Very low AUM — use with caution.'},
-  {ticker:'ZEQL.U', name:'BMO MSCI USA Equal Weight Index ETF (USD Units)',     issuer:'BMO GAM',        index:'MSCI USA Equal Weighted',cur:'🇺🇸 USD', hedged:'No',  mer:0.06, aum:'<$5M USD',   inception:'Feb 2026', liquidity:'Low',     note:'NEW Feb 2026. USD units. Very new — watch AUM growth before committing.'},
 ];
 
 const nasdaqData = [
@@ -1813,7 +1848,6 @@ const nasdaqData = [
   {ticker:'ZNQ',   name:'BMO Nasdaq 100 Equity Index ETF (Unhedged CAD)', issuer:'BMO GAM',           cur:'🍁 CAD', hedged:'No',  mer:0.39, aum:'~$2B CAD',    yield:0.4, structure:'Direct',       account:'Long-term buy-and-hold',  curTag:'CAD-Unhedged'},
   {ticker:'QQC',   name:'Invesco Nasdaq 100 Index ETF (CAD Unhedged)',    issuer:'Invesco Canada',    cur:'🍁 CAD', hedged:'No',  mer:0.20, aum:'~$3.5B CAD',  yield:0.4, structure:'Fund-of-Funds','account':'Cost-conscious investors', curTag:'CAD-Unhedged'},
   {ticker:'QQC.F', name:'Invesco Nasdaq 100 Index ETF (CAD-Hedged)',      issuer:'Invesco Canada',    cur:'🍁 CAD', hedged:'Yes', mer:0.20, aum:'~$2B CAD',    yield:0.3, structure:'Fund-of-Funds','account':'Cheapest hedged Nasdaq-100',curTag:'CAD-Hedged'},
-  {ticker:'QQC.U', name:'Invesco Nasdaq 100 Index ETF (USD Units)',       issuer:'Invesco Canada',    cur:'🇺🇸 USD', hedged:'No',  mer:0.20, aum:'~$100M USD',  yield:0.4, structure:'Fund-of-Funds','account':'USD account holders',      curTag:'USD'},
   {ticker:'HXQ',   name:'Global X Nasdaq-100 Index Corporate Class ETF', issuer:'Global X/Horizons', cur:'🍁 CAD', hedged:'No',  mer:0.28, aum:'~$1.1B CAD',  yield:0.0, structure:'Swap/Corp.Class','account':'Non-Reg (tax-efficient)',  curTag:'CAD-Unhedged'},
 ];
 
@@ -1822,9 +1856,32 @@ const usFactorData = [
   {ticker:'ZLH',   name:'BMO Low Volatility US Equity Hedged to CAD ETF',  issuer:'BMO GAM',     strat:'Low Vol + Hedge',  cur:'🍁 CAD', mer:0.35, aum:'~$100M CAD',  yield:1.7, bestFor:'Conservative investors hedging CAD/USD risk'},
   {ticker:'ZUQ',   name:'BMO MSCI USA High Quality Index ETF',             issuer:'BMO GAM',     strat:'Quality Factor',   cur:'🍁 CAD', mer:0.25, aum:'~$1.4B CAD',  yield:0.9, bestFor:'Quality-focused US equity exposure'},
   {ticker:'ZVU',   name:'BMO MSCI USA Value Index ETF',                    issuer:'BMO GAM',     strat:'Value Factor',     cur:'🍁 CAD', mer:0.25, aum:'~$118M CAD',  yield:1.8, bestFor:'Value tilted US exposure'},
-  {ticker:'ZDJ',   name:'BMO Dow Jones Industrial Average Hedged to CAD ETF',issuer:'BMO GAM',   strat:'Dow Jones 30',     cur:'🍁 CAD', mer:0.25, aum:'~$383M CAD',  yield:1.5, bestFor:'30-stock US blue-chip exposure, CAD-hedged'},
   {ticker:'HXS',   name:'Global X S&P 500 Index Corporate Class ETF',      issuer:'Glbl X/Horiz',strat:'S&P 500 Swap',     cur:'🍁 CAD', mer:0.29, aum:'~$6.2B CAD',  yield:0.0, bestFor:'Non-reg accounts: defers all dividends as cap gains'},
-  {ticker:'EQLI',  name:'Invesco S&P 500 Equal Weight Income Advantage ETF',issuer:'Invesco CA', strat:'EW + Income Overlay',cur:'🍁 CAD',mer:0.45, aum:'~$50M CAD',   yield:4.5, bestFor:'Equal weight S&P 500 with enhanced income strategy'},
+];
+
+// ===== INTERNATIONAL / GLOBAL EQUITY DATA =====
+const intlWorldData = [
+  {ticker:'XAW', name:'iShares Core MSCI All Country World ex Canada Index ETF', issuer:'RBC iShares', focus:'All-world ex-Canada', mer:0.22, aum:'~$4.3B CAD', yield:1.9, liquidity:'High'},
+  {ticker:'VXC', name:'Vanguard FTSE Global All Cap ex Canada Index ETF',       issuer:'Vanguard',    focus:'All-world ex-Canada (all-cap)', mer:0.21, aum:'~$3.5B CAD', yield:1.9, liquidity:'High'},
+];
+const intlDevData = [
+  {ticker:'XEF', name:'iShares Core MSCI EAFE IMI Index ETF',                   issuer:'RBC iShares', index:'MSCI EAFE IMI',          mer:0.22, aum:'~$20B CAD',   yield:2.9, liquidity:'Very High'},
+  {ticker:'VIU', name:'Vanguard FTSE Developed All Cap ex North America Index ETF', issuer:'Vanguard', index:'FTSE Developed ex-NA',   mer:0.23, aum:'~$10.7B CAD', yield:2.9, liquidity:'Very High'},
+  {ticker:'ZEA', name:'BMO MSCI EAFE Index ETF',                                issuer:'BMO GAM',     index:'MSCI EAFE',              mer:0.22, aum:'~$11.5B CAD', yield:3.0, liquidity:'Very High'},
+];
+const intlEmData = [
+  {ticker:'XEC', name:'iShares Core MSCI Emerging Markets IMI Index ETF',       issuer:'RBC iShares', index:'MSCI EM IMI',            mer:0.27, aum:'~$4.7B CAD',  yield:2.4, liquidity:'High'},
+  {ticker:'VEE', name:'Vanguard FTSE Emerging Markets All Cap Index ETF',       issuer:'Vanguard',    index:'FTSE EM All Cap',        mer:0.24, aum:'~$4.2B CAD',  yield:2.6, liquidity:'High'},
+  {ticker:'ZEM', name:'BMO MSCI Emerging Markets Index ETF',                    issuer:'BMO GAM',     index:'MSCI EM',                mer:0.27, aum:'~$3.5B CAD',  yield:2.6, liquidity:'High'},
+];
+
+// ===== CASH & SHORT-TERM DATA =====
+const cashData = [
+  {ticker:'CASH', name:'Global X High Interest Savings ETF',       issuer:'Global X / Horizons', type:'HISA (bank deposits)', mer:0.13, aum:'~$6.7B CAD', yield:2.2, liquidity:'Very High'},
+  {ticker:'ZMMK', name:'BMO Money Market Fund (ETF Series)',       issuer:'BMO GAM',             type:'Money Market',         mer:0.13, aum:'~$5.2B CAD', yield:3.2, liquidity:'High'},
+  {ticker:'CSAV', name:'CI High Interest Savings ETF',             issuer:'CI Global AM',        type:'HISA (bank deposits)', mer:0.16, aum:'~$4.7B CAD', yield:2.2, liquidity:'Very High'},
+  {ticker:'PSA',  name:'Purpose High Interest Savings ETF',        issuer:'Purpose',             type:'HISA (bank deposits)', mer:0.19, aum:'~$4.2B CAD', yield:2.3, liquidity:'High'},
+  {ticker:'CBIL', name:'Global X 0-3 Month T-Bill ETF',            issuer:'Global X / Horizons', type:'T-Bills (0-3 mo)',     mer:0.10, aum:'~$2.2B CAD', yield:1.8, liquidity:'High'},
 ];
 
 // ===== US TABLE RENDER FUNCTIONS =====
@@ -1926,6 +1983,43 @@ function filterUSTable(type, val){
   if(type==='nasdaq') renderNasdaqTable(val);
 }
 
+// ===== INTERNATIONAL & CASH TABLE RENDER FUNCTIONS =====
+function renderIntlRows(data, bodyId, labelKey){
+  const body = document.getElementById(bodyId);
+  if(!body) return;
+  body.innerHTML = data.map(r=>`<tr>
+    <td><span class="ticker">${r.ticker}</span></td>
+    <td style="font-size:11.5px;max-width:230px;white-space:normal">${r.name}</td>
+    <td>${issuerDot(r.issuer)}</td>
+    <td style="font-size:11px;color:var(--text-2)">${r[labelKey]}</td>
+    <td>${merBarHtml(r.mer)}</td>
+    <td style="font-weight:700">${r.aum}</td>
+    <td>${r.yield.toFixed(1)}%</td>
+    <td>${liqBadge(r.liquidity)}</td>
+  </tr>`).join('');
+  setTimeout(attachTickerEvents, 50);
+}
+function renderIntlTables(){
+  renderIntlRows(intlWorldData, 'intlWorldTableBody', 'focus');
+  renderIntlRows(intlDevData,   'intlDevTableBody',   'index');
+  renderIntlRows(intlEmData,    'intlEmTableBody',    'index');
+}
+function renderCashTable(){
+  const body = document.getElementById('cashTableBody');
+  if(!body) return;
+  body.innerHTML = cashData.map(r=>`<tr>
+    <td><span class="ticker">${r.ticker}</span></td>
+    <td style="font-size:11.5px;max-width:230px;white-space:normal">${r.name}</td>
+    <td>${issuerDot(r.issuer)}</td>
+    <td style="font-size:11px;color:var(--text-2)">${r.type}</td>
+    <td>${merBarHtml(r.mer)}</td>
+    <td style="font-weight:700">${r.aum}</td>
+    <td style="font-weight:700;color:var(--green)">${r.yield.toFixed(1)}%</td>
+    <td>${liqBadge(r.liquidity)}</td>
+  </tr>`).join('');
+  setTimeout(attachTickerEvents, 50);
+}
+
 // ===== ADD MORE ETF_DB ENTRIES FOR US TAB =====
 Object.assign(ETF_DB, {
   'XUU': {
@@ -1937,16 +2031,6 @@ Object.assign(ETF_DB, {
     pros:['0.07% MER — cheapest US equity ETF in Canada','3,500+ stocks — most diversified US coverage','iShares brand backing','$4.3B AUM — strong liquidity'],
     cons:['Fund-of-funds structure adds slight complexity','Slightly more small/mid-cap exposure than pure S&P 500 plays — marginally higher volatility'],
     bestFor:'Most Canadian investors wanting total US equity market exposure. The one-stop shop for US diversification at minimum cost. Particularly good in TFSA where withholding tax applies regardless of ETF domicile.'
-  },
-  'XUU.U': {
-    name:'iShares Core S&P U.S. Total Market Index ETF (USD Units)',
-    issuer:'RBC iShares', cat:'US Total Market (USD)', sector:'US Equity (Broad)',
-    mer:'0.07%', aum:'~$90M USD', yield:'1.1%', liquidity:'Med-Low', inception:'2020',
-    desc:'USD-denominated trading units of XUU — same 3,500+ US stock exposure at the same 0.07% MER, but bought and sold in US dollars. Allows investors with USD cash to access total US market without paying currency conversion spreads.',
-    holdings:['Same as XUU — ITOT and broad US equity market basket'],
-    pros:['0.07% MER — same as CAD version, lowest in class','Avoids currency conversion for USD account holders','$90M USD AUM — modest liquidity'],
-    cons:['Less liquid than CAD XUU','Only useful if you actually have USD sitting in your account'],
-    bestFor:'Investors with USD proceeds in their RRSP or non-registered account who want total US market exposure without the friction of converting back to CAD first.'
   },
   'XUH': {
     name:'iShares Core S&P U.S. Total Market Index ETF (CAD-Hedged)',
@@ -2018,16 +2102,6 @@ Object.assign(ETF_DB, {
     cons:['Hedging has roll cost embedded in returns','Fund-of-funds structure'],
     bestFor:'Investors wanting Nasdaq-100 tech exposure with currency risk removed, at the lowest cost available. The clear default choice for hedged Nasdaq in Canada.'
   },
-  'QQC.U': {
-    name:'Invesco Nasdaq 100 Index ETF (USD Units)',
-    issuer:'Invesco Canada', cat:'Nasdaq-100 (USD)', sector:'US Tech/Growth',
-    mer:'0.20%', aum:'~$100M USD', yield:'0.4%', liquidity:'Med-Low', inception:'2021',
-    desc:'USD-denominated units of QQC — same Nasdaq-100 exposure at 0.20% MER but settled and quoted in US dollars. Useful for investors with USD cash who want Nasdaq-100 access without currency conversion.',
-    holdings:['QQQ/QQQM — same Nasdaq-100 basket as QQC and QQC.F'],
-    pros:['0.20% MER — cheapest Nasdaq-100 option in USD form','No need to convert USD to CAD for Nasdaq exposure'],
-    cons:['~$100M USD AUM — lower liquidity','Use limit orders given thin trading volume'],
-    bestFor:'Investors with USD cash in their account who want Nasdaq-100 at the lowest available MER without paying currency conversion costs.'
-  },
   'HXQ': {
     name:'Global X Nasdaq-100 Index Corporate Class ETF',
     issuer:'Global X / Horizons', cat:'Nasdaq-100 (Tax-Efficient)', sector:'US Tech/Growth',
@@ -2078,16 +2152,6 @@ Object.assign(ETF_DB, {
     cons:['~$1.4B AUM — strong liquidity','Factor premiums are not guaranteed; quality has had periods of underperformance'],
     bestFor:'Investors who believe quality companies (strong balance sheets, consistent earnings) deliver better long-term risk-adjusted returns, without sacrificing sector diversity. A sound alternative to a pure S&P 500 cap-weighted fund.'
   },
-  'EQLI': {
-    name:'Invesco S&P 500 Equal Weight Income Advantage ETF',
-    issuer:'Invesco Canada', cat:'US Equal Weight + Income', sector:'US Equity (EW + Covered Call)',
-    mer:'0.45%', aum:'~$50M CAD', yield:'4.5%', liquidity:'Low', inception:'2023',
-    desc:'A unique hybrid — equal-weight S&P 500 exposure combined with an income overlay strategy using derivatives and equity-linked notes (ELNs). Targets higher income than plain EQL while maintaining the equal-weight diversification advantage. Higher MER (0.45%) reflects the income engineering.',
-    holdings:['S&P 500 Equal Weight basket with income overlay via ELNs and derivatives','~500 US stocks at equal weight'],
-    pros:['~4.5% yield — dramatically higher than EQL (~1.5%)','Equal weight reduces mega-cap concentration','Income overlay can smooth returns in volatile markets'],
-    cons:['0.45% MER — highest in the EW S&P 500 family','~$50M AUM — low liquidity, closure risk approaching floor','Complex structure — ELNs add counterparty risk'],
-    bestFor:'Income-seeking investors who want equal-weight S&P 500 diversification AND higher distributions. Best as a small satellite position given low AUM. Watch AUM growth carefully — closure risk if it stays below $50M.'
-  },
   'HXS': {
     name:'Global X S&P 500 Index Corporate Class ETF',
     issuer:'Global X / Horizons', cat:'S&P 500 (Tax-Efficient)', sector:'US Equity (S&P 500)',
@@ -2098,43 +2162,13 @@ Object.assign(ETF_DB, {
     cons:['0.29% MER — more expensive than VFV (0.08%) or ZSP (0.09%)','Swap structure adds counterparty risk','Tax efficiency advantage is less meaningful in RRSP/TFSA (already tax-sheltered)'],
     bestFor:'High-marginal-rate Canadian investors holding S&P 500 exposure in a non-registered (taxable) account. The tax deferral on ~1.2%/year in dividends can be worth more than the MER premium vs. VFV over a long holding period.'
   },
-  'ZEQL': {
-    name:'BMO MSCI USA Equal Weight Index ETF (CAD)',
-    issuer:'BMO GAM', cat:'US Equal Weight', sector:'US Equity (MSCI USA Equal Weighted)',
-    mer:'0.06%', aum:'~$9M CAD', yield:'1.55%', liquidity:'Low', inception:'Feb 2026',
-    desc:'BMO\'s brand-new equal weight US ETF launched February 2026 — tracking the MSCI USA Equal Weighted Index (~537 large and mid-cap US stocks). At 0.06% MER it is the cheapest equal-weight US ETF in Canada, less than a quarter of EQL\'s 0.26%. Functionally very similar to EQL (S&P 500 Equal Weight) — same concept, more stocks, dramatically lower cost. Still building AUM.',
-    holdings:['537 large- and mid-cap US stocks — each equally weighted','MSCI USA universe includes all S&P 500 stocks plus additional mid-cap names (~37 extra vs. EQL)'],
-    pros:['0.06% MER — cheapest equal-weight US ETF in Canada (1/4 the cost of EQL)','537 stocks vs. EQL\'s 500 — slightly more diversified','BMO brand — reputable issuer with massive Canadian ETF franchise','Also available in hedged (ZEQL.F) and USD (ZEQL.U) unit classes'],
-    cons:['Only ~$9M AUM — significant closure risk below $50M threshold','Launched Feb 2026 — no track record yet','Very low liquidity — wide bid-ask spreads expected in early months','MSCI index vs. S&P 500 — slight methodology difference from EQL'],
-    bestFor:'Cost-conscious long-term investors who believe in equal-weight US equity strategy and want the lowest MER possible. Hold in RRSP or TFSA. Watch AUM growth — ZEQL needs to cross $50M+ to be a safe long-term hold. EQL is the safer choice today; ZEQL is the better value if it survives.'
-  },
-  'ZEQL.U': {
-    name:'BMO MSCI USA Equal Weight Index ETF (USD Units)',
-    issuer:'BMO GAM', cat:'US Equal Weight (USD)', sector:'US Equity (MSCI USA Equal Weighted)',
-    mer:'0.06%', aum:'<$5M USD', yield:'1.5%', liquidity:'Low', inception:'Feb 2026',
-    desc:'The USD-denominated trading unit of ZEQL — same 537-stock MSCI USA Equal Weight exposure at 0.06% MER, but bought and sold in US dollars. Extremely new (Feb 2026) with very low AUM. Use only if you have USD cash and want the lowest-cost equal-weight US exposure available in Canada.',
-    holdings:['Same as ZEQL — 537 equally-weighted MSCI USA stocks'],
-    pros:['0.06% MER — cheapest equal-weight US ETF in USD form','No currency conversion needed for USD holders'],
-    cons:['<$5M AUM — very thin liquidity, wide spreads','Launched Feb 2026 — no track record','Significant closure risk at current AUM level'],
-    bestFor:'USD account holders who specifically want equal-weight US exposure at minimum cost and are comfortable with the risks of a brand-new, low-AUM ETF. Monitor AUM growth closely.'
-  },
-  'ZEQL.F': {
-    name:'BMO MSCI USA Equal Weight Index ETF (CAD-Hedged)',
-    issuer:'BMO GAM', cat:'US Equal Weight (Hedged)', sector:'US Equity (MSCI USA Equal Weighted, Hedged)',
-    mer:'0.06%', aum:'<$5M CAD', yield:'1.4%', liquidity:'Low', inception:'Feb 2026',
-    desc:'The CAD-hedged unit class of ZEQL. Same 537-stock MSCI USA equal-weight exposure at 0.06% MER with the CAD/USD currency exposure hedged away. Like ZEQL, extremely new with very low AUM. Useful if you want equal-weight US exposure without currency risk at the absolute lowest cost.',
-    holdings:['537 MSCI USA equally-weighted stocks with CAD/USD hedge overlay'],
-    pros:['0.06% MER — cheapest hedged equal-weight US ETF in Canada','CAD-hedged — removes currency uncertainty','BMO brand backing'],
-    cons:['<$5M AUM — closure risk is meaningful','Launched Feb 2026 — zero track record','Very illiquid — wide bid-ask spreads'],
-    bestFor:'Investors who want equal-weight US equity without currency risk at the lowest possible MER. If you choose this, set a reminder to check AUM in 12 months — if it hasn\'t crossed $50M, consider switching to EQL-F as the more established alternative.'
-  },
   'EQL-F': {
     name:'Invesco S&P 500 Equal Weight Index ETF (CAD-Hedged)',
     issuer:'Invesco Canada', cat:'S&P 500 Equal Weight (Hedged)', sector:'US Equity (S&P 500 Equal Weighted, Hedged)',
     mer:'0.26%', aum:'~$1.6B CAD', yield:'1.25%', liquidity:'High', inception:'Apr 2018',
-    desc:'The CAD-hedged unit of the Invesco S&P 500 Equal Weight ETF family. Provides equal-weight S&P 500 exposure (~0.2% per stock) with the USD/CAD currency effect hedged away. With $1.6B AUM it is significantly larger and more liquid than the new ZEQL.F. Had a 1-year total return of 13.26% — outperforming unhedged EQL\'s 8.34% as CAD strengthened.',
+    desc:'The CAD-hedged unit of the Invesco S&P 500 Equal Weight ETF family. Provides equal-weight S&P 500 exposure (~0.2% per stock) with the USD/CAD currency effect hedged away. With $1.6B AUM it is large and liquid. Had a 1-year total return of 13.26% — outperforming unhedged EQL\'s 8.34% as CAD strengthened.',
     holdings:['Invesco RSP (US-listed S&P 500 Equal Weight ETF) — same 500 companies as EQL with currency hedge'],
-    pros:['$1.6B AUM — high liquidity (vs. ZEQL.F <$5M)','Eliminates CAD/USD currency risk in equal-weight S&P 500','Well-established since 2018','13.26% 1-year return vs. EQL\'s 8.34% when CAD strengthened'],
+    pros:['$1.6B AUM — high liquidity','Eliminates CAD/USD currency risk in equal-weight S&P 500','Well-established since 2018','13.26% 1-year return vs. EQL\'s 8.34% when CAD strengthened'],
     cons:['0.26% MER — expensive vs. ZEQL.F (0.06%)','Hedging has embedded roll cost','Fund-of-funds structure'],
     bestFor:'Investors who want proven, liquid, equal-weight S&P 500 exposure with currency hedging. EQL-F is the safe, established choice vs. ZEQL.F\'s lower cost but near-zero AUM. Choose EQL-F for reliability; consider switching to ZEQL.F only after it establishes meaningful AUM.'
   },
@@ -2145,18 +2179,280 @@ Object.assign(ETF_DB, {
     desc:'The flagship Canadian equal-weight S&P 500 ETF with $1.6B AUM. Tracks the S&P 500 Equal Weight Index — all 500 companies at equal ~0.2% weight, rebalanced quarterly. Wrapper around RSP (Invesco\'s US-listed $90B equal-weight ETF). Nvidia, Apple, and Microsoft carry the same weight as a mid-sized industrial. Unhedged — carries USD/CAD currency exposure.',
     holdings:['Invesco RSP (US $90B AUM S&P 500 Equal Weight ETF)','All 500 S&P 500 companies at ~0.2% each — quarterly rebalanced'],
     pros:['$1.6B AUM — most liquid Canadian equal-weight US ETF','Backed by RSP — the world\'s largest equal-weight ETF ($90B+ AUM)','Eliminates Magnificent Seven dominance','Available in 3 unit classes: EQL (CAD), EQL-F (Hedged), EQL-U (USD)','1-year AUM: ~$1.6B as of Jun 2026'],
-    cons:['0.26% MER — ZEQL now achieves same concept at 0.06% (though ZEQL has very low AUM)','Fund-of-funds structure holding RSP','Currency risk — unhedged exposure to USD/CAD movement'],
-    bestFor:'The proven default for Canadian investors wanting S&P 500 equal-weight access. Choose EQL over ZEQL today unless you are specifically comfortable with very low-AUM ETF risk. Will benefit from periods of USD strength vs. CAD. Best in TFSA or RRSP for registered account investors.'
+    cons:['0.26% MER — pricier than plain cap-weight S&P 500 ETFs (VFV 0.08%)','Fund-of-funds structure holding RSP','Currency risk — unhedged exposure to USD/CAD movement'],
+    bestFor:'The proven default for Canadian investors wanting S&P 500 equal-weight access. Will benefit from periods of USD strength vs. CAD. Best in TFSA or RRSP for registered account investors.'
   },
-  'ZDJ': {
-    name:'BMO Dow Jones Industrial Average Hedged to CAD ETF',
-    issuer:'BMO GAM', cat:'Dow Jones 30', sector:'US Equity (DJIA)',
-    mer:'0.25%', aum:'~$383M CAD', yield:'1.5%', liquidity:'Med', inception:'2009',
-    desc:'Tracks the Dow Jones Industrial Average — just 30 large-cap US blue-chip companies, the most concentrated of all US equity ETFs. CAD-hedged. Holdings include companies like Apple, Microsoft, Goldman Sachs, JPMorgan, Johnson & Johnson, McDonald\'s, Boeing. Price-weighted index (unlike S&P 500\'s cap-weighting).',
-    holdings:['Apple (~5%)','Microsoft (~5%)','Goldman Sachs (~7%)','UnitedHealth (~6%)','Visa','Caterpillar','McDonald\'s','Boeing','JPMorgan','Johnson & Johnson — 30 total'],
-    pros:['0.25% MER — reasonable','$383M AUM','CAD-hedged — no currency risk','Iconic Dow Jones brand recognition'],
-    cons:['Only 30 holdings — far less diversified than S&P 500','Price-weighted methodology is economically arbitrary (Boeing stock price determines its weight, not market cap)','Limited exposure to many US sectors'],
-    bestFor:'Investors who specifically want the Dow Jones 30 blue-chip US exposure in a hedged Canadian wrapper. Most investors are better served by broader S&P 500 or total market ETFs — the DJIA\'s 30-stock, price-weighted methodology is largely an historical artifact.'
+
+  // ── INTERNATIONAL / GLOBAL EQUITY ──────────────────────────
+  'XAW': {
+    name:'iShares Core MSCI All Country World ex Canada Index ETF',
+    issuer:'RBC iShares', cat:'Global ex-Canada', sector:'International Equity (All-World ex-Canada)',
+    mer:'0.22%', aum:'~$4.3B CAD', yield:'1.9%', liquidity:'High', inception:'2015',
+    desc:'A single fund holding the entire world ex-Canada — US, international developed, and emerging markets in one ticker. Built as a fund-of-iShares-ETFs. The classic partner to a Canadian holding (XIC/VCN) for a simple two-ETF portfolio with global diversification.',
+    holdings:['~9,000+ stocks via underlying iShares ETFs (ITOT, IEFA, IEMG, etc.)','~60% US, ~30% international developed, ~10% emerging markets'],
+    pros:['One ticker for all-world ex-Canada exposure','0.22% MER — very low for global diversification','Pairs cleanly with a Canadian ETF for a 2-fund portfolio'],
+    cons:['Fund-of-funds structure adds a layer','US makes up ~60% — heavy US tilt by market cap','Foreign withholding tax drag in TFSA'],
+    bestFor:'Investors who want true global diversification (ex-Canada) in a single trade. Combine with XIC or VCN for Canadian exposure, or hold alone if you want minimal home-country bias.'
+  },
+  'VXC': {
+    name:'Vanguard FTSE Global All Cap ex Canada Index ETF',
+    issuer:'Vanguard', cat:'Global ex-Canada', sector:'International Equity (All-World ex-Canada, all-cap)',
+    mer:'0.21%', aum:'~$3.5B CAD', yield:'1.9%', liquidity:'High', inception:'2014',
+    desc:'Vanguard\'s all-world ex-Canada ETF — the FTSE equivalent of XAW. All-cap coverage (includes small caps) across US, international developed, and emerging markets via underlying Vanguard US-listed ETFs. The Vanguard counterpart for a one-ticker global portfolio.',
+    holdings:['~12,000+ stocks via VTI, VEA, VWO (Vanguard US-listed)','US ~58%, developed ex-NA ~28%, emerging ~13%, plus small-cap inclusion'],
+    pros:['0.21% MER — slightly cheaper than XAW','All-cap (includes small caps) for broader coverage','Vanguard structure and brand'],
+    cons:['Fund-of-funds (holds US-listed Vanguard ETFs)','US-dominated by market weight','Foreign withholding tax not recoverable in TFSA'],
+    bestFor:'Vanguard-preferring investors wanting one-ticker global ex-Canada exposure. Functionally interchangeable with XAW; pick on brand preference or as a tax-loss harvest partner.'
+  },
+  'XEF': {
+    name:'iShares Core MSCI EAFE IMI Index ETF',
+    issuer:'RBC iShares', cat:'Developed ex-North America', sector:'International Equity (EAFE)',
+    mer:'0.22%', aum:'~$20B CAD', yield:'2.9%', liquidity:'Very High', inception:'2013',
+    desc:'The largest international developed ETF in Canada — Europe, Australasia and the Far East (EAFE), large/mid/small cap (IMI). Holds underlying foreign stocks directly, making it relatively tax-efficient in an RRSP. The core "international" sleeve for most globally diversified Canadian portfolios.',
+    holdings:['~2,500 developed ex-NA stocks — Nestlé, ASML, Novo Nordisk, Toyota, SAP, LVMH, Shell, AstraZeneca'],
+    pros:['~$20B AUM — extremely liquid','Holds stocks directly — RRSP tax-efficient','IMI coverage includes small caps','Higher yield (~2.9%) than US-only funds'],
+    cons:['No North American exposure by design — must be paired','Currency exposure to EUR, JPY, GBP, etc.','Japan and Europe heavy'],
+    bestFor:'The default international developed holding for a globally diversified portfolio. Pair with Canadian + US (or emerging) ETFs. Especially good in RRSP where it holds stocks directly.'
+  },
+  'VIU': {
+    name:'Vanguard FTSE Developed All Cap ex North America Index ETF',
+    issuer:'Vanguard', cat:'Developed ex-North America', sector:'International Equity (Developed ex-NA)',
+    mer:'0.23%', aum:'~$10.7B CAD', yield:'2.9%', liquidity:'Very High', inception:'2015',
+    desc:'Vanguard\'s international developed ex-North America ETF — the FTSE counterpart to XEF. All-cap coverage of Europe, Asia-Pacific and developed markets outside North America, holding underlying foreign stocks via a US-listed Vanguard ETF.',
+    holdings:['~3,700 developed ex-NA stocks — Nestlé, ASML, Novo Nordisk, Toyota, Samsung, SAP, Shell'],
+    pros:['$10.7B AUM — highly liquid','All-cap coverage including small caps','Higher yield than US funds (~2.9%)','Vanguard brand'],
+    cons:['0.23% MER — marginally higher than XEF (0.22%)','Holds via US-listed VEA (one fund layer)','No North American exposure by design'],
+    bestFor:'Vanguard-preferring investors wanting international developed exposure. Nearly identical to XEF; choose on brand or as a tax-loss harvest pair.'
+  },
+  'ZEA': {
+    name:'BMO MSCI EAFE Index ETF',
+    issuer:'BMO GAM', cat:'Developed ex-North America', sector:'International Equity (EAFE)',
+    mer:'0.22%', aum:'~$11.5B CAD', yield:'3.0%', liquidity:'Very High', inception:'2014',
+    desc:'BMO\'s international developed ETF tracking standard MSCI EAFE (large/mid cap, no small caps). Holds underlying foreign stocks directly. One of the three giants of Canadian international investing alongside XEF and VIU, with strong liquidity and a slightly higher distribution yield.',
+    holdings:['~700 large/mid-cap EAFE stocks — Nestlé, ASML, Novo Nordisk, Toyota, SAP, AstraZeneca, Shell'],
+    pros:['~$11.5B AUM — deep liquidity','Holds stocks directly — RRSP tax-efficient','~3.0% yield — highest of the EAFE trio','0.22% MER'],
+    cons:['Standard EAFE excludes small caps (vs. XEF/VIU IMI)','No emerging markets or North America','Currency exposure to EUR/JPY/GBP'],
+    bestFor:'Investors wanting core international developed exposure with the BMO brand and a slightly higher yield. Interchangeable with XEF/VIU; the main difference is standard-cap (ZEA) vs. all-cap IMI (XEF/VIU).'
+  },
+  'XEC': {
+    name:'iShares Core MSCI Emerging Markets IMI Index ETF',
+    issuer:'RBC iShares', cat:'Emerging Markets', sector:'International Equity (Emerging Markets)',
+    mer:'0.27%', aum:'~$4.7B CAD', yield:'2.4%', liquidity:'High', inception:'2015',
+    desc:'The largest emerging-markets ETF in Canada — China, India, Taiwan, Korea, Brazil and other developing economies, large/mid/small cap (IMI). Held as a fund-of-funds via the US-listed IEMG. Higher growth potential and higher volatility than developed markets.',
+    holdings:['~3,000 EM stocks via IEMG — TSMC, Tencent, Samsung, Alibaba, Reliance, Meituan'],
+    pros:['~$4.7B AUM — most liquid EM ETF in Canada','IMI coverage including small caps','Diversifier — lower correlation to North American markets'],
+    cons:['0.27% MER — higher than developed-market ETFs','Higher volatility and geopolitical risk','China is a large single-country weight'],
+    bestFor:'Investors adding an emerging-markets tilt to a globally diversified portfolio. A satellite position (typically 5-15% of equities) for those who want EM growth exposure beyond what XAW/VXC already include.'
+  },
+  'VEE': {
+    name:'Vanguard FTSE Emerging Markets All Cap Index ETF',
+    issuer:'Vanguard', cat:'Emerging Markets', sector:'International Equity (Emerging Markets)',
+    mer:'0.24%', aum:'~$4.2B CAD', yield:'2.6%', liquidity:'High', inception:'2011',
+    desc:'Vanguard\'s emerging-markets ETF tracking FTSE EM (which classifies South Korea as developed, so it differs from MSCI-based XEC/ZEM). All-cap coverage held via the US-listed VWO. The lowest-MER pure EM option among the big three.',
+    holdings:['~5,000 EM stocks via VWO — TSMC, Tencent, Alibaba, Reliance, Meituan (no Korea under FTSE)'],
+    pros:['0.24% MER — cheapest of the EM trio','All-cap coverage','Long track record (2011)','~2.6% yield'],
+    cons:['FTSE excludes South Korea — different country mix vs. XEC/ZEM','EM volatility and geopolitical risk','China heavy'],
+    bestFor:'Cost-conscious investors wanting emerging-markets exposure who are comfortable with FTSE\'s no-Korea classification. The cheapest way to add a dedicated EM sleeve.'
+  },
+  'ZEM': {
+    name:'BMO MSCI Emerging Markets Index ETF',
+    issuer:'BMO GAM', cat:'Emerging Markets', sector:'International Equity (Emerging Markets)',
+    mer:'0.27%', aum:'~$3.5B CAD', yield:'2.6%', liquidity:'High', inception:'2009',
+    desc:'BMO\'s emerging-markets ETF tracking MSCI EM. Notably uses direct replication — holding the underlying EM stocks itself rather than wrapping a US-listed fund — which can have different withholding-tax characteristics. Canada\'s longest-running EM ETF (2009).',
+    holdings:['~800+ EM stocks held directly — TSMC, Tencent, Samsung, Alibaba, Reliance'],
+    pros:['Direct replication (not a fund-of-US-funds)','Includes South Korea (MSCI classification)','Longest EM track record in Canada (2009)'],
+    cons:['0.27% MER — tied highest of the EM trio','EM volatility and concentration in China/Taiwan','Standard cap — excludes small caps'],
+    bestFor:'Investors wanting MSCI-based emerging-markets exposure (including Korea) with direct stock replication. A solid EM satellite alongside developed-market and Canadian holdings.'
+  },
+
+  // ── CASH / HIGH-INTEREST SAVINGS / SHORT-TERM ──────────────
+  'CASH': {
+    name:'Global X High Interest Savings ETF',
+    issuer:'Global X / Horizons', cat:'High-Interest Savings', sector:'Cash / HISA',
+    mer:'0.13%', aum:'~$6.7B CAD', yield:'2.2%', liquidity:'Very High', inception:'2013',
+    desc:'Canada\'s largest cash ETF — invests almost entirely in high-interest deposit accounts at Canadian chartered banks. NAV stays near $50 with income accruing daily and paid monthly. A place to park cash earning near the prevailing deposit rate with daily liquidity and effectively no price volatility.',
+    holdings:['Cash on deposit at Schedule I Canadian banks','No bonds or stocks — pure bank deposits'],
+    pros:['~$6.7B AUM — the most liquid cash ETF in Canada','Minimal price volatility (NAV ~$50)','Monthly income that tracks the deposit rate','Very low 0.13% MER'],
+    cons:['Yield falls when the Bank of Canada cuts rates','Bank deposits are not CDIC-insured like a personal savings account','Returns are fully taxable as interest income'],
+    bestFor:'Parking cash, an emergency fund, or the cash sleeve of a portfolio inside a brokerage account. Best held in registered or tax-sheltered accounts since income is taxed as interest.'
+  },
+  'ZMMK': {
+    name:'BMO Money Market Fund (ETF Series)',
+    issuer:'BMO GAM', cat:'Money Market', sector:'Cash / Money Market',
+    mer:'0.13%', aum:'~$5.2B CAD', yield:'3.2%', liquidity:'High', inception:'2021',
+    desc:'A true money-market fund in ETF form — holds high-quality short-term instruments (commercial paper, bankers\' acceptances, T-bills) rather than just bank deposits. This can produce a higher gross yield than HISA ETFs, with very low price volatility and monthly distributions.',
+    holdings:['Short-term Canadian money-market instruments — commercial paper, bankers\' acceptances, T-bills','Weighted average maturity typically under 90 days'],
+    pros:['Higher gross yield than HISA ETFs (holds paper, not just deposits)','~$5.2B AUM — very liquid','0.13% MER','Monthly distributions'],
+    cons:['Slightly more credit exposure than pure deposits/T-bills','Yield moves with short-term rates','Interest income fully taxable'],
+    bestFor:'Investors wanting a money-market vehicle that can out-yield HISA ETFs while keeping cash-like stability. Good for the cash sleeve in registered accounts.'
+  },
+  'CSAV': {
+    name:'CI High Interest Savings ETF',
+    issuer:'CI Global AM', cat:'High-Interest Savings', sector:'Cash / HISA',
+    mer:'0.16%', aum:'~$4.7B CAD', yield:'2.2%', liquidity:'Very High', inception:'2019',
+    desc:'CI\'s high-interest savings ETF — holds deposits at Canadian banks, NAV near $50, monthly income tracking the deposit rate. One of the original and largest HISA ETFs in Canada, functionally near-identical to CASH and PSA.',
+    holdings:['Cash on deposit at Canadian chartered banks','No bonds or equities'],
+    pros:['~$4.7B AUM — highly liquid','Near-zero price volatility','Monthly income tracking deposit rates'],
+    cons:['0.16% MER — slightly higher than CASH (0.13%)','Yield falls with rate cuts','Interest income fully taxable; deposits not CDIC-insured like a savings account'],
+    bestFor:'Parking cash with daily liquidity. Essentially interchangeable with CASH and PSA — choose on MER, platform availability, or to spread bank-deposit exposure.'
+  },
+  'PSA': {
+    name:'Purpose High Interest Savings ETF',
+    issuer:'Purpose', cat:'High-Interest Savings', sector:'Cash / HISA',
+    mer:'0.19%', aum:'~$4.2B CAD', yield:'2.3%', liquidity:'High', inception:'2013',
+    desc:'One of the original Canadian HISA ETFs (launched 2013 alongside CASH). Holds bank deposits, NAV near $50, monthly distributions tracking the prevailing savings rate. A direct alternative to CASH and CSAV.',
+    holdings:['Cash on deposit at Canadian chartered banks','No bonds or equities'],
+    pros:['Long track record (2013)','~$4.2B AUM — liquid','Near-zero price volatility','Monthly income'],
+    cons:['0.19% MER — highest of the HISA trio','Yield moves with the deposit rate','Taxed as interest income; not CDIC-insured like a savings account'],
+    bestFor:'Cash parking with daily liquidity. Interchangeable with CASH/CSAV; the slightly higher MER is the main differentiator, so compare net yields before choosing.'
+  },
+  'CBIL': {
+    name:'Global X 0-3 Month T-Bill ETF',
+    issuer:'Global X / Horizons', cat:'T-Bills (0-3 month)', sector:'Cash / Government T-Bills',
+    mer:'0.10%', aum:'~$2.2B CAD', yield:'1.8%', liquidity:'High', inception:'2023',
+    desc:'Holds a ladder of Government of Canada Treasury bills maturing within 0-3 months — the highest credit quality cash equivalent available (backed by the federal government, not bank deposits). Lowest MER in the category. Yield tracks the T-bill rate, usually a touch below HISA deposit rates.',
+    holdings:['Government of Canada Treasury bills, 0-3 month maturity','No bank deposits or corporate paper — sovereign credit only'],
+    pros:['0.10% MER — cheapest cash ETF in Canada','Government of Canada credit — highest quality','Avoids bank-deposit credit exposure entirely'],
+    cons:['Yield often slightly below HISA ETFs','Moves with short-term government rates','Interest income fully taxable'],
+    bestFor:'Investors who want the safest possible cash equivalent (sovereign credit) at the lowest cost, or who specifically want to avoid bank-deposit exposure. Ideal for large cash balances where credit quality matters most.'
+  },
+
+  // ── SHORT-TERM / CORPORATE / HIGH-YIELD BONDS ──────────────
+  'XSB': {
+    name:'iShares Core Canadian Short Term Bond Index ETF',
+    issuer:'RBC iShares', cat:'Short-Term Bond', sector:'Canadian Fixed Income (Short-term)',
+    mer:'0.10%', aum:'~$4.2B CAD', yield:'3.1%', liquidity:'High', inception:'2007',
+    desc:'A broad short-term Canadian bond ETF (~2.6-year duration) holding federal, provincial and investment-grade corporate bonds maturing in 1-5 years. Much lower interest-rate sensitivity than aggregate funds like XBB/ZAG (~7.5yr duration), making it a stable place to earn bond income with limited price swings.',
+    holdings:['Government of Canada, provincial and investment-grade corporate bonds, 1-5 year maturity','Duration ~2.6 years'],
+    pros:['Low duration — minimal rate sensitivity','0.10% MER — very cheap','$4.2B AUM — highly liquid','Monthly income'],
+    cons:['Lower yield than longer-duration or corporate-only funds','Still some price movement when rates shift','Mostly government bonds — modest yield'],
+    bestFor:'Conservative investors or the short-duration sleeve of a bond ladder. A good place to hold money needed in 1-5 years while earning more than a HISA, with low rate risk.'
+  },
+  'ZST': {
+    name:'BMO Ultra Short-Term Bond ETF',
+    issuer:'BMO GAM', cat:'Ultra Short-Term Bond', sector:'Canadian Fixed Income (Ultra-short)',
+    mer:'0.17%', aum:'~$4B CAD', yield:'2.7%', liquidity:'High', inception:'2017',
+    desc:'An ultra-short bond ETF holding investment-grade corporate and government bonds with very short maturity (under ~1 year), giving it near-cash stability. A step up from a HISA/money-market ETF in yield potential, with only slightly more price movement. Accumulating units reinvest income automatically.',
+    holdings:['Investment-grade corporate and government bonds, maturity under ~1 year','Very low duration (~0.5 year)'],
+    pros:['Near-cash stability with bond-like yield','$4B AUM — very liquid','Higher quality short-term income','Low duration — minimal rate risk'],
+    cons:['0.17% MER — higher than pure index bond ETFs','Yield moves with short-term rates','Slightly more price movement than a HISA ETF'],
+    bestFor:'Investors wanting a cash-alternative with a bit more yield than a HISA ETF and minimal interest-rate risk. Good for parking funds for 6-18 months.'
+  },
+  'XSH': {
+    name:'iShares Core Canadian Short Term Corporate Bond Index ETF',
+    issuer:'RBC iShares', cat:'Short-Term Corporate Bond', sector:'Canadian Fixed Income (Short Corporate)',
+    mer:'0.11%', aum:'~$2.4B CAD', yield:'3.9%', liquidity:'High', inception:'2011',
+    desc:'A short-term corporate bond ETF (~2.8-year duration) holding only investment-grade Canadian corporate bonds — no government bonds. The corporate-only tilt delivers a higher yield (~3.9%) than the government-heavy XSB, at the cost of slightly more credit risk, while keeping duration low.',
+    holdings:['Investment-grade Canadian corporate bonds, 1-5 year maturity','Banks, pipelines, telecoms, utilities','Duration ~2.8 years'],
+    pros:['Higher yield than XSB (corporate-only)','0.11% MER — cheap','Low duration — limited rate risk','$2.4B AUM — liquid'],
+    cons:['Corporate credit risk (no government bonds)','Less diversified than a broad bond fund','Income fully taxable'],
+    bestFor:'Income-focused investors who want higher short-term bond yield than government funds and are comfortable with investment-grade corporate credit risk. Pairs well with XSB or an aggregate bond fund.'
+  },
+  'ZHY': {
+    name:'BMO High Yield US Corporate Bond Hedged to CAD Index ETF',
+    issuer:'BMO GAM', cat:'High-Yield Bond', sector:'US Fixed Income (High Yield, CAD Hedged)',
+    mer:'0.62%', aum:'~$1.5B CAD', yield:'6.4%', liquidity:'High', inception:'2009',
+    desc:'A high-yield ("junk") bond ETF holding US-dollar below-investment-grade corporate bonds, hedged back to CAD. Delivers a much higher yield (~6.4%) than investment-grade funds, but carries meaningfully more credit and default risk and behaves more like equity in market stress.',
+    holdings:['US-dollar high-yield (BB/B/CCC) corporate bonds, CAD-hedged','Maturities greater than one year'],
+    pros:['~6.4% yield — far above investment-grade bonds','CAD-hedged — removes USD/CAD currency noise','$1.5B AUM — liquid for a high-yield fund'],
+    cons:['0.62% MER — high for a bond ETF','Real credit/default risk — not a safe-haven bond','Falls with equities in market downturns'],
+    bestFor:'Income-seeking investors who understand that high-yield bonds carry equity-like risk. Best as a small satellite for extra income, not a core safe-haven fixed-income holding.'
+  },
+
+  // ── PHYSICAL GOLD BULLION ──────────────────────────────────
+  'CGL': {
+    name:'iShares Gold Bullion ETF (CAD-Hedged)',
+    issuer:'RBC iShares', cat:'Gold Bullion', sector:'Commodity (Physical Gold)',
+    mer:'0.55%', aum:'~$3.4B CAD', yield:'0%', liquidity:'High', inception:'2009',
+    desc:'Holds physical gold bullion in secure vaults — direct exposure to the gold price (not gold-miner stocks like XGD/ZGD). This is the CAD-hedged version, so returns track gold in CAD terms without USD/CAD currency effect. A portfolio diversifier and inflation/crisis hedge. The unhedged version trades as CGL.C. Liquidity: trades ~45K shares (~$2.5M) a day on the TSX with tight spreads, and units can be created/redeemed against physical gold — keeping the market price anchored to NAV. Plenty liquid for retail-sized orders.',
+    holdings:['Allocated physical gold bullion held in vault','No equities — pure bullion exposure'],
+    pros:['Direct physical gold exposure (not miners)','CAD-hedged — isolates the gold price','$3.4B AUM — liquid (~$2.5M traded/day, tight spreads)','Portfolio diversifier / crisis hedge'],
+    cons:['0.55% MER — higher than equity index ETFs','Gold pays no yield or dividends','Can be volatile and go long stretches with no return'],
+    bestFor:'Investors wanting a portfolio diversifier or inflation/uncertainty hedge through physical gold rather than miner equities. Typically a small allocation (5-10%). Use CGL.C if you prefer unhedged gold exposure.'
+  },
+  'MNT': {
+    name:'Royal Canadian Mint — Canadian Gold Reserves (ETR)',
+    issuer:'Royal Cdn Mint', cat:'Gold Bullion', sector:'Commodity (Physical Gold)',
+    mer:'0.35%', aum:'~$1.2B CAD', yield:'0%', liquidity:'Med', inception:'2011',
+    desc:'An Exchange-Traded Receipt (ETR), not a conventional ETF — it represents direct legal and beneficial ownership of physical gold held in the custody of the Royal Canadian Mint, backed by the Government of Canada. Holders can even redeem for physical gold bullion at large sizes. Lower fee (0.35%) than CGL. Assets grew to ~$1.2B after a Feb 2026 follow-on offering. Liquidity: trades ~45K units (~$3.3M) a day, but secondary-market depth can thin out in quiet periods and it can drift to a small premium/discount to its gold value — use limit orders.',
+    holdings:['Physical gold bullion held by the Royal Canadian Mint','Government-of-Canada custody; redeemable for physical gold (large amounts)'],
+    pros:['0.35% MER — cheaper than CGL','Direct ownership of allocated physical gold','Royal Canadian Mint / Government of Canada custody','Redeemable for physical bullion at size'],
+    cons:['An ETR, not an ETF — different legal structure','Lower secondary-market liquidity than CGL — use limit orders; can trade at a small premium/discount to NAV','Gold pays no income; price can be volatile'],
+    bestFor:'Investors who want the lowest-cost, direct physical-gold ownership with government-backed custody and don\'t mind the ETR structure. A small diversifier/hedge allocation.'
+  },
+
+  // ── DIVIDEND & CONSERVATIVE/INCOME ASSET ALLOCATION ────────
+  'XDV': {
+    name:'iShares Canadian Select Dividend Index ETF',
+    issuer:'RBC iShares', cat:'Canadian Dividend', sector:'Canadian Equity (Dividend)',
+    mer:'0.55%', aum:'~$2.4B CAD', yield:'3.7%', liquidity:'High', inception:'2005',
+    desc:'One of Canada\'s oldest and largest dividend ETFs — holds ~30 high-yielding Canadian stocks selected on dividend growth, yield and payout. Heavily weighted to banks, with utilities, telecoms and pipelines. Higher MER (0.55%) than newer dividend ETFs like XDIV (0.12%), but a long track record and monthly distributions.',
+    holdings:['~30 high-dividend Canadian stocks — Big Six banks, BCE/Telus, Enbridge, TC Energy, Power Corp'],
+    pros:['$2.4B AUM — large and liquid','Long track record (2005)','Monthly distributions','~3.7% yield with dividend-growth screen'],
+    cons:['0.55% MER — expensive vs. XDIV (0.12%) or VDY (0.22%)','Concentrated in ~30 names, bank-heavy','Selection methodology is dated vs. newer quality-dividend funds'],
+    bestFor:'Income-focused investors who want an established Canadian dividend ETF with monthly cash flow. Newer options (XDIV, VDY) deliver similar exposure at a fraction of the MER, so compare cost before choosing.'
+  },
+  'VCNS': {
+    name:'Vanguard Conservative ETF Portfolio',
+    issuer:'Vanguard', cat:'All-in-One (Conservative 40/60)', sector:'Asset Allocation',
+    mer:'0.24%', aum:'~$900M CAD', yield:'2.7%', liquidity:'High', inception:'2018',
+    desc:'A one-ticker globally diversified portfolio held at roughly 40% equity / 60% bonds — the conservative member of Vanguard\'s asset-allocation suite (alongside VBAL 60/40 and VGRO 80/20). Automatically rebalanced. For investors who want lower volatility and more fixed income than a balanced fund.',
+    holdings:['Underlying Vanguard equity ETFs (~40%) — global stocks','Underlying Vanguard bond ETFs (~60%) — global and Canadian bonds'],
+    pros:['One ticker, fully diversified and auto-rebalanced','Lower volatility than balanced/growth options','0.24% MER for a complete portfolio','Global diversification'],
+    cons:['Lower long-term return potential due to 60% bonds','0.24% MER vs. building it yourself','Bond-heavy in a rising-rate environment'],
+    bestFor:'Conservative or shorter-horizon investors who want a complete, low-maintenance portfolio with reduced volatility. A strong default for those nearing or in retirement who still want some growth.'
+  },
+  'XCNS': {
+    name:'iShares Core Conservative Balanced ETF Portfolio',
+    issuer:'RBC iShares', cat:'All-in-One (Conservative 40/60)', sector:'Asset Allocation',
+    mer:'0.20%', aum:'~$340M CAD', yield:'2.8%', liquidity:'High', inception:'2019',
+    desc:'iShares\' conservative one-ticker portfolio at ~40% equity / 60% bonds — the lower-risk counterpart to XBAL (60/40) and XGRO (80/20). Holds underlying iShares ETFs, auto-rebalanced, at a low 0.20% MER. The iShares alternative to VCNS.',
+    holdings:['Underlying iShares equity ETFs (~40%)','Underlying iShares bond ETFs (~60%)'],
+    pros:['0.20% MER — cheaper than VCNS (0.24%)','One-ticker diversification, auto-rebalanced','Lower volatility profile','iShares brand'],
+    cons:['Smaller AUM (~$340M) than VCNS','60% bonds caps long-term growth','Still carries interest-rate sensitivity'],
+    bestFor:'Conservative investors who want a complete low-volatility portfolio at the lowest MER. Functionally interchangeable with VCNS — choose on cost or brand.'
+  },
+  'VRIF': {
+    name:'Vanguard Retirement Income ETF Portfolio',
+    issuer:'Vanguard', cat:'Retirement Income (~50/50)', sector:'Asset Allocation (Income)',
+    mer:'0.32%', aum:'~$330M CAD', yield:'4.0%', liquidity:'High', inception:'2020',
+    desc:'A one-ticker portfolio designed specifically for retirees — targets a steady ~4% annual payout (paid monthly) from a globally diversified ~50% equity / 50% bond mix. The distribution target is set annually; if income falls short it can return some capital to maintain the payout. Built for drawdown, not accumulation.',
+    holdings:['Globally diversified Vanguard equity and bond ETFs (~50/50)','Income drawn from dividends, interest and, if needed, capital'],
+    pros:['Targeted ~4% monthly payout — predictable retirement income','One ticker, globally diversified, auto-rebalanced','Removes the guesswork of a retirement withdrawal strategy'],
+    cons:['0.32% MER — higher than the core allocation ETFs','Payout can include return of capital in lean years','Not designed for growth/accumulation'],
+    bestFor:'Retirees or near-retirees who want a simple, predictable monthly income stream from a single fund without managing withdrawals themselves. Hold in a non-registered or RRIF account.'
+  },
+
+  // ── CRYPTO (BITCOIN / ETHER) ───────────────────────────────
+  'BTCC': {
+    name:'Purpose Bitcoin ETF',
+    issuer:'Purpose', cat:'Spot Bitcoin', sector:'Cryptocurrency (Bitcoin)',
+    mer:'1.30%', aum:'~$1.7B CAD', yield:'0%', liquidity:'High', inception:'2021',
+    desc:'The world\'s first spot Bitcoin ETF (launched Feb 2021) — holds physical Bitcoin in cold storage, giving direct price exposure through a regular brokerage account with no crypto wallet or exchange needed. The largest and most-traded Canadian Bitcoin ETF, available in CAD-hedged, unhedged (BTCC.B) and USD units.',
+    holdings:['Physical Bitcoin held in institutional cold storage','No leverage — 1:1 spot BTC exposure'],
+    pros:['World\'s first spot Bitcoin ETF — most liquid in Canada (~$1.7B)','Direct BTC exposure with no wallet/exchange needed','Holds physical Bitcoin in cold storage','Trades in a normal brokerage/registered account'],
+    cons:['1.30% MER — high vs. cheaper rivals (FBTC 0.40%)','Extreme volatility — Bitcoin can fall 50%+','No yield; speculative asset','Crypto regulatory and custody risks'],
+    bestFor:'Investors who want regulated, brokerage-account Bitcoin exposure and prioritize maximum liquidity. Cost-focused buyers should compare FBTC/BTCX at 0.40%. Size as a small, speculative satellite given volatility.'
+  },
+  'FBTC': {
+    name:'Fidelity Advantage Bitcoin ETF',
+    issuer:'Fidelity', cat:'Spot Bitcoin', sector:'Cryptocurrency (Bitcoin)',
+    mer:'0.40%', aum:'~$1.25B CAD', yield:'0%', liquidity:'High', inception:'2021',
+    desc:'Fidelity\'s spot Bitcoin ETF — holds physical Bitcoin with Fidelity acting as its own custodian (institutional-grade cold storage). At 0.40% MER it is roughly one-third the cost of BTCC, making it the value choice for long-term Bitcoin holders who want the Fidelity brand and self-custody.',
+    holdings:['Physical Bitcoin in Fidelity institutional cold storage','1:1 spot BTC exposure, no leverage'],
+    pros:['0.40% MER — far cheaper than BTCC (1.30%)','Fidelity is its own custodian (institutional cold storage)','$1.25B AUM — very liquid','Direct spot Bitcoin exposure'],
+    cons:['Same extreme Bitcoin volatility','No yield','Crypto regulatory/custody risk','Smaller AUM than BTCC'],
+    bestFor:'Cost-conscious, long-term Bitcoin investors who want regulated spot exposure with the Fidelity brand and self-custody. The better value than BTCC for buy-and-hold.'
+  },
+  'BTCX': {
+    name:'CI Galaxy Bitcoin ETF',
+    issuer:'CI Global AM', cat:'Spot Bitcoin', sector:'Cryptocurrency (Bitcoin)',
+    mer:'0.40%', aum:'~$1B CAD', yield:'0%', liquidity:'High', inception:'2021',
+    desc:'CI\'s spot Bitcoin ETF, sub-advised by Galaxy Digital, holding physical Bitcoin. One of the lowest-cost Canadian Bitcoin ETFs at a 0.40% management fee. Available in CAD unhedged (BTCX.B) and USD units. A direct competitor to FBTC on price.',
+    holdings:['Physical Bitcoin in institutional custody (Galaxy)','1:1 spot BTC exposure'],
+    pros:['0.40% fee — among the cheapest Bitcoin ETFs in Canada','Galaxy Digital crypto expertise','~$1B AUM — liquid','Direct spot exposure'],
+    cons:['Bitcoin\'s extreme volatility','No yield','Crypto custody/regulatory risk','Slightly smaller than BTCC/FBTC'],
+    bestFor:'Cost-focused investors wanting low-fee spot Bitcoin exposure. Essentially interchangeable with FBTC on cost — choose on brand/platform.'
   },
 });
 
@@ -2168,7 +2464,7 @@ function renderTable(bodyId, data, renderRow) {
 }
 
 function liqBadge(l){
-  const m = {High:'badge-high',Med:'badge-med','Med-Low':'badge-med',Low:'badge-low'};
+  const m = {'Very High':'badge-high',High:'badge-high',Med:'badge-med','Med-Low':'badge-med',Low:'badge-low'};
   return `<span class="badge ${m[l]||'badge-med'}">${l}</span>`;
 }
 
@@ -2619,9 +2915,9 @@ function renderChartsForTab(tabId) {
       datasets:[{label:'MER (%)',data:bD.map(r=>r.mer),colors:bD.map(r=>r.mer<=0.06?C.teal:r.mer<=0.15?C.gold:C.red)}]
     });
     drawChart('aumBroadChart',{type:'bar',
-      labels:['XIU','XIC','ZCN','VCN','HXT','TPU','QCN','VCE','ZIU'],
+      labels:['XIU','XIC','ZCN','VCN','HXT','TPU','QCN','VCE'],
       yFmt:v=>'$'+v.toFixed(1)+'B',
-      datasets:[{label:'AUM (CAD B)',data:[20.56,22.4,13.9,5.1,3.5,1,0.5,1.2,0.068],colors:[C.red,C.red,C.navy,C.slate,C.blue,C.green,C.orange,C.slate,C.navy]}]
+      datasets:[{label:'AUM (CAD B)',data:[20.56,22.4,13.9,5.1,3.5,1,0.5,1.2],colors:[C.red,C.red,C.navy,C.slate,C.blue,C.green,C.orange,C.slate]}]
     });
     drawChart('ewCompChart',{type:'bar',
       labels:['Financials','Energy','Materials','Utilities','Real Estate','IT','Industrials'],
@@ -2667,8 +2963,8 @@ function renderChartsForTab(tabId) {
       ]
     });
     drawChart('bondChart',{type:'bubble',
-      labels:['ZAG','XBB','VAB'], xLabel:'Duration (years)',
-      datasets:[{data:[{x:7.5,y:3.7,r:20},{x:7.5,y:3.5,r:16},{x:7.4,y:3.5,r:13}],colors:[C.navy,C.red,C.teal]}]
+      labels:['ZST','XSB','XSH','ZAG','VAB','XBB'], xLabel:'Duration (years)',
+      datasets:[{data:[{x:0.5,y:2.7,r:13},{x:2.6,y:3.1,r:15},{x:2.8,y:3.9,r:11},{x:7.5,y:3.7,r:20},{x:7.4,y:3.5,r:13},{x:7.5,y:3.5,r:16}],colors:[C.navy,C.red,C.gold,C.navy,C.teal,C.red]}]
     });
     drawChart('hedgeChart',{type:'doughnut',cutout:0.52,
       labels:['Unhedged CAD 60%','CAD-Hedged 25%','USD Units 15%'],
@@ -2686,19 +2982,48 @@ function renderChartsForTab(tabId) {
       ]
     });
     drawChart('eqlCompChart',{type:'bar',
-      labels:['EQL (Invesco)','ZEQL (BMO)'],
+      labels:['EQL (EW)','VFV (Cap-Wt)','XUU (Total)'],
       yFmt:v=>v.toFixed(2)+'%',
-      datasets:[{label:'MER %',data:[0.26,0.06],colors:[C.navy,C.teal]}]
+      datasets:[{label:'MER %',data:[0.26,0.08,0.07],colors:[C.navy,C.slate,C.teal]}]
     });
     drawChart('usAumChart',{type:'bar',
       labels:['VFV','ZSP','VUN','XSP','XUS','HXS','VSP','XQQ','XUU','ZUE','ZQQ','EQL'],
       yFmt:v=>'$'+v.toFixed(1)+'B',
       datasets:[{label:'AUM (CAD B)',data:[33,26,18,15.6,13,6.2,5.7,5.6,4.3,4.2,3.25,1.6],colors:[C.slate,C.navy,C.slate,C.red,C.red,C.blue,C.slate,C.red,C.red,C.navy,C.navy,C.blue]}]
     });
-    const usMer=[{t:'ZEQL',v:0.06},{t:'XUU',v:0.07},{t:'VFV',v:0.08},{t:'VSP',v:0.08},{t:'ZSP',v:0.09},{t:'ZUE',v:0.09},{t:'XUS',v:0.10},{t:'XSP',v:0.10},{t:'VUN',v:0.16},{t:'QQC',v:0.20},{t:'QQC.F',v:0.20},{t:'HXQ',v:0.28},{t:'EQL',v:0.26},{t:'HXS',v:0.29},{t:'ZLU',v:0.33},{t:'ZQQ',v:0.39},{t:'XQQ',v:0.39}].sort((a,b)=>a.v-b.v);
+    const usMer=[{t:'XUU',v:0.07},{t:'VFV',v:0.08},{t:'VSP',v:0.08},{t:'ZSP',v:0.09},{t:'ZUE',v:0.09},{t:'XUS',v:0.10},{t:'XSP',v:0.10},{t:'VUN',v:0.16},{t:'QQC',v:0.20},{t:'QQC.F',v:0.20},{t:'HXQ',v:0.28},{t:'EQL',v:0.26},{t:'HXS',v:0.29},{t:'ZLU',v:0.33},{t:'ZQQ',v:0.39},{t:'XQQ',v:0.39}].sort((a,b)=>a.v-b.v);
     drawChart('usMerChart',{type:'hbar',height:320,
       labels:usMer.map(r=>r.t), yFmt:v=>v.toFixed(2)+'%',
       datasets:[{label:'MER %',data:usMer.map(r=>r.v),colors:usMer.map(r=>r.v<=0.10?C.green:r.v<=0.20?C.teal:r.v<=0.29?C.gold:C.red)}]
+    });
+  }
+
+  if(tabId==='intl'){
+    drawChart('intlAumChart',{type:'bar',
+      labels:['XEF','ZEA','VIU','XEC','XAW','VEE','ZEM','VXC'],
+      yFmt:v=>'$'+v.toFixed(1)+'B',
+      datasets:[{label:'AUM (CAD B)',data:[20,11.5,10.7,4.7,4.3,4.2,3.5,3.5],colors:[C.red,C.navy,C.slate,C.red,C.red,C.slate,C.navy,C.slate]}]
+    });
+    drawChart('intlMerChart',{type:'hbar',height:300,
+      labels:['VXC','XAW','XEF','ZEA','VIU','VEE','XEC','ZEM'],
+      yFmt:v=>v.toFixed(2)+'%',
+      datasets:[{label:'MER %',data:[0.21,0.22,0.22,0.22,0.23,0.24,0.27,0.27],colors:[0.21,0.22,0.22,0.22,0.23,0.24,0.27,0.27].map(v=>v<=0.22?C.teal:C.gold)}]
+    });
+  }
+
+  if(tabId==='cash'){
+    drawChart('cashAumChart',{type:'bar',
+      labels:['CASH','ZMMK','CSAV','PSA','CBIL'],
+      yFmt:v=>'$'+v.toFixed(1)+'B',
+      datasets:[{label:'AUM (CAD B)',data:[6.7,5.2,4.7,4.2,2.2],colors:[C.blue,C.navy,C.purple,'#e0457b',C.blue]}]
+    });
+    drawChart('cashYieldChart',{type:'bar',
+      labels:['CASH','ZMMK','CSAV','PSA','CBIL'],
+      yFmt:v=>v.toFixed(1)+'%',
+      datasets:[
+        {label:'Yield %',data:[2.2,3.2,2.2,2.3,1.8],color:C.green},
+        {label:'MER %',data:[0.13,0.13,0.16,0.19,0.10],color:C.red},
+      ]
     });
   }
 
@@ -2757,6 +3082,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderEWUSTable();
   renderNasdaqTable();
   renderUSFactorTable();
+  renderIntlTables();
+  renderCashTable();
 
   document.querySelector('#tab-specialty select')
     ?.addEventListener('change', e => renderSpecTable(e.target.value));
@@ -2776,9 +3103,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================================
 //  POPUP ENGINE
 // ============================================================
-const tooltip = document.getElementById('etfTooltip');
-const modal   = document.getElementById('etfModal');
-const overlay = document.getElementById('etfModalOverlay');
+let tooltip = null;   // assigned in initETFPopups() — the elements are defined after this script
+let modal   = null;
+let overlay = null;
 let   tooltipTimer = null;
 let   activeAnchor = null;
 
@@ -2922,11 +3249,26 @@ function attachTickerEvents() {
   });
 }
 
-// Re-attach after any table re-render using MutationObserver
+// Initialize the popup engine once the DOM (including the modal/tooltip divs
+// that live below this script) is available, then keep ticker bindings fresh
+// after any dynamic table re-render (sort / filter / tab switch).
+function initETFPopups() {
+  tooltip = document.getElementById('etfTooltip');
+  modal   = document.getElementById('etfModal');
+  overlay = document.getElementById('etfModalOverlay');
 
+  attachTickerEvents();
 
-// Initial attach on load
+  const root = document.querySelector('.main') || document.body;
+  const observer = new MutationObserver(() => attachTickerEvents());
+  observer.observe(root, { childList: true, subtree: true });
+}
 
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initETFPopups);
+} else {
+  initETFPopups();
+}
 
 </script>
 
