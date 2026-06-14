@@ -770,10 +770,10 @@
   <p class="section-sub">Canadian investors can access the full US market through TSX-listed ETFs in both CAD and USD denominations — no currency conversion required. From S&P 500 cap-weight to Nasdaq-100, equal weight, and factor strategies, here is the complete landscape.</p>
 
   <div class="kpi-row">
-    <div class="kpi-card red"><div class="kpi-label">VFV — Largest US ETF</div><div class="kpi-value">~$28B</div><div class="kpi-sub">CAD · Vanguard S&P 500 (unhedged)</div></div>
-    <div class="kpi-card navy"><div class="kpi-label">ZSP AUM</div><div class="kpi-value">~$20B</div><div class="kpi-sub">CAD · BMO S&P 500 flagship</div></div>
+    <div class="kpi-card red"><div class="kpi-label">VFV — Largest US ETF</div><div class="kpi-value">~$33B</div><div class="kpi-sub">CAD · Vanguard S&P 500 (unhedged)</div></div>
+    <div class="kpi-card navy"><div class="kpi-label">ZSP AUM</div><div class="kpi-value">~$26B</div><div class="kpi-sub">CAD · BMO S&P 500 flagship</div></div>
     <div class="kpi-card teal"><div class="kpi-label">Cheapest MER</div><div class="kpi-value">0.07%</div><div class="kpi-sub">XUU — Total US Market (iShares)</div></div>
-    <div class="kpi-card gold"><div class="kpi-label">XQQ AUM</div><div class="kpi-value">~$4B</div><div class="kpi-sub">CAD · Largest Nasdaq-100 ETF in Canada</div></div>
+    <div class="kpi-card gold"><div class="kpi-label">XQQ AUM</div><div class="kpi-value">~$5.6B</div><div class="kpi-sub">CAD · Largest Nasdaq-100 ETF in Canada</div></div>
     <div class="kpi-card green"><div class="kpi-label">Equal Weight New</div><div class="kpi-value">ZEQL</div><div class="kpi-sub">BMO · 0.06% MER · Launched Feb 2026</div></div>
   </div>
 
@@ -1589,56 +1589,56 @@ const ETF_DB = {
   'VFV': {
     name: 'Vanguard S&P 500 Index ETF (CAD)',
     issuer: 'Vanguard', cat: 'US Equity', sector: 'US Equity (S&P 500)',
-    mer: '0.09%', aum: '~$27.9B CAD', yield: '1.2%', liquidity: 'Very High',
+    mer: '0.09%', aum: '~$33B CAD', yield: '1.2%', liquidity: 'Very High',
     inception: '2012',
-    desc: 'Canada\'s largest US equity ETF with ~$27.9B CAD AUM — tracking the S&P 500 in CAD, unhedged. Benefiting from one of the largest flows in Canada\'s ETF market. At 0.09% MER, among the cheapest ways for Canadian investors to access the full S&P 500. Returned 12.23% over the past 12 months.',
+    desc: 'Canada\'s largest US equity ETF with ~$33B CAD AUM — tracking the S&P 500 in CAD, unhedged. Benefiting from one of the largest flows in Canada\'s ETF market. At 0.09% MER, among the cheapest ways for Canadian investors to access the full S&P 500. Returned 12.23% over the past 12 months.',
     holdings: ['Full S&P 500 — Apple, Microsoft, Amazon, Nvidia, Alphabet, Meta, Tesla, Berkshire, UnitedHealth, JPMorgan'],
-    pros: ['0.09% MER — lowest cost S&P 500 ETF in Canada','$27.9B AUM — enormous liquidity','CAD-denominated (no need to convert currency)','Unhedged — benefits from USD strength vs. CAD'],
+    pros: ['0.09% MER — lowest cost S&P 500 ETF in Canada','$33B AUM — enormous liquidity','CAD-denominated (no need to convert currency)','Unhedged — benefits from USD strength vs. CAD'],
     cons: ['Unhedged — CAD gains hurt returns if CAD strengthens','0% exposure to international ex-US or Canada'],
     bestFor: 'The standard choice for Canadian investors wanting S&P 500 exposure in a registered account (RRSP/TFSA). Buy in CAD, get full S&P 500 exposure. Pair with VCN (or XIC) for a complete two-ETF Canadian portfolio.'
   },
   'VSP': {
     name: 'Vanguard S&P 500 Index ETF (CAD-hedged)',
     issuer: 'Vanguard', cat: 'US Equity (Hedged)', sector: 'US Equity (S&P 500, CAD Hedged)',
-    mer: '0.09%', aum: '~$4B CAD', yield: '1.0%', liquidity: 'High',
+    mer: '0.09%', aum: '~$5.7B CAD', yield: '1.0%', liquidity: 'High',
     inception: '2012',
     desc: 'CAD-hedged version of VFV — eliminates CAD/USD currency fluctuation by rolling currency forwards. Performance matches S&P 500 in USD terms regardless of where the CAD/USD exchange rate moves. Suitable when expecting CAD to strengthen against USD.',
     holdings: ['Full S&P 500 with CAD/USD currency hedge overlay'],
     pros: ['Eliminates currency risk — returns match S&P 500 in USD','Same 0.09% MER as VFV','Good during periods of CAD appreciation vs. USD'],
-    cons: ['Hedging has a cost (currency forward roll) — small drag','Misses out on USD appreciation gains vs. CAD','$4B AUM — much less liquid than VFV ($27.9B)'],
+    cons: ['Hedging has a cost (currency forward roll) — small drag','Misses out on USD appreciation gains vs. CAD','$5.7B AUM — much less liquid than VFV ($33B)'],
     bestFor: 'Investors who believe the CAD will appreciate vs. USD (e.g., during oil price rallies), or for those who want pure US equity return without currency noise in their portfolio reporting.'
   },
   'XUS': {
     name: 'iShares Core S&P 500 Index ETF (CAD-unhedged)',
     issuer: 'RBC iShares', cat: 'US Equity', sector: 'US Equity (S&P 500)',
-    mer: '0.10%', aum: '~$12B CAD', yield: '1.1%', liquidity: 'Very High',
+    mer: '0.10%', aum: '~$13B CAD', yield: '1.1%', liquidity: 'Very High',
     inception: '2013',
     desc: 'iShares\' unhedged S&P 500 ETF in CAD. Direct competitor to VFV — nearly identical exposure at 0.10% MER (1 bp more than VFV). Both are excellent; VFV has larger AUM and lower MER, but XUS offers the iShares brand if that matters.',
     holdings: ['Full S&P 500 — same 500 stocks as VFV'],
-    pros: ['$12B AUM — very liquid','iShares/BlackRock brand','0.10% MER — competitive'],
+    pros: ['$13B AUM — very liquid','iShares/BlackRock brand','0.10% MER — competitive'],
     cons: ['1 bp more expensive than VFV','Smaller AUM than VFV — minor liquidity difference at institutional sizes'],
     bestFor: 'iShares-preferred investors who want S&P 500 exposure, or for use as a tax-loss harvest partner alongside VFV since they track the same index through different ETF structures.'
   },
   'ZSP': {
     name: 'BMO S&P 500 Index ETF (CAD)',
     issuer: 'BMO GAM', cat: 'US Equity', sector: 'US Equity (S&P 500)',
-    mer: '0.09%', aum: '~$20B CAD', yield: '1.2%', liquidity: 'Very High',
+    mer: '0.09%', aum: '~$26B CAD', yield: '1.2%', liquidity: 'Very High',
     inception: '2012',
-    desc: 'BMO\'s flagship S&P 500 ETF — one of the three giants of Canadian-listed US equity ETFs alongside VFV and XUS. $20B+ AUM, 0.09% MER (tied with VFV for cheapest). The top-selling ETF for BMO\'s ETF platform.',
+    desc: 'BMO\'s flagship S&P 500 ETF — one of the three giants of Canadian-listed US equity ETFs alongside VFV and XUS. $26B+ AUM, 0.09% MER (tied with VFV for cheapest). The top-selling ETF for BMO\'s ETF platform.',
     holdings: ['Full S&P 500 — same 500 companies as VFV/XUS'],
-    pros: ['$20B+ AUM — one of Canada\'s largest ETFs','0.09% MER — tied cheapest','BMO brand reliability','Tax-loss harvest partner for VFV/XUS (different issuer, same index)'],
+    pros: ['$26B+ AUM — one of Canada\'s largest ETFs','0.09% MER — tied cheapest','BMO brand reliability','Tax-loss harvest partner for VFV/XUS (different issuer, same index)'],
     cons: ['Same S&P 500 concentration in top 10 tech stocks','Unhedged — currency exposure to USD'],
     bestFor: 'BMO-platform investors, or for tax-loss harvesting alongside VFV/XUS (same index, different issuer = suitable substitution under CRA superficial loss rules).'
   },
   'ZUE': {
     name: 'BMO S&P 500 Hedged to CAD Index ETF',
     issuer: 'BMO GAM', cat: 'US Equity (Hedged)', sector: 'US Equity (CAD Hedged)',
-    mer: '0.09%', aum: '~$2B CAD', yield: '1.0%', liquidity: 'High',
+    mer: '0.09%', aum: '~$4.2B CAD', yield: '1.0%', liquidity: 'High',
     inception: '2009',
     desc: 'BMO\'s CAD-hedged S&P 500 ETF — the BMO equivalent of VSP. Hedges all USD/CAD currency exposure. Same 0.09% MER. Useful during periods of CAD strength or for investors who don\'t want currency to drive their equity returns.',
     holdings: ['Full S&P 500 with CAD/USD currency hedge'],
     pros: ['0.09% MER — cheapest hedged S&P 500 option','BMO brand','Eliminates currency noise from returns'],
-    cons: ['Hedging drag in long-term — currency hedges are not free','$2B AUM — less liquid than unhedged ZSP','Misses USD upside vs. CAD'],
+    cons: ['Hedging drag in long-term — currency hedges are not free','$4.2B AUM — less liquid than unhedged ZSP','Misses USD upside vs. CAD'],
     bestFor: 'Investors who specifically want to eliminate USD/CAD currency risk, or who believe CAD will strengthen. Most long-term investors prefer unhedged (ZSP/VFV) for maximum return potential.'
   },
   'VFV.U': {
@@ -1768,7 +1768,7 @@ const liqData = [
 const issuerScores = [
   {name:'RBC iShares',aum:'$182.8B',share:27,depth:5,cost:4,track:5,innov:4,distrib:5,color:'#C8102E',desc:'Global brand, deepest liquidity, 35yr Canadian history. First ETF (XIU) listed 1990.'},
   {name:'BMO GAM',aum:'$159.3B',share:21,depth:5,cost:4,track:4,innov:5,distrib:5,color:'#003087',desc:'Dominant in fixed income (29% market share), covered call leadership, bank ETFs.'},
-  {name:'Vanguard Canada',aum:'$103.0B',share:15,depth:3,cost:5,track:4,innov:3,distrib:4,color:'#972028',desc:'Low-cost leader. Limited lineup but gold-standard products. VFV ($28B AUM).'},
+  {name:'Vanguard Canada',aum:'$103.0B',share:15,depth:3,cost:5,track:4,innov:3,distrib:4,color:'#972028',desc:'Low-cost leader. Limited lineup but gold-standard products. VFV ($33B AUM).'},
   {name:'Global X / Horizons',aum:'~$50B',share:6,depth:4,cost:4,track:4,innov:5,distrib:3,color:'#1a5fa8',desc:'Canadian innovator. Corporate class, swap structures, leveraged, thematic ETFs.'},
   {name:'TD Asset Mgmt',aum:'~$30B',share:4,depth:3,cost:5,track:3,innov:3,distrib:4,color:'#00a651',desc:'Newer ETF entrant, competitive pricing. TDB bond ETF among cheapest in Canada.'},
   {name:'CI Global AM',aum:'~$25B',share:3,depth:4,cost:3,track:3,innov:4,distrib:3,color:'#6b3fa0',desc:'Broad lineup from liquid alts to factor ETFs. Fell from 5th to 8th market share 2025.'},
@@ -1778,52 +1778,52 @@ const issuerScores = [
 
 // ========== US EQUITY DATA ==========
 const sp500Data = [
-  {ticker:'VFV',   name:'Vanguard S&P 500 Index ETF',              issuer:'Vanguard',          cur:'🍁 CAD', hedged:'No',  mer:0.08, aum:'~$28B CAD',   yield:1.2, structure:'Direct',      account:'TFSA / RRSP / Non-Reg', curTag:'CAD-Unhedged'},
+  {ticker:'VFV',   name:'Vanguard S&P 500 Index ETF',              issuer:'Vanguard',          cur:'🍁 CAD', hedged:'No',  mer:0.08, aum:'~$33B CAD',   yield:1.2, structure:'Direct',      account:'TFSA / RRSP / Non-Reg', curTag:'CAD-Unhedged'},
   {ticker:'VFV.U', name:'Vanguard S&P 500 Index ETF (USD Units)',   issuer:'Vanguard',          cur:'🇺🇸 USD', hedged:'No',  mer:0.08, aum:'USD sub-unit', yield:1.2, structure:'Direct',      account:'USD account holders',    curTag:'USD'},
-  {ticker:'ZSP',   name:'BMO S&P 500 Index ETF',                   issuer:'BMO GAM',           cur:'🍁 CAD', hedged:'No',  mer:0.09, aum:'~$20B CAD',   yield:1.2, structure:'Direct',      account:'TFSA / RRSP',            curTag:'CAD-Unhedged'},
-  {ticker:'ZSP.U', name:'BMO S&P 500 Index ETF (USD Units)',        issuer:'BMO GAM',           cur:'🇺🇸 USD', hedged:'No',  mer:0.09, aum:'~$3B USD',    yield:1.2, structure:'Direct',      account:'USD cash accounts',      curTag:'USD'},
-  {ticker:'XUS',   name:'iShares Core S&P 500 Index ETF',          issuer:'RBC iShares',       cur:'🍁 CAD', hedged:'No',  mer:0.10, aum:'~$12B CAD',   yield:1.1, structure:'Direct',      account:'TFSA / RRSP',            curTag:'CAD-Unhedged'},
+  {ticker:'ZSP',   name:'BMO S&P 500 Index ETF',                   issuer:'BMO GAM',           cur:'🍁 CAD', hedged:'No',  mer:0.09, aum:'~$26B CAD',   yield:1.2, structure:'Direct',      account:'TFSA / RRSP',            curTag:'CAD-Unhedged'},
+  {ticker:'ZSP.U', name:'BMO S&P 500 Index ETF (USD Units)',        issuer:'BMO GAM',           cur:'🇺🇸 USD', hedged:'No',  mer:0.09, aum:'~$3.5B USD',  yield:1.2, structure:'Direct',      account:'USD cash accounts',      curTag:'USD'},
+  {ticker:'XUS',   name:'iShares Core S&P 500 Index ETF',          issuer:'RBC iShares',       cur:'🍁 CAD', hedged:'No',  mer:0.10, aum:'~$13B CAD',   yield:1.1, structure:'Direct',      account:'TFSA / RRSP',            curTag:'CAD-Unhedged'},
   {ticker:'XUS.U', name:'iShares Core S&P 500 Index ETF (USD)',     issuer:'RBC iShares',       cur:'🇺🇸 USD', hedged:'No',  mer:0.10, aum:'USD sub-unit', yield:1.1, structure:'Direct',      account:'USD cash accounts',      curTag:'USD'},
-  {ticker:'VSP',   name:'Vanguard S&P 500 Index ETF (CAD-Hedged)',  issuer:'Vanguard',          cur:'🍁 CAD', hedged:'Yes', mer:0.08, aum:'~$4B CAD',    yield:1.0, structure:'Direct+Hedge', account:'Non-Reg / when CAD rises', curTag:'CAD-Hedged'},
-  {ticker:'ZUE',   name:'BMO S&P 500 Hedged to CAD Index ETF',     issuer:'BMO GAM',           cur:'🍁 CAD', hedged:'Yes', mer:0.09, aum:'~$3.3B CAD',  yield:1.0, structure:'Direct+Hedge', account:'Non-Reg / CAD hedge play', curTag:'CAD-Hedged'},
-  {ticker:'XSP',   name:'iShares Core S&P 500 Index ETF (CAD-Hgd)',issuer:'RBC iShares',       cur:'🍁 CAD', hedged:'Yes', mer:0.10, aum:'~$6B CAD',    yield:1.0, structure:'Direct+Hedge', account:'Non-Reg / CAD hedge play', curTag:'CAD-Hedged'},
-  {ticker:'HXS',   name:'Global X S&P 500 Index Corporate Class',  issuer:'Global X/Horizons', cur:'🍁 CAD', hedged:'No',  mer:0.29, aum:'~$2B CAD',    yield:0.0, structure:'Swap/Corp.Class','account':'Non-Reg (tax-efficient)', curTag:'CAD-Unhedged'},
+  {ticker:'VSP',   name:'Vanguard S&P 500 Index ETF (CAD-Hedged)',  issuer:'Vanguard',          cur:'🍁 CAD', hedged:'Yes', mer:0.08, aum:'~$5.7B CAD',  yield:1.0, structure:'Direct+Hedge', account:'Non-Reg / when CAD rises', curTag:'CAD-Hedged'},
+  {ticker:'ZUE',   name:'BMO S&P 500 Hedged to CAD Index ETF',     issuer:'BMO GAM',           cur:'🍁 CAD', hedged:'Yes', mer:0.09, aum:'~$4.2B CAD',  yield:1.0, structure:'Direct+Hedge', account:'Non-Reg / CAD hedge play', curTag:'CAD-Hedged'},
+  {ticker:'XSP',   name:'iShares Core S&P 500 Index ETF (CAD-Hgd)',issuer:'RBC iShares',       cur:'🍁 CAD', hedged:'Yes', mer:0.10, aum:'~$15.6B CAD', yield:1.0, structure:'Direct+Hedge', account:'Non-Reg / CAD hedge play', curTag:'CAD-Hedged'},
+  {ticker:'HXS',   name:'Global X S&P 500 Index Corporate Class',  issuer:'Global X/Horizons', cur:'🍁 CAD', hedged:'No',  mer:0.29, aum:'~$6.2B CAD',  yield:0.0, structure:'Swap/Corp.Class','account':'Non-Reg (tax-efficient)', curTag:'CAD-Unhedged'},
 ];
 
 const totalMktData = [
-  {ticker:'XUU',   name:'iShares Core S&P U.S. Total Market Index ETF',         issuer:'RBC iShares', cur:'🍁 CAD', hedged:'No',  mer:0.07, aum:'~$15B CAD',  yield:1.1, holdings:'3,500+', account:'Best overall — any account'},
-  {ticker:'XUU.U', name:'iShares Core S&P U.S. Total Market Index ETF (USD)',   issuer:'RBC iShares', cur:'🇺🇸 USD', hedged:'No',  mer:0.07, aum:'~$1B USD',   yield:1.1, holdings:'3,500+', account:'USD cash accounts'},
+  {ticker:'XUU',   name:'iShares Core S&P U.S. Total Market Index ETF',         issuer:'RBC iShares', cur:'🍁 CAD', hedged:'No',  mer:0.07, aum:'~$4.3B CAD', yield:1.1, holdings:'3,500+', account:'Best overall — any account'},
+  {ticker:'XUU.U', name:'iShares Core S&P U.S. Total Market Index ETF (USD)',   issuer:'RBC iShares', cur:'🇺🇸 USD', hedged:'No',  mer:0.07, aum:'~$90M USD',  yield:1.1, holdings:'3,500+', account:'USD cash accounts'},
   {ticker:'XUH',   name:'iShares Core S&P U.S. Total Market Index ETF (Hedged)',issuer:'RBC iShares', cur:'🍁 CAD', hedged:'Yes', mer:0.10, aum:'~$500M CAD', yield:1.0, holdings:'3,500+', account:'Non-Reg / CAD hedge'},
-  {ticker:'VUN',   name:'Vanguard U.S. Total Market Index ETF',                 issuer:'Vanguard',    cur:'🍁 CAD', hedged:'No',  mer:0.16, aum:'~$14.8B CAD',yield:1.0, holdings:'3,700+', account:'TFSA / RRSP'},
+  {ticker:'VUN',   name:'Vanguard U.S. Total Market Index ETF',                 issuer:'Vanguard',    cur:'🍁 CAD', hedged:'No',  mer:0.16, aum:'~$18B CAD',  yield:1.0, holdings:'3,700+', account:'TFSA / RRSP'},
   {ticker:'VUS',   name:'Vanguard U.S. Total Market Index ETF (CAD-Hedged)',    issuer:'Vanguard',    cur:'🍁 CAD', hedged:'Yes', mer:0.16, aum:'~$1B CAD',   yield:0.9, holdings:'3,700+', account:'Non-Reg / CAD hedge'},
 ];
 
 const equalWeightUSData = [
-  {ticker:'EQL',    name:'Invesco S&P 500 Equal Weight Index ETF (CAD)',        issuer:'Invesco Canada', index:'S&P 500 Equal Weight',  cur:'🍁 CAD', hedged:'No',  mer:0.26, aum:'~$1.70B CAD', inception:'Apr 2018', liquidity:'High',    note:'Wrapper around US-listed RSP. $1.7B AUM — established.'},
-  {ticker:'EQL-F',  name:'Invesco S&P 500 Equal Weight Index ETF (CAD-Hedged)', issuer:'Invesco Canada', index:'S&P 500 Equal Weight',  cur:'🍁 CAD', hedged:'Yes', mer:0.26, aum:'~$1.67B CAD', inception:'Apr 2018', liquidity:'High',    note:'Hedges CAD/USD. Best when CAD appreciating vs. USD.'},
+  {ticker:'EQL',    name:'Invesco S&P 500 Equal Weight Index ETF (CAD)',        issuer:'Invesco Canada', index:'S&P 500 Equal Weight',  cur:'🍁 CAD', hedged:'No',  mer:0.26, aum:'~$1.6B CAD',  inception:'Apr 2018', liquidity:'High',    note:'Wrapper around US-listed RSP. ~$1.6B AUM — established.'},
+  {ticker:'EQL-F',  name:'Invesco S&P 500 Equal Weight Index ETF (CAD-Hedged)', issuer:'Invesco Canada', index:'S&P 500 Equal Weight',  cur:'🍁 CAD', hedged:'Yes', mer:0.26, aum:'~$1.6B CAD',  inception:'Apr 2018', liquidity:'High',    note:'Hedges CAD/USD. Best when CAD appreciating vs. USD.'},
   {ticker:'EQL-U',  name:'Invesco S&P 500 Equal Weight Index ETF (USD Units)',  issuer:'Invesco Canada', index:'S&P 500 Equal Weight',  cur:'🇺🇸 USD', hedged:'No',  mer:0.26, aum:'~$55M USD',  inception:'May 2018', liquidity:'Med-Low', note:'USD units. Smaller AUM — use limit orders. For USD accounts.'},
-  {ticker:'ZEQL',   name:'BMO MSCI USA Equal Weight Index ETF (CAD)',           issuer:'BMO GAM',        index:'MSCI USA Equal Weighted',cur:'🍁 CAD', hedged:'No',  mer:0.06, aum:'~$14M CAD',  inception:'Feb 2026', liquidity:'Low',     note:'NEW Feb 2026. 0.06% MER — cheapest equal weight ETF in Canada. ~537 stocks.'},
+  {ticker:'ZEQL',   name:'BMO MSCI USA Equal Weight Index ETF (CAD)',           issuer:'BMO GAM',        index:'MSCI USA Equal Weighted',cur:'🍁 CAD', hedged:'No',  mer:0.06, aum:'~$9M CAD',   inception:'Feb 2026', liquidity:'Low',     note:'NEW Feb 2026. 0.06% MER — cheapest equal weight ETF in Canada. ~537 stocks.'},
   {ticker:'ZEQL.F', name:'BMO MSCI USA Equal Weight Index ETF (CAD-Hedged)',    issuer:'BMO GAM',        index:'MSCI USA Equal Weighted',cur:'🍁 CAD', hedged:'Yes', mer:0.06, aum:'<$5M CAD',   inception:'Feb 2026', liquidity:'Low',     note:'NEW Feb 2026. CAD-hedged version. Very low AUM — use with caution.'},
   {ticker:'ZEQL.U', name:'BMO MSCI USA Equal Weight Index ETF (USD Units)',     issuer:'BMO GAM',        index:'MSCI USA Equal Weighted',cur:'🇺🇸 USD', hedged:'No',  mer:0.06, aum:'<$5M USD',   inception:'Feb 2026', liquidity:'Low',     note:'NEW Feb 2026. USD units. Very new — watch AUM growth before committing.'},
 ];
 
 const nasdaqData = [
-  {ticker:'XQQ',   name:'iShares Nasdaq 100 Index ETF (CAD-Hedged)',       issuer:'RBC iShares',       cur:'🍁 CAD', hedged:'Yes', mer:0.39, aum:'~$4B CAD',    yield:0.5, structure:'Direct+Hedge', account:'TFSA / RRSP',             curTag:'CAD-Hedged'},
-  {ticker:'ZQQ',   name:'BMO Nasdaq 100 Equity Hedged to CAD Index ETF',  issuer:'BMO GAM',           cur:'🍁 CAD', hedged:'Yes', mer:0.39, aum:'~$2.25B CAD', yield:0.4, structure:'Direct+Hedge', account:'TFSA / RRSP',             curTag:'CAD-Hedged'},
-  {ticker:'ZNQ',   name:'BMO Nasdaq 100 Equity Index ETF (Unhedged CAD)', issuer:'BMO GAM',           cur:'🍁 CAD', hedged:'No',  mer:0.39, aum:'~$500M CAD',  yield:0.4, structure:'Direct',       account:'Long-term buy-and-hold',  curTag:'CAD-Unhedged'},
-  {ticker:'QQC',   name:'Invesco Nasdaq 100 Index ETF (CAD Unhedged)',    issuer:'Invesco Canada',    cur:'🍁 CAD', hedged:'No',  mer:0.20, aum:'~$1B CAD',    yield:0.4, structure:'Fund-of-Funds','account':'Cost-conscious investors', curTag:'CAD-Unhedged'},
+  {ticker:'XQQ',   name:'iShares Nasdaq 100 Index ETF (CAD-Hedged)',       issuer:'RBC iShares',       cur:'🍁 CAD', hedged:'Yes', mer:0.39, aum:'~$5.6B CAD',  yield:0.5, structure:'Direct+Hedge', account:'TFSA / RRSP',             curTag:'CAD-Hedged'},
+  {ticker:'ZQQ',   name:'BMO Nasdaq 100 Equity Hedged to CAD Index ETF',  issuer:'BMO GAM',           cur:'🍁 CAD', hedged:'Yes', mer:0.39, aum:'~$3.25B CAD', yield:0.4, structure:'Direct+Hedge', account:'TFSA / RRSP',             curTag:'CAD-Hedged'},
+  {ticker:'ZNQ',   name:'BMO Nasdaq 100 Equity Index ETF (Unhedged CAD)', issuer:'BMO GAM',           cur:'🍁 CAD', hedged:'No',  mer:0.39, aum:'~$2B CAD',    yield:0.4, structure:'Direct',       account:'Long-term buy-and-hold',  curTag:'CAD-Unhedged'},
+  {ticker:'QQC',   name:'Invesco Nasdaq 100 Index ETF (CAD Unhedged)',    issuer:'Invesco Canada',    cur:'🍁 CAD', hedged:'No',  mer:0.20, aum:'~$3.5B CAD',  yield:0.4, structure:'Fund-of-Funds','account':'Cost-conscious investors', curTag:'CAD-Unhedged'},
   {ticker:'QQC.F', name:'Invesco Nasdaq 100 Index ETF (CAD-Hedged)',      issuer:'Invesco Canada',    cur:'🍁 CAD', hedged:'Yes', mer:0.20, aum:'~$2B CAD',    yield:0.3, structure:'Fund-of-Funds','account':'Cheapest hedged Nasdaq-100',curTag:'CAD-Hedged'},
   {ticker:'QQC.U', name:'Invesco Nasdaq 100 Index ETF (USD Units)',       issuer:'Invesco Canada',    cur:'🇺🇸 USD', hedged:'No',  mer:0.20, aum:'~$100M USD',  yield:0.4, structure:'Fund-of-Funds','account':'USD account holders',      curTag:'USD'},
-  {ticker:'HXQ',   name:'Global X Nasdaq-100 Index Corporate Class ETF', issuer:'Global X/Horizons', cur:'🍁 CAD', hedged:'No',  mer:0.28, aum:'~$1B CAD',    yield:0.0, structure:'Swap/Corp.Class','account':'Non-Reg (tax-efficient)',  curTag:'CAD-Unhedged'},
+  {ticker:'HXQ',   name:'Global X Nasdaq-100 Index Corporate Class ETF', issuer:'Global X/Horizons', cur:'🍁 CAD', hedged:'No',  mer:0.28, aum:'~$1.1B CAD',  yield:0.0, structure:'Swap/Corp.Class','account':'Non-Reg (tax-efficient)',  curTag:'CAD-Unhedged'},
 ];
 
 const usFactorData = [
   {ticker:'ZLU',   name:'BMO Low Volatility US Equity ETF',                 issuer:'BMO GAM',     strat:'Low Volatility',   cur:'🍁 CAD', mer:0.33, aum:'~$2.4B CAD',  yield:1.8, bestFor:'Conservative US equity with lower drawdowns'},
-  {ticker:'ZLH',   name:'BMO Low Volatility US Equity Hedged to CAD ETF',  issuer:'BMO GAM',     strat:'Low Vol + Hedge',  cur:'🍁 CAD', mer:0.35, aum:'~$89M CAD',   yield:1.7, bestFor:'Conservative investors hedging CAD/USD risk'},
-  {ticker:'ZUQ',   name:'BMO MSCI USA High Quality Index ETF',             issuer:'BMO GAM',     strat:'Quality Factor',   cur:'🍁 CAD', mer:0.25, aum:'~$209M CAD',  yield:0.9, bestFor:'Quality-focused US equity exposure'},
-  {ticker:'ZVU',   name:'BMO MSCI USA Value Index ETF',                    issuer:'BMO GAM',     strat:'Value Factor',     cur:'🍁 CAD', mer:0.25, aum:'~$100M CAD',  yield:1.8, bestFor:'Value tilted US exposure'},
-  {ticker:'ZDJ',   name:'BMO Dow Jones Industrial Average Hedged to CAD ETF',issuer:'BMO GAM',   strat:'Dow Jones 30',     cur:'🍁 CAD', mer:0.25, aum:'~$300M CAD',  yield:1.5, bestFor:'30-stock US blue-chip exposure, CAD-hedged'},
-  {ticker:'HXS',   name:'Global X S&P 500 Index Corporate Class ETF',      issuer:'Glbl X/Horiz',strat:'S&P 500 Swap',     cur:'🍁 CAD', mer:0.29, aum:'~$2B CAD',    yield:0.0, bestFor:'Non-reg accounts: defers all dividends as cap gains'},
+  {ticker:'ZLH',   name:'BMO Low Volatility US Equity Hedged to CAD ETF',  issuer:'BMO GAM',     strat:'Low Vol + Hedge',  cur:'🍁 CAD', mer:0.35, aum:'~$100M CAD',  yield:1.7, bestFor:'Conservative investors hedging CAD/USD risk'},
+  {ticker:'ZUQ',   name:'BMO MSCI USA High Quality Index ETF',             issuer:'BMO GAM',     strat:'Quality Factor',   cur:'🍁 CAD', mer:0.25, aum:'~$1.4B CAD',  yield:0.9, bestFor:'Quality-focused US equity exposure'},
+  {ticker:'ZVU',   name:'BMO MSCI USA Value Index ETF',                    issuer:'BMO GAM',     strat:'Value Factor',     cur:'🍁 CAD', mer:0.25, aum:'~$118M CAD',  yield:1.8, bestFor:'Value tilted US exposure'},
+  {ticker:'ZDJ',   name:'BMO Dow Jones Industrial Average Hedged to CAD ETF',issuer:'BMO GAM',   strat:'Dow Jones 30',     cur:'🍁 CAD', mer:0.25, aum:'~$383M CAD',  yield:1.5, bestFor:'30-stock US blue-chip exposure, CAD-hedged'},
+  {ticker:'HXS',   name:'Global X S&P 500 Index Corporate Class ETF',      issuer:'Glbl X/Horiz',strat:'S&P 500 Swap',     cur:'🍁 CAD', mer:0.29, aum:'~$6.2B CAD',  yield:0.0, bestFor:'Non-reg accounts: defers all dividends as cap gains'},
   {ticker:'EQLI',  name:'Invesco S&P 500 Equal Weight Income Advantage ETF',issuer:'Invesco CA', strat:'EW + Income Overlay',cur:'🍁 CAD',mer:0.45, aum:'~$50M CAD',   yield:4.5, bestFor:'Equal weight S&P 500 with enhanced income strategy'},
 ];
 
@@ -1931,20 +1931,20 @@ Object.assign(ETF_DB, {
   'XUU': {
     name:'iShares Core S&P U.S. Total Market Index ETF',
     issuer:'RBC iShares', cat:'US Total Market', sector:'US Equity (Broad)',
-    mer:'0.07%', aum:'~$15B CAD', yield:'1.1%', liquidity:'Very High', inception:'2015',
+    mer:'0.07%', aum:'~$4.3B CAD', yield:'1.1%', liquidity:'High', inception:'2015',
     desc:'The broadest and cheapest US equity ETF available to Canadian investors. Tracks the S&P Total Market Index covering 3,500+ US stocks — large, mid, small, and micro-cap. Uses a fund-of-funds structure holding iShares US ETFs (primarily ITOT). At 0.07% MER it is the lowest-cost US equity ETF in Canada. Named top pick by multiple MoneySense 2026 panellists.',
     holdings:['ITOT (iShares Core S&P Total US Stock Market ETF)','~3,500+ underlying US equities from micro-cap to mega-cap'],
-    pros:['0.07% MER — cheapest US equity ETF in Canada','3,500+ stocks — most diversified US coverage','iShares brand backing','Very high $15B AUM — excellent liquidity'],
+    pros:['0.07% MER — cheapest US equity ETF in Canada','3,500+ stocks — most diversified US coverage','iShares brand backing','$4.3B AUM — strong liquidity'],
     cons:['Fund-of-funds structure adds slight complexity','Slightly more small/mid-cap exposure than pure S&P 500 plays — marginally higher volatility'],
     bestFor:'Most Canadian investors wanting total US equity market exposure. The one-stop shop for US diversification at minimum cost. Particularly good in TFSA where withholding tax applies regardless of ETF domicile.'
   },
   'XUU.U': {
     name:'iShares Core S&P U.S. Total Market Index ETF (USD Units)',
     issuer:'RBC iShares', cat:'US Total Market (USD)', sector:'US Equity (Broad)',
-    mer:'0.07%', aum:'~$1B USD', yield:'1.1%', liquidity:'Med', inception:'2020',
+    mer:'0.07%', aum:'~$90M USD', yield:'1.1%', liquidity:'Med-Low', inception:'2020',
     desc:'USD-denominated trading units of XUU — same 3,500+ US stock exposure at the same 0.07% MER, but bought and sold in US dollars. Allows investors with USD cash to access total US market without paying currency conversion spreads.',
     holdings:['Same as XUU — ITOT and broad US equity market basket'],
-    pros:['0.07% MER — same as CAD version, lowest in class','Avoids currency conversion for USD account holders','$1B USD AUM — reasonable liquidity'],
+    pros:['0.07% MER — same as CAD version, lowest in class','Avoids currency conversion for USD account holders','$90M USD AUM — modest liquidity'],
     cons:['Less liquid than CAD XUU','Only useful if you actually have USD sitting in your account'],
     bestFor:'Investors with USD proceeds in their RRSP or non-registered account who want total US market exposure without the friction of converting back to CAD first.'
   },
@@ -1961,10 +1961,10 @@ Object.assign(ETF_DB, {
   'VUN': {
     name:'Vanguard U.S. Total Market Index ETF',
     issuer:'Vanguard', cat:'US Total Market', sector:'US Equity (Broad)',
-    mer:'0.16%', aum:'~$14.8B CAD', yield:'1.0%', liquidity:'Very High', inception:'2013',
-    desc:'Vanguard\'s flagship US total market ETF in Canada. Tracks ~3,700+ US stocks via VTI (Vanguard\'s US-domiciled ETF) as its underlying holding. At $14.8B AUM, one of Canada\'s largest ETFs. Slightly higher MER (0.16%) vs. XUU (0.07%) but Vanguard brand loyalty drives continued strong flows.',
+    mer:'0.16%', aum:'~$18B CAD', yield:'1.0%', liquidity:'Very High', inception:'2013',
+    desc:'Vanguard\'s flagship US total market ETF in Canada. Tracks ~3,700+ US stocks via VTI (Vanguard\'s US-domiciled ETF) as its underlying holding. At ~$18B AUM, one of Canada\'s largest ETFs. Slightly higher MER (0.16%) vs. XUU (0.07%) but Vanguard brand loyalty drives continued strong flows.',
     holdings:['VTI (Vanguard Total Stock Market ETF) — 3,700+ US stocks','Apple, Microsoft, Amazon, Nvidia, Alphabet, Meta, Tesla top weights'],
-    pros:['$14.8B AUM — one of Canada\'s largest ETFs','Vanguard brand reliability and investor ownership structure','3,700+ stocks — extremely broad US coverage','Quarterly distributions'],
+    pros:['~$18B AUM — one of Canada\'s largest ETFs','Vanguard brand reliability and investor ownership structure','3,700+ stocks — extremely broad US coverage','Quarterly distributions'],
     cons:['0.16% MER — more than twice XUU\'s 0.07%','Fund-of-funds structure (holds VTI)'],
     bestFor:'Vanguard loyalists who want the Vanguard brand on their US total market holding. Functionally excellent, but XUU at 0.07% is the better value. Use as tax-loss harvest partner for XUU.'
   },
@@ -1981,30 +1981,30 @@ Object.assign(ETF_DB, {
   'XSP': {
     name:'iShares Core S&P 500 Index ETF (CAD-Hedged)',
     issuer:'RBC iShares', cat:'S&P 500 (Hedged)', sector:'US Equity (S&P 500, CAD Hedged)',
-    mer:'0.10%', aum:'~$6B CAD', yield:'1.0%', liquidity:'High', inception:'2001',
-    desc:'One of the oldest Canadian-listed S&P 500 ETFs (launched 2001). CAD-hedged version of XUS — eliminates the USD/CAD currency effect on S&P 500 returns. $6B AUM makes it among the more liquid hedged S&P 500 options. Suitable when expecting CAD to appreciate vs USD.',
+    mer:'0.10%', aum:'~$15.6B CAD', yield:'1.0%', liquidity:'Very High', inception:'2001',
+    desc:'One of the oldest Canadian-listed S&P 500 ETFs (launched 2001). CAD-hedged version of XUS — eliminates the USD/CAD currency effect on S&P 500 returns. $15.6B AUM makes it the most liquid hedged S&P 500 option. Suitable when expecting CAD to appreciate vs USD.',
     holdings:['Full S&P 500 with CAD/USD forward hedge — same 500 stocks as XUS/VFV/ZSP'],
-    pros:['$6B AUM — most liquid CAD-hedged S&P 500 ETF in Canada','0.10% MER — competitive for a hedged product','25-year track record (launched 2001)','Eliminates currency risk'],
+    pros:['$15.6B AUM — most liquid CAD-hedged S&P 500 ETF in Canada','0.10% MER — competitive for a hedged product','25-year track record (launched 2001)','Eliminates currency risk'],
     cons:['Hedging has embedded cost reducing returns in USD-strengthening environments','0.10% vs. unhedged XUS at same cost but without drag'],
     bestFor:'Investors who want pure S&P 500 returns in CAD terms without currency exposure, particularly during periods of USD weakness or CAD strength (e.g. oil price rallies).'
   },
   'ZNQ': {
     name:'BMO Nasdaq 100 Equity Index ETF (Unhedged CAD)',
     issuer:'BMO GAM', cat:'Nasdaq-100 (Unhedged)', sector:'US Tech/Growth',
-    mer:'0.39%', aum:'~$500M CAD', yield:'0.4%', liquidity:'Med', inception:'2019',
+    mer:'0.39%', aum:'~$2B CAD', yield:'0.4%', liquidity:'High', inception:'2019',
     desc:'BMO\'s unhedged Nasdaq-100 ETF in Canadian dollars — the unhedged counterpart to ZQQ. Holds the 100 largest non-financial Nasdaq companies directly. ~50%+ technology weight (Apple, Microsoft, Nvidia, Meta, Alphabet). Carries full USD/CAD currency exposure unlike ZQQ.',
     holdings:['Apple','Microsoft','Nvidia','Amazon','Meta','Alphabet (Google)','Tesla','Broadcom','Netflix','Adobe — top 10 positions; 100 total'],
     pros:['Unhedged — captures USD appreciation vs. CAD','0.39% MER — same as ZQQ but no hedging cost drag','Direct Nasdaq-100 replication (holds actual stocks)'],
-    cons:['0.39% MER — more expensive than QQC/QQC.F (0.20%)','~$500M AUM — less liquid than ZQQ or XQQ','High tech concentration risk'],
+    cons:['0.39% MER — more expensive than QQC/QQC.F (0.20%)','~$2B AUM — solid liquidity, though below ZQQ/XQQ','High tech concentration risk'],
     bestFor:'Long-term investors who want Nasdaq-100 exposure and prefer unhedged currency to benefit from USD strength. More suitable if you hold BMO ETFs across your portfolio.'
   },
   'QQC': {
     name:'Invesco Nasdaq 100 Index ETF (CAD Unhedged)',
     issuer:'Invesco Canada', cat:'Nasdaq-100 (Unhedged)', sector:'US Tech/Growth',
-    mer:'0.20%', aum:'~$1B CAD', yield:'0.4%', liquidity:'Med', inception:'2021',
+    mer:'0.20%', aum:'~$3.5B CAD', yield:'0.4%', liquidity:'High', inception:'2021',
     desc:'Invesco\'s unhedged Canadian-listed Nasdaq-100 ETF. Uses a fund-of-funds structure, investing in Invesco\'s US-listed QQQ/QQQM ETFs. At 0.20% MER it is meaningfully cheaper than ZQQ or XQQ (both 0.39%). Good balance of cost and exposure for long-term Nasdaq investors.',
     holdings:['QQQ/QQQM (Invesco Nasdaq-100 US ETFs) — Apple, Microsoft, Nvidia, Amazon, Meta, Alphabet, Tesla, Broadcom'],
-    pros:['0.20% MER — half the cost of ZQQ/XQQ','Fund-of-funds structure is transparent (holds QQQ)','$1B AUM — reasonable liquidity','Invesco — the original Nasdaq-100 ETF issuer (QQQ launched 1999)'],
+    pros:['0.20% MER — half the cost of ZQQ/XQQ','Fund-of-funds structure is transparent (holds QQQ)','$3.5B AUM — strong liquidity','Invesco — the original Nasdaq-100 ETF issuer (QQQ launched 1999)'],
     cons:['Fund-of-funds structure adds one layer','0.20% vs. the cheapest QQC.F (same MER but hedged)'],
     bestFor:'Cost-conscious investors who want Nasdaq-100 without currency hedging at the most competitive MER available in Canada. Best for long-term holds in TFSA/RRSP.'
   },
@@ -2031,30 +2031,30 @@ Object.assign(ETF_DB, {
   'HXQ': {
     name:'Global X Nasdaq-100 Index Corporate Class ETF',
     issuer:'Global X / Horizons', cat:'Nasdaq-100 (Tax-Efficient)', sector:'US Tech/Growth',
-    mer:'0.28%', aum:'~$1B CAD', yield:'0%', liquidity:'High', inception:'2016',
+    mer:'0.28%', aum:'~$1.1B CAD', yield:'0%', liquidity:'High', inception:'2016',
     desc:'Unique tax-efficient Nasdaq-100 ETF using a corporate class wrapper — similar structure to HXT and HXS. Does NOT issue any distributions; all income (dividends) is automatically reinvested, converting it to capital gain. Ideal for high-income earners in taxable accounts. 0.28% MER — between QQC (0.20%) and ZQQ (0.39%).',
     holdings:['Nasdaq-100 via total return swap structure — tracks Nasdaq-100 without directly holding stocks'],
-    pros:['Zero distributions = zero annual tax on income in non-registered accounts','Tax-efficient: converts all returns to capital gains','$1B AUM — reasonable liquidity','Has been around since 2016 — established track record'],
+    pros:['Zero distributions = zero annual tax on income in non-registered accounts','Tax-efficient: converts all returns to capital gains','$1.1B AUM — reasonable liquidity','Has been around since 2016 — established track record'],
     cons:['0.28% MER — higher than QQC (0.20%)','Swap-based structure adds counterparty risk','Corporate class adds tax complexity on disposition'],
     bestFor:'High-marginal-rate investors in non-registered accounts who want Nasdaq-100 tech exposure without annual taxable dividend income. The tax deferral advantage can more than offset the higher MER vs. QQC over time.'
   },
   'ZQQ': {
     name:'BMO Nasdaq 100 Equity Hedged to CAD Index ETF',
     issuer:'BMO GAM', cat:'Nasdaq-100 (Hedged)', sector:'US Tech/Growth',
-    mer:'0.39%', aum:'~$2.25B CAD', yield:'0.4%', liquidity:'High', inception:'2010',
-    desc:'Canada\'s most established Nasdaq-100 ETF (launched 2010) and the most liquid Canadian Nasdaq product with $2.25B+ AUM. CAD-hedged. Holds underlying Nasdaq-100 stocks directly (not fund-of-funds). High 0.39% MER is increasingly hard to justify now that QQC.F offers identical hedged exposure at 0.20%.',
+    mer:'0.39%', aum:'~$3.25B CAD', yield:'0.4%', liquidity:'High', inception:'2010',
+    desc:'Canada\'s most established Nasdaq-100 ETF (launched 2010) and the most liquid Canadian Nasdaq product with $3.25B+ AUM. CAD-hedged. Holds underlying Nasdaq-100 stocks directly (not fund-of-funds). High 0.39% MER is increasingly hard to justify now that QQC.F offers identical hedged exposure at 0.20%.',
     holdings:['Apple (~8%)','Microsoft (~8%)','Nvidia (~7%)','Amazon (~5%)','Meta (~5%)','Alphabet (~4%)','Broadcom (~4%)','Tesla (~3%)','Netflix','Adobe — 100 total'],
-    pros:['$2.25B AUM — most liquid Canadian Nasdaq-100 ETF','Longest track record (2010)','Direct replication — no fund-of-funds layer','CAD-hedged — removes currency risk'],
+    pros:['$3.25B AUM — most liquid Canadian Nasdaq-100 ETF','Longest track record (2010)','Direct replication — no fund-of-funds layer','CAD-hedged — removes currency risk'],
     cons:['0.39% MER — significantly more expensive than QQC.F (0.20%) for same hedged exposure','High MER may not be justified for long-term holders'],
-    bestFor:'Investors who already hold ZQQ and are evaluating a switch to QQC.F. New investors should strongly consider QQC.F — same hedged Nasdaq-100 exposure at nearly half the MER. ZQQ\'s main advantage is its superior $2.25B AUM and liquidity.'
+    bestFor:'Investors who already hold ZQQ and are evaluating a switch to QQC.F. New investors should strongly consider QQC.F — same hedged Nasdaq-100 exposure at nearly half the MER. ZQQ\'s main advantage is its superior $3.25B AUM and liquidity.'
   },
   'XQQ': {
     name:'iShares Nasdaq 100 Index ETF (CAD-Hedged)',
     issuer:'RBC iShares', cat:'Nasdaq-100 (Hedged)', sector:'US Tech/Growth',
-    mer:'0.39%', aum:'~$4B CAD', yield:'0.5%', liquidity:'Very High', inception:'2011',
-    desc:'The most liquid Canadian Nasdaq-100 ETF with $4B AUM. CAD-hedged. Directly holds the Nasdaq-100 companies. Morningstar-rated. Large AUM ensures tight bid-ask spreads and easy execution at any size. Same 0.39% MER as ZQQ but more liquid. The iShares brand commands significant institutional and retail flow.',
+    mer:'0.39%', aum:'~$5.6B CAD', yield:'0.5%', liquidity:'Very High', inception:'2011',
+    desc:'The most liquid Canadian Nasdaq-100 ETF with $5.6B AUM. CAD-hedged. Directly holds the Nasdaq-100 companies. Morningstar-rated. Large AUM ensures tight bid-ask spreads and easy execution at any size. Same 0.39% MER as ZQQ but more liquid. The iShares brand commands significant institutional and retail flow.',
     holdings:['Apple (~8%)','Microsoft (~8%)','Nvidia (~7%)','Amazon (~5%)','Meta (~5%)','Alphabet (~4%)','Broadcom (~4%)','Tesla','Netflix','Costco — 100 total'],
-    pros:['$4B AUM — deepest liquidity of any Canadian Nasdaq-100 ETF','iShares/BlackRock global brand','Direct replication — no fund-of-funds layer','CAD-hedged'],
+    pros:['$5.6B AUM — deepest liquidity of any Canadian Nasdaq-100 ETF','iShares/BlackRock global brand','Direct replication — no fund-of-funds layer','CAD-hedged'],
     cons:['0.39% MER — same as ZQQ, significantly more than QQC.F (0.20%)','No unhedged version of XQQ available — use QQC or ZNQ for unhedged'],
     bestFor:'Investors who prioritize maximum liquidity in their Nasdaq-100 ETF (institutions, large trades, frequent rebalancers). For smaller investors, QQC.F delivers the same result at half the cost.'
   },
@@ -2071,11 +2071,11 @@ Object.assign(ETF_DB, {
   'ZUQ': {
     name:'BMO MSCI USA High Quality Index ETF',
     issuer:'BMO GAM', cat:'US Factor (Quality)', sector:'US Equity (Quality)',
-    mer:'0.25%', aum:'~$209M CAD', yield:'0.9%', liquidity:'Med', inception:'2019',
+    mer:'0.25%', aum:'~$1.4B CAD', yield:'0.9%', liquidity:'High', inception:'2019',
     desc:'Quality factor ETF tracking the MSCI USA Sector Neutral Quality Index. Selects mid-and large-cap US companies with high return on equity, low financial leverage, and stable earnings growth — scored against sector peers. ~125 holdings. Sector-neutral design prevents tilting away from tech.',
     holdings:['~125 US stocks with highest quality scores vs. sector peers — Apple, Microsoft, Visa, Mastercard, UnitedHealth, Johnson & Johnson, Procter & Gamble, among others'],
     pros:['0.25% MER — competitive for a quality factor product','Sector-neutral design — maintains full market sector diversification','Quality screen avoids leveraged or earnings-volatile companies'],
-    cons:['~$209M AUM — moderate liquidity','Factor premiums are not guaranteed; quality has had periods of underperformance'],
+    cons:['~$1.4B AUM — strong liquidity','Factor premiums are not guaranteed; quality has had periods of underperformance'],
     bestFor:'Investors who believe quality companies (strong balance sheets, consistent earnings) deliver better long-term risk-adjusted returns, without sacrificing sector diversity. A sound alternative to a pure S&P 500 cap-weighted fund.'
   },
   'EQLI': {
@@ -2091,21 +2091,21 @@ Object.assign(ETF_DB, {
   'HXS': {
     name:'Global X S&P 500 Index Corporate Class ETF',
     issuer:'Global X / Horizons', cat:'S&P 500 (Tax-Efficient)', sector:'US Equity (S&P 500)',
-    mer:'0.29%', aum:'~$2B CAD', yield:'0%', liquidity:'High', inception:'2011',
+    mer:'0.29%', aum:'~$6.2B CAD', yield:'0%', liquidity:'Very High', inception:'2011',
     desc:'The tax-efficient swap-based S&P 500 ETF from Global X. Uses a corporate class wrapper — all dividends are automatically reinvested and converted to capital gains. You pay NO annual dividend income tax; tax is deferred until you sell as capital gains. Perfect for high-income earners in taxable accounts. Tracks S&P 500 Total Return Index.',
     holdings:['S&P 500 via total return swap — no direct stock holdings','Same 500 US companies as VFV/ZSP but through synthetic replication'],
-    pros:['Zero distributions = zero annual income tax in non-registered accounts','Defers all S&P 500 dividends as capital gains until sale','$2B AUM — liquid for a swap-based product','Established 2011 — long track record'],
+    pros:['Zero distributions = zero annual income tax in non-registered accounts','Defers all S&P 500 dividends as capital gains until sale','$6.2B AUM — very liquid for a swap-based product','Established 2011 — long track record'],
     cons:['0.29% MER — more expensive than VFV (0.08%) or ZSP (0.09%)','Swap structure adds counterparty risk','Tax efficiency advantage is less meaningful in RRSP/TFSA (already tax-sheltered)'],
     bestFor:'High-marginal-rate Canadian investors holding S&P 500 exposure in a non-registered (taxable) account. The tax deferral on ~1.2%/year in dividends can be worth more than the MER premium vs. VFV over a long holding period.'
   },
   'ZEQL': {
     name:'BMO MSCI USA Equal Weight Index ETF (CAD)',
     issuer:'BMO GAM', cat:'US Equal Weight', sector:'US Equity (MSCI USA Equal Weighted)',
-    mer:'0.06%', aum:'~$14M CAD', yield:'1.55%', liquidity:'Low', inception:'Feb 2026',
+    mer:'0.06%', aum:'~$9M CAD', yield:'1.55%', liquidity:'Low', inception:'Feb 2026',
     desc:'BMO\'s brand-new equal weight US ETF launched February 2026 — tracking the MSCI USA Equal Weighted Index (~537 large and mid-cap US stocks). At 0.06% MER it is the cheapest equal-weight US ETF in Canada, less than a quarter of EQL\'s 0.26%. Functionally very similar to EQL (S&P 500 Equal Weight) — same concept, more stocks, dramatically lower cost. Still building AUM.',
     holdings:['537 large- and mid-cap US stocks — each equally weighted','MSCI USA universe includes all S&P 500 stocks plus additional mid-cap names (~37 extra vs. EQL)'],
     pros:['0.06% MER — cheapest equal-weight US ETF in Canada (1/4 the cost of EQL)','537 stocks vs. EQL\'s 500 — slightly more diversified','BMO brand — reputable issuer with massive Canadian ETF franchise','Also available in hedged (ZEQL.F) and USD (ZEQL.U) unit classes'],
-    cons:['Only ~$14M AUM — significant closure risk below $50M threshold','Launched Feb 2026 — no track record yet','Very low liquidity — wide bid-ask spreads expected in early months','MSCI index vs. S&P 500 — slight methodology difference from EQL'],
+    cons:['Only ~$9M AUM — significant closure risk below $50M threshold','Launched Feb 2026 — no track record yet','Very low liquidity — wide bid-ask spreads expected in early months','MSCI index vs. S&P 500 — slight methodology difference from EQL'],
     bestFor:'Cost-conscious long-term investors who believe in equal-weight US equity strategy and want the lowest MER possible. Hold in RRSP or TFSA. Watch AUM growth — ZEQL needs to cross $50M+ to be a safe long-term hold. EQL is the safer choice today; ZEQL is the better value if it survives.'
   },
   'ZEQL.U': {
@@ -2131,30 +2131,30 @@ Object.assign(ETF_DB, {
   'EQL-F': {
     name:'Invesco S&P 500 Equal Weight Index ETF (CAD-Hedged)',
     issuer:'Invesco Canada', cat:'S&P 500 Equal Weight (Hedged)', sector:'US Equity (S&P 500 Equal Weighted, Hedged)',
-    mer:'0.26%', aum:'~$1.67B CAD', yield:'1.25%', liquidity:'High', inception:'Apr 2018',
-    desc:'The CAD-hedged unit of the Invesco S&P 500 Equal Weight ETF family. Provides equal-weight S&P 500 exposure (~0.2% per stock) with the USD/CAD currency effect hedged away. With $1.67B AUM it is significantly larger and more liquid than the new ZEQL.F. Had a 1-year total return of 13.26% — outperforming unhedged EQL\'s 8.34% as CAD strengthened.',
+    mer:'0.26%', aum:'~$1.6B CAD', yield:'1.25%', liquidity:'High', inception:'Apr 2018',
+    desc:'The CAD-hedged unit of the Invesco S&P 500 Equal Weight ETF family. Provides equal-weight S&P 500 exposure (~0.2% per stock) with the USD/CAD currency effect hedged away. With $1.6B AUM it is significantly larger and more liquid than the new ZEQL.F. Had a 1-year total return of 13.26% — outperforming unhedged EQL\'s 8.34% as CAD strengthened.',
     holdings:['Invesco RSP (US-listed S&P 500 Equal Weight ETF) — same 500 companies as EQL with currency hedge'],
-    pros:['$1.67B AUM — high liquidity (vs. ZEQL.F <$5M)','Eliminates CAD/USD currency risk in equal-weight S&P 500','Well-established since 2018','13.26% 1-year return vs. EQL\'s 8.34% when CAD strengthened'],
+    pros:['$1.6B AUM — high liquidity (vs. ZEQL.F <$5M)','Eliminates CAD/USD currency risk in equal-weight S&P 500','Well-established since 2018','13.26% 1-year return vs. EQL\'s 8.34% when CAD strengthened'],
     cons:['0.26% MER — expensive vs. ZEQL.F (0.06%)','Hedging has embedded roll cost','Fund-of-funds structure'],
     bestFor:'Investors who want proven, liquid, equal-weight S&P 500 exposure with currency hedging. EQL-F is the safe, established choice vs. ZEQL.F\'s lower cost but near-zero AUM. Choose EQL-F for reliability; consider switching to ZEQL.F only after it establishes meaningful AUM.'
   },
   'EQL': {
     name:'Invesco S&P 500 Equal Weight Index ETF (CAD Unhedged)',
     issuer:'Invesco Canada', cat:'S&P 500 Equal Weight', sector:'US Equity (S&P 500 Equal Weighted)',
-    mer:'0.26%', aum:'~$1.70B CAD', yield:'1.58%', liquidity:'High', inception:'Apr 2018',
-    desc:'The flagship Canadian equal-weight S&P 500 ETF with $1.70B AUM. Tracks the S&P 500 Equal Weight Index — all 500 companies at equal ~0.2% weight, rebalanced quarterly. Wrapper around RSP (Invesco\'s US-listed $90B equal-weight ETF). Nvidia, Apple, and Microsoft carry the same weight as a mid-sized industrial. Unhedged — carries USD/CAD currency exposure.',
+    mer:'0.26%', aum:'~$1.6B CAD', yield:'1.58%', liquidity:'High', inception:'Apr 2018',
+    desc:'The flagship Canadian equal-weight S&P 500 ETF with $1.6B AUM. Tracks the S&P 500 Equal Weight Index — all 500 companies at equal ~0.2% weight, rebalanced quarterly. Wrapper around RSP (Invesco\'s US-listed $90B equal-weight ETF). Nvidia, Apple, and Microsoft carry the same weight as a mid-sized industrial. Unhedged — carries USD/CAD currency exposure.',
     holdings:['Invesco RSP (US $90B AUM S&P 500 Equal Weight ETF)','All 500 S&P 500 companies at ~0.2% each — quarterly rebalanced'],
-    pros:['$1.70B AUM — most liquid Canadian equal-weight US ETF','Backed by RSP — the world\'s largest equal-weight ETF ($90B+ AUM)','Eliminates Magnificent Seven dominance','Available in 3 unit classes: EQL (CAD), EQL-F (Hedged), EQL-U (USD)','1-year AUM: $1.70B as of Jun 2026'],
+    pros:['$1.6B AUM — most liquid Canadian equal-weight US ETF','Backed by RSP — the world\'s largest equal-weight ETF ($90B+ AUM)','Eliminates Magnificent Seven dominance','Available in 3 unit classes: EQL (CAD), EQL-F (Hedged), EQL-U (USD)','1-year AUM: ~$1.6B as of Jun 2026'],
     cons:['0.26% MER — ZEQL now achieves same concept at 0.06% (though ZEQL has very low AUM)','Fund-of-funds structure holding RSP','Currency risk — unhedged exposure to USD/CAD movement'],
     bestFor:'The proven default for Canadian investors wanting S&P 500 equal-weight access. Choose EQL over ZEQL today unless you are specifically comfortable with very low-AUM ETF risk. Will benefit from periods of USD strength vs. CAD. Best in TFSA or RRSP for registered account investors.'
   },
   'ZDJ': {
     name:'BMO Dow Jones Industrial Average Hedged to CAD ETF',
     issuer:'BMO GAM', cat:'Dow Jones 30', sector:'US Equity (DJIA)',
-    mer:'0.25%', aum:'~$300M CAD', yield:'1.5%', liquidity:'Med', inception:'2009',
+    mer:'0.25%', aum:'~$383M CAD', yield:'1.5%', liquidity:'Med', inception:'2009',
     desc:'Tracks the Dow Jones Industrial Average — just 30 large-cap US blue-chip companies, the most concentrated of all US equity ETFs. CAD-hedged. Holdings include companies like Apple, Microsoft, Goldman Sachs, JPMorgan, Johnson & Johnson, McDonald\'s, Boeing. Price-weighted index (unlike S&P 500\'s cap-weighting).',
     holdings:['Apple (~5%)','Microsoft (~5%)','Goldman Sachs (~7%)','UnitedHealth (~6%)','Visa','Caterpillar','McDonald\'s','Boeing','JPMorgan','Johnson & Johnson — 30 total'],
-    pros:['0.25% MER — reasonable','$300M AUM','CAD-hedged — no currency risk','Iconic Dow Jones brand recognition'],
+    pros:['0.25% MER — reasonable','$383M AUM','CAD-hedged — no currency risk','Iconic Dow Jones brand recognition'],
     cons:['Only 30 holdings — far less diversified than S&P 500','Price-weighted methodology is economically arbitrary (Boeing stock price determines its weight, not market cap)','Limited exposure to many US sectors'],
     bestFor:'Investors who specifically want the Dow Jones 30 blue-chip US exposure in a hedged Canadian wrapper. Most investors are better served by broader S&P 500 or total market ETFs — the DJIA\'s 30-stock, price-weighted methodology is largely an historical artifact.'
   },
@@ -2691,9 +2691,9 @@ function renderChartsForTab(tabId) {
       datasets:[{label:'MER %',data:[0.26,0.06],colors:[C.navy,C.teal]}]
     });
     drawChart('usAumChart',{type:'bar',
-      labels:['VFV','ZSP','XUU','VUN','XUS','XQQ','XSP','ZQQ','VSP','HXS','EQL','ZUE'],
-      yFmt:v=>'$'+v.toFixed(0)+'B',
-      datasets:[{label:'AUM (CAD B)',data:[28,20,15,14.8,12,4,6,2.25,4,2,1.7,3.3],colors:[C.slate,C.navy,C.red,C.slate,C.red,C.red,C.red,C.navy,C.slate,C.blue,C.blue,C.navy]}]
+      labels:['VFV','ZSP','VUN','XSP','XUS','HXS','VSP','XQQ','XUU','ZUE','ZQQ','EQL'],
+      yFmt:v=>'$'+v.toFixed(1)+'B',
+      datasets:[{label:'AUM (CAD B)',data:[33,26,18,15.6,13,6.2,5.7,5.6,4.3,4.2,3.25,1.6],colors:[C.slate,C.navy,C.slate,C.red,C.red,C.blue,C.slate,C.red,C.red,C.navy,C.navy,C.blue]}]
     });
     const usMer=[{t:'ZEQL',v:0.06},{t:'XUU',v:0.07},{t:'VFV',v:0.08},{t:'VSP',v:0.08},{t:'ZSP',v:0.09},{t:'ZUE',v:0.09},{t:'XUS',v:0.10},{t:'XSP',v:0.10},{t:'VUN',v:0.16},{t:'QQC',v:0.20},{t:'QQC.F',v:0.20},{t:'HXQ',v:0.28},{t:'EQL',v:0.26},{t:'HXS',v:0.29},{t:'ZLU',v:0.33},{t:'ZQQ',v:0.39},{t:'XQQ',v:0.39}].sort((a,b)=>a.v-b.v);
     drawChart('usMerChart',{type:'hbar',height:320,
